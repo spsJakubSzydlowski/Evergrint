@@ -1,0 +1,40 @@
+{
+	"sheets": [
+		{
+			"name": "Items",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "name",
+					"display": null
+				},
+				{
+					"typeStr": "14",
+					"name": "tile",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"name": "Red Apple",
+					"id": "red_apple",
+					"tile": {
+						"file": "../OneDrive/Obrázky/Evergrent/Atlas-temp.png",
+						"size": 16,
+						"x": 6,
+						"y": 0
+					}
+				}
+			],
+			"separators": [],
+			"props": {}
+		}
+	],
+	"customTypes": [],
+	"compress": false
+}
