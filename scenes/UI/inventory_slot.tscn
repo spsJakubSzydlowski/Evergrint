@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://ccqufb7fkgrn7"]
+
+[node name="Inventory" type="PanelContainer"]
+
+[node name="Hotbar" type="Control" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Hotbar"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="Hotbar/HBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Hotbar/HBoxContainer/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(7.219613e-08, 0.21920863, 0.21920872, 1)
+
+[node name="SelectionRect" type="ColorRect" parent="Hotbar/HBoxContainer/Panel"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.40958562, 0.4095856, 1)
+
+[node name="Icon" type="TextureRect" parent="Hotbar/HBoxContainer/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AmountLabel" type="Label" parent="Hotbar/HBoxContainer/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://bryjxm5yqvpo5"]
+
+[ext_resource type="Script" uid="uid://b6d0iowgh44ec" path="res://scripts/inventory_canvas.gd" id="1_l5hnc"]
+[ext_resource type="PackedScene" uid="uid://ccqufb7fkgrn7" path="res://scenes/UI/inventory_slot.tscn" id="2_vn1aj"]
+
+[node name="InventoryCanvas" type="CanvasLayer"]
+script = ExtResource("1_l5hnc")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 44
+alignment = 1
+
+[node name="Inventory" parent="HBoxContainer" instance=ExtResource("2_vn1aj")]
+layout_mode = 2
+
+[node name="Inventory2" parent="HBoxContainer" instance=ExtResource("2_vn1aj")]
+layout_mode = 2

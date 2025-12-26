@@ -21,6 +21,13 @@ func load_castle_db(path):
 					db_data[row.id] = row
 
 func get_item(id):
-	print("Hledám ID: ", id)
-	print("Dostupná ID v databázi: ", db_data.keys())
 	return db_data.get(id)
+
+func spawn_item(id: String, pos : Vector2):
+	var item_scene = preload("res://scenes/world_object.tscn")
+	var item_instance = item_scene.instantiate()
+	
+	get_tree().current_scene.add_child(item_instance)
+	item_instance.position = pos
+	
+	item_instance.initialize(id)
