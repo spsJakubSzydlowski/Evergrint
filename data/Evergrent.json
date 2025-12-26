@@ -17,6 +17,10 @@
 					"typeStr": "14",
 					"name": "tile",
 					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "tile_size"
 				}
 			],
 			"lines": [
@@ -24,10 +28,22 @@
 					"name": "Red Apple",
 					"id": "red_apple",
 					"tile": {
-						"file": "../OneDrive/Obrázky/Evergrent/Atlas-temp.png",
+						"file": "../textures/Atlas-temp.png",
 						"size": 16,
 						"x": 6,
 						"y": 0
+					},
+					"tile_size": 16
+				},
+				{
+					"id": "green_apple",
+					"name": "Green Apple",
+					"tile_size": 16,
+					"tile": {
+						"file": "../textures/Atlas-temp.png",
+						"size": 16,
+						"x": 6,
+						"y": 1
 					}
 				}
 			],
