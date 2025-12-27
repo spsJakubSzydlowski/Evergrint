@@ -6,7 +6,7 @@ extends Area2D
 var item = ""
 
 func initialize(item_id: String):
-	item = DataManager.db_data.get(item_id)
+	item = DataManager.get_item(item_id)
 	
 	if item == null:
 		print("Error: ID ", item_id, " doesnt exist in database!")

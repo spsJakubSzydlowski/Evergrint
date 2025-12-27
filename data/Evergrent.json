@@ -80,11 +80,10 @@
 			"columns": [
 				{
 					"typeStr": "0",
-					"name": "name",
-					"display": null
+					"name": "id"
 				},
 				{
-					"typeStr": "4",
+					"typeStr": "3",
 					"name": "damage"
 				},
 				{
@@ -103,11 +102,82 @@
 			],
 			"lines": [
 				{
-					"damage": 1,
+					"damage": 2,
 					"attack_speed": 1,
 					"knockback": 1,
 					"hitbox_size": "",
-					"name": "wooden_sword"
+					"id": "wooden_sword"
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "Entities",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "1",
+					"name": "name",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "max_hp"
+				},
+				{
+					"typeStr": "5:Hostile,Passive",
+					"name": "faction",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "speed"
+				},
+				{
+					"typeStr": "3",
+					"name": "damage"
+				},
+				{
+					"typeStr": "6:Items",
+					"name": "drop_id",
+					"opt": true
+				},
+				{
+					"typeStr": "5:Chasing,Wandering,Stationary",
+					"name": "ai_type",
+					"display": null
+				},
+				{
+					"typeStr": "14",
+					"name": "tile",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "tile_size"
+				}
+			],
+			"lines": [
+				{
+					"id": "green_slime",
+					"name": "Green Slime",
+					"max_hp": 5,
+					"faction": 0,
+					"speed": 1,
+					"damage": 1,
+					"ai_type": 0,
+					"drop_id": "red_apple",
+					"tile": {
+						"file": "../textures/Atlas-enemies.png",
+						"size": 16,
+						"x": 0,
+						"y": 0
+					},
+					"tile_size": 16
 				}
 			],
 			"separators": [],
