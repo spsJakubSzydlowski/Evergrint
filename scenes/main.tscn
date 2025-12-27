@@ -215,3 +215,5 @@ position = Vector2(313, 183)
 collision_mask = 3
 
 [node name="InventoryCanvas" parent="." instance=ExtResource("5_tbgi4")]
+
+[connection signal="item_equipped" from="InventoryCanvas" to="Player" method="_on_inventory_canvas_item_equipped"]

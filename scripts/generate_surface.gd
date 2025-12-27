@@ -7,7 +7,7 @@ var world_height = 200
 
 func _ready() -> void:
 	river_noise.seed = randi() + 1
-	river_noise.frequency = 0.01
+	river_noise.frequency = 0.001
 	river_noise.noise_type = FastNoiseLite.TYPE_PERLIN
 	
 	generate_surface()
@@ -22,7 +22,7 @@ func generate_surface():
 			#var noise_val = noise.get_noise_2d(x, y)
 			var river_val = river_noise.get_noise_2d(x, y)
 			
-			if abs(river_val) < 0.05:
+			if abs(river_val) < 0.01:
 				water_tiles.append(Vector2i(x, y))
 			elif abs(river_val) < 0.10:
 				grass_tiles.append(Vector2i(x, y))

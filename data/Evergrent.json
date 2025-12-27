@@ -14,6 +14,10 @@
 					"display": null
 				},
 				{
+					"typeStr": "5:Weapon,Tool,Consumable,Material,Placeable",
+					"name": "type"
+				},
+				{
 					"typeStr": "14",
 					"name": "tile",
 					"display": null
@@ -21,6 +25,12 @@
 				{
 					"typeStr": "3",
 					"name": "tile_size"
+				},
+				{
+					"typeStr": "6:MeleeStats",
+					"name": "melee_ref",
+					"opt": true,
+					"display": null
 				}
 			],
 			"lines": [
@@ -33,7 +43,8 @@
 						"x": 6,
 						"y": 0
 					},
-					"tile_size": 16
+					"tile_size": 16,
+					"type": 2
 				},
 				{
 					"id": "green_apple",
@@ -44,7 +55,59 @@
 						"size": 16,
 						"x": 6,
 						"y": 1
+					},
+					"type": 2
+				},
+				{
+					"id": "wooden_sword",
+					"name": "Wooden Sword",
+					"type": 0,
+					"tile_size": 16,
+					"melee_ref": "wooden_sword",
+					"tile": {
+						"file": "../textures/Atlas-melee_weapons.png",
+						"size": 16,
+						"x": 0,
+						"y": 0
 					}
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "MeleeStats",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "name",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "damage"
+				},
+				{
+					"typeStr": "4",
+					"name": "attack_speed"
+				},
+				{
+					"typeStr": "4",
+					"name": "knockback"
+				},
+				{
+					"typeStr": "1",
+					"name": "hitbox_size",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"damage": 1,
+					"attack_speed": 1,
+					"knockback": 1,
+					"hitbox_size": "",
+					"name": "wooden_sword"
 				}
 			],
 			"separators": [],

@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+signal item_equipped(item_id)
+
 @onready var hotbar_container: HBoxContainer = $HBoxContainer
 @onready var grid_container: GridContainer = $GridContainer
 
@@ -9,17 +11,24 @@ var active_slot_index = 0
 var hotbar_slots = 10
 
 func _ready() -> void:
-	Inventory.inventory_updated.connect(refresh_ui)
+	Inventory.inventory_updated.connect(on_inventory_updated)
 	refresh_ui()
+	emit_equipped_signal()
+	
+func on_inventory_updated():
+	refresh_ui()
+	emit_equipped_signal()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			active_slot_index = posmod(active_slot_index -1, hotbar_slots)
 			refresh_ui()
+			emit_equipped_signal()
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			active_slot_index = posmod(active_slot_index +1, hotbar_slots)
 			refresh_ui()
+			emit_equipped_signal()
 
 func refresh_ui():
 	for child in hotbar_container.get_children():
@@ -51,3 +60,7 @@ func update_slot_visuals(slot_ui, slot_data):
 	
 	var label = slot_ui.find_child("AmountLabel")
 	label.text = str(amount) if amount > 1 else ""
+
+func emit_equipped_signal():
+	var active_slot_data = Inventory.slots[active_slot_index]
+	item_equipped.emit(active_slot_data["id"])
