@@ -16,6 +16,7 @@ var can_turn = true
 
 var max_hp := 10
 var current_hp = max_hp
+var is_dead = false
 
 func _physics_process(_delta: float) -> void:
 	var direction := Input.get_vector("a", "d", "w", "s")
@@ -70,12 +71,22 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 	atlas_tex.region = Rect2(data.tile.x * ts, data.tile.y * ts, ts, ts)
 	hand_sprite.texture = atlas_tex
 
-func take_damage(damage):
+func take_hit(damage):
+	if is_dead: return
+	
 	current_hp -= damage
-	print(current_hp)
+	
+	if current_hp <= 0:
+		die()
+
+func die():
+	is_dead = true
+	queue_free()
 
 func _on_hit_area_area_entered(area: Area2D) -> void:
-	if area.has_method("take_hit") and is_attacking:
+	var enemy = area.get_parent()
+	
+	if enemy.has_method("take_hit") and is_attacking:
 		if current_equipped_id == "": return
 		
 		var item_data = DataManager.get_item(current_equipped_id)
@@ -87,5 +98,5 @@ func _on_hit_area_area_entered(area: Area2D) -> void:
 			if stats:
 				damage_to_deal = stats.damage
 
-		area.take_hit(damage_to_deal)
+		enemy.take_hit(damage_to_deal)
 		print("You hit an enemy for:", damage_to_deal)

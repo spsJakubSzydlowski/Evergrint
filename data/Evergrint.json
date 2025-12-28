@@ -139,7 +139,7 @@
 				},
 				{
 					"typeStr": "4",
-					"name": "speed"
+					"name": "move_speed"
 				},
 				{
 					"typeStr": "3",
@@ -163,6 +163,11 @@
 				{
 					"typeStr": "3",
 					"name": "tile_size"
+				},
+				{
+					"typeStr": "6:LootTables",
+					"name": "loot_ref",
+					"display": null
 				}
 			],
 			"lines": [
@@ -171,7 +176,6 @@
 					"name": "Green Slime",
 					"max_hp": 5,
 					"faction": 0,
-					"speed": 1,
 					"damage": 1,
 					"ai_type": 0,
 					"drop_id": "red_apple",
@@ -181,11 +185,63 @@
 						"x": 0,
 						"y": 0
 					},
-					"tile_size": 16
+					"tile_size": 16,
+					"move_speed": 6,
+					"loot_ref": "green_slime"
 				}
 			],
 			"separators": [],
 			"props": {}
+		},
+		{
+			"name": "LootTables",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "8",
+					"name": "items",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"id": "green_slime",
+					"items": [
+						{
+							"item": "red_apple",
+							"weight": 10
+						},
+						{
+							"item": "green_apple",
+							"weight": 1
+						}
+					]
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "LootTables@items",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "6:Items",
+					"name": "item",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "weight"
+				}
+			]
 		}
 	],
 	"customTypes": [],
