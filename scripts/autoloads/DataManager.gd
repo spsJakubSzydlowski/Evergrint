@@ -6,7 +6,7 @@ var db_data = {}
 var is_loaded = false
 
 func _ready():
-	load_castle_db("res://data/Evergrent.json")
+	load_castle_db("res://data/Evergrint.json")
 
 func load_castle_db(path):
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -37,6 +37,12 @@ func get_item(id):
 func get_melee_stats(id):
 	return db_data.get("MeleeStats", {}).get(id)
 
+func _get_item_hit_box(id):
+	var item = get_melee_stats(id)
+	if item:
+		return Vector2(item.get("hitbox_x", 1), item.get("hitbox_y", 1))
+	return Vector2(1, 1)
+	
 func get_entity(id):
 	return db_data.get("Entities", {}).get(id)
 

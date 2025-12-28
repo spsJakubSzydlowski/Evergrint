@@ -95,9 +95,12 @@
 					"name": "knockback"
 				},
 				{
-					"typeStr": "1",
-					"name": "hitbox_size",
-					"display": null
+					"typeStr": "3",
+					"name": "hitbox_x"
+				},
+				{
+					"typeStr": "3",
+					"name": "hitbox_y"
 				}
 			],
 			"lines": [
@@ -105,8 +108,9 @@
 					"damage": 2,
 					"attack_speed": 1,
 					"knockback": 1,
-					"hitbox_size": "",
-					"id": "wooden_sword"
+					"id": "wooden_sword",
+					"hitbox_x": 20,
+					"hitbox_y": 12
 				}
 			],
 			"separators": [],

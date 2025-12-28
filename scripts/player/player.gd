@@ -7,6 +7,7 @@ var SPEED : float = 100.0
 @onready var hand: Node2D = $WeaponPivot/Hand
 @onready var hand_sprite: Sprite2D = $WeaponPivot/Hand/Sprite2D
 @onready var animation_player: AnimationPlayer = $WeaponPivot/Hand/AnimationPlayer
+@onready var weapon_collision_shape: CollisionShape2D = $WeaponPivot/Hand/HitArea/CollisionShape2D
 
 var current_equipped_id : String = ""
 
@@ -58,7 +59,9 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 		return
 	
 	var data = DataManager.get_item(item_id)
-
+	weapon_collision_shape.shape.size = DataManager._get_item_hit_box(item_id)
+	weapon_collision_shape.position = Vector2(weapon_collision_shape.shape.size.x / 2, 0)
+	print(weapon_collision_shape.position.x)
 	var path = "res://" + data.tile.file.replace("../", "")
 	
 	var atlas_tex = AtlasTexture.new()

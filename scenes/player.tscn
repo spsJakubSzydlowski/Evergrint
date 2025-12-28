@@ -7,23 +7,6 @@
 size = Vector2(11, 23)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
-size = Vector2(18.384304, 10.971171)
-
-[sub_resource type="Animation" id="Animation_g2els"]
-resource_name = "attack_swing"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("WeaponPivot/Hand:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [-3.141592653589793, 0.0]
-}
 
 [sub_resource type="Animation" id="Animation_qhqgy"]
 length = 0.001
@@ -38,6 +21,22 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_g2els"]
+resource_name = "attack_swing"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WeaponPivot/Hand:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 9.966666),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-2.356194490192345, 0.7853981633974483, 0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dqkch"]
@@ -66,14 +65,14 @@ position = Vector2(5, 3)
 scale = Vector2(1, -1)
 
 [node name="Sprite2D" type="Sprite2D" parent="WeaponPivot/Hand"]
+position = Vector2(8.742276e-08, 0)
+rotation = 0.7853982
 offset = Vector2(8, -8)
 
 [node name="HitArea" type="Area2D" parent="WeaponPivot/Hand"]
+position = Vector2(-2.1456884e-07, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponPivot/Hand/HitArea"]
-position = Vector2(11.500168, -10.500166)
-rotation = -0.7853982
-scale = Vector2(0.9999999, 0.9999999)
 shape = SubResource("RectangleShape2D_g2els")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="WeaponPivot/Hand"]
