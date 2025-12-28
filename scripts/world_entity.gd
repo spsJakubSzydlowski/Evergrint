@@ -4,11 +4,13 @@ const FACTION_HOSTILE = 0
 const FACTION_PASSIVE = 1
 
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var health_bar: TextureProgressBar = $HealthBar
 
 var entity = ""
 
 var player = null
 
+var max_hp : int
 var current_hp: int
 var is_dead = false
 
@@ -49,7 +51,9 @@ func initialize(entity_id: String):
 			var ts = entity.tile_size
 			sprite.region_rect = Rect2(entity.tile.x * ts, entity.tile.y * ts, ts, ts)
 	
-	current_hp = entity.get("max_hp", 1)
+	max_hp = entity.get("max_hp", 1)
+	current_hp = max_hp
+	health_bar.max_value = max_hp
 
 func _on_world_entity_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
@@ -60,7 +64,8 @@ func take_hit(amount: int):
 	if is_dead: return
 	
 	current_hp -= amount
-
+	update_heath_bar()
+	
 	var tw = create_tween()
 	tw.tween_property(sprite, "modulate", Color.RED, 0.1)
 	tw.tween_property(sprite, "modulate", Color.WHITE, 0.1)
@@ -91,3 +96,15 @@ func drop_loot():
 		if roll <= chance:
 			var item_id = entry.get("item")
 			DataManager.spawn_item(item_id, global_position, true)
+
+func update_heath_bar():
+	health_bar.visible = true
+	health_bar.value = current_hp
+	var health_ratio = float(current_hp) / float(health_bar.max_value)
+	
+	if health_ratio > 0.5:
+		var factor = (health_ratio - 0.5) * 2.0
+		health_bar.tint_progress = Color.YELLOW.lerp(Color.GREEN, factor)
+	else:
+		var factor = health_ratio * 2.0
+		health_bar.tint_progress = Color.RED.lerp(Color.YELLOW, factor)

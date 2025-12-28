@@ -166,11 +166,6 @@
 					"name": "damage"
 				},
 				{
-					"typeStr": "6:Items",
-					"name": "drop_id",
-					"opt": true
-				},
-				{
 					"typeStr": "5:Chasing,Wandering,Stationary",
 					"name": "ai_type",
 					"display": null
@@ -198,7 +193,6 @@
 					"faction": 0,
 					"damage": 1,
 					"ai_type": 0,
-					"drop_id": "red_apple",
 					"tile": {
 						"file": "../textures/Atlas-enemies.png",
 						"size": 16,
@@ -206,7 +200,7 @@
 						"y": 0
 					},
 					"tile_size": 16,
-					"move_speed": 6,
+					"move_speed": 18,
 					"loot_ref": "green_slime"
 				}
 			],
