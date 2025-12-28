@@ -18,6 +18,10 @@
 					"name": "type"
 				},
 				{
+					"typeStr": "3",
+					"name": "stack_limit"
+				},
+				{
 					"typeStr": "14",
 					"name": "tile",
 					"display": null
@@ -38,25 +42,27 @@
 					"name": "Red Apple",
 					"id": "red_apple",
 					"tile": {
-						"file": "../textures/Atlas-temp.png",
+						"file": "../textures/Atlas-items-16x16.png",
 						"size": 16,
-						"x": 6,
+						"x": 0,
 						"y": 0
 					},
 					"tile_size": 16,
-					"type": 2
+					"type": 2,
+					"stack_limit": 30
 				},
 				{
 					"id": "green_apple",
 					"name": "Green Apple",
 					"tile_size": 16,
 					"tile": {
-						"file": "../textures/Atlas-temp.png",
+						"file": "../textures/Atlas-items-16x16.png",
 						"size": 16,
-						"x": 6,
+						"x": 0,
 						"y": 1
 					},
-					"type": 2
+					"type": 2,
+					"stack_limit": 30
 				},
 				{
 					"id": "wooden_sword",
@@ -68,6 +74,20 @@
 						"file": "../textures/Atlas-melee_weapons.png",
 						"size": 16,
 						"x": 0,
+						"y": 0
+					},
+					"stack_limit": 1
+				},
+				{
+					"id": "green_gel",
+					"name": "Gel",
+					"type": 3,
+					"stack_limit": 9999,
+					"tile_size": 16,
+					"tile": {
+						"file": "../textures/Atlas-items-16x16.png",
+						"size": 16,
+						"x": 1,
 						"y": 0
 					}
 				}
@@ -212,11 +232,19 @@
 					"items": [
 						{
 							"item": "red_apple",
-							"weight": 10
+							"weight": 50
 						},
 						{
 							"item": "green_apple",
-							"weight": 1
+							"weight": 40
+						},
+						{
+							"item": "wooden_sword",
+							"weight": 3
+						},
+						{
+							"item": "green_gel",
+							"weight": 90
 						}
 					]
 				}

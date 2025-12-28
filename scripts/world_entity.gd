@@ -60,8 +60,7 @@ func take_hit(amount: int):
 	if is_dead: return
 	
 	current_hp -= amount
-	print("Entity", entity.id, " has: ", current_hp, " HP")
-	
+
 	var tw = create_tween()
 	tw.tween_property(sprite, "modulate", Color.RED, 0.1)
 	tw.tween_property(sprite, "modulate", Color.WHITE, 0.1)
@@ -71,14 +70,24 @@ func take_hit(amount: int):
 
 func die():
 	is_dead = true
-	print("Entity", entity.id, " has died")
+	drop_loot()
 	queue_free()
 
 func deal_damage(body):
 	if body.has_method("take_hit"):
 		var dmg = entity.get("damage", 0)
 		body.take_hit(dmg)
-		print("Entity", entity.id, " gave damage to player: ", dmg)
 
-func drop_loot(loot_table_id):
-	pass
+func drop_loot():
+	var table_id = entity.get("loot_ref")
+	if table_id == "" or table_id == null:
+		return
+		
+	var loot_items = DataManager.get_loot_table_items(table_id)
+	for entry in loot_items:
+		var roll = randf_range(0, 100)
+		var chance = entry.get("weight", 0)
+		
+		if roll <= chance:
+			var item_id = entry.get("item")
+			DataManager.spawn_item(item_id, global_position, true)

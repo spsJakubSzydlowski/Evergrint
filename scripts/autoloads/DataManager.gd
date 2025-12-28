@@ -34,6 +34,17 @@ func load_castle_db(path):
 func get_item(id):
 	return db_data.get("Items", {}).get(id)
 
+func get_loot_table(id):
+	return db_data.get("LootTables", {}).get(id)
+
+func get_loot_table_items(id):
+	var table_row = get_loot_table(id)
+	
+	if table_row and table_row.has("items"):
+		return table_row.items #Array
+		
+	return []
+
 func get_melee_stats(id):
 	return db_data.get("MeleeStats", {}).get(id)
 
@@ -46,17 +57,32 @@ func _get_item_hit_box(id):
 func get_entity(id):
 	return db_data.get("Entities", {}).get(id)
 
-func spawn_item(id: String, pos : Vector2):
+func spawn_item(id: String, pos : Vector2, drop = false):
 	if not is_loaded:
 		await get_tree().create_timer(0.1).timeout
+	
+	(func():
+		var item_scene = preload("res://scenes/world_object.tscn")
+		var item_instance = item_scene.instantiate()
+	
+		get_tree().current_scene.add_child(item_instance)
+	
+		item_instance.position = pos
+		if drop:
+			var random_direction = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized()
+			var jump_distance = randf_range(10.0, 30.0)
+			var target_pos = pos + (random_direction * jump_distance)
+			
+			var tween = item_instance.create_tween().set_parallel(true)
+			
+			tween.tween_property(item_instance, "global_position", target_pos, 0.5).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+			
+			item_instance.scale = Vector2.ZERO
+			tween.tween_property(item_instance, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 		
-	var item_scene = preload("res://scenes/world_object.tscn")
-	var item_instance = item_scene.instantiate()
+		item_instance.initialize(id)
+	).call_deferred()
 	
-	get_tree().current_scene.add_child(item_instance)
-	
-	item_instance.position = pos
-	item_instance.initialize(id)
 
 func spawn_entity(id: String, pos : Vector2):
 	if not is_loaded:

@@ -62,7 +62,6 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 	var data = DataManager.get_item(item_id)
 	weapon_collision_shape.shape.size = DataManager._get_item_hit_box(item_id)
 	weapon_collision_shape.position = Vector2(weapon_collision_shape.shape.size.x / 2, 0)
-	print(weapon_collision_shape.position.x)
 	var path = "res://" + data.tile.file.replace("../", "")
 	
 	var atlas_tex = AtlasTexture.new()
@@ -99,4 +98,3 @@ func _on_hit_area_area_entered(area: Area2D) -> void:
 				damage_to_deal = stats.damage
 
 		enemy.take_hit(damage_to_deal)
-		print("You hit an enemy for:", damage_to_deal)

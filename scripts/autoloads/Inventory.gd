@@ -13,7 +13,7 @@ func add_item(item_id: String, amount: int = 1):
 	var data = DataManager.get_item(item_id)
 	if not data: return
 	
-	var stack_limit = data.get("stack_limit", 20)
+	var stack_limit = data.get("stack_limit", 1)
 	
 	for slot in slots:
 		if slot.id == item_id and slot.amount < stack_limit:
@@ -31,4 +31,3 @@ func add_item(item_id: String, amount: int = 1):
 				break
 	
 	inventory_updated.emit()
-	print("Inventory: ", slots)
