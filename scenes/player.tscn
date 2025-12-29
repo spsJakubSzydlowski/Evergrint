@@ -1,10 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://c1qq7niewlp5"]
+[gd_scene load_steps=9 format=3 uid="uid://c1qq7niewlp5"]
 
 [ext_resource type="Script" uid="uid://c0c4tt6r1hejr" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuqvrepxlb7y" path="res://textures/player-texture.png" id="2_g2els"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ig7tw"]
 size = Vector2(11, 23)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
+radius = 21.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
 
@@ -22,6 +25,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [0.0]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WeaponPivot/Hand:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(12.000002, -4.7683716e-07)]
+}
 
 [sub_resource type="Animation" id="Animation_g2els"]
 resource_name = "attack_swing"
@@ -33,10 +48,22 @@ tracks/0/path = NodePath("WeaponPivot/Hand:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 9.966666),
+"times": PackedFloat32Array(-90, 0, 0.3, 9.966666),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -1.5707963267948966, 1.5707963267948966, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("WeaponPivot/Hand:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [-2.356194490192345, 0.7853981633974483, 0.0]
+"values": [Vector2(8, 0), Vector2(15, 0), Vector2(12, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dqkch"]
@@ -58,15 +85,19 @@ shape = SubResource("RectangleShape2D_ig7tw")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
+[node name="MagnetField" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MagnetField"]
+shape = SubResource("CircleShape2D_g2els")
+
 [node name="WeaponPivot" type="Node2D" parent="."]
 
 [node name="Hand" type="Node2D" parent="WeaponPivot"]
-position = Vector2(5, 3)
-scale = Vector2(1, -1)
+visible = false
+position = Vector2(12.000002, -4.7683716e-07)
 
 [node name="Sprite2D" type="Sprite2D" parent="WeaponPivot/Hand"]
 position = Vector2(8.742276e-08, 0)
-rotation = 0.7853982
 offset = Vector2(8, -8)
 
 [node name="HitArea" type="Area2D" parent="WeaponPivot/Hand"]
@@ -81,4 +112,5 @@ libraries = {
 &"": SubResource("AnimationLibrary_dqkch")
 }
 
+[connection signal="area_entered" from="MagnetField" to="." method="_on_magnet_field_area_entered"]
 [connection signal="area_entered" from="WeaponPivot/Hand/HitArea" to="." method="_on_hit_area_area_entered"]

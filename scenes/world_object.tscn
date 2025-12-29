@@ -4,7 +4,7 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8uidd"]
 
-[node name="world_object" type="Area2D"]
+[node name="world_object" type="Area2D" groups=["loot"]]
 collision_layer = 3
 script = ExtResource("1_6odbs")
 

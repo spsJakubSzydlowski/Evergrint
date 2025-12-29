@@ -5,6 +5,21 @@ extends Area2D
 
 var item = ""
 
+var current_speed = 10.0
+var target_player = null
+
+func _physics_process(delta: float) -> void:
+	if target_player:
+		current_speed += 250 * delta
+		
+		var direction = (target_player.global_position - global_position).normalized()
+		global_position += direction * current_speed * delta
+		
+		var target_angle = direction.angle() + PI/2
+		
+		rotation += sin(Time.get_ticks_msec() * 0.01) * 0.05 
+		rotation = lerp_angle(rotation, target_angle, 10.0 * delta)
+
 func initialize(item_id: String):
 	item = DataManager.get_item(item_id)
 	
@@ -33,3 +48,6 @@ func _on_body_entered(body: Node2D) -> void:
 func collect_item():
 	Inventory.add_item(item.id)
 	queue_free()
+	
+func start_magnetic_pull(player):
+	target_player = player

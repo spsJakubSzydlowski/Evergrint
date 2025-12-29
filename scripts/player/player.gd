@@ -29,11 +29,9 @@ func _physics_process(_delta: float) -> void:
 	
 	if direction.x < 0 and can_turn:
 		sprite.flip_h = true
-		weapon_pivot.scale.x = -1
 	
 	if direction.x > 0 and can_turn:
 		sprite.flip_h = false
-		weapon_pivot.scale.x = 1
 		
 	if Input.is_action_just_pressed("attack") and not is_attacking:
 		attack()
@@ -43,6 +41,22 @@ func attack():
 	is_attacking = true
 	can_turn = false
 	hand.visible = true
+	
+	var mouse_position = get_global_mouse_position()
+	
+	weapon_pivot.look_at(mouse_position)
+	var angle = weapon_pivot.rotation
+	var angle_rad = deg_to_rad(angle)
+	
+	var radius_x = 15.0
+	var radius_y = 10.0
+	
+
+	var pos_x = cos(angle_rad) * radius_x
+	var pos_y = sin(angle_rad) * radius_y
+	hand.position = Vector2(pos_x, pos_y)
+	
+	hand.rotation = angle_rad + PI/2
 	
 	animation_player.play("attack_swing")
 	await animation_player.animation_finished
@@ -85,7 +99,7 @@ func die():
 func _on_hit_area_area_entered(area: Area2D) -> void:
 	var enemy = area.get_parent()
 	
-	if enemy.has_method("take_hit") and is_attacking:
+	if enemy.has_method("take_hit") and is_attacking and not enemy.is_in_group("Player"):
 		if current_equipped_id == "": return
 		
 		var item_data = DataManager.get_item(current_equipped_id)
@@ -98,3 +112,8 @@ func _on_hit_area_area_entered(area: Area2D) -> void:
 				damage_to_deal = stats.damage
 
 		enemy.take_hit(damage_to_deal)
+
+
+func _on_magnet_field_area_entered(area: Area2D) -> void:
+	if area.is_in_group("loot"):
+		area.start_magnetic_pull(self)
