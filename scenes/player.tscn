@@ -98,6 +98,7 @@ position = Vector2(12.000002, -4.7683716e-07)
 
 [node name="Sprite2D" type="Sprite2D" parent="WeaponPivot/Hand"]
 position = Vector2(8.742276e-08, 0)
+rotation = 0.7853982
 offset = Vector2(8, -8)
 
 [node name="HitArea" type="Area2D" parent="WeaponPivot/Hand"]
