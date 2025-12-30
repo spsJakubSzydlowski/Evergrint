@@ -48,8 +48,8 @@ func attack():
 	var angle = weapon_pivot.rotation
 	var angle_rad = deg_to_rad(angle)
 	
-	var radius_x = 15.0
-	var radius_y = 10.0
+	var radius_x = 10.0
+	var radius_y = 5.0
 	
 
 	var pos_x = cos(angle_rad) * radius_x

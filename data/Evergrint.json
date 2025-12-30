@@ -125,7 +125,7 @@
 			],
 			"lines": [
 				{
-					"damage": 2,
+					"damage": 5,
 					"attack_speed": 1,
 					"knockback": 1,
 					"id": "wooden_sword",
@@ -189,7 +189,7 @@
 				{
 					"id": "green_slime",
 					"name": "Green Slime",
-					"max_hp": 5,
+					"max_hp": 20,
 					"faction": 0,
 					"damage": 1,
 					"ai_type": 0,
