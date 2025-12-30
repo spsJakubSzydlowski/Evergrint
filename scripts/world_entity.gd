@@ -12,24 +12,49 @@ var player = null
 
 var max_hp : int
 var current_hp: int
-var is_dead = false
+var is_dead := false
+
+var is_chasing = false
+var idle_timer := 0.0
+var idle_direction := Vector2.ZERO
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if entity.get("faction") == FACTION_HOSTILE:
 		if player and not is_dead:
-			var direction_raw = (player.global_position - global_position)
-			var direction = direction_raw.normalized()
+			var distance = global_position.distance_to(player.global_position)
+			var aggro_range = entity.get("aggro_range", 200.0)
 			
-			var move_speed = entity.get("move_speed")
-			velocity = direction * move_speed
+			if distance <= aggro_range:
+				var direction_raw = (player.global_position - global_position)
+				var direction = direction_raw.normalized()
+				
+				var move_speed = entity.get("move_speed")
+				velocity = direction * move_speed
+				
+				if direction.x != 0:
+					sprite.flip_h = direction.x < 0
+			else:
+				process_idle_behaviour(delta)
+				
+		move_and_slide()
+
+func process_idle_behaviour(delta: float):
+	idle_timer -= delta
+	if idle_timer <= 0:
+		idle_timer = randf_range(2.0, 4.0)
+		if randf() > 0.5:
+			idle_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
+		else:
+			idle_direction = Vector2.ZERO
 			
-			move_and_slide()
-			
-			if direction.x != 0:
-				sprite.flip_h = direction.x < 0
+	var idle_speed = entity.get("move_speed", 50.0) * 0.3
+	velocity = idle_direction * idle_speed
+	
+	if idle_direction.x != 0:
+		sprite.flip_h = idle_direction.x < 0
 
 func initialize(entity_id: String):
 	entity = DataManager.get_entity(entity_id)

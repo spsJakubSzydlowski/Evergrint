@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://djardhy0i2xds"]
+
+[ext_resource type="Script" uid="uid://csvgao43fby5h" path="res://scripts/world_resource.gd" id="1_m5ijx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s2mhn"]
+size = Vector2(31, 71)
+
+[node name="world_resource" type="StaticBody2D"]
+script = ExtResource("1_m5ijx")
+
+[node name="hurt_box" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurt_box"]
+position = Vector2(15.5, 35.5)
+shape = SubResource("RectangleShape2D_s2mhn")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+centered = false

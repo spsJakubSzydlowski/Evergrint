@@ -239,6 +239,7 @@ collision_mask = 3
 [node name="InventoryCanvas" parent="." instance=ExtResource("5_tbgi4")]
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
 autostart = true
 
 [connection signal="item_equipped" from="InventoryCanvas" to="Player" method="_on_inventory_canvas_item_equipped"]

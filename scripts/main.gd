@@ -10,6 +10,11 @@ func _ready():
 		await DataManager.database_ready
 
 	DataManager.spawn_item("wooden_sword", Vector2(380, 100))
+	DataManager.spawn_item("wooden_axe", Vector2(400, 100))
+	
+	
+	for i in range(10):
+		DataManager.spawn_resource("oak_tree", Vector2(450 + i * 60, 120))
 	
 func spawn_entity():
 	var current_enemy_count = get_tree().get_nodes_in_group("entity").size()
@@ -36,7 +41,6 @@ func spawn_entity():
 				found_valid_spot = true
 		
 		if found_valid_spot:
-			print(spawn_pos)
 			DataManager.spawn_entity("green_slime", spawn_pos)
 
 

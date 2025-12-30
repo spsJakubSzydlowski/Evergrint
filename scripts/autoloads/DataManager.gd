@@ -46,7 +46,7 @@ func get_loot_table_items(id):
 	return []
 
 func get_melee_stats(id):
-	return db_data.get("MeleeStats", {}).get(id)
+	return db_data.get("ActionStats", {}).get(id)
 
 func _get_item_hit_box(id):
 	var item = get_melee_stats(id)
@@ -56,6 +56,9 @@ func _get_item_hit_box(id):
 	
 func get_entity(id):
 	return db_data.get("Entities", {}).get(id)
+
+func get_resource(id):
+	return db_data.get("Resources", {}).get(id)
 
 func spawn_item(id: String, pos : Vector2, drop = false):
 	if not is_loaded:
@@ -95,3 +98,15 @@ func spawn_entity(id: String, pos : Vector2):
 	entity_instance.position = pos
 	
 	entity_instance.initialize(id)
+
+func spawn_resource(id: String, pos : Vector2):
+	if not is_loaded:
+		await get_tree().create_timer(0.1).timeout
+		
+	var resource_scene = preload("res://scenes/world_resource.tscn")
+	var resource_instance = resource_scene.instantiate()
+	
+	get_tree().current_scene.add_child(resource_instance)
+	resource_instance.position = pos
+	
+	resource_instance.initialize(id)

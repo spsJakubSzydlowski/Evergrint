@@ -18,6 +18,8 @@ var max_hp := 10
 var current_hp = max_hp
 var is_dead = false
 
+var hit_entities = []
+
 func _physics_process(_delta: float) -> void:
 	var direction := Input.get_vector("a", "d", "w", "s")
 	if direction:
@@ -34,10 +36,12 @@ func _physics_process(_delta: float) -> void:
 		sprite.flip_h = false
 		
 	if Input.is_action_just_pressed("attack") and not is_attacking:
-		attack()
+		if current_equipped_id != "":
+			attack(current_equipped_id)
 	move_and_slide()
 	
-func attack():
+func attack(item_data):
+	hit_entities.clear()
 	is_attacking = true
 	can_turn = false
 	hand.visible = true
@@ -46,21 +50,26 @@ func attack():
 	var mouse_position = get_global_mouse_position()
 	
 	weapon_pivot.look_at(mouse_position)
-	var angle = weapon_pivot.rotation
-	var angle_rad = deg_to_rad(angle)
+	var angle_rad = weapon_pivot.rotation
+	#var angle_rad = deg_to_rad(angle)
 	
 	var radius_x = 10.0
 	var radius_y = 5.0
 	
-
 	var pos_x = cos(angle_rad) * radius_x
 	var pos_y = sin(angle_rad) * radius_y
 	hand.position = Vector2(pos_x, pos_y)
 	
 	hand.rotation = angle_rad + PI/2
 	
+	var item = DataManager.get_item(item_data)
+	var item_stats = DataManager.get_melee_stats(item.action_ref)
+	
+	animation_player.speed_scale = item_stats.attack_speed
+	
 	animation_player.play("attack_swing")
-	await animation_player.animation_finished
+
+	await animation_player.animation_finished 
 	
 	weapon_collision_shape.disabled = true
 	hand.visible = false
@@ -76,7 +85,7 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 		return
 	
 	var data = DataManager.get_item(item_id)
-	if data.has("melee_ref") and data.melee_ref != "":
+	if data.has("action_ref") and data.action_ref != "":
 		weapon_collision_shape.shape.size = DataManager._get_item_hit_box(item_id)
 		weapon_collision_shape.position = Vector2(weapon_collision_shape.shape.size.x / 2, 0)
 		var path = "res://" + data.tile.file.replace("../", "")
@@ -86,7 +95,9 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 		var ts = data.tile_size
 		atlas_tex.region = Rect2(data.tile.x * ts, data.tile.y * ts, ts, ts)
 		hand_sprite.texture = atlas_tex
-
+	else:
+		hand_sprite.texture = null
+		
 func take_hit(damage):
 	if is_dead: return
 	
@@ -100,22 +111,41 @@ func die():
 	queue_free()
 
 func _on_hit_area_area_entered(area: Area2D) -> void:
-	var enemy = area.get_parent()
+	var attackable = area.get_parent()
 	
-	if enemy.has_method("take_hit") and is_attacking and not enemy.is_in_group("Player"):
+	if attackable in hit_entities:
+		return
+	
+	if attackable.has_method("take_hit") and is_attacking and not attackable.is_in_group("Player"):
+		
 		if current_equipped_id == "": return
 		
 		var item_data = DataManager.get_item(current_equipped_id)
 		var damage_to_deal = 1
 		
-		if item_data.has("melee_ref") and item_data.melee_ref != "":
-			var stats = DataManager.get_melee_stats(item_data.melee_ref)
+		if item_data.has("action_ref") and item_data.action_ref != "":
+			var stats = DataManager.get_melee_stats(item_data.action_ref)
 
 			if stats:
 				damage_to_deal = stats.damage
 
-		enemy.take_hit(damage_to_deal)
+			attackable.take_hit(damage_to_deal)
+			hit_entities.append(attackable)
+			
+	if attackable.has_method("harvest") and is_attacking and not attackable.is_in_group("Player"):
+		if current_equipped_id == "": return
+		
+		var item_data = DataManager.get_item(current_equipped_id)
+		
+		if item_data.has("action_ref") and item_data.action_ref != "":
+			var stats = DataManager.get_melee_stats(item_data.action_ref)
+			
+			if stats:
+				var tool_type = stats.tool_type
+				var tool_power = stats.tool_power
 
+				attackable.harvest(tool_type, tool_power)
+				hit_entities.append(attackable)
 
 func _on_magnet_field_area_entered(area: Area2D) -> void:
 	if area.is_in_group("loot"):
