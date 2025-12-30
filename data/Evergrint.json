@@ -200,7 +200,7 @@
 						"y": 0
 					},
 					"tile_size": 16,
-					"move_speed": 18,
+					"move_speed": 50,
 					"loot_ref": "green_slime"
 				}
 			],

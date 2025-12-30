@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bgls5qeawmvub" path="res://scripts/world_entity.gd" id="1_c2mjn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ey0o3"]
-size = Vector2(16, 16)
+size = Vector2(16, 11)
 
 [sub_resource type="Gradient" id="Gradient_c2mjn"]
 offsets = PackedFloat32Array(0, 0.9782609)
@@ -22,12 +22,13 @@ gradient = SubResource("Gradient_kil5o")
 width = 16
 height = 3
 
-[node name="world_entity" type="CharacterBody2D"]
+[node name="world_entity" type="CharacterBody2D" groups=["entity"]]
 script = ExtResource("1_c2mjn")
 
 [node name="hurt_box" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurt_box"]
+position = Vector2(0, 2.5)
 shape = SubResource("RectangleShape2D_ey0o3")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

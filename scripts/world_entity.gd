@@ -20,7 +20,8 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if entity.get("faction") == FACTION_HOSTILE:
 		if player and not is_dead:
-			var direction = (player.global_position - global_position).normalized()
+			var direction_raw = (player.global_position - global_position)
+			var direction = direction_raw.normalized()
 			
 			var move_speed = entity.get("move_speed")
 			velocity = direction * move_speed

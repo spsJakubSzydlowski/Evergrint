@@ -41,6 +41,7 @@ func attack():
 	is_attacking = true
 	can_turn = false
 	hand.visible = true
+	weapon_collision_shape.disabled = false
 	
 	var mouse_position = get_global_mouse_position()
 	
@@ -61,6 +62,7 @@ func attack():
 	animation_player.play("attack_swing")
 	await animation_player.animation_finished
 	
+	weapon_collision_shape.disabled = true
 	hand.visible = false
 	can_turn = true
 	is_attacking = false
@@ -74,15 +76,16 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 		return
 	
 	var data = DataManager.get_item(item_id)
-	weapon_collision_shape.shape.size = DataManager._get_item_hit_box(item_id)
-	weapon_collision_shape.position = Vector2(weapon_collision_shape.shape.size.x / 2, 0)
-	var path = "res://" + data.tile.file.replace("../", "")
-	
-	var atlas_tex = AtlasTexture.new()
-	atlas_tex.atlas = load(path)
-	var ts = data.tile_size
-	atlas_tex.region = Rect2(data.tile.x * ts, data.tile.y * ts, ts, ts)
-	hand_sprite.texture = atlas_tex
+	if data.has("melee_ref") and data.melee_ref != "":
+		weapon_collision_shape.shape.size = DataManager._get_item_hit_box(item_id)
+		weapon_collision_shape.position = Vector2(weapon_collision_shape.shape.size.x / 2, 0)
+		var path = "res://" + data.tile.file.replace("../", "")
+		
+		var atlas_tex = AtlasTexture.new()
+		atlas_tex.atlas = load(path)
+		var ts = data.tile_size
+		atlas_tex.region = Rect2(data.tile.x * ts, data.tile.y * ts, ts, ts)
+		hand_sprite.texture = atlas_tex
 
 func take_hit(damage):
 	if is_dead: return
