@@ -57,6 +57,25 @@ func _get_item_hit_box(id):
 func get_entity(id):
 	return db_data.get("Entities", {}).get(id)
 
+func get_full_entity_data(id):
+	var base_data = get_entity(id)
+	if not base_data:
+		return {}
+	
+	var final_data = base_data.duplicate()
+	
+	var p_stats = db_data.get("PlayerStats", {}).get(id)
+	if p_stats:
+		for key in p_stats:
+			final_data[key] = p_stats[key]
+			
+	var e_stats = db_data.get("EnemyStats", {}).get(id)
+	if e_stats:
+		for key in e_stats:
+			final_data[key] = e_stats[key]
+			
+	return final_data
+
 func get_resource(id):
 	return db_data.get("Resources", {}).get(id)
 
@@ -69,14 +88,15 @@ func spawn_item(id: String, pos : Vector2, drop = false):
 		var item_instance = item_scene.instantiate()
 	
 		get_tree().current_scene.add_child(item_instance)
-	
-		item_instance.position = pos
+		item_instance.global_position = pos
+		
 		if drop:
 			var random_direction = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized()
 			var jump_distance = randf_range(10.0, 30.0)
 			var target_pos = pos + (random_direction * jump_distance)
 			
-			var tween = item_instance.create_tween().set_parallel(true)
+			var tween = get_tree().create_tween().set_parallel(true)
+			tween.bind_node(item_instance)
 			
 			tween.tween_property(item_instance, "global_position", target_pos, 0.5).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 			
@@ -86,7 +106,6 @@ func spawn_item(id: String, pos : Vector2, drop = false):
 		item_instance.initialize(id)
 	).call_deferred()
 	
-
 func spawn_entity(id: String, pos : Vector2):
 	if not is_loaded:
 		await get_tree().create_timer(0.1).timeout
@@ -98,6 +117,18 @@ func spawn_entity(id: String, pos : Vector2):
 	entity_instance.position = pos
 	
 	entity_instance.initialize(id)
+
+func spawn_player(pos : Vector2):
+	if not is_loaded:
+		await get_tree().create_timer(0.1).timeout
+		
+	var player_scene = preload("res://scenes/player.tscn")
+	var player_instance = player_scene.instantiate()
+	
+	get_tree().current_scene.add_child(player_instance)
+	player_instance.position = pos
+	
+	player_instance.initialize()
 
 func spawn_resource(id: String, pos : Vector2):
 	if not is_loaded:

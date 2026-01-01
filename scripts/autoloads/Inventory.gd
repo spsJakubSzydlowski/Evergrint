@@ -2,10 +2,13 @@ extends Node
 
 signal inventory_updated
 
-var slots_amount = 10
+var slots_amount: int
 var slots = []
 
 func _ready() -> void:
+	var stats = DataManager.get_full_entity_data("player")
+	slots_amount = stats.get("inventory_slots", 8)
+
 	for i in range(slots_amount):
 		slots.append({"id": "", "amount": 0})
 

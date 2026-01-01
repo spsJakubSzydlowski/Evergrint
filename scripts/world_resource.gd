@@ -44,7 +44,6 @@ func initialize(resource_id: String):
 			var region_w = resource.tile_width * ts_base.x
 			var region_h = resource.tile_height * ts_base.y
 			
-			#sprite.offset.y = -region_h / 2 + (ts_base.y / 2)
 			sprite.region_rect = Rect2(pos_x, pos_y, region_w, region_h)
 	
 	max_hp = resource.get("hit_points", 1)

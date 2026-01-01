@@ -2,8 +2,7 @@ extends CanvasLayer
 
 signal item_equipped(item_id)
 
-@onready var hotbar_container: HBoxContainer = $HBoxContainer
-@onready var grid_container: GridContainer = $GridContainer
+@onready var hotbar_container: HBoxContainer = $hotbar
 
 var slot_scene = preload("res://scenes/UI/inventory_slot.tscn")
 var active_slot_index = 0

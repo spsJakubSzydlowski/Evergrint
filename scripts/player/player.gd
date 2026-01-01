@@ -9,16 +9,54 @@ var SPEED : float = 100.0
 @onready var animation_player: AnimationPlayer = $WeaponPivot/Hand/AnimationPlayer
 @onready var weapon_collision_shape: CollisionShape2D = $WeaponPivot/Hand/HitArea/CollisionShape2D
 
+var ui: CanvasLayer = null
+
 var current_equipped_id : String = ""
 
 var is_attacking := false
 var can_turn = true
 
 var max_hp := 10
-var current_hp = max_hp
+var current_hp : int
 var is_dead = false
 
 var hit_entities = []
+
+func initialize():
+	var player = DataManager.get_entity("player")
+
+	if player == null:
+		print("Error: ID ", player, " doesnt exist in database!")
+		return
+	
+	ui = get_tree().get_first_node_in_group("ui")
+	if ui != null:
+		ui.connect("item_equipped", _on_inventory_canvas_item_equipped)
+		
+	name = player.id
+	
+	if player.has("tile"):
+		var raw_path = player.tile.file
+		var clean_path = "res://" + raw_path.replace("../", "")
+		
+		var tex = load(clean_path)
+		if tex:
+			sprite.texture = tex
+			sprite.region_enabled = true
+			
+			var ts_base = Vector2(player.tile_size, player.tile_size)
+			
+			var pos_x = player.tile.x * ts_base.x
+			var pos_y = player.tile.y * ts_base.y
+			
+			var region_w = player.tile_width * ts_base.x
+			var region_h = player.tile_height * ts_base.y
+			
+			sprite.region_rect = Rect2(pos_x, pos_y, region_w, region_h)
+	
+	var stats = DataManager.get_full_entity_data("player")
+	max_hp = stats.get("max_hp", 100)
+	current_hp = max_hp
 
 func _physics_process(_delta: float) -> void:
 	var direction := Input.get_vector("a", "d", "w", "s")
@@ -41,6 +79,10 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 	
 func attack(item_data):
+	var item = DataManager.get_item(item_data)
+	if item.get("action_ref") == null:
+		return
+	
 	hit_entities.clear()
 	is_attacking = true
 	can_turn = false
@@ -62,7 +104,6 @@ func attack(item_data):
 	
 	hand.rotation = angle_rad + PI/2
 	
-	var item = DataManager.get_item(item_data)
 	var item_stats = DataManager.get_melee_stats(item.action_ref)
 	
 	animation_player.speed_scale = item_stats.attack_speed

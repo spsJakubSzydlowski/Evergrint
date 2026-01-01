@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var player: CharacterBody2D = $Player
+@onready var player = null
 @onready var tile_map: TileMapLayer = $TileMapLayer
 
 @export var max_entities = 200
@@ -8,6 +8,10 @@ extends Node2D
 func _ready():
 	if not DataManager.is_loaded:
 		await DataManager.database_ready
+	
+	DataManager.spawn_player(Vector2(200, 100))
+	
+	player = get_tree().get_first_node_in_group("Player")
 
 	DataManager.spawn_item("wooden_sword", Vector2(380, 100))
 	DataManager.spawn_item("wooden_axe", Vector2(400, 100))

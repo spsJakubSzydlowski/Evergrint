@@ -147,7 +147,7 @@
 			"lines": [
 				{
 					"damage": 5,
-					"attack_speed": 1.2,
+					"attack_speed": 0.8,
 					"knockback": 1,
 					"id": "wooden_sword",
 					"hitbox_x": 20,
@@ -186,46 +186,49 @@
 					"name": "max_hp"
 				},
 				{
-					"typeStr": "5:Hostile,Passive",
-					"name": "faction",
-					"display": null
-				},
-				{
 					"typeStr": "4",
 					"name": "move_speed"
 				},
 				{
-					"typeStr": "3",
-					"name": "damage"
-				},
-				{
-					"typeStr": "5:Chasing,Wandering,Stationary",
-					"name": "ai_type",
-					"display": null
-				},
-				{
 					"typeStr": "14",
 					"name": "tile",
-					"display": null
+					"opt": true
+				},
+				{
+					"typeStr": "3",
+					"name": "tile_width"
+				},
+				{
+					"typeStr": "3",
+					"name": "tile_height"
 				},
 				{
 					"typeStr": "3",
 					"name": "tile_size"
-				},
-				{
-					"typeStr": "6:LootTables",
-					"name": "loot_ref",
-					"display": null
 				}
 			],
 			"lines": [
 				{
+					"id": "player",
+					"name": "Player",
+					"max_hp": 100,
+					"move_speed": 100,
+					"tile_size": 8,
+					"tile": {
+						"file": "../textures/player-texture.png",
+						"size": 8,
+						"x": 0,
+						"y": 0,
+						"width": 2,
+						"height": 3
+					},
+					"tile_width": 2,
+					"tile_height": 3
+				},
+				{
 					"id": "green_slime",
 					"name": "Green Slime",
 					"max_hp": 20,
-					"faction": 0,
-					"damage": 1,
-					"ai_type": 0,
 					"tile": {
 						"file": "../textures/Atlas-enemies.png",
 						"size": 16,
@@ -234,7 +237,8 @@
 					},
 					"tile_size": 16,
 					"move_speed": 50,
-					"loot_ref": "green_slime"
+					"tile_width": 1,
+					"tile_height": 1
 				}
 			],
 			"separators": [],
@@ -341,6 +345,10 @@
 					"name": "tile_height"
 				},
 				{
+					"typeStr": "3",
+					"name": "tile_size"
+				},
+				{
 					"typeStr": "6:LootTables",
 					"name": "loot_ref",
 					"display": null
@@ -362,7 +370,103 @@
 						"height": 4
 					},
 					"tile_width": 2,
-					"tile_height": 4
+					"tile_height": 4,
+					"tile_size": 16
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "PlayerStats",
+			"columns": [
+				{
+					"typeStr": "6:Entities",
+					"name": "id"
+				},
+				{
+					"typeStr": "3",
+					"name": "inventory_slots"
+				},
+				{
+					"typeStr": "8",
+					"name": "starting_items",
+					"opt": true
+				}
+			],
+			"lines": [
+				{
+					"inventory_slots": 10,
+					"starting_items": [
+						{
+							"items": "wooden_sword",
+							"count": 1
+						}
+					],
+					"id": "player"
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "PlayerStats@starting_items",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "6:Items",
+					"name": "items",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "count"
+				}
+			]
+		},
+		{
+			"name": "EnemyStats",
+			"columns": [
+				{
+					"typeStr": "6:Entities",
+					"name": "id"
+				},
+				{
+					"typeStr": "4",
+					"name": "aggro_range"
+				},
+				{
+					"typeStr": "3",
+					"name": "attack_damage"
+				},
+				{
+					"typeStr": "5:HOSTILE,PASSIVE",
+					"name": "faction",
+					"display": null
+				},
+				{
+					"typeStr": "5:CHASING",
+					"name": "ai_type",
+					"display": null
+				},
+				{
+					"typeStr": "6:LootTables",
+					"name": "loot_ref",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"aggro_range": 150,
+					"attack_damage": 6,
+					"loot_ref": "green_slime",
+					"faction": 0,
+					"ai_type": 0,
+					"id": "green_slime"
 				}
 			],
 			"separators": [],

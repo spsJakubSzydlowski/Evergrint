@@ -12,6 +12,12 @@ var player = null
 
 var max_hp : int
 var current_hp: int
+
+var aggro_range: float
+var faction = null
+
+var loot_items = {}
+
 var is_dead := false
 
 var is_chasing = false
@@ -22,10 +28,9 @@ func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 
 func _physics_process(delta: float) -> void:
-	if entity.get("faction") == FACTION_HOSTILE:
+	if faction == FACTION_HOSTILE:
 		if player and not is_dead:
 			var distance = global_position.distance_to(player.global_position)
-			var aggro_range = entity.get("aggro_range", 200.0)
 			
 			if distance <= aggro_range:
 				var direction_raw = (player.global_position - global_position)
@@ -74,12 +79,26 @@ func initialize(entity_id: String):
 			sprite.texture = tex
 			sprite.region_enabled = true
 			
-			var ts = entity.tile_size
-			sprite.region_rect = Rect2(entity.tile.x * ts, entity.tile.y * ts, ts, ts)
+			var ts_base = Vector2(16, 16)
+			
+			var pos_x = entity.tile.x * ts_base.x
+			var pos_y = entity.tile.y * ts_base.y
+			
+			var region_w = entity.tile_width * ts_base.x
+			var region_h = entity.tile_height * ts_base.y
+			
+			sprite.region_rect = Rect2(pos_x, pos_y, region_w, region_h)
 	
-	max_hp = entity.get("max_hp", 1)
+	var stats = DataManager.get_full_entity_data(entity_id)
+	max_hp = stats.get("max_hp", 1)
 	current_hp = max_hp
 	health_bar.max_value = max_hp
+	
+	faction = stats.get("faction")
+	aggro_range = stats.get("aggro_range", 100.0)
+	
+	var table_id= stats.get("loot_ref")
+	loot_items = DataManager.get_loot_table_items(table_id)
 
 func _on_world_entity_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
@@ -110,11 +129,10 @@ func deal_damage(body):
 		body.take_hit(dmg)
 
 func drop_loot():
-	var table_id = entity.get("loot_ref")
-	if table_id == "" or table_id == null:
+	
+	if loot_items == null:
 		return
-		
-	var loot_items = DataManager.get_loot_table_items(table_id)
+
 	for entry in loot_items:
 		var roll = randf_range(0, 100)
 		var chance = entry.get("weight", 0)

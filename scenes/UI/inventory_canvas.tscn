@@ -1,16 +1,27 @@
-[gd_scene load_steps=3 format=3 uid="uid://bryjxm5yqvpo5"]
+[gd_scene load_steps=6 format=3 uid="uid://bryjxm5yqvpo5"]
 
 [ext_resource type="Script" uid="uid://b6d0iowgh44ec" path="res://scripts/inventory_canvas.gd" id="1_l5hnc"]
-[ext_resource type="PackedScene" uid="uid://ccqufb7fkgrn7" path="res://scenes/UI/inventory_slot.tscn" id="2_vn1aj"]
 
-[node name="InventoryCanvas" type="CanvasLayer"]
+[sub_resource type="Gradient" id="Gradient_vn1aj"]
+colors = PackedColorArray(0.07058824, 0.07058824, 0.14901961, 1, 0.012617188, 0.012617188, 0.012617188, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jxkd3"]
+gradient = SubResource("Gradient_vn1aj")
+width = 128
+height = 32
+
+[sub_resource type="Gradient" id="Gradient_5mm2x"]
+colors = PackedColorArray(1, 0, 0, 1, 18.892157, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ipdp0"]
+gradient = SubResource("Gradient_5mm2x")
+width = 128
+height = 32
+
+[node name="UI" type="CanvasLayer"]
 script = ExtResource("1_l5hnc")
 
-[node name="GridContainer" type="GridContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="hotbar" type="HBoxContainer" parent="."]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -24,8 +35,10 @@ grow_vertical = 0
 theme_override_constants/separation = 44
 alignment = 1
 
-[node name="Inventory" parent="HBoxContainer" instance=ExtResource("2_vn1aj")]
-layout_mode = 2
-
-[node name="Inventory2" parent="HBoxContainer" instance=ExtResource("2_vn1aj")]
-layout_mode = 2
+[node name="health_bar" type="TextureProgressBar" parent="."]
+offset_left = 6.0
+offset_top = 7.0
+offset_right = 134.0
+offset_bottom = 39.0
+texture_under = SubResource("GradientTexture2D_jxkd3")
+texture_progress = SubResource("GradientTexture2D_ipdp0")
