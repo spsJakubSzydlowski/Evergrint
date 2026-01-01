@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 DataManager="*res://scripts/autoloads/DataManager.gd"
 Inventory="*res://scripts/autoloads/Inventory.gd"
+Signals="*res://scripts/autoloads/Signals.gd"
 
 [display]
 

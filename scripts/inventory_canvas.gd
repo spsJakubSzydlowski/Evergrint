@@ -11,10 +11,7 @@ var active_slot_index = 0
 var hotbar_slots = 10
 
 func _ready() -> void:
-	var player = get_tree().get_first_node_in_group("Player")
-	if player:
-		player.health_changed.connect(update_health_bar)
-		update_health_bar(player.current_hp, player.max_hp)
+	Signals.player_health_changed.connect(update_health_bar)
 	
 	Inventory.inventory_updated.connect(on_inventory_updated)
 	refresh_ui()
@@ -71,6 +68,5 @@ func emit_equipped_signal():
 	item_equipped.emit(active_slot_data["id"])
 
 func update_health_bar(current_hp, max_hp):
-	print("update")
 	health_bar.max_value = max_hp
 	health_bar.value = current_hp
