@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal health_changed(current, max)
+
 var SPEED : float = 100.0
 @onready var sprite: Sprite2D = $Sprite2D
 
@@ -57,6 +59,8 @@ func initialize():
 	var stats = DataManager.get_full_entity_data("player")
 	max_hp = stats.get("max_hp", 100)
 	current_hp = max_hp
+	
+	health_changed.emit(current_hp, max_hp)
 
 func _physics_process(_delta: float) -> void:
 	var direction := Input.get_vector("a", "d", "w", "s")
@@ -141,8 +145,9 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 		
 func take_hit(damage):
 	if is_dead: return
-	
+	print("got hit for ", damage)
 	current_hp -= damage
+	health_changed.emit(current_hp, max_hp)
 	
 	if current_hp <= 0:
 		die()

@@ -3,6 +3,7 @@ extends CanvasLayer
 signal item_equipped(item_id)
 
 @onready var hotbar_container: HBoxContainer = $hotbar
+@onready var health_bar: TextureProgressBar = $health_bar
 
 var slot_scene = preload("res://scenes/UI/inventory_slot.tscn")
 var active_slot_index = 0
@@ -10,6 +11,11 @@ var active_slot_index = 0
 var hotbar_slots = 10
 
 func _ready() -> void:
+	var player = get_tree().get_first_node_in_group("Player")
+	if player:
+		player.health_changed.connect(update_health_bar)
+		update_health_bar(player.current_hp, player.max_hp)
+	
 	Inventory.inventory_updated.connect(on_inventory_updated)
 	refresh_ui()
 	emit_equipped_signal()
@@ -63,3 +69,8 @@ func update_slot_visuals(slot_ui, slot_data):
 func emit_equipped_signal():
 	var active_slot_data = Inventory.slots[active_slot_index]
 	item_equipped.emit(active_slot_data["id"])
+
+func update_health_bar(current_hp, max_hp):
+	print("update")
+	health_bar.max_value = max_hp
+	health_bar.value = current_hp

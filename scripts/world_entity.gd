@@ -13,6 +13,8 @@ var player = null
 var max_hp : int
 var current_hp: int
 
+var attack_damage : int
+
 var aggro_range: float
 var faction = null
 
@@ -97,6 +99,8 @@ func initialize(entity_id: String):
 	faction = stats.get("faction")
 	aggro_range = stats.get("aggro_range", 100.0)
 	
+	attack_damage = stats.get("attack_damage", 0)
+	
 	var table_id= stats.get("loot_ref")
 	loot_items = DataManager.get_loot_table_items(table_id)
 
@@ -125,8 +129,7 @@ func die():
 
 func deal_damage(body):
 	if body.has_method("take_hit"):
-		var dmg = entity.get("damage", 0)
-		body.take_hit(dmg)
+		body.take_hit(attack_damage)
 
 func drop_loot():
 	
