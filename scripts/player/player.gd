@@ -1,6 +1,5 @@
 extends CharacterBody2D
 
-var SPEED : float = 100.0
 @onready var sprite: Sprite2D = $Sprite2D
 
 @onready var weapon_pivot: Node2D = $WeaponPivot
@@ -16,8 +15,11 @@ var current_equipped_id : String = ""
 var is_attacking := false
 var can_turn = true
 
-var max_hp := 10
+var max_hp : int
 var current_hp : int
+
+var move_speed : float
+
 var is_dead = false
 
 var hit_entities = []
@@ -58,16 +60,18 @@ func initialize():
 	max_hp = stats.get("max_hp", 100)
 	current_hp = max_hp
 	
+	move_speed = stats.get("move_speed", 100.0)
+	
 	Signals.player_health_changed.emit(current_hp, max_hp)
 
 func _physics_process(_delta: float) -> void:
 	var direction := Input.get_vector("a", "d", "w", "s")
 	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.y = direction.y * SPEED
+		velocity.x = direction.x * move_speed
+		velocity.y = direction.y * move_speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.y = move_toward(velocity.y, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, move_speed)
+		velocity.y = move_toward(velocity.y, 0, move_speed)
 	
 	if direction.x < 0 and can_turn:
 		sprite.flip_h = true
@@ -108,7 +112,7 @@ func attack(item_data):
 	var item_stats = DataManager.get_melee_stats(item.action_ref)
 	
 	animation_player.speed_scale = item_stats.attack_speed
-	print(angle_rad)
+
 	if abs(angle_rad) > 95:
 		weapon_pivot.scale.y = -1
 	elif abs(angle_rad) < 85:

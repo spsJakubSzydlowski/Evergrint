@@ -15,6 +15,8 @@ var is_harvested = false
 var max_hp : int
 var current_hp: int
 
+var prefered_tool_type = null
+
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 
@@ -48,11 +50,13 @@ func initialize(resource_id: String):
 	
 	max_hp = resource.get("hit_points", 1)
 	current_hp = max_hp
+	
+	prefered_tool_type = resource.get("tool_type", TOOL_TYPE_NONE)
 
 func harvest(tool_type, amount: int):
 	if is_harvested: return
 	
-	if tool_type == TOOL_TYPE_AXE:
+	if tool_type == prefered_tool_type:
 		current_hp -= amount
 
 		var tw = create_tween()
