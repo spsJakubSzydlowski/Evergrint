@@ -94,8 +94,7 @@ func attack(item_data):
 	var mouse_position = get_global_mouse_position()
 	
 	weapon_pivot.look_at(mouse_position)
-	var angle_rad = weapon_pivot.rotation
-	#var angle_rad = deg_to_rad(angle)
+	var angle_rad = wrapf(weapon_pivot.rotation_degrees, -180, 180)
 	
 	var radius_x = 10.0
 	var radius_y = 5.0
@@ -109,7 +108,12 @@ func attack(item_data):
 	var item_stats = DataManager.get_melee_stats(item.action_ref)
 	
 	animation_player.speed_scale = item_stats.attack_speed
-	
+	print(angle_rad)
+	if abs(angle_rad) > 95:
+		weapon_pivot.scale.y = -1
+	elif abs(angle_rad) < 85:
+		weapon_pivot.scale.y = 1
+		
 	animation_player.play("attack_swing")
 
 	await animation_player.animation_finished 
