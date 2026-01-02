@@ -49,15 +49,22 @@ func refresh_ui():
 func update_slot_visuals(slot_ui, slot_data):
 	var item_id = slot_data["id"]
 	var amount = slot_data["amount"]
-	var data = DataManager.get_item(item_id)
+	var item = DataManager.get_item(item_id)
 	
 	var icon_rect = slot_ui.find_child("Icon")
-	var path = "res://" + data.tile.file.replace("../", "")
+	var path = "res://" + item.tile.file.replace("../", "")
 	
 	var atlas_tex = AtlasTexture.new()
 	atlas_tex.atlas = load(path)
-	var ts = data.tile_size
-	atlas_tex.region = Rect2(data.tile.x * ts, data.tile.y * ts, ts, ts)
+	var ts_base = Vector2i(item.get("tile_size"), item.get("tile_size"))
+	
+	var pos_x = item.tile.x * ts_base.x
+	var pos_y = item.tile.y * ts_base.y
+			
+	var region_w = item.tile_width * ts_base.x
+	var region_h = item.tile_height * ts_base.y
+	
+	atlas_tex.region = Rect2(pos_x, pos_y, region_w, region_h)
 	icon_rect.texture = atlas_tex
 	
 	var label = slot_ui.find_child("AmountLabel")
