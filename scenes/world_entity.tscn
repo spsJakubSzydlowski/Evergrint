@@ -28,6 +28,8 @@ collision_mask = 3
 script = ExtResource("1_c2mjn")
 
 [node name="hurt_box" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurt_box"]
 position = Vector2(0, 2.5)
