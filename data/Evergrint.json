@@ -45,111 +45,113 @@
 					"id": "red_apple",
 					"tile": {
 						"file": "../textures/Atlas-items-16x16.png",
-						"size": 16,
-						"x": 0,
-						"y": 0
+						"size": 16.0,
+						"x": 0.0,
+						"y": 0.0
 					},
-					"tile_size": 16,
-					"type": 2,
-					"stack_limit": 30,
-					"tile_width": 1,
-					"tile_height": 1
+					"tile_size": 16.0,
+					"type": 2.0,
+					"stack_limit": 30.0,
+					"tile_width": 1.0,
+					"tile_height": 1.0
 				},
 				{
 					"id": "green_apple",
 					"name": "Green Apple",
-					"tile_size": 16,
+					"tile_size": 16.0,
 					"tile": {
 						"file": "../textures/Atlas-items-16x16.png",
-						"size": 16,
-						"x": 0,
-						"y": 1
+						"size": 16.0,
+						"x": 0.0,
+						"y": 1.0
 					},
-					"type": 2,
-					"stack_limit": 30,
-					"tile_width": 1,
-					"tile_height": 1
+					"type": 2.0,
+					"stack_limit": 30.0,
+					"tile_width": 1.0,
+					"tile_height": 1.0
 				},
 				{
 					"id": "wooden_sword",
 					"name": "Wooden Sword",
-					"type": 0,
-					"tile_size": 16,
+					"type": 0.0,
+					"tile_size": 16.0,
 					"tile": {
 						"file": "../textures/Atlas-melee_weapons.png",
-						"size": 16,
-						"x": 0,
-						"y": 0
+						"size": 16.0,
+						"x": 0.0,
+						"y": 0.0
 					},
-					"stack_limit": 1,
-					"tile_width": 1,
-					"tile_height": 1
+					"stack_limit": 1.0,
+					"tile_width": 1.0,
+					"tile_height": 1.0
 				},
 				{
 					"id": "iron_sword",
 					"name": "Iron Sword",
-					"type": 0,
-					"stack_limit": 1,
-					"tile_size": 16,
+					"type": 0.0,
+					"stack_limit": 1.0,
+					"tile_size": 16.0,
 					"tile": {
 						"file": "../textures/Atlas-melee_weapons.png",
-						"size": 16,
-						"x": 1,
-						"y": 0
+						"size": 16.0,
+						"x": 1.0,
+						"y": 0.0
 					},
-					"tile_width": 1,
-					"tile_height": 1
+					"tile_width": 1.0,
+					"tile_height": 1.0
 				},
 				{
 					"id": "green_gel",
 					"name": "Gel",
-					"type": 3,
-					"stack_limit": 9999,
-					"tile_size": 16,
+					"type": 3.0,
+					"stack_limit": 9999.0,
+					"tile_size": 16.0,
 					"tile": {
 						"file": "../textures/Atlas-items-16x16.png",
-						"size": 16,
-						"x": 1,
-						"y": 0
+						"size": 16.0,
+						"x": 1.0,
+						"y": 0.0
 					},
-					"tile_width": 1,
-					"tile_height": 1
+					"tile_width": 1.0,
+					"tile_height": 1.0
 				},
 				{
 					"id": "wooden_axe",
 					"name": "Wooden Axe",
-					"type": 1,
-					"stack_limit": 1,
-					"tile_size": 16,
+					"type": 1.0,
+					"stack_limit": 1.0,
+					"tile_size": 16.0,
 					"tile": {
 						"file": "../textures/Atlas-tools-16x16.png",
-						"size": 16,
-						"x": 0,
-						"y": 0
+						"size": 16.0,
+						"x": 0.0,
+						"y": 0.0
 					},
-					"tile_width": 1,
-					"tile_height": 1
+					"tile_width": 1.0,
+					"tile_height": 1.0
 				},
 				{
 					"id": "wooden_hammer",
 					"name": "Wooden Hammer",
-					"type": 0,
-					"stack_limit": 1,
-					"tile_width": 2,
-					"tile_height": 2,
-					"tile_size": 16,
+					"type": 0.0,
+					"stack_limit": 1.0,
+					"tile_width": 2.0,
+					"tile_height": 2.0,
+					"tile_size": 16.0,
 					"tile": {
 						"file": "../textures/Atlas-melee_weapons.png",
-						"size": 16,
-						"x": 2,
-						"y": 0,
-						"width": 2,
-						"height": 2
+						"size": 16.0,
+						"x": 2.0,
+						"y": 0.0,
+						"width": 2.0,
+						"height": 2.0
 					}
 				}
 			],
 			"separators": [],
-			"props": {}
+			"props": {
+
+			}
 		},
 		{
 			"name": "ActionStats",
@@ -194,49 +196,51 @@
 			],
 			"lines": [
 				{
-					"damage": 5,
-					"attack_speed": 0.8,
-					"knockback": 1,
-					"hitbox_x": 20,
-					"hitbox_y": 14,
-					"tool_type": 0,
-					"tool_power": 1,
+					"damage": 5.0,
+					"attack_speed": 0.80000000000000004,
+					"knockback": 1.0,
+					"hitbox_x": 22.0,
+					"hitbox_y": 14.0,
+					"tool_type": 0.0,
+					"tool_power": 1.0,
 					"item_ref": "wooden_sword"
 				},
 				{
-					"damage": 12,
-					"attack_speed": 0.7,
-					"knockback": 2,
-					"hitbox_x": 20,
-					"hitbox_y": 14,
-					"tool_type": 0,
-					"tool_power": 1,
+					"damage": 12.0,
+					"attack_speed": 0.69999999999999996,
+					"knockback": 2.0,
+					"hitbox_x": 22.0,
+					"hitbox_y": 14.0,
+					"tool_type": 0.0,
+					"tool_power": 1.0,
 					"item_ref": "iron_sword"
 				},
 				{
-					"damage": 1,
+					"damage": 1.0,
 					"attack_speed": 0.5,
-					"knockback": 1,
-					"hitbox_x": 20,
-					"hitbox_y": 14,
-					"tool_type": 1,
-					"tool_power": 2,
+					"knockback": 1.0,
+					"hitbox_x": 22.0,
+					"hitbox_y": 14.0,
+					"tool_type": 1.0,
+					"tool_power": 2.0,
 					"item_ref": "wooden_axe"
 				},
 				{
-					"damage": 15,
-					"attack_speed": 0.3,
-					"knockback": 1,
-					"hitbox_x": 40,
-					"hitbox_y": 24,
-					"tool_type": 0,
-					"tool_power": 1,
+					"damage": 15.0,
+					"attack_speed": 0.29999999999999999,
+					"knockback": 1.0,
+					"hitbox_x": 40.0,
+					"hitbox_y": 24.0,
+					"tool_type": 0.0,
+					"tool_power": 1.0,
 					"item_ref": "wooden_hammer",
 					"anim_name": "attack_swing_heavy"
 				}
 			],
 			"separators": [],
-			"props": {}
+			"props": {
+
+			}
 		},
 		{
 			"name": "Entities",
@@ -280,38 +284,40 @@
 				{
 					"id": "player",
 					"name": "Player",
-					"max_hp": 100,
-					"move_speed": 100,
-					"tile_size": 8,
+					"max_hp": 100.0,
+					"move_speed": 100.0,
+					"tile_size": 8.0,
 					"tile": {
 						"file": "../textures/player-texture.png",
-						"size": 8,
-						"x": 0,
-						"y": 0,
-						"width": 2,
-						"height": 3
+						"size": 8.0,
+						"x": 0.0,
+						"y": 0.0,
+						"width": 2.0,
+						"height": 3.0
 					},
-					"tile_width": 2,
-					"tile_height": 3
+					"tile_width": 2.0,
+					"tile_height": 3.0
 				},
 				{
 					"id": "green_slime",
 					"name": "Green Slime",
-					"max_hp": 20,
+					"max_hp": 20.0,
 					"tile": {
 						"file": "../textures/Atlas-enemies.png",
-						"size": 16,
-						"x": 0,
-						"y": 0
+						"size": 16.0,
+						"x": 0.0,
+						"y": 0.0
 					},
-					"tile_size": 16,
-					"move_speed": 50,
-					"tile_width": 1,
-					"tile_height": 1
+					"tile_size": 16.0,
+					"move_speed": 50.0,
+					"tile_width": 1.0,
+					"tile_height": 1.0
 				}
 			],
 			"separators": [],
-			"props": {}
+			"props": {
+
+			}
 		},
 		{
 			"name": "LootTables",
@@ -332,19 +338,19 @@
 					"items": [
 						{
 							"item": "green_apple",
-							"weight": 80
+							"weight": 80.0
 						},
 						{
 							"item": "wooden_sword",
-							"weight": 1
+							"weight": 1.0
 						},
 						{
 							"item": "green_gel",
-							"weight": 90
+							"weight": 90.0
 						},
 						{
 							"item": "wooden_axe",
-							"weight": 1
+							"weight": 1.0
 						}
 					]
 				},
@@ -353,13 +359,19 @@
 					"items": [
 						{
 							"item": "red_apple",
-							"weight": 100
+							"weight": 100.0
+						},
+						{
+							"item": "iron_sword",
+							"weight": 15.0
 						}
 					]
 				}
 			],
 			"separators": [],
-			"props": {}
+			"props": {
+
+			}
 		},
 		{
 			"name": "LootTables@items",
@@ -427,24 +439,26 @@
 				{
 					"id": "oak_tree",
 					"name": "Oak Tree",
-					"hit_points": 5,
-					"tool_type": 1,
+					"hit_points": 5.0,
+					"tool_type": 1.0,
 					"loot_ref": "oak_tree",
 					"tile": {
 						"file": "../textures/Atlas-resources.png",
-						"size": 16,
-						"x": 0,
-						"y": 0,
-						"width": 2,
-						"height": 4
+						"size": 16.0,
+						"x": 0.0,
+						"y": 0.0,
+						"width": 2.0,
+						"height": 4.0
 					},
-					"tile_width": 2,
-					"tile_height": 4,
-					"tile_size": 16
+					"tile_width": 2.0,
+					"tile_height": 4.0,
+					"tile_size": 16.0
 				}
 			],
 			"separators": [],
-			"props": {}
+			"props": {
+
+			}
 		},
 		{
 			"name": "PlayerStats",
@@ -473,20 +487,22 @@
 			],
 			"lines": [
 				{
-					"inventory_slots": 10,
+					"inventory_slots": 10.0,
 					"starting_items": [
 						{
 							"items": "wooden_sword",
-							"count": 1
+							"count": 1.0
 						}
 					],
 					"id": "player",
-					"spawn_point_x": 400,
-					"spawn_point_y": 150
+					"spawn_point_x": 400.0,
+					"spawn_point_y": 150.0
 				}
 			],
 			"separators": [],
-			"props": {}
+			"props": {
+
+			}
 		},
 		{
 			"name": "PlayerStats@starting_items",
@@ -540,16 +556,18 @@
 			],
 			"lines": [
 				{
-					"aggro_range": 150,
-					"attack_damage": 15,
+					"aggro_range": 150.0,
+					"attack_damage": 15.0,
 					"loot_ref": "green_slime",
-					"faction": 0,
-					"ai_type": 0,
+					"faction": 0.0,
+					"ai_type": 0.0,
 					"id": "green_slime"
 				}
 			],
 			"separators": [],
-			"props": {}
+			"props": {
+
+			}
 		}
 	],
 	"customTypes": [],
