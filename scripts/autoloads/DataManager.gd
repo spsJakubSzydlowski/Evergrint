@@ -5,6 +5,8 @@ signal database_ready
 var db_data = {}
 var is_loaded = false
 
+var weapon_stats_map = {}
+
 func _ready():
 	load_castle_db("res://data/Evergrint.json")
 
@@ -21,19 +23,32 @@ func load_castle_db(path):
 	if error == OK:
 		var full_data = json.data
 		
-		for sheet in full_data.sheets:
-			db_data[sheet.name] = {}
-			
-			for row in sheet.lines:
-				if row.has("id"):
-					db_data[sheet.name][row.id] = row
+		if full_data.has("sheets"):
+			for sheet in full_data["sheets"]:
+				var sheet_name = sheet["name"]
+				db_data[sheet_name] = {}
+				
+				for row in sheet["lines"]:
+					if row.has("id"):
+						db_data[sheet.name][row["id"]] = row
+					elif row.has("item_ref"):
+						db_data[sheet.name][row["item_ref"]] = row
 					
-	is_loaded = true
-	database_ready.emit()
+		is_loaded = true
+		database_ready.emit()
+		
+		#print("Database loaded successfully. Sheets found: ", db_data.keys())
+	else:
+		print("JSON Parse Error: ", json.get_error_message(), " at line ", json.get_error_line())
 			
 func get_item(id):
 	return db_data.get("Items", {}).get(id)
 
+func get_weapon_stats(id):
+	if db_data.has("ActionStats") and db_data["ActionStats"].has(id):
+		return db_data["ActionStats"][id]
+	return {}
+	
 func get_loot_table(id):
 	return db_data.get("LootTables", {}).get(id)
 
@@ -45,15 +60,6 @@ func get_loot_table_items(id):
 		
 	return []
 
-func get_melee_stats(id):
-	return db_data.get("ActionStats", {}).get(id)
-
-func _get_item_hit_box(id):
-	var item = get_melee_stats(id)
-	if item:
-		return Vector2(item.get("hitbox_x", 1), item.get("hitbox_y", 1))
-	return Vector2(1, 1)
-	
 func get_entity(id):
 	return db_data.get("Entities", {}).get(id)
 
