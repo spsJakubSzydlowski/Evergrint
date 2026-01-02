@@ -65,28 +65,30 @@ func initialize():
 	Signals.player_health_changed.emit(current_hp, max_hp)
 
 func _physics_process(_delta: float) -> void:
-	var direction := Input.get_vector("a", "d", "w", "s")
-	if direction:
-		velocity.x = direction.x * move_speed
-		velocity.y = direction.y * move_speed
-	else:
-		velocity.x = move_toward(velocity.x, 0, move_speed)
-		velocity.y = move_toward(velocity.y, 0, move_speed)
-	
-	if direction.x < 0 and can_turn:
-		sprite.flip_h = true
-	
-	if direction.x > 0 and can_turn:
-		sprite.flip_h = false
+	if not is_dead:
+		var direction := Input.get_vector("a", "d", "w", "s")
+		if direction:
+			velocity.x = direction.x * move_speed
+			velocity.y = direction.y * move_speed
+		else:
+			velocity.x = move_toward(velocity.x, 0, move_speed)
+			velocity.y = move_toward(velocity.y, 0, move_speed)
 		
-	if Input.is_action_just_pressed("attack") and not is_attacking:
-		if current_equipped_id != "":
-			attack(current_equipped_id)
-	move_and_slide()
+		if direction.x < 0 and can_turn:
+			sprite.flip_h = true
+		
+		if direction.x > 0 and can_turn:
+			sprite.flip_h = false
+			
+		if Input.is_action_just_pressed("attack") and not is_attacking:
+			if current_equipped_id != "":
+				attack(current_equipped_id)
+		move_and_slide()
 	
-func attack(item_data):
-	var item = DataManager.get_item(item_data)
-	if item.get("action_ref") == null:
+func attack(item_id):
+	var stats = DataManager.get_weapon_stats(item_id)
+	
+	if stats == {}:
 		return
 	
 	hit_entities.clear()
@@ -100,7 +102,7 @@ func attack(item_data):
 	weapon_pivot.look_at(mouse_position)
 	var angle_rad = wrapf(weapon_pivot.rotation_degrees, -180, 180)
 	
-	var radius_x = 10.0
+	var radius_x = 50
 	var radius_y = 5.0
 	
 	var pos_x = cos(angle_rad) * radius_x
@@ -108,17 +110,14 @@ func attack(item_data):
 	hand.position = Vector2(pos_x, pos_y)
 	
 	hand.rotation = angle_rad + PI/2
-	
-	var item_stats = DataManager.get_melee_stats(item.action_ref)
-	
-	animation_player.speed_scale = item_stats.attack_speed
 
 	if abs(angle_rad) > 95:
 		weapon_pivot.scale.y = -1
 	elif abs(angle_rad) < 85:
 		weapon_pivot.scale.y = 1
-		
-	animation_player.play("attack_swing")
+
+	animation_player.speed_scale = stats.get("attack_speed", 1.0)
+	animation_player.play(stats.get("anim_name", "attack_swing_light"))
 
 	await animation_player.animation_finished 
 	
@@ -134,17 +133,33 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 		hand_sprite.texture = null
 		return
 	
-	var data = DataManager.get_item(item_id)
-	if data.has("action_ref") and data.action_ref != "":
-		weapon_collision_shape.shape.size = DataManager._get_item_hit_box(item_id)
-		weapon_collision_shape.position = Vector2(weapon_collision_shape.shape.size.x / 2, 0)
-		var path = "res://" + data.tile.file.replace("../", "")
+	var item = DataManager.get_item(item_id)
+	var stats = DataManager.get_weapon_stats(item_id)
+
+	if stats:
+		var hitbox_x = stats.get("hitbox_x")
+		var hitbox_y = stats.get("hitbox_y")
+		
+		var offset_x = stats.get("collision_offset_x", 0.0)
+		var offset_y = stats.get("collision_offset_y", 0.0)
+		
+		weapon_collision_shape.shape.size = Vector2(hitbox_x, hitbox_y)
+		weapon_collision_shape.position = Vector2(weapon_collision_shape.shape.size.x / 2 + offset_x, offset_y)
+		var path = "res://" + item.tile.file.replace("../", "")
 		
 		var atlas_tex = AtlasTexture.new()
 		atlas_tex.atlas = load(path)
-		var ts = data.tile_size
-		atlas_tex.region = Rect2(data.tile.x * ts, data.tile.y * ts, ts, ts)
+		var ts_base = Vector2i(item.get("tile_size"), item.get("tile_size"))
+		
+		var pos_x = item.tile.x * ts_base.x
+		var pos_y = item.tile.y * ts_base.y
+				
+		var region_w = item.tile_width * ts_base.x
+		var region_h = item.tile_height * ts_base.y
+		
+		atlas_tex.region = Rect2(pos_x, pos_y, region_w, region_h)
 		hand_sprite.texture = atlas_tex
+		hand_sprite.offset = Vector2(0, -region_h)
 	else:
 		hand_sprite.texture = null
 		
@@ -159,45 +174,48 @@ func take_hit(damage):
 
 func die():
 	is_dead = true
-	queue_free()
+	is_attacking = false
+	
+	visible = false
+	
+	Signals.player_died.emit()
 
 func _on_hit_area_area_entered(area: Area2D) -> void:
 	var attackable = area.get_parent()
+	var item_stats = DataManager.get_weapon_stats(current_equipped_id)
 	
 	if attackable in hit_entities:
 		return
 	
 	if attackable.has_method("take_hit") and is_attacking and not attackable.is_in_group("Player"):
+		var damage_to_deal: int
 		
-		if current_equipped_id == "": return
-		
-		var item_data = DataManager.get_item(current_equipped_id)
-		var damage_to_deal = 1
-		
-		if item_data.has("action_ref") and item_data.action_ref != "":
-			var stats = DataManager.get_melee_stats(item_data.action_ref)
-
-			if stats:
-				damage_to_deal = stats.damage
-
+		if item_stats != {}:
+			damage_to_deal = item_stats.get("damage", 0.0)
+			
 			attackable.take_hit(damage_to_deal)
 			hit_entities.append(attackable)
 			
 	if attackable.has_method("harvest") and is_attacking and not attackable.is_in_group("Player"):
-		if current_equipped_id == "": return
-		
-		var item_data = DataManager.get_item(current_equipped_id)
-		
-		if item_data.has("action_ref") and item_data.action_ref != "":
-			var stats = DataManager.get_melee_stats(item_data.action_ref)
-			
-			if stats:
-				var tool_type = stats.tool_type
-				var tool_power = stats.tool_power
-
-				attackable.harvest(tool_type, tool_power)
-				hit_entities.append(attackable)
+		var tool_type = item_stats.get("tool_type")
+		var tool_power = item_stats.get("tool_power")
+	
+		attackable.harvest(tool_type, tool_power)
+		hit_entities.append(attackable)
 
 func _on_magnet_field_area_entered(area: Area2D) -> void:
 	if area.is_in_group("loot"):
 		area.start_magnetic_pull(self)
+
+func respawn():
+	var stats = DataManager.get_full_entity_data("player")
+	global_position = Vector2(stats.get("spawn_point_x"), stats.get("spawn_point_y"))
+	
+	visible = true
+	is_dead = false
+	current_hp = max_hp
+	can_turn = true
+	is_attacking = false
+	
+	Signals.player_health_changed.emit(current_hp, max_hp)
+	
