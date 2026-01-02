@@ -142,7 +142,7 @@ func drop_loot():
 		
 		if roll <= chance:
 			var item_id = entry.get("item")
-			var amount = randi_range(entry.get("amount_min"), entry.get("amount_max"))
+			var amount = randi_range(entry.get("amount_min", 1), entry.get("amount_max", 1))
 			for i in range(amount):
 				DataManager.spawn_item(item_id, global_position, true)
 

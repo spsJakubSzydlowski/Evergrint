@@ -46,6 +46,7 @@ func initialize(item_id: String):
 	
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
+		collision.set_deferred("disabled", true)
 		collect_item()
 
 func collect_item():

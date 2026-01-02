@@ -102,6 +102,8 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
+collision_layer = 2
+collision_mask = 21
 script = ExtResource("1_g2els")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -115,6 +117,8 @@ shape = SubResource("RectangleShape2D_ig7tw")
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="MagnetField" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MagnetField"]
 shape = SubResource("CircleShape2D_g2els")
@@ -132,6 +136,8 @@ centered = false
 
 [node name="HitArea" type="Area2D" parent="WeaponPivot/Hand"]
 position = Vector2(-2.1456884e-07, 0)
+collision_layer = 8
+collision_mask = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponPivot/Hand/HitArea"]
 shape = SubResource("RectangleShape2D_g2els")
