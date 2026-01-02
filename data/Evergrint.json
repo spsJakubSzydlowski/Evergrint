@@ -353,6 +353,12 @@
 							"weight": 1,
 							"amount_min": 1,
 							"amount_max": 1
+						},
+						{
+							"item": "iron_sword",
+							"weight": 50,
+							"amount_min": 1,
+							"amount_max": 1
 						}
 					]
 				},
@@ -364,12 +370,6 @@
 							"weight": 100,
 							"amount_min": 1,
 							"amount_max": 2
-						},
-						{
-							"item": "iron_sword",
-							"weight": 15,
-							"amount_min": 1,
-							"amount_max": 1
 						}
 					]
 				}
