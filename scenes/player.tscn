@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c1qq7niewlp5"]
+[gd_scene load_steps=10 format=3 uid="uid://c1qq7niewlp5"]
 
 [ext_resource type="Script" uid="uid://c0c4tt6r1hejr" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://nuqvrepxlb7y" path="res://textures/player-texture.png" id="2_g2els"]
@@ -38,8 +38,36 @@ tracks/1/keys = {
 "values": [Vector2(12.000002, -4.7683716e-07)]
 }
 
+[sub_resource type="Animation" id="Animation_dqkch"]
+resource_name = "attack_swing_heavy"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WeaponPivot/Hand:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(-90, 0, 0.3, 9.966666),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -1.5707963267948966, 1.5707963267948966, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WeaponPivot/Hand:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(14, -12.21), Vector2(14, 3.06), Vector2(14, 15.365)]
+}
+
 [sub_resource type="Animation" id="Animation_g2els"]
-resource_name = "attack_swing"
+resource_name = "attack_swing_light"
 length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -69,7 +97,8 @@ tracks/1/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dqkch"]
 _data = {
 &"RESET": SubResource("Animation_qhqgy"),
-&"attack_swing": SubResource("Animation_g2els")
+&"attack_swing_heavy": SubResource("Animation_dqkch"),
+&"attack_swing_light": SubResource("Animation_g2els")
 }
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
@@ -99,7 +128,7 @@ position = Vector2(12.000002, -4.7683716e-07)
 [node name="Sprite2D" type="Sprite2D" parent="WeaponPivot/Hand"]
 position = Vector2(8.742276e-08, 0)
 rotation = 0.7853982
-offset = Vector2(8, -8)
+centered = false
 
 [node name="HitArea" type="Area2D" parent="WeaponPivot/Hand"]
 position = Vector2(-2.1456884e-07, 0)
