@@ -15,6 +15,7 @@ func _ready():
 
 	DataManager.spawn_item("wooden_sword", Vector2(380, 100))
 	DataManager.spawn_item("wooden_axe", Vector2(400, 100))
+	DataManager.spawn_item("wooden_hammer", Vector2(420, 100))
 	
 	
 	for i in range(10):
