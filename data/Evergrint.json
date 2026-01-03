@@ -497,7 +497,7 @@
 			],
 			"lines": [
 				{
-					"inventory_slots": 10,
+					"inventory_slots": 50,
 					"starting_items": [
 						{
 							"items": "wooden_sword",

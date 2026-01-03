@@ -22,23 +22,30 @@ height = 32
 script = ExtResource("1_l5hnc")
 
 [node name="hotbar" type="HBoxContainer" parent="."]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -40.0
-offset_right = 20.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_constants/separation = 44
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 4.0
+offset_bottom = 4.0
+theme_override_constants/separation = 22
 alignment = 1
 
+[node name="inventory" type="GridContainer" parent="."]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 4.0
+offset_bottom = 4.0
+theme_override_constants/h_separation = 22
+theme_override_constants/v_separation = 22
+columns = 10
+
 [node name="health_bar" type="TextureProgressBar" parent="."]
-offset_left = 6.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -135.0
 offset_top = 7.0
-offset_right = 134.0
+offset_right = -7.0
 offset_bottom = 39.0
+grow_horizontal = 0
 texture_under = SubResource("GradientTexture2D_jxkd3")
 texture_progress = SubResource("GradientTexture2D_ipdp0")
