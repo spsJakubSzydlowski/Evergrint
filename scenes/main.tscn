@@ -239,5 +239,6 @@ autostart = true
 [node name="UI" parent="." groups=["ui"] instance=ExtResource("5_tbgi4")]
 
 [node name="DeathScreen" parent="." instance=ExtResource("5_tefeu")]
+visible = false
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
