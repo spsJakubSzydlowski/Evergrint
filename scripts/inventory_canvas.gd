@@ -6,6 +6,8 @@ signal item_equipped(item_id)
 @onready var health_bar: TextureProgressBar = $health_bar
 @onready var inventory_container: GridContainer = $inventory
 
+var first_selected_slot_index = -1
+
 var slot_scene = preload("res://scenes/UI/inventory_slot.tscn")
 var active_slot_index = 0
 
@@ -44,9 +46,9 @@ func _input(event: InputEvent) -> void:
 
 func refresh_ui():
 	for child in hotbar_container.get_children():
-		child.free()
+		child.queue_free()
 	for child in inventory_container.get_children():
-		child.free()
+		child.queue_free()
 
 	if is_inventory_open:
 		for i in range(inventory_slots):
@@ -60,7 +62,8 @@ func create_slot_in(container, index):
 	var slot_data = Inventory.slots[index]
 	var new_slot = slot_scene.instantiate()
 	container.add_child(new_slot)
-			
+	
+	new_slot.slot_clicked.connect(_on_slot_clicked)
 	new_slot.find_child("SelectionRect").visible = (index == active_slot_index)
 			
 	if slot_data["id"] != "":
@@ -88,6 +91,7 @@ func update_slot_visuals(slot_ui, slot_data):
 	icon_rect.texture = atlas_tex
 	
 	var label = slot_ui.find_child("AmountLabel")
+	if not label: print("No amount label found!")
 	label.text = str(amount) if amount > 1 else ""
 	
 func emit_equipped_signal():
@@ -97,3 +101,11 @@ func emit_equipped_signal():
 func update_health_bar(current_hp, max_hp):
 	health_bar.max_value = max_hp
 	health_bar.value = current_hp
+
+func _on_slot_clicked(index):
+	if first_selected_slot_index == -1:
+		first_selected_slot_index = index
+	else:
+		Inventory.swap_slot(first_selected_slot_index, index)
+		first_selected_slot_index = -1
+		refresh_ui()
