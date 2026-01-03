@@ -34,3 +34,9 @@ func add_item(item_id: String, amount: int = 1):
 				break
 	
 	inventory_updated.emit()
+	
+func swap_slot(index_a, index_b):
+	var temp = slots[index_a]
+	slots[index_a] = slots[index_b]
+	slots[index_b] = temp
+	inventory_updated.emit()
