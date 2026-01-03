@@ -65,6 +65,14 @@ func initialize():
 	Signals.player_health_changed.emit(current_hp, max_hp)
 
 func _physics_process(_delta: float) -> void:
+	move()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("attack") and not is_attacking:
+		if current_equipped_id != "":
+			attack(current_equipped_id)
+
+func move():
 	if not is_dead:
 		var direction := Input.get_vector("a", "d", "w", "s")
 		if direction:
@@ -80,11 +88,8 @@ func _physics_process(_delta: float) -> void:
 		if direction.x > 0 and can_turn:
 			sprite.flip_h = false
 			
-		if Input.is_action_just_pressed("attack") and not is_attacking:
-			if current_equipped_id != "":
-				attack(current_equipped_id)
 		move_and_slide()
-	
+
 func attack(item_id):
 	var stats = DataManager.get_weapon_stats(item_id)
 	
