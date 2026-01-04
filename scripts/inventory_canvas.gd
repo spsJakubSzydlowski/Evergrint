@@ -70,7 +70,13 @@ func create_slot_in(container, index):
 	new_slot.find_child("SelectionRect").visible = (index == active_slot_index)
 			
 	if slot_data["id"] != "":
+		var item = DataManager.get_item(slot_data["id"])
+		var item_name = item.get("name", "NULL")
+		new_slot.tooltip_text = str(item_name)
+		
 		update_slot_visuals(new_slot, slot_data)
+	else:
+		new_slot.tooltip_text = ""
 
 func update_slot_visuals(slot_ui, slot_data):
 	var item_id = slot_data["id"]

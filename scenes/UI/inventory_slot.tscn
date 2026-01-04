@@ -1,11 +1,46 @@
-[gd_scene load_steps=2 format=3 uid="uid://ccqufb7fkgrn7"]
+[gd_scene load_steps=7 format=3 uid="uid://ccqufb7fkgrn7"]
 
+[ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="1_bjo5i"]
 [ext_resource type="Script" uid="uid://disrtctq753n" path="res://scripts/inventory_slot.gd" id="1_et8er"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_et8er"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.8819366, 0.8819366, 0.88193655, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 20.0
+expand_margin_top = 20.0
+expand_margin_right = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="Theme" id="Theme_l3fr4"]
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 5
+Label/font_sizes/font_size = 14
+Label/fonts/font = ExtResource("1_bjo5i")
+Label/styles/normal = SubResource("StyleBoxFlat_et8er")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_et8er"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l3fr4"]
 
 [node name="InventorySlot" type="PanelContainer"]
 custom_minimum_size = Vector2(16, 16)
 offset_right = 16.0
 offset_bottom = 16.0
+theme = SubResource("Theme_l3fr4")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_et8er")
 script = ExtResource("1_et8er")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -26,6 +61,7 @@ expand_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 2
 
 [node name="AmountLabel" type="Label" parent="MarginContainer"]
@@ -34,3 +70,4 @@ size_flags_vertical = 0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxEmpty_l3fr4")
