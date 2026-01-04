@@ -32,6 +32,9 @@ func _input(event: InputEvent) -> void:
 		is_inventory_open = !is_inventory_open
 		inventory_container.visible = is_inventory_open
 		hotbar_container.visible = !is_inventory_open
+		
+		first_selected_slot_index = -1
+		
 		refresh_ui()
 
 	if event is InputEventMouseButton and event.pressed:
