@@ -209,7 +209,7 @@ func _on_hit_area_area_entered(area: Area2D) -> void:
 		hit_entities.append(attackable)
 
 func _on_magnet_field_area_entered(area: Area2D) -> void:
-	if area.is_in_group("loot"):
+	if area.is_in_group("loot") and Inventory.has_free_space():
 		area.start_magnetic_pull(self)
 
 func respawn():

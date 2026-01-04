@@ -5,6 +5,8 @@ signal inventory_updated
 var slots_amount: int
 var slots = []
 
+var inventory_full = false
+
 func _ready() -> void:
 	var stats = DataManager.get_full_entity_data("player")
 	slots_amount = stats.get("inventory_slots", 8)
@@ -34,7 +36,13 @@ func add_item(item_id: String, amount: int = 1):
 				break
 	
 	inventory_updated.emit()
-	
+
+func has_free_space():
+	for slot in slots:
+		if slot["id"] == "":
+			return true
+	return false
+
 func swap_slot(index_a, index_b):
 	var temp = slots[index_a]
 	slots[index_a] = slots[index_b]

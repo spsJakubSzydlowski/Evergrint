@@ -50,8 +50,11 @@ func _on_body_entered(body: Node2D) -> void:
 		collect_item()
 
 func collect_item():
-	Inventory.add_item(item.id)
-	queue_free()
+	if Inventory.has_free_space():
+		Inventory.add_item(item.id)
+		queue_free()
+	else:
+		target_player = null
 
 func magnetic_pull(delta):
 	if target_player:
