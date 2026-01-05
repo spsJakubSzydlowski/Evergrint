@@ -9,7 +9,9 @@ func _gui_input(event: InputEvent) -> void:
 
 func _make_custom_tooltip(for_text: String) -> Object:
 	#var container = VBoxContainer.new()
-	
+	if for_text == "":
+		return null
+		
 	var rtl = RichTextLabel.new()
 	rtl.bbcode_enabled = true
 	rtl.fit_content = true
