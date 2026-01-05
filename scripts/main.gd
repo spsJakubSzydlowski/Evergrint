@@ -17,10 +17,6 @@ func _ready():
 	DataManager.spawn_item("wooden_axe", Vector2(400, 100))
 	DataManager.spawn_item("wooden_hammer", Vector2(420, 100))
 	
-	
-	for i in range(10):
-		DataManager.spawn_resource("oak_tree", Vector2(450 + i * 60, 120))
-	
 func spawn_entity():
 	var current_enemy_count = get_tree().get_nodes_in_group("entity").size()
 	var spawn_pos = Vector2.ZERO

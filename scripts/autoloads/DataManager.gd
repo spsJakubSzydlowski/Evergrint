@@ -85,7 +85,7 @@ func get_full_entity_data(id):
 func get_resource(id):
 	return db_data.get("Resources", {}).get(id)
 
-func spawn_item(id: String, pos : Vector2, drop = false):
+func spawn_item(id: String, pos : Vector2, drop = true):
 	if not is_loaded:
 		await get_tree().create_timer(0.1).timeout
 	
@@ -140,10 +140,12 @@ func spawn_resource(id: String, pos : Vector2):
 	if not is_loaded:
 		await get_tree().create_timer(0.1).timeout
 		
-	var resource_scene = preload("res://scenes/world_resource.tscn")
-	var resource_instance = resource_scene.instantiate()
-	
-	get_tree().current_scene.add_child(resource_instance)
-	resource_instance.position = pos
-	
-	resource_instance.initialize(id)
+	(func():
+		var resource_scene = preload("res://scenes/world_resource.tscn")
+		var resource_instance = resource_scene.instantiate()
+		
+		get_tree().current_scene.add_child(resource_instance)
+		resource_instance.position = pos
+		
+		resource_instance.initialize(id)
+	).call_deferred()

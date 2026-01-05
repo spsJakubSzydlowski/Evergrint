@@ -1,9 +1,10 @@
 extends TileMapLayer
 
-var noise = FastNoiseLite.new()
 var river_noise = FastNoiseLite.new()
 var world_width = 200
 var world_height = 200
+
+var tree_count = 1000
 
 func _ready() -> void:
 	river_noise.seed = randi() + 1
@@ -11,6 +12,7 @@ func _ready() -> void:
 	river_noise.noise_type = FastNoiseLite.TYPE_PERLIN
 	
 	generate_surface()
+	spawn_trees()
 	
 func generate_surface():
 	var grass_tiles : Array[Vector2i] = []
@@ -33,3 +35,18 @@ func generate_surface():
 	for pos in water_tiles:
 		self.set_cell(pos, 0, Vector2i(0, 2))
 		
+func spawn_trees():
+	var all_cells = get_used_cells()
+	var spawned = 0
+	
+	while spawned < tree_count:
+		var random_map_pos = all_cells.pick_random()
+		var world_pos = map_to_local(random_map_pos)
+		world_pos += Vector2(randi_range(-10, 10), randi_range(-10, 10))
+		
+		var tile_data = get_cell_tile_data(random_map_pos)
+		
+		if tile_data and tile_data.get_custom_data("trees"):
+			
+			DataManager.spawn_resource("oak_tree", world_pos)
+			spawned += 1
