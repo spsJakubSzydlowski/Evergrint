@@ -13,9 +13,9 @@ func _ready():
 	
 	player = get_tree().get_first_node_in_group("Player")
 
-	DataManager.spawn_item("wooden_sword", Vector2(380, 100))
-	DataManager.spawn_item("wooden_axe", Vector2(400, 100))
-	DataManager.spawn_item("wooden_hammer", Vector2(420, 100))
+	DataManager.spawn_item("wooden_sword", Vector2(380, 100), false)
+	DataManager.spawn_item("wooden_axe", Vector2(400, 100), false)
+	DataManager.spawn_item("wooden_hammer", Vector2(420, 100), false)
 	
 func spawn_entity():
 	var current_enemy_count = get_tree().get_nodes_in_group("entity").size()
