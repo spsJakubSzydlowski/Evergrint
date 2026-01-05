@@ -4,7 +4,7 @@ const TOOL_TYPE_NONE = 0
 const TOOL_TYPE_AXE = 1
 const TOOL_TYPE_PICKAXE = 2
 
-@onready var sprite = $Sprite2D
+var sprite = null
 
 var resource = ""
 
@@ -28,6 +28,8 @@ func initialize(resource_id: String):
 		return
 	
 	name = resource.id
+	
+	sprite = get_node("Sprite2D")
 	
 	if resource.has("tile"):
 		var raw_path = resource.tile.file
