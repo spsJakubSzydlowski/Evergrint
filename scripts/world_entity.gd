@@ -15,6 +15,8 @@ var current_hp: int
 
 var attack_damage : int
 
+var attack_range = 12.0
+
 var aggro_range: float
 var faction = null
 
@@ -23,7 +25,12 @@ var loot_items = {}
 var is_dead := false
 
 var is_chasing = false
+
 var idle_timer := 0.0
+var attack_timer := 0.0
+
+var attack_cooldown = 1.0
+
 var idle_direction := Vector2.ZERO
 
 func _ready() -> void:
@@ -34,7 +41,9 @@ func _physics_process(delta: float) -> void:
 		if player and not is_dead:
 			var distance = global_position.distance_to(player.global_position)
 			
-			if distance <= aggro_range:
+			if distance < attack_range:
+				velocity = Vector2.ZERO
+			elif distance <= aggro_range:
 				var direction_raw = (player.global_position - global_position)
 				var direction = direction_raw.normalized()
 				
@@ -45,6 +54,14 @@ func _physics_process(delta: float) -> void:
 					sprite.flip_h = direction.x < 0
 			else:
 				process_idle_behaviour(delta)
+				
+			if distance <= attack_range + 5:
+				attack_timer += delta
+				if attack_timer >= attack_cooldown:
+					deal_damage(player)
+					attack_timer = 0.0
+			else:
+				attack_timer = 0.0
 				
 		move_and_slide()
 
