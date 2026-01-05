@@ -9,13 +9,14 @@ func _ready():
 	if not DataManager.is_loaded:
 		await DataManager.database_ready
 	
-	DataManager.spawn_player(Vector2(200, 100))
+	spawn_player_at_center()
+	
 	
 	player = get_tree().get_first_node_in_group("Player")
 
-	DataManager.spawn_item("wooden_sword", Vector2(380, 100), false)
-	DataManager.spawn_item("wooden_axe", Vector2(400, 100), false)
-	DataManager.spawn_item("wooden_hammer", Vector2(420, 100), false)
+	DataManager.spawn_item("wooden_sword", player.global_position, false)
+	DataManager.spawn_item("wooden_axe", player.global_position, false)
+	DataManager.spawn_item("wooden_hammer", player.global_position, false)
 	
 func spawn_entity():
 	var current_enemy_count = get_tree().get_nodes_in_group("entity").size()
@@ -44,6 +45,13 @@ func spawn_entity():
 		if found_valid_spot:
 			DataManager.spawn_entity("green_slime", spawn_pos)
 
+func spawn_player_at_center():
+	var rect = tile_map.get_used_rect()
+	var center_map_pos = rect.position + (rect.size / 2)
+	
+	var center_world_pos = tile_map.map_to_local(center_map_pos)
+	
+	DataManager.spawn_player(center_world_pos)
 
 func _on_timer_timeout() -> void:
 	spawn_entity()
