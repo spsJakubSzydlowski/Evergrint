@@ -124,7 +124,6 @@ func initialize(entity_id: String):
 func _on_world_entity_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		deal_damage(body)
-		
 
 func take_hit(amount: int):
 	if is_dead: return
@@ -146,6 +145,13 @@ func die():
 
 func deal_damage(body):
 	if body.has_method("take_hit"):
+		var direction_to_player = global_position.direction_to(player.global_position)
+		var dash_vector = direction_to_player * 10.0
+		
+		var tween = create_tween()
+		tween.tween_property(sprite, "position", dash_vector, 0.05)
+		tween.tween_property(sprite, "position", Vector2.ZERO, 0.15)
+		
 		body.take_hit(attack_damage)
 
 func drop_loot():
