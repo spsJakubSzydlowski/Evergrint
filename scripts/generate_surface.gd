@@ -40,17 +40,18 @@ func generate_surface():
 		
 func spawn_trees():
 	var all_cells = get_used_cells()
+	var tree_cells = []
 	var spawned = 0
 	
 	while spawned < tree_count:
 		var random_map_pos = all_cells.pick_random()
 		var world_pos = map_to_local(random_map_pos)
-		world_pos += Vector2(randi_range(-10, 10), randi_range(-10, 10))
 		
 		var tile_data = get_cell_tile_data(random_map_pos)
 		
-		if tile_data and tile_data.get_custom_data("trees"):
+		if tile_data and tile_data.get_custom_data("trees") and not tree_cells.has(random_map_pos):
 			var tree = DataManager.spawn_resource("oak_tree", world_pos)
+			tree_cells.append(random_map_pos)
 			if tree:
 				if randf() > 0.5:
 					var rand_size = randf_range(0.9, 1.1)
