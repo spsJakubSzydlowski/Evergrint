@@ -1,8 +1,7 @@
 extends StaticBody2D
 
-const TOOL_TYPE_NONE = 0
-const TOOL_TYPE_AXE = 1
-const TOOL_TYPE_PICKAXE = 2
+const TOOL_TYPE_NONE = 1
+const TOOL_TYPE_AXE = 2
 
 var sprite = null
 
@@ -60,7 +59,6 @@ func harvest(tool_type, amount: int):
 	
 	if tool_type == prefered_tool_type:
 		current_hp -= amount
-
 		var tw = create_tween()
 		tw.tween_property(sprite, "modulate", Color.RED, 0.1)
 		tw.tween_property(sprite, "modulate", Color.WHITE, 0.1)

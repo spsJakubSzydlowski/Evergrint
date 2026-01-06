@@ -477,9 +477,8 @@
 					"name": "hit_points"
 				},
 				{
-					"typeStr": "5:NONE,AXE,PICKAXE",
-					"name": "tool_type",
-					"display": null
+					"typeStr": "10:NONE,AXE,PICKAXE",
+					"name": "tool_type"
 				},
 				{
 					"typeStr": "14",
@@ -508,7 +507,7 @@
 					"id": "oak_tree",
 					"name": "Oak Tree",
 					"hit_points": 5,
-					"tool_type": 1,
+					"tool_type": 2,
 					"loot_ref": "oak_tree",
 					"tile": {
 						"file": "../textures/Atlas-resources.png",

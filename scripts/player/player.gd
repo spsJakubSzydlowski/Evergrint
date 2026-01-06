@@ -110,34 +110,26 @@ func attack(item_id):
 		hand_sprite.rotation = deg_to_rad(45)
 		melee_attack(stats)
 		await animation_player.animation_finished
+		animation_player.play("RESET")
 	else:
 		hand_sprite.rotation = deg_to_rad(0)
 		ranged_attack(stats)
-		await get_tree().create_timer(0.2).timeout
+		await get_tree().create_timer(0.5).timeout
 	
 	weapon_collision_shape.disabled = true
 	hand.visible = false
 	can_turn = true
 	is_attacking = false
 
-	
 func melee_attack(stats):
 	var mouse_position = get_global_mouse_position()
+	
 	weapon_pivot.look_at(mouse_position)
-	var angle_rad = wrapf(weapon_pivot.rotation_degrees, -180, 180)
+	var angle = wrapf(weapon_pivot.rotation_degrees, -180, 180)
 	
-	var radius_x = 50
-	var radius_y = 5.0
-	
-	var pos_x = cos(angle_rad) * radius_x
-	var pos_y = sin(angle_rad) * radius_y
-	hand.position = Vector2(pos_x, pos_y)
-	
-	hand.rotation = angle_rad + PI/2
-
-	if abs(angle_rad) > 95:
+	if abs(angle) > 95:
 		weapon_pivot.scale.y = -1
-	elif abs(angle_rad) < 85:
+	elif abs(angle) < 85:
 		weapon_pivot.scale.y = 1
 
 	animation_player.speed_scale = stats.get("attack_speed", 1.0)
