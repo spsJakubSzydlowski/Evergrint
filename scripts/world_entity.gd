@@ -20,6 +20,9 @@ var attack_range = 12.0
 var aggro_range: float
 var faction = null
 
+var move_speed: float
+var is_stunned = false
+
 var loot_items = {}
 
 var is_dead := false
@@ -37,7 +40,10 @@ func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 
 func _physics_process(delta: float) -> void:
-	if faction == FACTION_HOSTILE:
+	process_active_behaviour(delta)
+
+func process_active_behaviour(delta):
+	if faction == FACTION_HOSTILE and not is_stunned:
 		if player and not is_dead:
 			var distance = global_position.distance_to(player.global_position)
 			
@@ -47,7 +53,7 @@ func _physics_process(delta: float) -> void:
 				var direction_raw = (player.global_position - global_position)
 				var direction = direction_raw.normalized()
 				
-				var move_speed = entity.get("move_speed")
+				move_speed = entity.get("move_speed")
 				velocity = direction * move_speed
 				
 				if direction.x != 0:
@@ -128,6 +134,7 @@ func _on_world_entity_body_entered(body: Node2D) -> void:
 func take_hit(amount: int, source_pos):
 	if is_dead: return
 	
+	is_stunned = true
 	current_hp -= amount
 	update_heath_bar()
 	
@@ -138,6 +145,9 @@ func take_hit(amount: int, source_pos):
 	tween.parallel().tween_property(self, "global_position", target_pos, 0.15).set_trans(Tween.TRANS_BOUNCE)
 	tween.tween_property(sprite, "modulate", Color.RED, 0.1)
 	tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
+	
+	await get_tree().create_timer(0.2).timeout
+	is_stunned = false
 	
 	if current_hp <= 0:
 		die()
