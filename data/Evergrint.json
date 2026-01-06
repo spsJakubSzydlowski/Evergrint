@@ -634,7 +634,7 @@
 			"name": "ProjectileStats",
 			"columns": [
 				{
-					"typeStr": "6:Items",
+					"typeStr": "0",
 					"name": "id"
 				},
 				{
@@ -657,11 +657,11 @@
 			],
 			"lines": [
 				{
-					"id": "arrow",
 					"damage": 4,
 					"pierce": 1,
-					"move_speed": 120,
-					"projectile_type": 0
+					"move_speed": 350,
+					"projectile_type": 0,
+					"id": "arrow"
 				}
 			],
 			"separators": [],
