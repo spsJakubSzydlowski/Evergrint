@@ -49,6 +49,9 @@ func get_weapon_stats(id):
 		return db_data["ActionStats"][id]
 	return {}
 
+func get_projectile(id):
+	return db_data.get("ProjectileStats", {}).get(id)
+
 func get_projectile_stats(id):
 	if db_data.has("ProjectileStats") and db_data["ProjectileStats"].has(id):
 		return db_data["ProjectileStats"][id]
@@ -90,7 +93,7 @@ func get_full_entity_data(id):
 func get_resource(id):
 	return db_data.get("Resources", {}).get(id)
 
-func spawn_item(id: String, pos : Vector2, drop = true):
+func spawn_item(id: String, pos: Vector2, drop = true):
 	if not is_loaded:
 		await get_tree().create_timer(0.1).timeout
 	
@@ -117,7 +120,7 @@ func spawn_item(id: String, pos : Vector2, drop = true):
 		item_instance.initialize(id)
 	).call_deferred()
 	
-func spawn_entity(id: String, pos : Vector2):
+func spawn_entity(id: String, pos: Vector2):
 	if not is_loaded:
 		await get_tree().create_timer(0.1).timeout
 		
@@ -129,7 +132,7 @@ func spawn_entity(id: String, pos : Vector2):
 	
 	entity_instance.initialize(id)
 
-func spawn_player(pos : Vector2):
+func spawn_player(pos: Vector2):
 	if not is_loaded:
 		await get_tree().create_timer(0.1).timeout
 		
@@ -141,7 +144,7 @@ func spawn_player(pos : Vector2):
 	
 	player_instance.initialize()
 
-func spawn_resource(id: String, pos : Vector2):
+func spawn_resource(id: String, pos: Vector2):
 	var resource_scene = preload("res://scenes/world_resource.tscn")
 	var resource_instance = resource_scene.instantiate()
 	
@@ -151,3 +154,14 @@ func spawn_resource(id: String, pos : Vector2):
 	resource_instance.initialize(id)
 	
 	return resource_instance
+
+func spawn_projectile(id: String, pos: Vector2, used_weapon_stats, direction: Vector2):
+	var projectile_scene = preload("res://scenes/world_projectile.tscn")
+	var projectile_instance = projectile_scene.instantiate()
+	
+	get_tree().current_scene.add_child.call_deferred(projectile_instance)
+	projectile_instance.position = pos
+	
+	projectile_instance.initialize(id, pos, used_weapon_stats, direction)
+	
+	return projectile_instance
