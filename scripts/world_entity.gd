@@ -7,34 +7,38 @@ const FACTION_PASSIVE = 1
 @onready var health_bar: TextureProgressBar = $HealthBar
 
 var entity = ""
-
 var player = null
+var loot_items = {}
+
+#region Combat Variables
+var is_dead := false
 
 var max_hp : int
 var current_hp: int
 
 var attack_damage : int
-
 var attack_range = 12.0
-
 var aggro_range: float
 var faction = null
+var is_chasing = false
 
+
+
+#endregion
+
+#region Movement Variables
 var move_speed: float
 var is_stunned = false
 
-var loot_items = {}
+var idle_direction := Vector2.ZERO
+#endregion
 
-var is_dead := false
-
-var is_chasing = false
+#region Timer Variables
 
 var idle_timer := 0.0
 var attack_timer := 0.0
-
 var attack_cooldown = 1.0
-
-var idle_direction := Vector2.ZERO
+#endregion
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
@@ -136,13 +140,7 @@ func take_hit(amount: int, source_pos):
 		
 	is_stunned = true
 	
-	var knockback_dir = source_pos.direction_to(global_position)
-	var target_pos = global_position + (knockback_dir * 20.0)
 	var tween = create_tween()
-	
-	if current_hp - amount > 0:
-		tween.parallel().tween_property(self, "global_position", target_pos, 0.15).set_trans(Tween.TRANS_BOUNCE)
-	
 	tween.tween_property(sprite, "modulate", Color.RED, 0.1)
 	tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
 		
@@ -151,9 +149,19 @@ func take_hit(amount: int, source_pos):
 	
 	if current_hp <= 0:
 		die()
+		return
+
+	apply_knockback(source_pos)
 	
 	await get_tree().create_timer(0.2).timeout
 	is_stunned = false
+
+func apply_knockback(source_pos):
+	var knockback_dir = source_pos.direction_to(global_position)
+	var target_pos = global_position + (knockback_dir * 20.0)
+	
+	var tween = create_tween()
+	tween.tween_property(self, "global_position", target_pos, 0.15).set_trans(Tween.TRANS_BOUNCE)
 	
 func die():
 	is_dead = true
