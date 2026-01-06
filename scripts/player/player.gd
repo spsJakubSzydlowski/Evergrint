@@ -1,5 +1,8 @@
 extends CharacterBody2D
 
+const WEAPON_TYPE_MELEE = 0
+const WEAPON_TYPE_RANGED = 1
+
 @onready var sprite: Sprite2D = $Sprite2D
 
 @onready var weapon_pivot: Node2D = $WeaponPivot
@@ -102,9 +105,24 @@ func attack(item_id):
 	can_turn = false
 	hand.visible = true
 	weapon_collision_shape.disabled = false
+
+	if stats.get("weapon_type") == WEAPON_TYPE_MELEE:
+		hand_sprite.rotation = deg_to_rad(45)
+		melee_attack(stats)
+		await animation_player.animation_finished
+	else:
+		hand_sprite.rotation = deg_to_rad(0)
+		ranged_attack(stats)
+		await get_tree().create_timer(0.2).timeout
 	
+	weapon_collision_shape.disabled = true
+	hand.visible = false
+	can_turn = true
+	is_attacking = false
+
+	
+func melee_attack(stats):
 	var mouse_position = get_global_mouse_position()
-	
 	weapon_pivot.look_at(mouse_position)
 	var angle_rad = wrapf(weapon_pivot.rotation_degrees, -180, 180)
 	
@@ -125,12 +143,14 @@ func attack(item_id):
 	animation_player.speed_scale = stats.get("attack_speed", 1.0)
 	animation_player.play(stats.get("anim_name", "attack_swing_light"))
 
-	await animation_player.animation_finished 
+func ranged_attack(_stats):
+	var projectile = Inventory.get_equipped_ammo()
+	if projectile:
+		print("Zbraň může střílet, ammo: ", projectile)
+
+	var mouse_position = get_global_mouse_position()
 	
-	weapon_collision_shape.disabled = true
-	hand.visible = false
-	can_turn = true
-	is_attacking = false
+	weapon_pivot.look_at(mouse_position)
 
 func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 	current_equipped_id = item_id
@@ -145,12 +165,9 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 	if stats:
 		var hitbox_x = stats.get("hitbox_x")
 		var hitbox_y = stats.get("hitbox_y")
-		
-		var offset_x = stats.get("collision_offset_x", 0.0)
-		var offset_y = stats.get("collision_offset_y", 0.0)
-		
+
 		weapon_collision_shape.shape.size = Vector2(hitbox_x, hitbox_y)
-		weapon_collision_shape.position = Vector2(weapon_collision_shape.shape.size.x / 2 + offset_x, offset_y)
+		weapon_collision_shape.position = Vector2(weapon_collision_shape.shape.size.x / 2, 0)
 		var path = "res://" + item.tile.file.replace("../", "")
 		
 		var atlas_tex = AtlasTexture.new()
@@ -165,7 +182,11 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 		
 		atlas_tex.region = Rect2(pos_x, pos_y, region_w, region_h)
 		hand_sprite.texture = atlas_tex
-		hand_sprite.offset = Vector2(0, -region_h)
+		
+		if stats.get("weapon_type") == WEAPON_TYPE_MELEE:
+			hand_sprite.offset = Vector2(0, -region_h)
+		else:
+			hand_sprite.offset = Vector2(region_w / 2, -region_h / 2)
 	else:
 		hand_sprite.texture = null
 		

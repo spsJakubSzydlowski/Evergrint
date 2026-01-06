@@ -15,11 +15,11 @@ collision_mask = 2
 script = ExtResource("1_6odbs")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 8)
 texture = SubResource("AtlasTexture_sa2ys")
 offset = Vector2(0, -8)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -8)
 shape = SubResource("CircleShape2D_8uidd")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

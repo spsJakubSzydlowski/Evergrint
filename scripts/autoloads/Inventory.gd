@@ -44,7 +44,14 @@ func has_free_space():
 	return false
 
 func swap_slot(index_a, index_b):
+	
 	var temp = slots[index_a]
 	slots[index_a] = slots[index_b]
 	slots[index_b] = temp
 	inventory_updated.emit()
+
+func get_equipped_ammo():
+	for slot in slots:
+		if DataManager.get_projectile_stats(slot["id"]):
+			return slot["id"]
+	return null

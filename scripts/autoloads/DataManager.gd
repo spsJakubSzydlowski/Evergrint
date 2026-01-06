@@ -48,7 +48,12 @@ func get_weapon_stats(id):
 	if db_data.has("ActionStats") and db_data["ActionStats"].has(id):
 		return db_data["ActionStats"][id]
 	return {}
-	
+
+func get_projectile_stats(id):
+	if db_data.has("ProjectileStats") and db_data["ProjectileStats"].has(id):
+		return db_data["ProjectileStats"][id]
+	return {}
+
 func get_loot_table(id):
 	return db_data.get("LootTables", {}).get(id)
 

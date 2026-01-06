@@ -5,10 +5,8 @@ extends Area2D
 
 var item = ""
 
-var current_speed = 10.0
+var current_pull_speed = 10.0
 var target_player = null
-
-var damage: int
 
 func _physics_process(delta: float) -> void:
 	magnetic_pull(delta)
@@ -40,10 +38,7 @@ func initialize(item_id: String):
 			var region_h = item.tile_height * ts_base.y
 			
 			sprite.region_rect = Rect2(pos_x, pos_y, region_w, region_h)
-	
-	var stats = DataManager.get_weapon_stats(item_id)
-	damage = stats.get("damage", 0)
-	
+
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		collision.set_deferred("disabled", true)
@@ -58,10 +53,10 @@ func collect_item():
 
 func magnetic_pull(delta):
 	if target_player:
-		current_speed += 250 * delta
+		current_pull_speed += 250 * delta
 		
 		var direction = (target_player.global_position - global_position).normalized()
-		global_position += direction * current_speed * delta
+		global_position += direction * current_pull_speed * delta
 		
 		var target_angle = direction.angle() + PI/2
 		
