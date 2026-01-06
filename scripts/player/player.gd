@@ -194,11 +194,13 @@ func _on_hit_area_area_entered(area: Area2D) -> void:
 	
 	if attackable.has_method("take_hit") and is_attacking and not attackable.is_in_group("Player"):
 		var damage_to_deal: int
+		var knockback: float
 		
 		if item_stats != {}:
-			damage_to_deal = item_stats.get("damage", 0.0)
+			damage_to_deal = item_stats.get("damage", 0)
+			knockback = item_stats.get("knockback", 0.0)
 			
-			attackable.take_hit(damage_to_deal, global_position)
+			attackable.take_hit(damage_to_deal, knockback, global_position)
 			hit_entities.append(attackable)
 			
 	if attackable.has_method("harvest") and is_attacking and not attackable.is_in_group("Player"):

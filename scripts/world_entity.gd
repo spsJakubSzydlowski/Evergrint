@@ -135,7 +135,7 @@ func _on_world_entity_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		deal_damage(body)
 
-func take_hit(amount: int, source_pos):
+func take_hit(amount: int, knockback: float, source_pos):
 	if is_dead: return
 		
 	is_stunned = true
@@ -151,14 +151,14 @@ func take_hit(amount: int, source_pos):
 		die()
 		return
 
-	apply_knockback(source_pos)
+	apply_knockback(knockback, source_pos)
 	
 	await get_tree().create_timer(0.2).timeout
 	is_stunned = false
 
-func apply_knockback(source_pos):
+func apply_knockback(knockback, source_pos):
 	var knockback_dir = source_pos.direction_to(global_position)
-	var target_pos = global_position + (knockback_dir * 20.0)
+	var target_pos = global_position + (knockback_dir * knockback * 20.0)
 	
 	var tween = create_tween()
 	tween.tween_property(self, "global_position", target_pos, 0.15).set_trans(Tween.TRANS_BOUNCE)

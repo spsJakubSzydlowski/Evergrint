@@ -196,7 +196,7 @@
 				{
 					"damage": 5,
 					"attack_speed": 0.8,
-					"knockback": 1,
+					"knockback": 0.7,
 					"hitbox_x": 22,
 					"hitbox_y": 14,
 					"tool_type": 0,
@@ -206,7 +206,7 @@
 				{
 					"damage": 12,
 					"attack_speed": 0.7,
-					"knockback": 2,
+					"knockback": 0.7,
 					"hitbox_x": 22,
 					"hitbox_y": 14,
 					"tool_type": 0,
@@ -216,7 +216,7 @@
 				{
 					"damage": 1,
 					"attack_speed": 0.5,
-					"knockback": 1,
+					"knockback": 0.2,
 					"hitbox_x": 22,
 					"hitbox_y": 14,
 					"tool_type": 1,
@@ -224,9 +224,9 @@
 					"item_ref": "wooden_axe"
 				},
 				{
-					"damage": 15,
+					"damage": 12,
 					"attack_speed": 0.3,
-					"knockback": 1,
+					"knockback": 1.5,
 					"hitbox_x": 40,
 					"hitbox_y": 24,
 					"tool_type": 0,
