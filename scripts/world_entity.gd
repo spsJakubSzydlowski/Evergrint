@@ -51,9 +51,9 @@ func process_active_behaviour(delta):
 		if player and not is_dead:
 			var distance = global_position.distance_to(player.global_position)
 			
-			if distance < attack_range:
+			if distance < attack_range and not player.is_dead:
 				velocity = Vector2.ZERO
-			elif distance <= aggro_range:
+			elif distance <= aggro_range and not player.is_dead:
 				var direction_raw = (player.global_position - global_position)
 				var direction = direction_raw.normalized()
 				
@@ -65,7 +65,7 @@ func process_active_behaviour(delta):
 			else:
 				process_idle_behaviour(delta)
 				
-			if distance <= attack_range + 5:
+			if distance <= attack_range + 5 and not player.is_dead:
 				attack_timer += delta
 				if attack_timer >= attack_cooldown:
 					deal_damage(player)
