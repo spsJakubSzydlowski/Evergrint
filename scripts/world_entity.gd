@@ -133,25 +133,28 @@ func _on_world_entity_body_entered(body: Node2D) -> void:
 
 func take_hit(amount: int, source_pos):
 	if is_dead: return
-	
+		
 	is_stunned = true
-	current_hp -= amount
-	update_heath_bar()
 	
 	var knockback_dir = source_pos.direction_to(global_position)
 	var target_pos = global_position + (knockback_dir * 20.0)
-	
 	var tween = create_tween()
-	tween.parallel().tween_property(self, "global_position", target_pos, 0.15).set_trans(Tween.TRANS_BOUNCE)
+	
+	if current_hp - amount > 0:
+		tween.parallel().tween_property(self, "global_position", target_pos, 0.15).set_trans(Tween.TRANS_BOUNCE)
+	
 	tween.tween_property(sprite, "modulate", Color.RED, 0.1)
 	tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
+		
+	current_hp -= amount
+	update_heath_bar()
+	
+	if current_hp <= 0:
+		die()
 	
 	await get_tree().create_timer(0.2).timeout
 	is_stunned = false
 	
-	if current_hp <= 0:
-		die()
-
 func die():
 	is_dead = true
 	drop_loot()
