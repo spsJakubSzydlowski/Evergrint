@@ -5,7 +5,7 @@ const TOOL_TYPE_AXE = 2
 
 var sprite = null
 
-var resource = ""
+var resource = null
 
 var player = null
 
