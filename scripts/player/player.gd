@@ -55,6 +55,7 @@ func initialize():
 			var region_h = player.tile_height * ts_base.y
 			
 			sprite.region_rect = Rect2(pos_x, pos_y, region_w, region_h)
+			
 	
 	var stats = DataManager.get_full_entity_data("player")
 	max_hp = stats.get("max_hp", 100)

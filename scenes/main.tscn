@@ -246,6 +246,7 @@ custom_data_layer_1/type = 1
 sources/0 = SubResource("TileSetAtlasSource_1bvp3")
 
 [node name="main" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_1bvp3")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
