@@ -18,6 +18,8 @@ func _ready():
 	DataManager.spawn_item("wooden_axe", player.global_position, false)
 	DataManager.spawn_item("wooden_hammer", player.global_position, false)
 	DataManager.spawn_item("wooden_bow", player.global_position, false)
+	for i in range(100):
+		DataManager.spawn_item("arrow", player.global_position, false)
 	
 func spawn_entity():
 	var current_enemy_count = get_tree().get_nodes_in_group("entity").size()
