@@ -135,14 +135,16 @@ func melee_attack(stats):
 	animation_player.speed_scale = stats.get("attack_speed", 1.0)
 	animation_player.play(stats.get("anim_name", "attack_swing_light"))
 
-func ranged_attack(_stats):
+func ranged_attack(stats):
+	var mouse_position = get_global_mouse_position()
+	weapon_pivot.look_at(mouse_position)
+	
+	var direction = Vector2.RIGHT.rotated(weapon_pivot.rotation)
+	
 	var projectile = Inventory.get_equipped_ammo()
 	if projectile:
-		print("Zbraň může střílet, ammo: ", projectile)
+		DataManager.spawn_projectile(projectile, hand.global_position, stats, direction)
 
-	var mouse_position = get_global_mouse_position()
-	
-	weapon_pivot.look_at(mouse_position)
 
 func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 	current_equipped_id = item_id
