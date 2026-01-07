@@ -132,6 +132,7 @@ shape = SubResource("CircleShape2D_g2els")
 position = Vector2(0, -12)
 
 [node name="Hand" type="Node2D" parent="WeaponPivot"]
+visible = false
 
 [node name="Sprite2D" type="Sprite2D" parent="WeaponPivot/Hand"]
 position = Vector2(8.742276e-08, 0)
