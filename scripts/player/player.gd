@@ -111,10 +111,12 @@ func attack(item_id):
 		melee_attack(stats)
 		await animation_player.animation_finished
 		animation_player.play("RESET")
-	else:
-		hand_sprite.rotation = deg_to_rad(0)
-		ranged_attack(stats)
-		await get_tree().create_timer(0.5).timeout
+	elif stats.get("weapon_type") == WEAPON_TYPE_RANGED:
+		var projectile = Inventory.get_equipped_ammo()
+		if projectile:
+			hand_sprite.rotation = deg_to_rad(0)
+			ranged_attack(stats, projectile)
+			await get_tree().create_timer(0.5).timeout
 	
 	weapon_collision_shape.disabled = true
 	hand.visible = false
@@ -135,16 +137,15 @@ func melee_attack(stats):
 	animation_player.speed_scale = stats.get("attack_speed", 1.0)
 	animation_player.play(stats.get("anim_name", "attack_swing_light"))
 
-func ranged_attack(stats):
+func ranged_attack(stats, projectile):
 	var mouse_position = get_global_mouse_position()
 	weapon_pivot.look_at(mouse_position)
 	
 	var direction = Vector2.RIGHT.rotated(weapon_pivot.rotation)
 	
-	var projectile = Inventory.get_equipped_ammo()
 	if projectile:
 		DataManager.spawn_projectile(projectile, hand.global_position, stats, direction)
-
+		Inventory.remove_item(projectile, 1)
 
 func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 	current_equipped_id = item_id
