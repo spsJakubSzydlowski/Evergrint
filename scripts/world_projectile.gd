@@ -78,5 +78,4 @@ func _on_area_entered(area: Area2D) -> void:
 			knockback = weapon_stats.get("knockback", 0)
 			
 			attackable.take_hit(damage_to_deal, knockback, global_position)
-			#player.hit_entities.append(attackable)
 			queue_free()
