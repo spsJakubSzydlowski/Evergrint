@@ -50,7 +50,7 @@ func remove_item(item_id: String, amount: int = 1):
 				slot.amount = 0
 			break
 		else:
-			print("item: ", item_id, " hasnt been found")
+			print("item: ", item_id, " hasnt been found; Inventory.gd")
 	
 	inventory_updated.emit()
 func has_free_space():
