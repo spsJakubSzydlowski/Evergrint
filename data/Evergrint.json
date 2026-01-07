@@ -281,7 +281,7 @@
 				{
 					"damage": 8,
 					"attack_speed": 0.6,
-					"knockback": 0.2,
+					"knockback": 1,
 					"hitbox_x": 0,
 					"hitbox_y": 0,
 					"tool_type": 1,
@@ -426,6 +426,12 @@
 							"weight": 100,
 							"amount_min": 1,
 							"amount_max": 2
+						},
+						{
+							"item": "arrow",
+							"weight": 20,
+							"amount_min": 2,
+							"amount_max": 4
 						}
 					]
 				}
@@ -653,6 +659,14 @@
 					"typeStr": "5:ARROW",
 					"name": "projectile_type",
 					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "hitbox_x"
+				},
+				{
+					"typeStr": "4",
+					"name": "hitbox_y"
 				}
 			],
 			"lines": [
@@ -661,7 +675,9 @@
 					"pierce": 1,
 					"move_speed": 350,
 					"projectile_type": 0,
-					"id": "arrow"
+					"id": "arrow",
+					"hitbox_x": 16,
+					"hitbox_y": 6
 				}
 			],
 			"separators": [],
