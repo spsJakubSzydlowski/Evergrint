@@ -78,7 +78,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func move():
 	if not is_dead:
-		var direction := Input.get_vector("a", "d", "w", "s")
+		var direction := Input.get_vector("a", "d", "w", "s").normalized()
 		if direction:
 			velocity.x = direction.x * move_speed
 			velocity.y = direction.y * move_speed
@@ -144,7 +144,7 @@ func ranged_attack(stats, projectile):
 	var direction = Vector2.RIGHT.rotated(weapon_pivot.rotation)
 	
 	if projectile:
-		DataManager.spawn_projectile(projectile, hand.global_position, stats, direction)
+		DataManager.spawn_projectile(projectile, hand_sprite.global_position, stats, direction)
 		Inventory.remove_item(projectile, 1)
 
 func _on_inventory_canvas_item_equipped(item_id: String) -> void:
