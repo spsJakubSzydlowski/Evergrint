@@ -37,6 +37,22 @@ func add_item(item_id: String, amount: int = 1):
 	
 	inventory_updated.emit()
 
+func remove_item(item_id: String, amount: int = 1):
+	var data = DataManager.get_item(item_id)
+	if not data: return
+	
+	for slot in slots:
+		if slot.id == item_id:
+			slot.amount -= amount
+			
+			if slot.amount <= 0:
+				slot.id = ""
+				slot.amount = 0
+			break
+		else:
+			print("item: ", item_id, " hasnt been found")
+	
+	inventory_updated.emit()
 func has_free_space():
 	for slot in slots:
 		if slot["id"] == "":
