@@ -18,11 +18,13 @@ var current_hp: int
 
 var attack_damage : int
 var attack_range = 12.0
+var start_aggro_range: float
 var aggro_range: float
+var aggro_range_mult = 1.5
 var faction = null
 var is_chasing = false
 
-
+var got_hit = false
 
 #endregion
 
@@ -56,7 +58,7 @@ func process_active_behaviour(delta):
 			elif distance <= aggro_range and not player.is_dead:
 				var direction_raw = (player.global_position - global_position)
 				var direction = direction_raw.normalized()
-				
+
 				move_speed = entity.get("move_speed")
 				velocity = direction * move_speed
 				
@@ -124,7 +126,8 @@ func initialize(entity_id: String):
 	health_bar.max_value = max_hp
 	
 	faction = stats.get("faction")
-	aggro_range = stats.get("aggro_range", 100.0)
+	start_aggro_range = stats.get("aggro_range", 100.0)
+	aggro_range = start_aggro_range
 	
 	attack_damage = stats.get("attack_damage", 0)
 	
@@ -137,7 +140,11 @@ func _on_world_entity_body_entered(body: Node2D) -> void:
 
 func take_hit(amount: int, knockback: float, source_pos):
 	if is_dead: return
-		
+	
+	if got_hit == false:
+		aggro_range = start_aggro_range * aggro_range_mult
+		got_hit = true
+
 	is_stunned = true
 	
 	var tween = create_tween()
