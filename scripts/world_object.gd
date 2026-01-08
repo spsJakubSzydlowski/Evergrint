@@ -38,7 +38,7 @@ func initialize(item_id: String):
 			var region_h = item.tile_height * ts_base.y
 			
 			sprite.region_rect = Rect2(pos_x, pos_y, region_w, region_h)
-
+	
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		collision.set_deferred("disabled", true)
@@ -53,6 +53,7 @@ func collect_item():
 
 func magnetic_pull(delta):
 	if target_player:
+		await get_tree().create_timer(0.22).timeout
 		current_pull_speed += 250 * delta
 		
 		var direction = (target_player.global_position - global_position).normalized()
