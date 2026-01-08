@@ -361,7 +361,7 @@
 						"y": 0
 					},
 					"tile_size": 16,
-					"move_speed": 50,
+					"move_speed": 25,
 					"tile_width": 1,
 					"tile_height": 1
 				}
@@ -546,14 +546,6 @@
 					"typeStr": "8",
 					"name": "starting_items",
 					"opt": true
-				},
-				{
-					"typeStr": "4",
-					"name": "spawn_point_x"
-				},
-				{
-					"typeStr": "4",
-					"name": "spawn_point_y"
 				}
 			],
 			"lines": [
@@ -565,9 +557,7 @@
 							"count": 1
 						}
 					],
-					"id": "player",
-					"spawn_point_x": 400,
-					"spawn_point_y": 150
+					"id": "player"
 				}
 			],
 			"separators": [],
