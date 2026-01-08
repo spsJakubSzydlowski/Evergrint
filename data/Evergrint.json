@@ -625,7 +625,7 @@
 			],
 			"lines": [
 				{
-					"aggro_range": 150,
+					"aggro_range": 250,
 					"attack_damage": 15,
 					"loot_ref": "green_slime",
 					"faction": 0,
