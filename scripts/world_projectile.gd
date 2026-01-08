@@ -69,7 +69,7 @@ func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 func _on_area_entered(area: Area2D) -> void:
 	var attackable = area.get_parent()
 	
-	if attackable.has_method("take_hit") and player.is_attacking and not attackable.is_in_group("Player"):
+	if attackable.has_method("take_hit") and not attackable.is_in_group("Player"):
 		var damage_to_deal: int
 		var knockback: float
 		
