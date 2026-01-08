@@ -249,13 +249,13 @@ sources/0 = SubResource("TileSetAtlasSource_1bvp3")
 y_sort_enabled = true
 script = ExtResource("1_1bvp3")
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
+[node name="TileMapLayer" type="TileMapLayer" parent="." groups=["tilemap"]]
 position = Vector2(-2, -1)
 tile_set = SubResource("TileSet_0xm2m")
 script = ExtResource("3_jyhfs")
 
 [node name="EntitySpawnTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 5.0
 autostart = true
 
 [node name="UI" parent="." groups=["ui"] instance=ExtResource("5_tbgi4")]
