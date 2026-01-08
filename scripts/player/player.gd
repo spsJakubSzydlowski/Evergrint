@@ -3,6 +3,8 @@ extends CharacterBody2D
 const WEAPON_TYPE_MELEE = 0
 const WEAPON_TYPE_RANGED = 1
 
+var tile_map = null
+
 @onready var sprite: Sprite2D = $Sprite2D
 
 @onready var weapon_pivot: Node2D = $WeaponPivot
@@ -26,6 +28,9 @@ var move_speed : float
 var is_dead = false
 
 var hit_entities = []
+
+func _ready() -> void:
+	tile_map = get_tree().get_first_node_in_group("tilemap")
 
 func initialize():
 	var player = DataManager.get_entity("player")
@@ -232,9 +237,13 @@ func _on_magnet_field_area_entered(area: Area2D) -> void:
 		area.start_magnetic_pull(self)
 
 func respawn():
-	var stats = DataManager.get_full_entity_data("player")
-	global_position = Vector2(stats.get("spawn_point_x"), stats.get("spawn_point_y"))
-	
+	if tile_map:
+		var rect = tile_map.get_used_rect()
+		var center_map_pos = rect.position + (rect.size / 2)
+		var center_world_pos = tile_map.map_to_local(center_map_pos)
+		
+		global_position = Vector2(center_world_pos)
+		
 	visible = true
 	is_dead = false
 	current_hp = max_hp
