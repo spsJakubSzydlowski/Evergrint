@@ -4,12 +4,12 @@ var river_noise = FastNoiseLite.new()
 var world_width = 200
 var world_height = 200
 
-var tree_count = 1000
+var tree_count = 800
 
 func _ready() -> void:
 	while not DataManager.is_loaded:
 		await get_tree().create_timer(0.1).timeout
-		
+
 	river_noise.seed = randi() + 1
 	river_noise.frequency = 0.001
 	river_noise.noise_type = FastNoiseLite.TYPE_PERLIN
@@ -42,12 +42,18 @@ func spawn_trees():
 	var all_cells = get_used_cells()
 	var tree_cells = []
 	var spawned = 0
-	
+
 	while spawned < tree_count:
 		var random_map_pos = all_cells.pick_random()
 		var world_pos = map_to_local(random_map_pos)
 		
 		var tile_data = get_cell_tile_data(random_map_pos)
+		
+		var rect = get_used_rect()
+		var center_map_pos = rect.position + (rect.size / 2)
+		
+		if random_map_pos == center_map_pos:
+			return
 		
 		if tile_data and tile_data.get_custom_data("trees") and not tree_cells.has(random_map_pos):
 			var tree = DataManager.spawn_resource("oak_tree", world_pos)
