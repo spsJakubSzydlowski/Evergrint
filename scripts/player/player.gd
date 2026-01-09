@@ -165,9 +165,11 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 	if stats:
 		var hitbox_x = stats.get("hitbox_x")
 		var hitbox_y = stats.get("hitbox_y")
+		
+		var offsex_x = stats.get("offset_x")
 
 		weapon_collision_shape.shape.size = Vector2(hitbox_x, hitbox_y)
-		weapon_collision_shape.position = Vector2(weapon_collision_shape.shape.size.x / 2, 0)
+		weapon_collision_shape.position = Vector2(weapon_collision_shape.shape.size.x / 2 + offsex_x, 0)
 		var path = "res://" + item.tile.file.replace("../", "")
 		
 		var atlas_tex = AtlasTexture.new()
