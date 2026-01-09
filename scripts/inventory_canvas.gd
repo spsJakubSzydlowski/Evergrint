@@ -112,7 +112,7 @@ func update_health_bar(current_hp, max_hp):
 	health_bar.value = current_hp
 
 func _on_slot_clicked(index):
-	if first_selected_slot_index == -1:
+	if first_selected_slot_index == -1 and not Inventory.slots[index].id == "":
 		first_selected_slot_index = index
 	else:
 		Inventory.swap_slot(first_selected_slot_index, index)
