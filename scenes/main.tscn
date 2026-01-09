@@ -32,6 +32,7 @@ texture = ExtResource("1_h2yge")
 3:1/0 = 0
 4:1/0 = 0
 5:1/0 = 0
+5:1/0/modulate = Color(0, 0, 0, 1)
 0:2/0 = 0
 1:2/0 = 0
 1:2/0/terrain_set = 0
