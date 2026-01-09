@@ -209,6 +209,10 @@
 					"name": "hitbox_y"
 				},
 				{
+					"typeStr": "3",
+					"name": "offset_x"
+				},
+				{
 					"typeStr": "5:MELEE,RANGED",
 					"name": "weapon_type",
 					"display": null
@@ -242,7 +246,8 @@
 					"tool_type": 1,
 					"tool_power": 1,
 					"id": "wooden_sword",
-					"weapon_type": 0
+					"weapon_type": 0,
+					"offset_x": 0
 				},
 				{
 					"damage": 12,
@@ -253,7 +258,8 @@
 					"tool_type": 1,
 					"tool_power": 1,
 					"id": "iron_sword",
-					"weapon_type": 0
+					"weapon_type": 0,
+					"offset_x": 0
 				},
 				{
 					"damage": 1,
@@ -264,19 +270,21 @@
 					"tool_type": 2,
 					"tool_power": 2,
 					"id": "wooden_axe",
-					"weapon_type": 0
+					"weapon_type": 0,
+					"offset_x": 0
 				},
 				{
 					"damage": 12,
 					"attack_speed": 0.3,
 					"knockback": 1.5,
-					"hitbox_x": 40,
+					"hitbox_x": 16,
 					"hitbox_y": 24,
 					"tool_type": 1,
 					"tool_power": 1,
 					"anim_name": "attack_swing_heavy",
 					"id": "wooden_hammer",
-					"weapon_type": 0
+					"weapon_type": 0,
+					"offset_x": 20
 				},
 				{
 					"damage": 8,
@@ -288,7 +296,8 @@
 					"tool_power": 0,
 					"id": "wooden_bow",
 					"ammo": 0,
-					"weapon_type": 1
+					"weapon_type": 1,
+					"offset_x": 0
 				}
 			],
 			"separators": [],
@@ -541,46 +550,16 @@
 				{
 					"typeStr": "3",
 					"name": "inventory_slots"
-				},
-				{
-					"typeStr": "8",
-					"name": "starting_items",
-					"opt": true
 				}
 			],
 			"lines": [
 				{
 					"inventory_slots": 50,
-					"starting_items": [
-						{
-							"items": "wooden_sword",
-							"count": 1
-						}
-					],
 					"id": "player"
 				}
 			],
 			"separators": [],
 			"props": {}
-		},
-		{
-			"name": "PlayerStats@starting_items",
-			"props": {
-				"hide": true
-			},
-			"separators": [],
-			"lines": [],
-			"columns": [
-				{
-					"typeStr": "6:Items",
-					"name": "items",
-					"display": null
-				},
-				{
-					"typeStr": "3",
-					"name": "count"
-				}
-			]
 		},
 		{
 			"name": "EnemyStats",
