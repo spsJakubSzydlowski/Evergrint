@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://cc1jwci78oig2"]
+[gd_scene load_steps=9 format=3 uid="uid://cc1jwci78oig2"]
 
 [ext_resource type="Script" uid="uid://d34cx4vov07yo" path="res://scripts/main.gd" id="1_1bvp3"]
 [ext_resource type="Texture2D" uid="uid://dp8u34dqpa1sj" path="res://textures/Atlas-temp.png" id="1_h2yge"]
 [ext_resource type="Script" uid="uid://bxcrx4d38pbck" path="res://scripts/generate_surface.gd" id="3_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://bryjxm5yqvpo5" path="res://scenes/UI/inventory_canvas.tscn" id="5_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dmqmrs6wa5bgs" path="res://scenes/UI/death_scene.tscn" id="5_tefeu"]
+[ext_resource type="PackedScene" uid="uid://b86m15xc0v35w" path="res://scenes/sinkhole.tscn" id="6_tefeu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1bvp3"]
 texture = ExtResource("1_h2yge")
@@ -19,11 +20,42 @@ texture = ExtResource("1_h2yge")
 0:0/0/terrains_peering_bit/top_left_corner = 0
 0:0/0/terrains_peering_bit/top_side = 0
 0:0/0/terrains_peering_bit/top_right_corner = 0
-0:0/0/custom_data_0 = true
-0:0/0/custom_data_1 = true
 1:0/0 = 0
+1:0/0/terrain_set = 0
+1:0/0/terrain = 0
+1:0/0/probability = 10.0
+1:0/0/terrains_peering_bit/right_side = 0
+1:0/0/terrains_peering_bit/bottom_right_corner = 0
+1:0/0/terrains_peering_bit/bottom_side = 0
+1:0/0/terrains_peering_bit/bottom_left_corner = 0
+1:0/0/terrains_peering_bit/left_side = 0
+1:0/0/terrains_peering_bit/top_left_corner = 0
+1:0/0/terrains_peering_bit/top_side = 0
+1:0/0/terrains_peering_bit/top_right_corner = 0
+1:0/0/custom_data_0 = true
+1:0/0/custom_data_1 = true
 2:0/0 = 0
+2:0/0/terrain_set = 0
+2:0/0/terrain = 0
+2:0/0/terrains_peering_bit/right_side = 0
+2:0/0/terrains_peering_bit/bottom_right_corner = 0
+2:0/0/terrains_peering_bit/bottom_side = 0
+2:0/0/terrains_peering_bit/bottom_left_corner = 0
+2:0/0/terrains_peering_bit/left_side = 0
+2:0/0/terrains_peering_bit/top_left_corner = 0
+2:0/0/terrains_peering_bit/top_side = 0
+2:0/0/terrains_peering_bit/top_right_corner = 0
 3:0/0 = 0
+3:0/0/terrain_set = 0
+3:0/0/terrain = 0
+3:0/0/terrains_peering_bit/right_side = 0
+3:0/0/terrains_peering_bit/bottom_right_corner = 0
+3:0/0/terrains_peering_bit/bottom_side = 0
+3:0/0/terrains_peering_bit/bottom_left_corner = 0
+3:0/0/terrains_peering_bit/left_side = 0
+3:0/0/terrains_peering_bit/top_left_corner = 0
+3:0/0/terrains_peering_bit/top_side = 0
+3:0/0/terrains_peering_bit/top_right_corner = 0
 4:0/0 = 0
 5:0/0 = 0
 0:1/0 = 0
@@ -170,6 +202,7 @@ texture = ExtResource("1_h2yge")
 5:2/0/terrains_peering_bit/right_side = 0
 5:2/0/terrains_peering_bit/bottom_right_corner = 0
 5:2/0/terrains_peering_bit/bottom_left_corner = 0
+5:2/0/terrains_peering_bit/left_side = 0
 5:2/0/terrains_peering_bit/top_left_corner = 0
 5:2/0/terrains_peering_bit/top_side = 0
 5:2/0/terrains_peering_bit/top_right_corner = 0
@@ -263,5 +296,8 @@ autostart = true
 
 [node name="DeathScreen" parent="." instance=ExtResource("5_tefeu")]
 visible = false
+
+[node name="sinkhole" parent="." instance=ExtResource("6_tefeu")]
+position = Vector2(1107, 579)
 
 [connection signal="timeout" from="EntitySpawnTimer" to="." method="_on_timer_timeout"]
