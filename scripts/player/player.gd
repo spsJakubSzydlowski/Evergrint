@@ -4,6 +4,7 @@ const WEAPON_TYPE_MELEE = 0
 const WEAPON_TYPE_RANGED = 1
 
 var tile_map = null
+var object_layer = null
 
 @onready var sprite: Sprite2D = $Sprite2D
 
@@ -12,6 +13,7 @@ var tile_map = null
 @onready var hand_sprite: Sprite2D = $WeaponPivot/Hand/Sprite2D
 @onready var animation_player: AnimationPlayer = $WeaponPivot/Hand/AnimationPlayer
 @onready var weapon_collision_shape: CollisionShape2D = $WeaponPivot/Hand/HitArea/CollisionShape2D
+
 
 var ui: CanvasLayer = null
 
@@ -31,6 +33,7 @@ var hit_entities = []
 
 func _ready() -> void:
 	tile_map = get_tree().get_first_node_in_group("tilemap")
+	object_layer = get_tree().get_first_node_in_group("objectmap")
 
 func initialize():
 	var player = DataManager.get_entity("player")
@@ -77,6 +80,15 @@ func _physics_process(_delta: float) -> void:
 	move()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+		var mouse_pos = get_global_mouse_position()
+		var tile_pos = object_layer.local_to_map(mouse_pos)
+		
+		var data = object_layer.get_cell_tile_data(tile_pos)
+
+		if data and data.get_custom_data("is_sinkhole"):
+			die()
+		
 	if event.is_action_pressed("attack") and not is_attacking:
 		if current_equipped_id != "":
 			attack(current_equipped_id)
