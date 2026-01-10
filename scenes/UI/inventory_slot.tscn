@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://ccqufb7fkgrn7"]
+[gd_scene load_steps=9 format=3 uid="uid://ccqufb7fkgrn7"]
 
 [ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="1_bjo5i"]
 [ext_resource type="Script" uid="uid://disrtctq753n" path="res://scripts/inventory_slot.gd" id="1_et8er"]
+[ext_resource type="Texture2D" uid="uid://bpric1nyeu7w3" path="res://textures/ui.png" id="3_bjo5i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_et8er"]
 content_margin_left = 5.0
@@ -33,6 +34,10 @@ Label/styles/normal = SubResource("StyleBoxFlat_et8er")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_et8er"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_2pys4"]
+atlas = ExtResource("3_bjo5i")
+region = Rect2(0, 0, 16, 16)
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l3fr4"]
 
 [node name="InventorySlot" type="PanelContainer"]
@@ -43,10 +48,10 @@ theme = SubResource("Theme_l3fr4")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_et8er")
 script = ExtResource("1_et8er")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 2
-mouse_filter = 2
-color = Color(0.266995, 0.36495802, 1.1020129, 0.8627451)
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.91764706)
+position = Vector2(8, 8)
+texture = SubResource("AtlasTexture_2pys4")
 
 [node name="SelectionRect" type="ColorRect" parent="."]
 visible = false
@@ -57,7 +62,7 @@ color = Color(0.39586788, 0.64437795, 1.199976, 0.8627451)
 [node name="Icon" type="TextureRect" parent="."]
 layout_mode = 2
 mouse_filter = 2
-expand_mode = 1
+expand_mode = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
