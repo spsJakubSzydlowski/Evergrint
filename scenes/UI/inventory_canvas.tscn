@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b6d0iowgh44ec" path="res://scripts/inventory_canvas.gd" id="1_l5hnc"]
 
 [sub_resource type="Gradient" id="Gradient_vn1aj"]
-colors = PackedColorArray(0.07058824, 0.07058824, 0.14901961, 1, 0.012617188, 0.012617188, 0.012617188, 1)
+colors = PackedColorArray(0.13248605, 0.13255796, 0.24894744, 1, 0.012617188, 0.012617188, 0.012617188, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_jxkd3"]
 gradient = SubResource("Gradient_vn1aj")
