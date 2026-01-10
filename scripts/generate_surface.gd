@@ -5,6 +5,9 @@ var world_width = 200
 var world_height = 200
 
 var tree_count = 800
+var center_map_pos
+
+@export var sinkhole_scene: PackedScene = preload("res://scenes/sinkhole.tscn")
 
 func _ready() -> void:
 	while not DataManager.is_loaded:
@@ -15,8 +18,14 @@ func _ready() -> void:
 	river_noise.noise_type = FastNoiseLite.TYPE_PERLIN
 	
 	generate_surface()
+		
+	var rect = get_used_rect()
+	center_map_pos = rect.position + (rect.size / 2)
+
+	await get_tree().create_timer(0.1).timeout
+	spawn_starting_sinkhole()
 	spawn_trees()
-	
+
 func generate_surface():
 	var grass_tiles : Array[Vector2i] = []
 	var water_tiles : Array[Vector2i] = []
@@ -42,15 +51,14 @@ func spawn_trees():
 	var all_cells = get_used_cells()
 	var tree_cells = []
 	var spawned = 0
-
+	
+	
 	while spawned < tree_count:
 		var random_map_pos = all_cells.pick_random()
 		var world_pos = map_to_local(random_map_pos)
 		
 		var tile_data = get_cell_tile_data(random_map_pos)
 		
-		var rect = get_used_rect()
-		var center_map_pos = rect.position + (rect.size / 2)
 		
 		if random_map_pos == center_map_pos:
 			return
@@ -64,3 +72,11 @@ func spawn_trees():
 					tree.scale = Vector2(rand_size, rand_size)
 					tree.scale.x *= -1
 			spawned += 1
+
+func spawn_starting_sinkhole():
+	var hole = sinkhole_scene.instantiate()
+	
+	var offset = Vector2i(randi_range(-10, 10), randi_range(-10, 10))
+	
+	hole.global_position = map_to_local(center_map_pos + offset)
+	get_tree().current_scene.add_child.call_deferred(hole)
