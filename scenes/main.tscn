@@ -311,4 +311,14 @@ autostart = true
 [node name="DeathScreen" parent="." instance=ExtResource("5_tefeu")]
 visible = false
 
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0, 0, 0.16862746, 1)
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+rotation = -0.7853982
+shadow_enabled = true
+shadow_color = Color(0, 0, 0.09019608, 0.5647059)
+shadow_filter = 2
+shadow_filter_smooth = 0.7
+
 [connection signal="timeout" from="EntitySpawnTimer" to="." method="_on_timer_timeout"]
