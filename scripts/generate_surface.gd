@@ -69,7 +69,7 @@ func spawn_trees():
 			occupied_cells.append(random_map_pos)
 			if tree:
 				if randf() > 0.5:
-					var rand_size = randf_range(0.9, 1.1)
+					var rand_size = randf_range(0.9, 1.25)
 					tree.scale = Vector2(rand_size, rand_size)
 					tree.scale.x *= -1
 			spawned += 1
