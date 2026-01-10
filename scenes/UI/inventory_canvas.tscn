@@ -11,7 +11,7 @@ width = 128
 height = 16
 
 [sub_resource type="Gradient" id="Gradient_5mm2x"]
-colors = PackedColorArray(1, 0, 0, 1, 18.892157, 0, 0, 1)
+colors = PackedColorArray(0.7058824, 0.1254902, 0.16470589, 1, 0.7058824, 0.1254902, 0.16470589, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_ipdp0"]
 gradient = SubResource("Gradient_5mm2x")
