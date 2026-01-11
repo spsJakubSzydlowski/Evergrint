@@ -24,7 +24,6 @@ func _ready() -> void:
 	var rect = get_used_rect()
 	center_map_pos = rect.position + (rect.size / 2)
 
-	await get_tree().create_timer(0.1).timeout
 	spawn_starting_sinkhole()
 	spawn_trees()
 
@@ -50,11 +49,17 @@ func generate_surface():
 		self.set_cell(pos, 0, Vector2i(0, 2))
 		
 func spawn_trees():
+	seed(Global.world_seed + 123)
+	
 	var all_cells = get_used_cells()
 	var spawned = 0
 	
+	var attempts = 0
+	var max_attempts = tree_count * 5
 	
-	while spawned < tree_count:
+	while spawned < tree_count and attempts < max_attempts:
+		attempts += 1
+		
 		var random_map_pos = all_cells.pick_random()
 		var world_pos = map_to_local(random_map_pos)
 		
@@ -62,7 +67,10 @@ func spawn_trees():
 		
 		
 		if random_map_pos == center_map_pos:
-			return
+			continue
+
+		if Global.world_changes.get(world_pos) == "removed":
+			continue
 		
 		if tile_data and tile_data.get_custom_data("trees") and not occupied_cells.has(random_map_pos):
 			var tree = DataManager.spawn_resource("oak_tree", world_pos)
