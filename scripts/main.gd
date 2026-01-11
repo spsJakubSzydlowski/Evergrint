@@ -5,20 +5,28 @@ var player = null
 
 @export var max_entities = 200
 
+
 func _ready():
 	if not DataManager.is_loaded:
 		await DataManager.database_ready
+	
+	if Global.first_time_generation:
 		
-	spawn_player_at_center()
-	player = get_tree().get_first_node_in_group("Player")
-	
-	DataManager.spawn_item("wooden_sword", player.global_position, false)
-	DataManager.spawn_item("wooden_axe", player.global_position, false)
-	DataManager.spawn_item("wooden_hammer", player.global_position, false)
-	DataManager.spawn_item("wooden_bow", player.global_position, false)
-	for i in range(10):
-		DataManager.spawn_item("arrow", player.global_position, false)
-	
+		spawn_player_at_center()
+		player = get_tree().get_first_node_in_group("Player")
+		
+		DataManager.spawn_item("wooden_sword", player.global_position, false)
+		DataManager.spawn_item("wooden_axe", player.global_position, false)
+		DataManager.spawn_item("wooden_hammer", player.global_position, false)
+		DataManager.spawn_item("wooden_bow", player.global_position, false)
+		for i in range(10):
+			DataManager.spawn_item("arrow", player.global_position, false)
+		
+		Global.first_time_generation = false
+	else:
+		var return_pos = Global.player_pos
+		DataManager.spawn_player(return_pos)
+
 func spawn_entity():
 	var current_enemy_count = get_tree().get_nodes_in_group("entity").size()
 	var spawn_pos = Vector2.ZERO
