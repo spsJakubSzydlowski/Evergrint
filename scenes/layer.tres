@@ -1,7 +1,8 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://iqsu10vvl550"]
+[gd_resource type="TileSet" load_steps=7 format=3 uid="uid://iqsu10vvl550"]
 
 [ext_resource type="Texture2D" uid="uid://dp8u34dqpa1sj" path="res://textures/Atlas-temp.png" id="1_335pj"]
 [ext_resource type="Texture2D" uid="uid://qtespoutib7b" path="res://textures/sinkhole.png" id="2_wvwsc"]
+[ext_resource type="Texture2D" uid="uid://b32erbnxt5qxc" path="res://textures/ladder.png" id="3_eoim6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tefeu"]
 texture = ExtResource("1_335pj")
@@ -272,6 +273,13 @@ texture = ExtResource("2_wvwsc")
 0:0/0/custom_data_0 = true
 0:0/0/custom_data_2 = true
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0fmy3"]
+texture = ExtResource("3_eoim6")
+0:0/size_in_atlas = Vector2i(1, 4)
+0:0/0 = 0
+0:0/0/y_sort_origin = 30
+0:0/0/custom_data_2 = true
+
 [resource]
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Grass"
@@ -284,3 +292,4 @@ custom_data_layer_2/name = "is_sinkhole"
 custom_data_layer_2/type = 1
 sources/0 = SubResource("TileSetAtlasSource_tefeu")
 sources/1 = SubResource("TileSetAtlasSource_o6xl0")
+sources/2 = SubResource("TileSetAtlasSource_0fmy3")
