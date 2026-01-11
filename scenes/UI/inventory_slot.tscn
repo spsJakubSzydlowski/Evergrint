@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ccqufb7fkgrn7"]
+[gd_scene load_steps=10 format=3 uid="uid://ccqufb7fkgrn7"]
 
 [ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="1_bjo5i"]
 [ext_resource type="Script" uid="uid://disrtctq753n" path="res://scripts/inventory_slot.gd" id="1_et8er"]
@@ -38,6 +38,10 @@ Label/styles/normal = SubResource("StyleBoxFlat_et8er")
 atlas = ExtResource("3_bjo5i")
 region = Rect2(0, 0, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_bjo5i"]
+atlas = ExtResource("3_bjo5i")
+region = Rect2(16, 0, 16, 16)
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l3fr4"]
 
 [node name="InventorySlot" type="PanelContainer"]
@@ -48,16 +52,15 @@ theme = SubResource("Theme_l3fr4")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_et8er")
 script = ExtResource("1_et8er")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.91764706)
 position = Vector2(8, 8)
 texture = SubResource("AtlasTexture_2pys4")
 
-[node name="SelectionRect" type="ColorRect" parent="."]
+[node name="SelectionSprite" type="Sprite2D" parent="."]
 visible = false
-layout_mode = 2
-mouse_filter = 2
-color = Color(0.39586788, 0.64437795, 1.199976, 0.8627451)
+position = Vector2(8, 8)
+texture = SubResource("AtlasTexture_bjo5i")
 
 [node name="Icon" type="TextureRect" parent="."]
 layout_mode = 2
