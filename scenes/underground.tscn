@@ -5,6 +5,7 @@
 [ext_resource type="TileSet" uid="uid://iqsu10vvl550" path="res://scenes/layer.tres" id="4_5558j"]
 
 [node name="underground" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_cpwbu")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." node_paths=PackedStringArray("object_layer") groups=["tilemap"]]
@@ -13,7 +14,8 @@ script = ExtResource("2_flqp3")
 object_layer = NodePath("../ObjectLayer")
 
 [node name="ObjectLayer" type="TileMapLayer" parent="." groups=["objectmap"]]
+y_sort_enabled = true
 tile_set = ExtResource("4_5558j")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.42749333, 0.427493, 0.42749307, 1)
+color = Color(0.19076231, 0.19076234, 0.19076225, 1)
