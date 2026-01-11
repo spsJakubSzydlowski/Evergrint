@@ -69,7 +69,9 @@ func harvest(tool_type, amount: int):
 func die():
 	is_harvested = true
 	drop_loot()
+	Global.world_changes[global_position] = "removed"
 	queue_free()
+	
 
 func drop_loot():
 	var table_id = resource.get("loot_ref")
