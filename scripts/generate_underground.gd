@@ -49,6 +49,6 @@ func generate_surface():
 func spawn_starting_sinkhole():
 	var sinkhole_pos = center_map_pos + Vector2i(10, 10)
 
-	object_layer.set_cell(sinkhole_pos, 1, Vector2i(0, 0))
+	object_layer.set_cell(sinkhole_pos, 2, Vector2i(0, 0))
 	
 	occupied_cells.append(sinkhole_pos)
