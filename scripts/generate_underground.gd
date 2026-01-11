@@ -20,6 +20,11 @@ func _ready() -> void:
 	
 	generate_surface()
 	
+	var rect = get_used_rect()
+	center_map_pos = rect.position + (rect.size / 2)
+
+	spawn_starting_sinkhole()
+	
 func generate_surface():
 	var grass_tiles : Array[Vector2i] = []
 	var water_tiles : Array[Vector2i] = []
@@ -40,4 +45,10 @@ func generate_surface():
 		
 	for pos in water_tiles:
 		self.set_cell(pos, 0, Vector2i(0, 2))
-		
+
+func spawn_starting_sinkhole():
+	var sinkhole_pos = center_map_pos + Vector2i(10, 10)
+
+	object_layer.set_cell(sinkhole_pos, 1, Vector2i(0, 0))
+	
+	occupied_cells.append(sinkhole_pos)
