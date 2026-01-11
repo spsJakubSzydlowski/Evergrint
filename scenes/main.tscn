@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://cc1jwci78oig2"]
+[gd_scene load_steps=9 format=3 uid="uid://cc1jwci78oig2"]
 
 [ext_resource type="Script" uid="uid://d34cx4vov07yo" path="res://scripts/main.gd" id="1_1bvp3"]
 [ext_resource type="Texture2D" uid="uid://dp8u34dqpa1sj" path="res://textures/Atlas-temp.png" id="1_h2yge"]
 [ext_resource type="Script" uid="uid://bxcrx4d38pbck" path="res://scripts/generate_surface.gd" id="3_jyhfs"]
 [ext_resource type="Texture2D" uid="uid://qtespoutib7b" path="res://textures/sinkhole.png" id="3_tefeu"]
-[ext_resource type="PackedScene" uid="uid://bryjxm5yqvpo5" path="res://scenes/UI/inventory_canvas.tscn" id="5_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dmqmrs6wa5bgs" path="res://scenes/UI/death_scene.tscn" id="5_tefeu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tefeu"]
@@ -305,8 +304,6 @@ tile_set = SubResource("TileSet_0xm2m")
 [node name="EntitySpawnTimer" type="Timer" parent="."]
 wait_time = 5.0
 autostart = true
-
-[node name="UI" parent="." groups=["ui"] instance=ExtResource("5_tbgi4")]
 
 [node name="DeathScreen" parent="." instance=ExtResource("5_tefeu")]
 visible = false
