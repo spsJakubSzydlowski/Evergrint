@@ -66,7 +66,7 @@ func create_slot_in(container, index):
 	container.add_child(new_slot)
 	
 	new_slot.slot_clicked.connect(_on_slot_clicked)
-	new_slot.find_child("SelectionRect").visible = (index == active_slot_index)
+	new_slot.find_child("SelectionSprite").visible = (index == active_slot_index)
 			
 	if slot_data["id"] != "":
 		var item = DataManager.get_item(slot_data["id"])
