@@ -2,6 +2,8 @@ extends Node
 
 var world_seed: int = 0
 var player_pos = null
+var first_time_generation = true
+var world_changes = {}
 
 func _ready():
 	randomize()
