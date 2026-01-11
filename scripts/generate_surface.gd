@@ -15,7 +15,7 @@ func _ready() -> void:
 	while not DataManager.is_loaded:
 		await get_tree().create_timer(0.1).timeout
 
-	river_noise.seed = randi()
+	river_noise.seed = Global.world_seed
 	river_noise.frequency = 0.001
 	river_noise.noise_type = FastNoiseLite.TYPE_PERLIN
 	
