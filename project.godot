@@ -20,6 +20,8 @@ config/icon="res://icon.svg"
 DataManager="*res://scripts/autoloads/DataManager.gd"
 Inventory="*res://scripts/autoloads/Inventory.gd"
 Signals="*res://scripts/autoloads/Signals.gd"
+Global="*res://scripts/autoloads/Global.gd"
+InventoryCanvas="*res://scenes/UI/UserInterface.tscn"
 
 [display]
 
@@ -32,6 +34,12 @@ window/stretch/mode="canvas_items"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
+
+[global_group]
+
+tilemap=""
+objectmap=""
+ui=""
 
 [gui]
 
