@@ -88,7 +88,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 		if data and data.get_custom_data("is_sinkhole"):
 			Global.player_pos = global_position
-			Global.transition_to("underground")
+			if get_tree().current_scene.name == "main":
+				Global.transition_to("underground")
+			else:
+				Global.transition_to("surface")
 		
 	if event.is_action_pressed("attack") and not is_attacking:
 		if current_equipped_id != "":
