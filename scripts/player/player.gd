@@ -87,7 +87,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		var data = object_layer.get_cell_tile_data(tile_pos)
 
 		if data and data.get_custom_data("is_sinkhole"):
-			die()
+			Global.player_pos = global_position
+			Global.transition_to("underground")
 		
 	if event.is_action_pressed("attack") and not is_attacking:
 		if current_equipped_id != "":
