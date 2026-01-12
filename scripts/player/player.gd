@@ -13,7 +13,7 @@ var object_layer = null
 @onready var hand_sprite: Sprite2D = $WeaponPivot/Hand/Sprite2D
 @onready var animation_player: AnimationPlayer = $WeaponPivot/Hand/AnimationPlayer
 @onready var weapon_collision_shape: CollisionShape2D = $WeaponPivot/Hand/HitArea/CollisionShape2D
-
+@onready var camera: Camera2D = $Camera2D
 
 var ui: CanvasLayer = null
 
@@ -34,6 +34,7 @@ var hit_entities = []
 func _ready() -> void:
 	tile_map = get_tree().get_first_node_in_group("tilemap")
 	object_layer = get_tree().get_first_node_in_group("objectmap")
+	setup_camera_limits()
 
 func initialize():
 	var player = DataManager.get_entity("player")
@@ -76,6 +77,16 @@ func initialize():
 	
 	Signals.player_health_changed.emit(current_hp, max_hp)
 
+func setup_camera_limits():
+	var tile_size = 16
+	var world_width = tile_map.get_used_rect().size.x * tile_size
+	var world_height = tile_map.get_used_rect().size.y * tile_size
+	
+	camera.limit_left = 0
+	camera.limit_top = 0
+	camera.limit_right = world_width
+	camera.limit_bottom = world_height
+
 func _physics_process(_delta: float) -> void:
 	move()
 
@@ -114,6 +125,20 @@ func move():
 			sprite.flip_h = false
 			
 		move_and_slide()
+		
+		var rect = tile_map.get_used_rect()
+		var tile_size = 16
+		
+		var limit_left = rect.position.x * tile_size
+		var limit_top = rect.position.y * tile_size
+		var limit_right = rect.end.x * tile_size
+		var limit_bottom = rect.end.y * tile_size
+		
+		var player_height_half = 12
+		var player_width_half = 8
+		
+		global_position.x = clamp(global_position.x, limit_left + player_width_half, limit_right - player_width_half)
+		global_position.y = clamp(global_position.y, limit_top + player_height_half, limit_bottom)
 
 func attack(item_id):
 	var stats = DataManager.get_weapon_stats(item_id)
