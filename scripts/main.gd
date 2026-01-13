@@ -48,7 +48,7 @@ func spawn_entity():
 
 			var map_pos = tile_map.local_to_map(spawn_pos)
 			var tile_data = tile_map.get_cell_tile_data(map_pos)
-			if tile_data and tile_data.get_custom_data("can_spawn"):
+			if tile_data and not tile_data.get_custom_data("water"):
 				found_valid_spot = true
 		
 		if found_valid_spot:
