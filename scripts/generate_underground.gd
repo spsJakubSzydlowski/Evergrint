@@ -26,25 +26,25 @@ func _ready() -> void:
 	spawn_starting_sinkhole()
 	
 func generate_surface():
-	var grass_tiles : Array[Vector2i] = []
-	var water_tiles : Array[Vector2i] = []
+	var stone_tiles : Array[Vector2i] = []
+	var lava_tiles : Array[Vector2i] = []
 	
 	for x in range(world_width):
 		for y in range(world_height):
 			var river_val = river_noise.get_noise_2d(x, y)
 			
 			if abs(river_val) < 0.01:
-				water_tiles.append(Vector2i(x, y))
+				lava_tiles.append(Vector2i(x, y))
 			elif abs(river_val) < 0.10:
-				grass_tiles.append(Vector2i(x, y))
+				stone_tiles.append(Vector2i(x, y))
 			else:
-				grass_tiles.append(Vector2i(x, y))
+				stone_tiles.append(Vector2i(x, y))
 					
-	if grass_tiles.size() > 0:
-		self.set_cells_terrain_connect(grass_tiles, 0, 0, false)
+	if stone_tiles.size() > 0:
+		self.set_cells_terrain_connect(stone_tiles, 0, 1, false)
 		
-	for pos in water_tiles:
-		self.set_cell(pos, 0, Vector2i(0, 2))
+	for pos in lava_tiles:
+		self.set_cells_terrain_connect(lava_tiles, 0, 3, false)
 
 func spawn_starting_sinkhole():
 	var sinkhole_pos = center_map_pos + Vector2i(10, 10)
