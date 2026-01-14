@@ -21,7 +21,7 @@ func _ready() -> void:
 	river_noise.noise_type = FastNoiseLite.TYPE_PERLIN
 	
 	generate_surface()
-	await  get_tree().process_frame
+	await get_tree().process_frame
 	
 	notify_runtime_tile_data_update()
 	spawn_starting_sinkhole()
