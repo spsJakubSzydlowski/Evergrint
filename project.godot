@@ -23,6 +23,10 @@ Signals="*res://scripts/autoloads/Signals.gd"
 Global="*res://scripts/autoloads/Global.gd"
 InventoryCanvas="*res://scenes/UI/UserInterface.tscn"
 
+[debug]
+
+settings/stdout/print_fps=true
+
 [display]
 
 window/size/viewport_width=640
@@ -40,6 +44,7 @@ enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
 tilemap=""
 objectmap=""
 ui=""
+Player=""
 
 [gui]
 
@@ -90,6 +95,10 @@ open_inventory={
 2d_physics/layer_3="Enemies"
 2d_physics/layer_4="PlayerHitbox"
 2d_physics/layer_5="Loot"
+
+[physics]
+
+2d/run_on_separate_thread=true
 
 [rendering]
 
