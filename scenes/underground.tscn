@@ -18,4 +18,10 @@ y_sort_enabled = true
 tile_set = ExtResource("4_5558j")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.19076231, 0.19076234, 0.19076225, 1)
+color = Color(0.5689725, 0.5689728, 0.5689727, 1)
+
+[node name="ChunkTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="ChunkTimer" to="TileMapLayer" method="_on_chunk_timer_timeout"]
