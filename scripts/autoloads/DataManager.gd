@@ -144,14 +144,19 @@ func spawn_player(pos: Vector2):
 	
 	player_instance.initialize()
 
-func spawn_resource(id: String, pos: Vector2):
+func spawn_resource(id: String, pos: Vector2, parent = null):
 	var resource_scene = preload("res://scenes/world_resource.tscn")
 	var resource_instance = resource_scene.instantiate()
 	
-	get_tree().current_scene.add_child.call_deferred(resource_instance)
-	resource_instance.position = pos
 	
+	resource_instance.position = pos
 	resource_instance.initialize(id)
+	
+	if parent:
+		parent.add_child(resource_instance)
+	else:
+		get_tree().current_scene.add_child(resource_instance)
+	
 	
 	return resource_instance
 
