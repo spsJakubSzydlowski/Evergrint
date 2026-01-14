@@ -346,7 +346,7 @@
 					"id": "player",
 					"name": "Player",
 					"max_hp": 100,
-					"move_speed": 400,
+					"move_speed": 300,
 					"tile_size": 8,
 					"tile": {
 						"file": "../textures/player-texture.png",
