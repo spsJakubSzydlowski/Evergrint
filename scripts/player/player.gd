@@ -98,7 +98,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var data = object_layer.get_cell_tile_data(tile_pos)
 
 		if data and data.get_custom_data("is_sinkhole"):
-			Global.player_pos = global_position
+			Global.save_player_position()
 			if get_tree().current_scene.name == "main":
 				Global.transition_to("underground")
 			else:
@@ -232,7 +232,7 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 			hand_sprite.offset = Vector2(region_w / 2, -region_h / 2)
 	else:
 		hand_sprite.texture = null
-		
+
 func take_hit(damage):
 	if is_dead: return
 
