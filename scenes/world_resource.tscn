@@ -9,6 +9,7 @@ size = Vector2(31, 54)
 script = ExtResource("1_m5ijx")
 
 [node name="hurt_box" type="Area2D" parent="."]
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurt_box"]
 position = Vector2(0, -27)
@@ -17,3 +18,10 @@ shape = SubResource("RectangleShape2D_s2mhn")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 centered = false
 offset = Vector2(-16, -64)
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(0, -10)
+rect = Rect2(-24, -58, 47, 68)
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
