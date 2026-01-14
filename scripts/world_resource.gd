@@ -1,5 +1,8 @@
 extends StaticBody2D
 
+@onready var collision: CollisionShape2D = $hurt_box/CollisionShape2D
+@onready var visible_on_screen_notifier: VisibleOnScreenNotifier2D = $VisibleOnScreenNotifier2D
+
 const TOOL_TYPE_NONE = 1
 const TOOL_TYPE_AXE = 2
 
@@ -72,7 +75,6 @@ func die():
 	Global.world_changes[global_position] = "removed"
 	queue_free()
 	
-
 func drop_loot():
 	var table_id = resource.get("loot_ref")
 	if table_id == "" or table_id == null:
@@ -89,3 +91,15 @@ func drop_loot():
 			
 			for i in range(amount):
 				DataManager.spawn_item(item_id, global_position, true)
+
+func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
+	set_process(true)
+	set_physics_process(true)
+	collision.disabled = false
+	sprite.show()
+
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
+	set_process(false)
+	set_physics_process(false)
+	collision.disabled = true
+	sprite.hide()
