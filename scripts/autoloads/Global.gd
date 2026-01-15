@@ -6,8 +6,8 @@ var first_time_generation = true
 var world_changes = {}
 
 var chunks = {}
-var chunk_size = 5
-var render_distance = 1
+var chunk_size = 10
+var render_distance = 3
 
 var world_scenes = {
 	"surface": "res://scenes/main.tscn",
