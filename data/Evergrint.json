@@ -267,7 +267,7 @@
 					"knockback": 0.2,
 					"hitbox_x": 22,
 					"hitbox_y": 14,
-					"tool_type": 2,
+					"tool_type": 6,
 					"tool_power": 2,
 					"id": "wooden_axe",
 					"weapon_type": 0,
@@ -497,7 +497,8 @@
 				},
 				{
 					"typeStr": "14",
-					"name": "tile"
+					"name": "tile",
+					"opt": true
 				},
 				{
 					"typeStr": "3",
@@ -512,9 +513,23 @@
 					"name": "tile_size"
 				},
 				{
+					"typeStr": "3",
+					"name": "hitbox_x",
+					"opt": true
+				},
+				{
+					"typeStr": "3",
+					"name": "hitbox_y",
+					"opt": true
+				},
+				{
 					"typeStr": "6:LootTables",
 					"name": "loot_ref",
 					"display": null
+				},
+				{
+					"typeStr": "2",
+					"name": "is_block"
 				}
 			],
 			"lines": [
@@ -534,7 +549,21 @@
 					},
 					"tile_width": 2,
 					"tile_height": 4,
-					"tile_size": 16
+					"tile_size": 16,
+					"is_block": false,
+					"hitbox_x": 16,
+					"hitbox_y": 50
+				},
+				{
+					"id": "stone_block",
+					"name": "Stone Block",
+					"hit_points": 2,
+					"tool_type": 4,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
+					"loot_ref": "green_slime",
+					"is_block": true
 				}
 			],
 			"separators": [],
