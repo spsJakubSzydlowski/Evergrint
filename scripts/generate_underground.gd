@@ -17,6 +17,7 @@ func _ready() -> void:
 	while not DataManager.is_loaded:
 		await get_tree().create_timer(0.1).timeout
 	
+	Signals.block_destroyed.connect(_on_block_destroyed)
 	player = get_tree().get_first_node_in_group("Player")
 	
 	cave_noise.seed = Global.world_seed + 50
@@ -71,10 +72,12 @@ func spawn_blocks(x, y, chunk_node):
 		if occupied_cells.has(map_pos) or Global.world_changes.get(map_pos) == "removed":
 			return
 			
-		if tile_data and not tile_data.get_custom_data("water") and not occupied_cells.has(map_pos):
-			var world_pos = map_to_local(map_pos)
-			DataManager.spawn_resource("oak_tree", world_pos, chunk_node)
-
+		if tile_data and not tile_data.get_custom_data("water"):
+			#var world_pos = object_layer.map_to_local(map_pos)
+			
+			object_layer.set_cells_terrain_connect([map_pos], 0, 0, false)
+			#DataManager.spawn_resource("stone_block", world_pos, chunk_node)
+			
 func _on_chunk_timer_timeout() -> void:
 	var player_world_pos = Global.get_player_world_position()
 	
@@ -88,3 +91,9 @@ func _on_chunk_timer_timeout() -> void:
 			Global.load_chunk(x, y, spawn_blocks, object_layer)
 	
 	Global.unload_chunk(cx, cy)
+
+func _on_block_destroyed(global_pos):
+	var map_pos = object_layer.local_to_map(global_pos)
+	object_layer.set_cells_terrain_connect([map_pos], 0, -1)
+	
+	Global.world_changes[map_pos] = "removed"
