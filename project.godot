@@ -23,10 +23,6 @@ Signals="*res://scripts/autoloads/Signals.gd"
 Global="*res://scripts/autoloads/Global.gd"
 InventoryCanvas="*res://scenes/UI/UserInterface.tscn"
 
-[debug]
-
-settings/stdout/print_fps=true
-
 [display]
 
 window/size/viewport_width=640
