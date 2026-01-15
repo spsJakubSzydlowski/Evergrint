@@ -269,10 +269,10 @@ func _on_hit_area_area_entered(area: Area2D) -> void:
 			hit_entities.append(attackable)
 			
 	if attackable.has_method("harvest") and is_attacking and not attackable.is_in_group("Player"):
-		var tool_type = item_stats.get("tool_type")
+		var tool_type_enum = item_stats.get("tool_type")
 		var tool_power = item_stats.get("tool_power")
 	
-		attackable.harvest(tool_type, tool_power)
+		attackable.harvest(tool_type_enum, tool_power)
 		hit_entities.append(attackable)
 
 func _on_magnet_field_area_entered(area: Area2D) -> void:
