@@ -1,13 +1,14 @@
 extends StaticBody2D
 
-@onready var collision: CollisionShape2D = $hurt_box/CollisionShape2D
 @onready var visible_on_screen_notifier: VisibleOnScreenNotifier2D = $VisibleOnScreenNotifier2D
 
 const TOOL_TYPE_NONE = 1
 const TOOL_TYPE_AXE = 2
 
-var sprite = null
+var is_block = false
 
+var sprite = null
+var collision
 var resource = null
 
 var player = null
@@ -32,6 +33,7 @@ func initialize(resource_id: String):
 	name = resource.id
 	
 	sprite = get_node("Sprite2D")
+	collision = get_node("hurt_box/CollisionShape2D")
 	
 	if resource.has("tile"):
 		var raw_path = resource.tile.file
@@ -52,27 +54,32 @@ func initialize(resource_id: String):
 			
 			sprite.region_rect = Rect2(pos_x, pos_y, region_w, region_h)
 	
+	collision.shape.size = Vector2(resource.get("hitbox_x", 16), resource.get("hitbox_y", 16))
 	max_hp = resource.get("hit_points", 1)
 	current_hp = max_hp
 	
+	is_block = resource.get("is_block", false)
+	
 	prefered_tool_type = resource.get("tool_type", TOOL_TYPE_NONE)
 
-func harvest(tool_type, amount: int):
+func harvest(tool_type_enum, amount: int):
 	if is_harvested: return
 	
-	if tool_type == prefered_tool_type:
-		current_hp -= amount
-		var tw = create_tween()
-		tw.tween_property(sprite, "modulate", Color.RED, 0.1)
-		tw.tween_property(sprite, "modulate", Color.WHITE, 0.1)
-		
+	for tool_type in tool_type_enum:
+		if tool_type == prefered_tool_type:
+			current_hp -= amount
+			var tw = create_tween()
+			tw.tween_property(sprite, "modulate", Color.RED, 0.1)
+			tw.tween_property(sprite, "modulate", Color.WHITE, 0.1)
+			
 		if current_hp <= 0:
 			die()
 
 func die():
 	is_harvested = true
 	drop_loot()
-	Global.world_changes[global_position] = "removed"
+	if is_block:
+		Signals.block_destroyed.emit(global_position)
 	queue_free()
 	
 func drop_loot():
