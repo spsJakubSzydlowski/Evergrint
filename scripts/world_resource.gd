@@ -77,9 +77,16 @@ func harvest(tool_type_enum, amount: int):
 
 func die():
 	is_harvested = true
+	var map_pos = MiningManager.current_tilemap.local_to_map(global_position)
+	var fixed_pos = Vector2i(map_pos)
+	
+	var world_id = Global.current_world_id
+	if not Global.world_changes.has(world_id):
+		Global.world_changes[world_id] = {}
+		
+	Global.world_changes[world_id][fixed_pos] = "removed"
+	
 	drop_loot()
-	if is_block:
-		Signals.block_destroyed.emit(global_position)
 	queue_free()
 	
 func drop_loot():
