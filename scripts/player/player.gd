@@ -34,6 +34,7 @@ var hit_entities = []
 func _ready() -> void:
 	tile_map = get_tree().get_first_node_in_group("tilemap")
 	object_layer = get_tree().get_first_node_in_group("objectmap")
+	MiningManager.current_tilemap = object_layer
 	setup_camera_limits()
 
 func initialize():
@@ -76,6 +77,7 @@ func initialize():
 	move_speed = stats.get("move_speed", 100.0)
 	
 	Signals.player_health_changed.emit(current_hp, max_hp)
+	
 
 func setup_camera_limits():
 	var tile_size = 16
@@ -94,16 +96,27 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		var mouse_pos = get_global_mouse_position()
 		var tile_pos = object_layer.local_to_map(mouse_pos)
-		
+
 		var data = object_layer.get_cell_tile_data(tile_pos)
 
 		if data and data.get_custom_data("is_sinkhole"):
 			Global.save_player_position()
+
 			if get_tree().current_scene.name == "main":
 				Global.transition_to("underground")
 			else:
 				Global.transition_to("surface")
+	
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var mouse_pos = get_global_mouse_position()
+		var tile_pos = object_layer.local_to_map(mouse_pos)
+
+		var data = object_layer.get_cell_tile_data(tile_pos)
 		
+		if data:
+			MiningManager.damage_block(mouse_pos, 1)
+			
+	
 	if event.is_action_pressed("attack") and not is_attacking:
 		if current_equipped_id != "":
 			attack(current_equipped_id)
