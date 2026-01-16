@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://nuqvrepxlb7y" path="res://textures/player-texture.png" id="2_g2els"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ig7tw"]
-size = Vector2(11, 23)
+size = Vector2(11, 5.5)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
 radius = 40.0
@@ -114,7 +114,7 @@ texture = ExtResource("2_g2els")
 offset = Vector2(0, -12)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -12)
+position = Vector2(0, -3.25)
 shape = SubResource("RectangleShape2D_ig7tw")
 
 [node name="Camera2D" type="Camera2D" parent="."]
