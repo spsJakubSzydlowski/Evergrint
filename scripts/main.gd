@@ -24,8 +24,7 @@ func _ready():
 		
 		Global.first_time_generation = false
 	else:
-		var return_pos = Global.player_pos
-		DataManager.spawn_player(return_pos)
+		spawn_player_at_center()
 
 func spawn_entity():
 	var current_enemy_count = get_tree().get_nodes_in_group("entity").size()
