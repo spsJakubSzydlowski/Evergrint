@@ -3,7 +3,7 @@ extends Node
 var tile_health_map = {}
 var current_tilemap: TileMapLayer
 
-func damage_block(world_pos: Vector2, tool_type_enum, damage: int):
+func damage_block(world_pos: Vector2, tool_type, damage: int):
 	if not current_tilemap: return
 	
 	var tile_pos = current_tilemap.local_to_map(current_tilemap.to_local(world_pos))
@@ -16,17 +16,14 @@ func damage_block(world_pos: Vector2, tool_type_enum, damage: int):
 		var preffered_tool_type = block_info.get("tool_type")
 		var max_hp = block_info.get("hit_points", 1)
 		
-		for tool_type in tool_type_enum:
-			if tool_type == preffered_tool_type:
-				if not tile_health_map.has(tile_pos):
-					tile_health_map[tile_pos] = max_hp
-					
-				tile_health_map[tile_pos] -= damage
-					
-				if tile_health_map[tile_pos] <= 0:
-					destroy_block(tile_pos, block_info)
-					
-				break
+		if tool_type == preffered_tool_type:
+			if not tile_health_map.has(tile_pos):
+				tile_health_map[tile_pos] = max_hp
+				
+			tile_health_map[tile_pos] -= damage
+				
+			if tile_health_map[tile_pos] <= 0:
+				destroy_block(tile_pos, block_info)
 
 func destroy_block(tile_pos: Vector2, block_info: Dictionary):
 	var fixed_pos = Vector2i(tile_pos)
