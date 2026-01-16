@@ -16,6 +16,7 @@ script = ExtResource("3_jyhfs")
 object_layer = NodePath("../ObjectLayer")
 
 [node name="ObjectLayer" type="TileMapLayer" parent="." groups=["objectmap"]]
+y_sort_enabled = true
 position = Vector2(-2, -1)
 tile_set = ExtResource("2_jyhfs")
 
