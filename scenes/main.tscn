@@ -21,7 +21,7 @@ position = Vector2(-2, -1)
 tile_set = ExtResource("2_jyhfs")
 
 [node name="EntitySpawnTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 0.1
 autostart = true
 
 [node name="DeathScreen" parent="." instance=ExtResource("5_tefeu")]
