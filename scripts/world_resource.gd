@@ -62,18 +62,19 @@ func initialize(resource_id: String):
 	
 	prefered_tool_type = resource.get("tool_type", TOOL_TYPE_NONE)
 
-func harvest(tool_type_enum, amount: int):
+func harvest(tool_type, amount: int):
 	if is_harvested: return
-	
-	for tool_type in tool_type_enum:
-		if tool_type == prefered_tool_type:
-			current_hp -= amount
-			var tw = create_tween()
-			tw.tween_property(sprite, "modulate", Color.RED, 0.1)
-			tw.tween_property(sprite, "modulate", Color.WHITE, 0.1)
+
+
+	if tool_type == prefered_tool_type:
+		current_hp -= amount
+		var tw = create_tween()
+		tw.tween_property(sprite, "modulate", Color.RED, 0.1)
+		tw.tween_property(sprite, "modulate", Color.WHITE, 0.1)
+
 			
-		if current_hp <= 0:
-			die()
+	if current_hp <= 0:
+		die()
 
 func die():
 	is_harvested = true
