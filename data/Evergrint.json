@@ -176,6 +176,21 @@
 						"x": 0,
 						"y": 0
 					}
+				},
+				{
+					"id": "wooden_pickaxe",
+					"name": "Wooden Pickaxe",
+					"type": 1,
+					"stack_limit": 1,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
+					"tile": {
+						"file": "../textures/Atlas-tools-16x16.png",
+						"size": 16,
+						"x": 1,
+						"y": 0
+					}
 				}
 			],
 			"separators": [],
@@ -267,7 +282,7 @@
 					"knockback": 0.2,
 					"hitbox_x": 22,
 					"hitbox_y": 14,
-					"tool_type": 6,
+					"tool_type": 2,
 					"tool_power": 1,
 					"id": "wooden_axe",
 					"weapon_type": 0,
@@ -298,6 +313,18 @@
 					"ammo": 0,
 					"weapon_type": 1,
 					"offset_x": 0
+				},
+				{
+					"id": "wooden_pickaxe",
+					"damage": 4,
+					"attack_speed": 0.6,
+					"knockback": 0.3,
+					"hitbox_x": 22,
+					"hitbox_y": 14,
+					"offset_x": 0,
+					"weapon_type": 0,
+					"tool_type": 4,
+					"tool_power": 1
 				}
 			],
 			"separators": [],
@@ -422,6 +449,12 @@
 						{
 							"item": "iron_sword",
 							"weight": 1,
+							"amount_min": 1,
+							"amount_max": 1
+						},
+						{
+							"item": "wooden_pickaxe",
+							"weight": 100,
 							"amount_min": 1,
 							"amount_max": 1
 						}
