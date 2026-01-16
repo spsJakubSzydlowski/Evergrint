@@ -268,7 +268,7 @@
 					"hitbox_x": 22,
 					"hitbox_y": 14,
 					"tool_type": 6,
-					"tool_power": 2,
+					"tool_power": 1,
 					"id": "wooden_axe",
 					"weapon_type": 0,
 					"offset_x": 0
@@ -526,10 +526,6 @@
 					"typeStr": "6:LootTables",
 					"name": "loot_ref",
 					"display": null
-				},
-				{
-					"typeStr": "2",
-					"name": "is_block"
 				}
 			],
 			"lines": [
@@ -550,7 +546,6 @@
 					"tile_width": 2,
 					"tile_height": 4,
 					"tile_size": 16,
-					"is_block": false,
 					"hitbox_x": 16,
 					"hitbox_y": 50
 				},
@@ -562,8 +557,7 @@
 					"tile_width": 1,
 					"tile_height": 1,
 					"tile_size": 16,
-					"loot_ref": "green_slime",
-					"is_block": true
+					"loot_ref": "green_slime"
 				}
 			],
 			"separators": [],
