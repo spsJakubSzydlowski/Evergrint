@@ -2,6 +2,7 @@ extends Node2D
 
 var player = null
 @onready var tile_map: TileMapLayer = $TileMapLayer
+@onready var object_layer: TileMapLayer = $ObjectLayer
 
 @export var max_entities = 200
 
@@ -9,6 +10,11 @@ var player = null
 func _ready():
 	if not DataManager.is_loaded:
 		await DataManager.database_ready
+	
+	Global.current_world_id = "surface"
+	MiningManager.current_tilemap = object_layer
+	
+	tile_map.generate()
 	
 	if Global.first_time_generation:
 		
