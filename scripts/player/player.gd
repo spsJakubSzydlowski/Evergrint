@@ -78,7 +78,6 @@ func initialize():
 	
 	Signals.player_health_changed.emit(current_hp, max_hp)
 	
-
 func setup_camera_limits():
 	var tile_size = 16
 	var world_width = tile_map.get_used_rect().size.x * tile_size
@@ -114,7 +113,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		var data = object_layer.get_cell_tile_data(tile_pos)
 		
 		if data:
-			MiningManager.damage_block(mouse_pos, 1)
+			var item_stats = DataManager.get_weapon_stats(current_equipped_id)
+			var tool_type_enum
+			var tool_power: int
+			
+			if item_stats != {} and not is_attacking:
+				tool_type_enum = item_stats.get("tool_type")
+				tool_power = item_stats.get("tool_power", 0)
+				MiningManager.damage_block(mouse_pos, tool_type_enum, tool_power)
 			
 	
 	if event.is_action_pressed("attack") and not is_attacking:
