@@ -4,6 +4,7 @@ var river_noise = FastNoiseLite.new()
 var cave_noise = FastNoiseLite.new()
 var world_width = 200
 var world_height = 200
+var ladder_radius = 8.0
 
 var center_map_pos
 
@@ -11,12 +12,7 @@ var occupied_cells = []
 
 @export var object_layer: TileMapLayer
 
-func _ready() -> void:
-	while not DataManager.is_loaded:
-		await get_tree().create_timer(0.1).timeout
-	
-	Signals.block_destroyed.connect(_on_block_destroyed)
-	
+func generate() -> void:
 	cave_noise.seed = Global.world_seed + 50
 	cave_noise.frequency = 0.05
 	
@@ -25,12 +21,12 @@ func _ready() -> void:
 	river_noise.noise_type = FastNoiseLite.TYPE_PERLIN
 	
 	generate_surface()
+
 	var rect = get_used_rect()
 	center_map_pos = rect.position + (rect.size / 2)
 	
 	spawn_starting_ladder()
 	generate_blocks()
-	
 	
 func generate_surface():
 	var stone_tiles : Array[Vector2i] = []
@@ -64,17 +60,26 @@ func generate_blocks():
 	print("START GENERATING BLOCKS")
 	var stone_tiles : Array[Vector2i] = []
 	
-	var ladder_radius = 8.0
 	var ladder_pos = center_map_pos
-	
+
 	for x in range(world_width):
 		for y in range(world_height):
 			var current_pos = Vector2i(x, y)
 			
 			var dist_from_ladder = Vector2(current_pos).distance_to(Vector2(ladder_pos))
+
+			var changes = Global.world_changes.get(Global.current_world_id, {})
 			
 			if dist_from_ladder < ladder_radius:
 				continue
+			
+			if changes.has(current_pos):
+				var change_type = changes[current_pos]
+
+				if change_type == "removed":
+					continue
+				elif change_type == "placed":
+					pass
 			
 			var val = cave_noise.get_noise_2d(x, y)
 			if val > -0.1:
@@ -82,9 +87,3 @@ func generate_blocks():
 	
 	if stone_tiles.size() > 0:
 		object_layer.set_cells_terrain_connect(stone_tiles, 0, 4, false)
-
-func _on_block_destroyed(global_pos):
-	var map_pos = object_layer.local_to_map(global_pos)
-	object_layer.set_cells_terrain_connect([map_pos], 0, -1)
-	
-	Global.world_changes[map_pos] = "removed"
