@@ -1,10 +1,16 @@
 extends Node2D
 
+@onready var tile_map: TileMapLayer = $TileMapLayer
 @onready var object_layer: TileMapLayer = $ObjectLayer
 var center_map_pos = Vector2.ZERO
 
 func _ready() -> void:
 	Global.chunks.clear()
+	
+	Global.current_world_id = "underground"
+	MiningManager.current_tilemap = object_layer
+	
+	tile_map.generate()
 	
 	if object_layer:
 		var rect = object_layer.get_used_rect()
