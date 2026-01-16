@@ -94,7 +94,7 @@ func spawn_starting_sinkhole():
 	@warning_ignore("integer_division")
 	var center_map_pos = Vector2i(world_width / 2, world_height / 2)
 	
-	var sinkhole_pos = center_map_pos + Vector2i(10, 10)
+	var sinkhole_pos = center_map_pos
 
 	object_layer.set_cell(sinkhole_pos, 1, Vector2i(0, 0))
 	
