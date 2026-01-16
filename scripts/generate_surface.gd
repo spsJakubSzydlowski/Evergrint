@@ -12,17 +12,12 @@ var occupied_cells = []
 
 @export var object_layer: TileMapLayer
 
-func _ready() -> void:
-	while not DataManager.is_loaded:
-		await get_tree().create_timer(0.1).timeout
-
+func generate() -> void:
 	river_noise.seed = Global.world_seed
 	river_noise.frequency = 0.001
 	river_noise.noise_type = FastNoiseLite.TYPE_PERLIN
 	
 	generate_surface()
-	await get_tree().process_frame
-	
 	notify_runtime_tile_data_update()
 	spawn_starting_sinkhole()
 	spawn_trees()
@@ -78,7 +73,9 @@ func spawn_trees():
 			if random_map_pos == center_map_pos:
 				continue
 
-			if Global.world_changes.get(random_map_pos) == "removed":
+			var changes = Global.world_changes.get(Global.current_world_id, {})
+
+			if changes.has(random_map_pos):
 				continue
 			
 			if tile_data and not tile_data.get_custom_data("water") and not occupied_cells.has(random_map_pos):
