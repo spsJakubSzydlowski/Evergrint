@@ -3,7 +3,13 @@ extends Node
 var world_seed: int = 0
 var player_pos: Vector2 = Vector2.ZERO
 var first_time_generation = true
-var world_changes = {}
+
+var current_world_id : String = "surface"
+
+var world_changes = {
+	"surface": {},
+	"underground": {}
+}
 
 var chunks = {}
 var chunk_size = 10
