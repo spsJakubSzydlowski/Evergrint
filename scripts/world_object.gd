@@ -53,7 +53,7 @@ func collect_item():
 
 func magnetic_pull(delta):
 	if target_player:
-		await get_tree().create_timer(0.22).timeout
+		await get_tree().create_timer(0.1).timeout
 		current_pull_speed += 250 * delta
 		
 		var direction = (target_player.global_position - global_position).normalized()

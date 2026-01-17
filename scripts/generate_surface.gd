@@ -14,7 +14,7 @@ var occupied_cells = []
 
 func generate() -> void:
 	river_noise.seed = Global.world_seed
-	river_noise.frequency = 0.001
+	river_noise.frequency = 0.01
 	river_noise.noise_type = FastNoiseLite.TYPE_PERLIN
 	
 	generate_surface()
@@ -28,15 +28,22 @@ func generate_surface():
 	
 	for x in range(world_width):
 		for y in range(world_height):
+			var current_pos = Vector2i(x, y)
 			var river_val = river_noise.get_noise_2d(x, y)
 			
-			if abs(river_val) < 0.01:
+			#if abs(river_val) < 0.002:
+				#water_tiles.append(Vector2i(x, y))
+			#elif abs(river_val) < 0.10:
+				#grass_tiles.append(Vector2i(x, y))
+			#else:
+				#grass_tiles.append(Vector2i(x, y))
+				#
+			var val = river_noise.get_noise_2d(x, y)
+			if val < -0.2:
 				water_tiles.append(Vector2i(x, y))
-			elif abs(river_val) < 0.10:
-				grass_tiles.append(Vector2i(x, y))
 			else:
 				grass_tiles.append(Vector2i(x, y))
-					
+		
 	if grass_tiles.size() > 0:
 		self.set_cells_terrain_connect(grass_tiles, 0, GRASS_TERRAIN, false)
 		
