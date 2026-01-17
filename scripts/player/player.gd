@@ -17,8 +17,6 @@ var object_layer = null
 
 var ui: CanvasLayer = null
 
-var current_equipped_id : String = ""
-
 var is_attacking := false
 var can_turn = true
 
@@ -34,7 +32,6 @@ var hit_entities = []
 func _ready() -> void:
 	tile_map = get_tree().get_first_node_in_group("tilemap")
 	object_layer = get_tree().get_first_node_in_group("objectmap")
-	MiningManager.current_tilemap = object_layer
 	setup_camera_limits()
 
 func initialize():
@@ -115,7 +112,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var data = object_layer.get_cell_tile_data(tile_pos)
 		
 		if data:
-			var item_stats = DataManager.get_weapon_stats(current_equipped_id)
+			var item_stats = DataManager.get_weapon_stats(Inventory.current_equipped_id)
 			var tool_type_enum
 			var tool_power: int
 			var tool_range: int
@@ -130,8 +127,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				MiningManager.damage_block(mouse_pos, is_in_distance, tool_type_enum, tool_power)
 			
 	if event.is_action_pressed("attack") and not is_attacking:
-		if current_equipped_id != "":
-			attack(current_equipped_id)
+		if Inventory.current_equipped_id != "":
+			attack(Inventory.current_equipped_id)
 
 func move():
 	if not is_dead:
@@ -219,7 +216,7 @@ func ranged_attack(stats, projectile):
 		Inventory.remove_item(projectile, 1)
 
 func _on_inventory_canvas_item_equipped(item_id: String) -> void:
-	current_equipped_id = item_id
+	Inventory.current_equipped_id = item_id
 	
 	if item_id == "":
 		hand_sprite.texture = null
@@ -277,7 +274,7 @@ func die():
 
 func _on_hit_area_area_entered(area: Area2D) -> void:
 	var attackable = area.get_parent()
-	var item_stats = DataManager.get_weapon_stats(current_equipped_id)
+	var item_stats = DataManager.get_weapon_stats(Inventory.current_equipped_id)
 	
 	if attackable in hit_entities:
 		return

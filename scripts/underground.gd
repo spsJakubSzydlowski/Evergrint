@@ -10,6 +10,7 @@ func _ready() -> void:
 	Global.current_world_id = "underground"
 	MiningManager.current_tilemap = object_layer
 	
+	
 	tile_map.generate()
 	
 	if object_layer:

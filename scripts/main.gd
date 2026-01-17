@@ -13,6 +13,7 @@ func _ready():
 	
 	Global.current_world_id = "surface"
 	MiningManager.current_tilemap = object_layer
+	Inventory.update_inventory()
 	
 	tile_map.generate()
 	

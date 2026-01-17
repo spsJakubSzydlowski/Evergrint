@@ -18,11 +18,14 @@ var is_inventory_open = false
 
 func _ready() -> void:
 	Signals.player_health_changed.connect(update_health_bar)
-	
+
 	Inventory.inventory_updated.connect(on_inventory_updated)
+	
+	get_tree().tree_changed.connect(_on_world_changed)
+	
 	refresh_ui()
 	emit_equipped_signal()
-	
+
 func on_inventory_updated():
 	refresh_ui()
 	emit_equipped_signal()
@@ -117,3 +120,8 @@ func _on_slot_clicked(index):
 		Inventory.swap_slot(first_selected_slot_index, index)
 		first_selected_slot_index = -1
 		refresh_ui()
+
+func _on_world_changed():
+	if get_tree():
+		await get_tree().process_frame
+		emit_equipped_signal()

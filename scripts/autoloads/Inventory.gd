@@ -2,6 +2,8 @@ extends Node
 
 signal inventory_updated
 
+var current_equipped_id: String = ""
+
 var slots_amount: int
 var slots = []
 
@@ -35,7 +37,7 @@ func add_item(item_id: String, amount: int = 1):
 				slot.amount = amount
 				break
 	
-	inventory_updated.emit()
+	update_inventory()
 
 func remove_item(item_id: String, amount: int = 1):
 	var data = DataManager.get_item(item_id)
@@ -52,7 +54,7 @@ func remove_item(item_id: String, amount: int = 1):
 		else:
 			print("item: ", item_id, " hasnt been found; Inventory.gd")
 	
-	inventory_updated.emit()
+	update_inventory()
 
 func has_free_space():
 	for slot in slots:
@@ -65,10 +67,13 @@ func swap_slot(index_a, index_b):
 	var temp = slots[index_a]
 	slots[index_a] = slots[index_b]
 	slots[index_b] = temp
-	inventory_updated.emit()
+	update_inventory()
 
 func get_equipped_ammo():
 	for slot in slots:
 		if DataManager.get_projectile_stats(slot["id"]):
 			return slot["id"]
 	return null
+
+func update_inventory():
+	inventory_updated.emit()
