@@ -4,15 +4,12 @@ signal inventory_updated
 
 var current_equipped_id: String = ""
 
-var slots_amount: int
+var slots_amount: int = 50
 var slots = []
 
 var inventory_full = false
 
 func _ready() -> void:
-	var stats = DataManager.get_full_entity_data("player")
-	slots_amount = stats.get("inventory_slots", 8)
-
 	for i in range(slots_amount):
 		slots.append({"id": "", "amount": 0})
 

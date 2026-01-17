@@ -633,27 +633,6 @@
 			"props": {}
 		},
 		{
-			"name": "PlayerStats",
-			"columns": [
-				{
-					"typeStr": "6:Entities",
-					"name": "id"
-				},
-				{
-					"typeStr": "3",
-					"name": "inventory_slots"
-				}
-			],
-			"lines": [
-				{
-					"inventory_slots": 50,
-					"id": "player"
-				}
-			],
-			"separators": [],
-			"props": {}
-		},
-		{
 			"name": "EnemyStats",
 			"columns": [
 				{
