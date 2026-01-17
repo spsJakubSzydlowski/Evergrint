@@ -3,14 +3,18 @@ extends Node
 var tile_health_map = {}
 var current_tilemap: TileMapLayer
 
-func damage_block(world_pos: Vector2, tool_type, damage: int):
+func damage_block(world_pos: Vector2, is_in_distance: bool, tool_type, damage: int):
 	if not current_tilemap: return
 	
 	var tile_pos = current_tilemap.local_to_map(current_tilemap.to_local(world_pos))
 	var data = current_tilemap.get_cell_tile_data(tile_pos)
 	
+	if not is_in_distance:
+		return
+	
 	if data:
 		var block_id = data.get_custom_data("block_id")
+		
 		if not block_id:
 			return
 		
