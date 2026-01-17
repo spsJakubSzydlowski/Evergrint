@@ -191,6 +191,21 @@
 						"x": 1,
 						"y": 0
 					}
+				},
+				{
+					"id": "stone",
+					"name": "Stone",
+					"type": 3,
+					"stack_limit": 9999,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
+					"tile": {
+						"file": "../textures/Atlas-items-16x16.png",
+						"size": 16,
+						"x": 1,
+						"y": 1
+					}
 				}
 			],
 			"separators": [],
@@ -476,6 +491,17 @@
 							"amount_max": 4
 						}
 					]
+				},
+				{
+					"id": "stone_block",
+					"items": [
+						{
+							"item": "stone",
+							"weight": 100,
+							"amount_min": 1,
+							"amount_max": 1
+						}
+					]
 				}
 			],
 			"separators": [],
@@ -590,7 +616,7 @@
 					"tile_width": 1,
 					"tile_height": 1,
 					"tile_size": 16,
-					"loot_ref": "green_slime"
+					"loot_ref": "stone_block"
 				}
 			],
 			"separators": [],
