@@ -27,7 +27,9 @@ func damage_block(world_pos: Vector2, is_in_distance: bool, tool_type, damage: i
 				tile_health_map[tile_pos] = max_hp
 				
 			tile_health_map[tile_pos] -= damage
-				
+			
+			spawn_hit_effect(tile_pos)
+			
 			if tile_health_map[tile_pos] <= 0:
 				destroy_block(tile_pos, block_info)
 
@@ -58,3 +60,9 @@ func destroy_block(tile_pos: Vector2, block_info: Dictionary):
 			
 			for i in range(amount):
 				DataManager.spawn_item(item_id, current_tilemap.map_to_local(tile_pos), true)
+
+func spawn_hit_effect(tile_pos: Vector2i):
+	var effect = load("res://scenes/effects/explosion.tscn").instantiate()
+	effect.global_position = current_tilemap.map_to_local(tile_pos)
+	get_tree().current_scene.add_child(effect)
+	print(tile_pos, effect.global_position)
