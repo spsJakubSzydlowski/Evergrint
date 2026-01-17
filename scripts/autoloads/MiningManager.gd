@@ -65,4 +65,3 @@ func spawn_hit_effect(tile_pos: Vector2i):
 	var effect = load("res://scenes/effects/explosion.tscn").instantiate()
 	effect.global_position = current_tilemap.map_to_local(tile_pos)
 	get_tree().current_scene.add_child(effect)
-	print(tile_pos, effect.global_position)
