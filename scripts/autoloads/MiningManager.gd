@@ -11,6 +11,8 @@ func damage_block(world_pos: Vector2, tool_type, damage: int):
 	
 	if data:
 		var block_id = data.get_custom_data("block_id")
+		if not block_id:
+			return
 		
 		var block_info = DataManager.get_resource(block_id)
 		var preffered_tool_type = block_info.get("tool_type")
