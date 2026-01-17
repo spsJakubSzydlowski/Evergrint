@@ -256,6 +256,10 @@
 					"name": "tool_power"
 				},
 				{
+					"typeStr": "3",
+					"name": "tool_range"
+				},
+				{
 					"typeStr": "1",
 					"name": "anim_name",
 					"opt": true
@@ -277,7 +281,8 @@
 					"tool_power": 1,
 					"id": "wooden_sword",
 					"weapon_type": 0,
-					"offset_x": 0
+					"offset_x": 0,
+					"tool_range": 0
 				},
 				{
 					"damage": 12,
@@ -289,7 +294,8 @@
 					"tool_power": 1,
 					"id": "iron_sword",
 					"weapon_type": 0,
-					"offset_x": 0
+					"offset_x": 0,
+					"tool_range": 0
 				},
 				{
 					"damage": 1,
@@ -301,7 +307,8 @@
 					"tool_power": 1,
 					"id": "wooden_axe",
 					"weapon_type": 0,
-					"offset_x": 0
+					"offset_x": 0,
+					"tool_range": 0
 				},
 				{
 					"damage": 12,
@@ -314,7 +321,8 @@
 					"anim_name": "attack_swing_heavy",
 					"id": "wooden_hammer",
 					"weapon_type": 0,
-					"offset_x": 20
+					"offset_x": 20,
+					"tool_range": 0
 				},
 				{
 					"damage": 8,
@@ -327,7 +335,8 @@
 					"id": "wooden_bow",
 					"ammo": 0,
 					"weapon_type": 1,
-					"offset_x": 0
+					"offset_x": 0,
+					"tool_range": 0
 				},
 				{
 					"id": "wooden_pickaxe",
@@ -339,7 +348,8 @@
 					"offset_x": 0,
 					"weapon_type": 0,
 					"tool_type": 4,
-					"tool_power": 1
+					"tool_power": 1,
+					"tool_range": 60
 				}
 			],
 			"separators": [],
