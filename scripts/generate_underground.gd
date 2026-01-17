@@ -17,7 +17,7 @@ func generate() -> void:
 	cave_noise.frequency = 0.05
 	
 	river_noise.seed = Global.world_seed
-	river_noise.frequency = 0.001
+	river_noise.frequency = 0.02
 	river_noise.noise_type = FastNoiseLite.TYPE_PERLIN
 	
 	generate_surface()
@@ -69,6 +69,9 @@ func generate_blocks():
 			var dist_from_ladder = Vector2(current_pos).distance_to(Vector2(ladder_pos))
 
 			var changes = Global.world_changes.get(Global.current_world_id, {})
+			
+			if get_cell_tile_data(current_pos).get_custom_data("water"):
+				continue
 			
 			if dist_from_ladder < ladder_radius:
 				continue
