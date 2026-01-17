@@ -109,20 +109,26 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var mouse_pos = get_global_mouse_position()
 		var tile_pos = object_layer.local_to_map(mouse_pos)
-
+		
+		var distance = global_position.distance_to(mouse_pos)
+		
 		var data = object_layer.get_cell_tile_data(tile_pos)
 		
 		if data:
 			var item_stats = DataManager.get_weapon_stats(current_equipped_id)
 			var tool_type_enum
 			var tool_power: int
+			var tool_range: int
+			var is_in_distance: bool
 			
 			if item_stats != {} and not is_attacking:
 				tool_type_enum = item_stats.get("tool_type")
 				tool_power = item_stats.get("tool_power", 0)
-				MiningManager.damage_block(mouse_pos, tool_type_enum, tool_power)
+				tool_range = item_stats.get("tool_range", 0)
+				is_in_distance = distance <= tool_range
+				
+				MiningManager.damage_block(mouse_pos, is_in_distance, tool_type_enum, tool_power)
 			
-	
 	if event.is_action_pressed("attack") and not is_attacking:
 		if current_equipped_id != "":
 			attack(current_equipped_id)
