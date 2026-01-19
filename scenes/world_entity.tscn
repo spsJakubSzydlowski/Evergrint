@@ -1,14 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://crmd7qlpatepp"]
+[gd_scene load_steps=8 format=3 uid="uid://crmd7qlpatepp"]
 
 [ext_resource type="Script" uid="uid://bgls5qeawmvub" path="res://scripts/world_entity.gd" id="1_c2mjn"]
-[ext_resource type="Texture2D" uid="uid://b4ax75b3rejph" path="res://textures/Atlas-enemies.png" id="2_ey0o3"]
+[ext_resource type="SpriteFrames" uid="uid://cx5mjylsy7pp" path="res://sprite_frames/mole_boss.tres" id="2_ey0o3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ey0o3"]
 size = Vector2(16, 11)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kil5o"]
-atlas = ExtResource("2_ey0o3")
-region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="Gradient" id="Gradient_c2mjn"]
 offsets = PackedFloat32Array(0, 0.9782609)
@@ -41,9 +37,10 @@ collision_mask = 3
 position = Vector2(0, 2.5)
 shape = SubResource("RectangleShape2D_ey0o3")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = SubResource("AtlasTexture_kil5o")
-offset = Vector2(0, -8)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_ey0o3")
+animation = &"spawn"
+flip_h = true
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
 visible = false
