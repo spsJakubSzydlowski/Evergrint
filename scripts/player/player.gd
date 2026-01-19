@@ -6,7 +6,7 @@ const WEAPON_TYPE_RANGED = 1
 var tile_map = null
 var object_layer = null
 
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 @onready var weapon_pivot: Node2D = $WeaponPivot
 @onready var hand: Node2D = $WeaponPivot/Hand
@@ -47,26 +47,14 @@ func initialize():
 		
 	name = player.id
 	
-	if player.has("tile"):
-		var raw_path = player.tile.file
-		var clean_path = "res://" + raw_path.replace("../", "")
+	var anim_path = "res://sprite_frames/player.tres"
+	if FileAccess.file_exists(anim_path):
+		var new_frames = load(anim_path)
+		sprite.sprite_frames = new_frames
+		sprite.play("spawn")
+	else:
+		print("Animation was not found")
 		
-		var tex = load(clean_path)
-		if tex:
-			sprite.texture = tex
-			sprite.region_enabled = true
-			
-			var ts_base = Vector2(player.tile_size, player.tile_size)
-			
-			var pos_x = player.tile.x * ts_base.x
-			var pos_y = player.tile.y * ts_base.y
-			
-			var region_w = player.tile_width * ts_base.x
-			var region_h = player.tile_height * ts_base.y
-			
-			sprite.region_rect = Rect2(pos_x, pos_y, region_w, region_h)
-			
-	
 	var stats = DataManager.get_full_entity_data("player")
 	max_hp = stats.get("max_hp", 100)
 	current_hp = max_hp
@@ -74,7 +62,12 @@ func initialize():
 	move_speed = stats.get("move_speed", 100.0)
 	
 	Signals.player_health_changed.emit(current_hp, max_hp)
-	
+
+func play_anim(anim_name: String, sprite_node):
+	if has_node("AnimatedSprite2D"):
+		if sprite_node.sprite_frames.has_animation(anim_name):
+			sprite_node.play(anim_name)
+
 func setup_camera_limits():
 	var tile_size = 16
 	var world_width = tile_map.get_used_rect().size.x * tile_size
