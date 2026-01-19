@@ -10,7 +10,6 @@ func _ready() -> void:
 	Global.current_world_id = "underground"
 	MiningManager.current_tilemap = object_layer
 	
-	
 	tile_map.generate()
 	
 	if object_layer:
@@ -20,3 +19,5 @@ func _ready() -> void:
 	DataManager.spawn_player(object_layer.map_to_local(center_map_pos))
 	
 	await get_tree().process_frame
+	
+	DataManager.spawn_entity("mole_boss", object_layer.map_to_local(center_map_pos) - Vector2(80, 80))
