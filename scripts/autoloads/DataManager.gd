@@ -123,7 +123,7 @@ func spawn_item(id: String, pos: Vector2, drop = true):
 func spawn_entity(id: String, pos: Vector2):
 	if not is_loaded:
 		await get_tree().create_timer(0.1).timeout
-		
+	
 	var entity_scene = preload("res://scenes/world_entity.tscn")
 	var entity_instance = entity_scene.instantiate()
 	
@@ -131,7 +131,7 @@ func spawn_entity(id: String, pos: Vector2):
 	entity_instance.position = pos
 	
 	entity_instance.initialize(id)
-
+	
 func spawn_player(pos: Vector2):
 	if not is_loaded:
 		await get_tree().create_timer(0.1).timeout
