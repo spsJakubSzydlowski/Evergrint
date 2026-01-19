@@ -6,7 +6,6 @@ var player = null
 
 @export var max_entities = 200
 
-
 func _ready():
 	if not DataManager.is_loaded:
 		await DataManager.database_ready
@@ -27,7 +26,7 @@ func _ready():
 		DataManager.spawn_item("wooden_hammer", player.global_position, false)
 		DataManager.spawn_item("wooden_bow", player.global_position, false)
 		DataManager.spawn_item("wooden_pickaxe", player.global_position, false)
-		for i in range(10):
+		for i in range(100):
 			DataManager.spawn_item("arrow", player.global_position, false)
 		
 		Global.first_time_generation = false
