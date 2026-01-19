@@ -29,20 +29,12 @@ func generate_surface():
 	for x in range(world_width):
 		for y in range(world_height):
 			var current_pos = Vector2i(x, y)
-			var river_val = river_noise.get_noise_2d(x, y)
-			
-			#if abs(river_val) < 0.002:
-				#water_tiles.append(Vector2i(x, y))
-			#elif abs(river_val) < 0.10:
-				#grass_tiles.append(Vector2i(x, y))
-			#else:
-				#grass_tiles.append(Vector2i(x, y))
-				#
+
 			var val = river_noise.get_noise_2d(x, y)
 			if val < -0.2:
-				water_tiles.append(Vector2i(x, y))
+				water_tiles.append(current_pos)
 			else:
-				grass_tiles.append(Vector2i(x, y))
+				grass_tiles.append(current_pos)
 		
 	if grass_tiles.size() > 0:
 		self.set_cells_terrain_connect(grass_tiles, 0, GRASS_TERRAIN, false)
