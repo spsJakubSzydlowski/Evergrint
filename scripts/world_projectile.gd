@@ -79,3 +79,8 @@ func _on_area_entered(area: Area2D) -> void:
 			
 			attackable.take_hit(damage_to_deal, knockback, global_position)
 			queue_free()
+
+func _on_body_entered(_body: Node2D) -> void:
+	MiningManager.spawn_hit_effect(MiningManager.current_tilemap.local_to_map(global_position))
+	queue_free()
+	
