@@ -34,15 +34,13 @@ func generate_surface():
 	
 	for x in range(world_width):
 		for y in range(world_height):
-			var river_val = river_noise.get_noise_2d(x, y)
 			
-			if abs(river_val) < 0.01:
-				lava_tiles.append(Vector2i(x, y))
-			elif abs(river_val) < 0.10:
-				stone_tiles.append(Vector2i(x, y))
+			var val = river_noise.get_noise_2d(x, y)
+			if val < -0.2:
+				lava_tiles.append(Vector2i(x ,y))
 			else:
-				stone_tiles.append(Vector2i(x, y))
-	
+				stone_tiles.append(Vector2i(x ,y))
+		
 	if stone_tiles.size() > 0:
 		self.set_cells_terrain_connect(stone_tiles, 0, 1, false)
 		
