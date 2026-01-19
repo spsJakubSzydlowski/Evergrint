@@ -1,0 +1,46 @@
+[gd_resource type="SpriteFrames" load_steps=7 format=3 uid="uid://cx5mjylsy7pp"]
+
+[ext_resource type="Texture2D" uid="uid://iw3krmtgly1" path="res://textures/bosses/Atlas-Mole-Spawn.png" id="1_5oaio"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3cq6b"]
+atlas = ExtResource("1_5oaio")
+region = Rect2(0, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j5imx"]
+atlas = ExtResource("1_5oaio")
+region = Rect2(48, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6xrqu"]
+atlas = ExtResource("1_5oaio")
+region = Rect2(96, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t03km"]
+atlas = ExtResource("1_5oaio")
+region = Rect2(144, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ngmfo"]
+atlas = ExtResource("1_5oaio")
+region = Rect2(192, 0, 48, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3cq6b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j5imx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6xrqu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t03km")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ngmfo")
+}],
+"loop": false,
+"name": &"spawn",
+"speed": 5.0
+}]
