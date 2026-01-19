@@ -379,18 +379,6 @@
 					"typeStr": "14",
 					"name": "tile",
 					"opt": true
-				},
-				{
-					"typeStr": "3",
-					"name": "tile_width"
-				},
-				{
-					"typeStr": "3",
-					"name": "tile_height"
-				},
-				{
-					"typeStr": "3",
-					"name": "tile_size"
 				}
 			],
 			"lines": [
@@ -398,8 +386,7 @@
 					"id": "player",
 					"name": "Player",
 					"max_hp": 100,
-					"move_speed": 300,
-					"tile_size": 8,
+					"move_speed": 80,
 					"tile": {
 						"file": "../textures/player-texture.png",
 						"size": 8,
@@ -407,9 +394,7 @@
 						"y": 0,
 						"width": 2,
 						"height": 3
-					},
-					"tile_width": 2,
-					"tile_height": 3
+					}
 				},
 				{
 					"id": "green_slime",
@@ -421,10 +406,21 @@
 						"x": 0,
 						"y": 0
 					},
-					"tile_size": 16,
-					"move_speed": 25,
-					"tile_width": 1,
-					"tile_height": 1
+					"move_speed": 25
+				},
+				{
+					"id": "mole_boss",
+					"name": "Mole",
+					"max_hp": 100,
+					"move_speed": 0,
+					"tile": {
+						"file": "../textures/bosses/Atlas-Mole-Spawn.png",
+						"size": 16,
+						"x": 12,
+						"y": 0,
+						"width": 3,
+						"height": 2
+					}
 				}
 			],
 			"separators": [],
@@ -510,6 +506,23 @@
 							"weight": 100,
 							"amount_min": 1,
 							"amount_max": 1
+						}
+					]
+				},
+				{
+					"id": "mole_boss",
+					"items": [
+						{
+							"item": "arrow",
+							"weight": 100,
+							"amount_min": 20,
+							"amount_max": 50
+						},
+						{
+							"item": "stone",
+							"weight": 100,
+							"amount_min": 10,
+							"amount_max": 20
 						}
 					]
 				}
@@ -658,6 +671,10 @@
 					"display": null
 				},
 				{
+					"typeStr": "2",
+					"name": "is_boss"
+				},
+				{
 					"typeStr": "6:LootTables",
 					"name": "loot_ref",
 					"display": null
@@ -670,7 +687,17 @@
 					"loot_ref": "green_slime",
 					"faction": 0,
 					"ai_type": 0,
-					"id": "green_slime"
+					"id": "green_slime",
+					"is_boss": false
+				},
+				{
+					"id": "mole_boss",
+					"aggro_range": 1000,
+					"attack_damage": 30,
+					"faction": 0,
+					"ai_type": 0,
+					"loot_ref": "mole_boss",
+					"is_boss": true
 				}
 			],
 			"separators": [],
