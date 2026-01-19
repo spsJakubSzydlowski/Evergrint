@@ -3,19 +3,23 @@
 [ext_resource type="Script" uid="uid://d1kgye2242i2q" path="res://scripts/effect.gd" id="1_8dm26"]
 
 [sub_resource type="Curve" id="Curve_pakj8"]
-_data = [Vector2(0, 1), 0.0, 3.4538527, 0, 0, Vector2(1, 0), -0.8740211, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0, 0.32584274), 0.0, 3.3932588, 0, 0, Vector2(0.4569537, 0.64044946), -0.9695024, -0.9695024, 0, 0, Vector2(1, 0), -0.8740211, 0.0, 0, 0]
+point_count = 3
 
 [node name="explosion" type="CPUParticles2D"]
 emitting = false
 amount = 10
+lifetime = 0.3
 one_shot = true
+speed_scale = 1.2
 explosiveness = 1.0
+direction = Vector2(0, 1)
 spread = 180.0
-gravity = Vector2(0, 10)
+gravity = Vector2(0, 500)
 initial_velocity_min = 20.0
 initial_velocity_max = 50.0
-scale_amount_max = 4.0
+scale_amount_max = 8.0
 scale_amount_curve = SubResource("Curve_pakj8")
 color = Color(0.11858138, 0.11858138, 0.11858138, 1)
+anim_speed_max = 16.37
 script = ExtResource("1_8dm26")
