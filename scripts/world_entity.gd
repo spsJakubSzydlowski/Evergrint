@@ -3,8 +3,9 @@ extends CharacterBody2D
 const FACTION_HOSTILE = 0
 const FACTION_PASSIVE = 1
 
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var health_bar: TextureProgressBar = $HealthBar
+#@onready var anim: AnimationPlayer = $AnimationPlayer
 
 var entity = ""
 var player = null
@@ -12,6 +13,8 @@ var loot_items = {}
 
 #region Combat Variables
 var is_dead := false
+
+var is_boss = false
 
 var max_hp : int
 var current_hp: int
@@ -86,7 +89,7 @@ func process_idle_behaviour(delta: float):
 		else:
 			idle_direction = Vector2.ZERO
 			
-	var idle_speed = entity.get("move_speed", 50.0) * 0.3
+	var idle_speed = entity.get("move_speed", 0.0) * 0.3
 	velocity = idle_direction * idle_speed
 	
 	if idle_direction.x != 0:
@@ -101,26 +104,16 @@ func initialize(entity_id: String):
 	
 	name = entity.id
 	
-	if entity.has("tile"):
-		var raw_path = entity.tile.file
-		var clean_path = "res://" + raw_path.replace("../", "")
-		
-		var tex = load(clean_path)
-		if tex:
-			sprite.texture = tex
-			sprite.region_enabled = true
-			
-			var ts_base = Vector2(16, 16)
-			
-			var pos_x = entity.tile.x * ts_base.x
-			var pos_y = entity.tile.y * ts_base.y
-			
-			var region_w = entity.tile_width * ts_base.x
-			var region_h = entity.tile_height * ts_base.y
-			
-			sprite.region_rect = Rect2(pos_x, pos_y, region_w, region_h)
-	
+	var anim_path = "res://sprite_frames/" + entity_id + ".tres"
+	if FileAccess.file_exists(anim_path):
+		var new_frames = load(anim_path)
+		sprite.sprite_frames = new_frames
+		sprite.play("spawn")
+	else:
+		print("Animation was not founded")
+
 	var stats = DataManager.get_full_entity_data(entity_id)
+	is_boss = stats.get("is_boss", false)
 	max_hp = stats.get("max_hp", 1)
 	current_hp = max_hp
 	health_bar.max_value = max_hp
@@ -133,6 +126,8 @@ func initialize(entity_id: String):
 	
 	var table_id= stats.get("loot_ref")
 	loot_items = DataManager.get_loot_table_items(table_id)
+	
+	play_anim("spawn", sprite)
 
 func _on_world_entity_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
@@ -145,8 +140,6 @@ func take_hit(amount: int, knockback: float, source_pos):
 		aggro_range = start_aggro_range * aggro_range_mult
 		got_hit = true
 
-	is_stunned = true
-	
 	var tween = create_tween()
 	tween.tween_property(sprite, "modulate", Color.RED, 0.1)
 	tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
@@ -154,14 +147,17 @@ func take_hit(amount: int, knockback: float, source_pos):
 	current_hp -= amount
 	update_heath_bar()
 	
+	if current_hp < (max_hp * 0.5) and is_boss:
+		sprite.modulate = Color(2, 0.5, 0.5)
+	
 	if current_hp <= 0:
 		die()
 		return
-
-	apply_knockback(knockback, source_pos)
 	
-	await get_tree().create_timer(0.2).timeout
-	is_stunned = false
+	if not is_boss:
+		is_stunned = true
+		apply_knockback(knockback, source_pos)
+		
 
 func apply_knockback(knockback, source_pos):
 	var knockback_dir = source_pos.direction_to(global_position)
@@ -169,6 +165,9 @@ func apply_knockback(knockback, source_pos):
 	
 	var tween = create_tween()
 	tween.tween_property(self, "global_position", target_pos, 0.15).set_trans(Tween.TRANS_BOUNCE)
+	
+	await get_tree().create_timer(0.2).timeout
+	is_stunned = false
 	
 func die():
 	is_dead = true
@@ -212,3 +211,13 @@ func update_heath_bar():
 	else:
 		var factor = health_ratio * 2.0
 		health_bar.tint_progress = Color.RED.lerp(Color.YELLOW, factor)
+
+func play_anim(anim_name: String, sprite_node):
+	if has_node("AnimationPlayer"):
+		var animation_player = $AnimationPlayer
+		if animation_player.has_animation(anim_name) and animation_player.current_animation != anim_name:
+			animation_player.play(anim_name)
+			
+	elif has_node("AnimatedSprite2D"):
+		if sprite_node.sprite_frames.has_animation(anim_name):
+			sprite_node.play(anim_name)
