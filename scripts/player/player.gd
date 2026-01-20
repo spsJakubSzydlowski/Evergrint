@@ -262,7 +262,6 @@ func die():
 	is_attacking = false
 	
 	visible = false
-	
 	Signals.player_died.emit()
 
 func _on_hit_area_area_entered(area: Area2D) -> void:
