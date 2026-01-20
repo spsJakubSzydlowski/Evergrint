@@ -118,6 +118,9 @@ func initialize(entity_id: String):
 	current_hp = max_hp
 	health_bar.max_value = max_hp
 	
+	if is_boss:
+		health_bar.position.y *= 2
+	
 	faction = stats.get("faction")
 	start_aggro_range = stats.get("aggro_range", 100.0)
 	aggro_range = start_aggro_range
