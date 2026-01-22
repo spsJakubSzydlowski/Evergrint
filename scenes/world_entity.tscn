@@ -39,7 +39,7 @@ shape = SubResource("RectangleShape2D_ey0o3")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("2_ey0o3")
-animation = &"spawn"
+animation = &"dig_down"
 flip_h = true
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
