@@ -23,6 +23,7 @@ Signals="*res://scripts/autoloads/Signals.gd"
 Global="*res://scripts/autoloads/Global.gd"
 InventoryCanvas="*res://scenes/UI/UserInterface.tscn"
 MiningManager="*res://scripts/autoloads/MiningManager.gd"
+AbilityManager="*res://scripts/autoloads/AbilityManager.gd"
 
 [display]
 
