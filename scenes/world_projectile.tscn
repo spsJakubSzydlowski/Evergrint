@@ -1,16 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://bl3huv5vdn33c"]
+[gd_scene load_steps=4 format=3 uid="uid://bl3huv5vdn33c"]
 
 [ext_resource type="Script" uid="uid://ckipeyyp8vpfb" path="res://scripts/world_projectile.gd" id="1_g0qkp"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g0qkp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fgs2s"]
 
 [node name="world_projectile" type="Area2D"]
 collision_layer = 2
-collision_mask = 5
+collision_mask = 7
 script = ExtResource("1_g0qkp")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-rotation = -1.5707964
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_g0qkp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_fgs2s")
