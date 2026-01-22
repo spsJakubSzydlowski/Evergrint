@@ -1,6 +1,26 @@
-[gd_resource type="SpriteFrames" load_steps=7 format=3 uid="uid://cx5mjylsy7pp"]
+[gd_resource type="SpriteFrames" load_steps=12 format=3 uid="uid://cx5mjylsy7pp"]
 
 [ext_resource type="Texture2D" uid="uid://iw3krmtgly1" path="res://textures/bosses/Atlas-Mole-Spawn.png" id="1_5oaio"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5oaio"]
+atlas = ExtResource("1_5oaio")
+region = Rect2(192, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6x7i"]
+atlas = ExtResource("1_5oaio")
+region = Rect2(144, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ts4l"]
+atlas = ExtResource("1_5oaio")
+region = Rect2(96, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m83jy"]
+atlas = ExtResource("1_5oaio")
+region = Rect2(48, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qqy36"]
+atlas = ExtResource("1_5oaio")
+region = Rect2(0, 0, 48, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3cq6b"]
 atlas = ExtResource("1_5oaio")
@@ -24,6 +44,26 @@ region = Rect2(192, 0, 48, 32)
 
 [resource]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5oaio")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a6x7i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ts4l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m83jy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qqy36")
+}],
+"loop": true,
+"name": &"dig_down",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_3cq6b")
