@@ -28,6 +28,9 @@ var faction = null
 var is_chasing = false
 
 var got_hit = false
+var is_acting = false
+
+var last_attack = ""
 
 #endregion
 
@@ -69,15 +72,24 @@ func process_active_behaviour(delta):
 					sprite.flip_h = direction.x < 0
 			else:
 				process_idle_behaviour(delta)
-				
-			if distance <= attack_range + 5 and not player.is_dead:
-				attack_timer += delta
-				if attack_timer >= attack_cooldown:
+			
+			attack_timer += delta
+			if attack_timer >= attack_cooldown:
+				if distance <= attack_range + 5:
 					deal_damage(player)
 					attack_timer = 0.0
-			else:
+				if is_boss:
+					is_acting = true
+					if last_attack == "rock":
+						AbilityManager.spawn_at_player(self, player)
+						last_attack = "teleport"
+					else:
+						AbilityManager.rock_burst(self, 8)
+						last_attack = "rock"
+					
 				attack_timer = 0.0
 				
+	if not is_acting:
 		move_and_slide()
 
 func process_idle_behaviour(delta: float):
@@ -110,7 +122,7 @@ func initialize(entity_id: String):
 		sprite.sprite_frames = new_frames
 		sprite.play("spawn")
 	else:
-		print("Animation was not founded")
+		print("Animation was not found")
 
 	var stats = DataManager.get_full_entity_data(entity_id)
 	is_boss = stats.get("is_boss", false)
@@ -216,11 +228,6 @@ func update_heath_bar():
 		health_bar.tint_progress = Color.RED.lerp(Color.YELLOW, factor)
 
 func play_anim(anim_name: String, sprite_node):
-	if has_node("AnimationPlayer"):
-		var animation_player = $AnimationPlayer
-		if animation_player.has_animation(anim_name) and animation_player.current_animation != anim_name:
-			animation_player.play(anim_name)
-			
-	elif has_node("AnimatedSprite2D"):
-		if sprite_node.sprite_frames.has_animation(anim_name):
+	if has_node("AnimatedSprite2D"):
+		if sprite_node.sprite_frames.has_animation(anim_name) and sprite_node.animation != anim_name:
 			sprite_node.play(anim_name)
