@@ -175,7 +175,7 @@ func attack(item_id):
 	elif stats.get("weapon_type") == WEAPON_TYPE_RANGED:
 		var projectile = Inventory.get_equipped_ammo()
 		if projectile:
-			hand_sprite.rotation = deg_to_rad(0)
+			hand_sprite.rotation = 0
 			ranged_attack(stats, projectile)
 			await get_tree().create_timer(0.5).timeout
 	
