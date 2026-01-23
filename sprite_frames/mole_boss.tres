@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=12 format=3 uid="uid://cx5mjylsy7pp"]
+[gd_resource type="SpriteFrames" load_steps=13 format=3 uid="uid://cx5mjylsy7pp"]
 
 [ext_resource type="Texture2D" uid="uid://iw3krmtgly1" path="res://textures/bosses/Atlas-Mole-Spawn.png" id="1_5oaio"]
 
@@ -21,6 +21,10 @@ region = Rect2(48, 0, 48, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_qqy36"]
 atlas = ExtResource("1_5oaio")
 region = Rect2(0, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dbxkd"]
+atlas = ExtResource("1_5oaio")
+region = Rect2(192, 0, 48, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3cq6b"]
 atlas = ExtResource("1_5oaio")
@@ -62,6 +66,14 @@ animations = [{
 }],
 "loop": false,
 "name": &"dig_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dbxkd")
+}],
+"loop": true,
+"name": &"idle",
 "speed": 5.0
 }, {
 "frames": [{
