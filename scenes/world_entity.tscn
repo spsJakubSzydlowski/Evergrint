@@ -4,7 +4,7 @@
 [ext_resource type="SpriteFrames" uid="uid://cx5mjylsy7pp" path="res://sprite_frames/mole_boss.tres" id="2_ey0o3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ey0o3"]
-size = Vector2(16, 11)
+size = Vector2(23, 30)
 
 [sub_resource type="Gradient" id="Gradient_c2mjn"]
 offsets = PackedFloat32Array(0, 0.9782609)
@@ -29,12 +29,10 @@ collision_mask = 3
 script = ExtResource("1_c2mjn")
 
 [node name="hurt_box" type="Area2D" parent="."]
-position = Vector2(0, -8)
 collision_layer = 4
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurt_box"]
-position = Vector2(0, 2.5)
 shape = SubResource("RectangleShape2D_ey0o3")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
