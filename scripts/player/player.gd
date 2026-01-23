@@ -15,6 +15,10 @@ var object_layer = null
 @onready var weapon_collision_shape: CollisionShape2D = $WeaponPivot/Hand/HitArea/CollisionShape2D
 @onready var camera: Camera2D = $Camera2D
 
+#region Movement Variables
+var move_speed : float
+var acceleration = 400.0
+#endregion
 var ui: CanvasLayer = null
 
 var is_attacking := false
@@ -22,8 +26,6 @@ var can_turn = true
 
 var max_hp : int
 var current_hp : int
-
-var move_speed : float
 
 var is_dead = false
 
@@ -78,8 +80,8 @@ func setup_camera_limits():
 	camera.limit_right = world_width
 	camera.limit_bottom = world_height
 
-func _physics_process(_delta: float) -> void:
-	move()
+func _physics_process(delta: float) -> void:
+	move(delta)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
@@ -123,15 +125,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		if Inventory.current_equipped_id != "":
 			attack(Inventory.current_equipped_id)
 
-func move():
+func move(delta):
 	if not is_dead:
 		var direction := Input.get_vector("a", "d", "w", "s").normalized()
 		if direction:
-			velocity.x = direction.x * move_speed
-			velocity.y = direction.y * move_speed
+			velocity = velocity.move_toward(direction * move_speed, acceleration * delta)
 		else:
-			velocity.x = move_toward(velocity.x, 0, move_speed)
-			velocity.y = move_toward(velocity.y, 0, move_speed)
+			velocity = velocity.move_toward(Vector2.ZERO, acceleration * delta)
 		
 		if direction.x < 0 and can_turn:
 			sprite.flip_h = true
