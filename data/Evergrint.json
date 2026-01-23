@@ -376,6 +376,14 @@
 					"name": "move_speed"
 				},
 				{
+					"typeStr": "3",
+					"name": "hitbox_x"
+				},
+				{
+					"typeStr": "3",
+					"name": "hitbox_y"
+				},
+				{
 					"typeStr": "14",
 					"name": "tile",
 					"opt": true
@@ -394,7 +402,9 @@
 						"y": 0,
 						"width": 2,
 						"height": 3
-					}
+					},
+					"hitbox_x": 0,
+					"hitbox_y": 0
 				},
 				{
 					"id": "green_slime",
@@ -406,7 +416,9 @@
 						"x": 0,
 						"y": 0
 					},
-					"move_speed": 25
+					"move_speed": 25,
+					"hitbox_x": 14,
+					"hitbox_y": 6
 				},
 				{
 					"id": "mole_boss",
@@ -420,7 +432,9 @@
 						"y": 0,
 						"width": 3,
 						"height": 2
-					}
+					},
+					"hitbox_x": 24,
+					"hitbox_y": 24
 				}
 			],
 			"separators": [],
