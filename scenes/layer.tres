@@ -619,6 +619,7 @@ texture = ExtResource("3_eoim6")
 
 [resource]
 physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 3
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Grass"
 terrain_set_0/terrain_0/color = Color(0.6117647, 0.011764706, 0.2627451, 1)
