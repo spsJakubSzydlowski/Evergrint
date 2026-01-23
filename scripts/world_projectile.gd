@@ -25,7 +25,7 @@ func _physics_process(delta: float) -> void:
 	if projectile != null:
 		move(delta)
 
-func initialize(projectile_id: String, pos: Vector2, used_weapon_stats, dir: Vector2):
+func initialize(projectile_id: String, pos: Vector2, used_weapon_stats, dir: Vector2, source_plr):
 	projectile = DataManager.get_projectile(projectile_id)
 
 	if projectile == null:
@@ -49,8 +49,7 @@ func initialize(projectile_id: String, pos: Vector2, used_weapon_stats, dir: Vec
 
 	weapon_stats = used_weapon_stats
 
-	if projectile_stats.get("projectile_type") == PROJECTILE_TYPE_ENTITY:
-		is_projectile_from_player = false
+	is_projectile_from_player = source_plr
 		
 	collision.shape = collision.shape.duplicate()
 	collision.shape.size = Vector2(projectile_stats.get("hitbox_x", 16),
@@ -87,7 +86,7 @@ func _on_area_entered(area: Area2D) -> void:
 			
 func _on_body_entered(body) -> void:
 	#player
-	if body.has_method("take_hit") and not is_projectile_from_player:
+	if body.has_method("take_hit") and not is_projectile_from_player and body.can_be_hit:
 		var damage_to_deal: int
 		#var knockback: float
 		if projectile_stats != {}:
