@@ -55,42 +55,16 @@ func _physics_process(delta: float) -> void:
 	process_active_behaviour(delta)
 
 func process_active_behaviour(delta):
-	if faction == FACTION_HOSTILE and not is_stunned:
-		if player and not is_dead:
-			var distance = global_position.distance_to(player.global_position)
-			
-			if distance < attack_range and not player.is_dead:
-				velocity = Vector2.ZERO
-			elif distance <= aggro_range and not player.is_dead:
-				var direction_raw = (player.global_position - global_position)
-				var direction = direction_raw.normalized()
-
-				move_speed = entity.get("move_speed")
-				velocity = direction * move_speed
-				
-				if direction.x != 0:
-					sprite.flip_h = direction.x < 0
-			else:
-				process_idle_behaviour(delta)
-			
-			attack_timer += delta
-			if attack_timer >= attack_cooldown:
-				if distance <= attack_range + 5:
-					if not is_boss:
-						deal_damage(player)
-						attack_timer = 0.0
-				if is_boss:
-					if last_attack == "projectiles":
-						is_acting = true
-						AbilityManager.spawn_at_player(self, player)
-						last_attack = "teleport"
-					else:
-						AbilityManager.projectile_burst("boulder", self, 8)
-						last_attack = "projectiles"
-				else:
-					AbilityManager.projectile_burst("arrow", self, 6)
-				attack_timer = 0.0
-				
+	if faction != FACTION_HOSTILE or is_dead or is_stunned or not player:
+		return
+		
+	var distance_to_player = global_position.distance_to(player.global_position)
+	
+	if not is_acting:
+		handle_movement(distance_to_player)
+		
+	handle_attacks(delta, distance_to_player)
+	
 	if not is_acting:
 		move_and_slide()
 
@@ -109,6 +83,46 @@ func process_idle_behaviour(delta: float):
 	if idle_direction.x != 0:
 		sprite.flip_h = idle_direction.x < 0
 
+func handle_movement(distance_to_player):
+	if player.is_dead:
+		velocity = Vector2.ZERO
+		return
+
+	if distance_to_player < attack_range:
+		velocity = Vector2.ZERO
+	elif distance_to_player <= aggro_range:
+		var direction = (player.global_position - global_position).normalized()
+		velocity = direction * entity.get("move_speed", 100)
+		sprite.flip_h = direction.x < 0
+	else:
+		process_idle_behaviour(get_physics_process_delta_time())
+
+func handle_attacks(delta, distance_to_player):
+	attack_timer += delta
+	if attack_timer < attack_cooldown or player.is_dead:
+		return
+
+	if distance_to_player <= aggro_range:
+		execute_attack_logic()
+		attack_timer = 0.0
+
+func execute_attack_logic():
+	print("jsem boss? " + str(is_boss))
+	if is_boss:
+		perform_boss_cycle()
+	else:
+		AbilityManager.projectile_burst("arrow", self, 6)
+
+func perform_boss_cycle():
+	print("bossing")
+	is_acting = true
+	if last_attack == "projectiles":
+		AbilityManager.spawn_at_player(self, player)
+		last_attack = "teleport"
+	else:
+		AbilityManager.projectile_burst("boulder", self, 8)
+		last_attack = "projectiles"
+
 func initialize(entity_id: String):
 	entity = DataManager.get_entity(entity_id)
 	
@@ -118,6 +132,7 @@ func initialize(entity_id: String):
 	
 	name = entity.id
 	collision.shape.size = Vector2(entity.get("hitbox_x"), entity.get("hitbox_y"))
+	
 	var anim_path = "res://sprite_frames/" + entity_id + ".tres"
 	if FileAccess.file_exists(anim_path):
 		var new_frames = load(anim_path)
@@ -175,7 +190,6 @@ func take_hit(amount: int, knockback: float, source_pos):
 		is_stunned = true
 		apply_knockback(knockback, source_pos)
 		
-
 func apply_knockback(knockback, source_pos):
 	var knockback_dir = source_pos.direction_to(global_position)
 	var target_pos = global_position + (knockback_dir * knockback * 20.0)
