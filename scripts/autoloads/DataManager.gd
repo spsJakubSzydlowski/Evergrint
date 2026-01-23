@@ -160,13 +160,13 @@ func spawn_resource(id: String, pos: Vector2, parent = null):
 	
 	return resource_instance
 
-func spawn_projectile(id: String, pos: Vector2, used_weapon_stats, direction: Vector2):
+func spawn_projectile(id: String, pos: Vector2, used_weapon_stats, direction: Vector2, source_plr = false):
 	var projectile_scene = preload("res://scenes/world_projectile.tscn")
 	var projectile_instance = projectile_scene.instantiate()
 	
 	get_tree().current_scene.add_child.call_deferred(projectile_instance)
 	projectile_instance.position = pos
 	
-	projectile_instance.initialize(id, pos, used_weapon_stats, direction)
+	projectile_instance.initialize(id, pos, used_weapon_stats, direction, source_plr)
 	
 	return projectile_instance
