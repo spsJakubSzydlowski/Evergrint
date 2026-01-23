@@ -60,7 +60,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qqy36")
 }],
-"loop": true,
+"loop": false,
 "name": &"dig_down",
 "speed": 5.0
 }, {
