@@ -423,7 +423,7 @@
 				{
 					"id": "mole_boss",
 					"name": "Mole",
-					"max_hp": 100,
+					"max_hp": 250,
 					"move_speed": 0,
 					"tile": {
 						"file": "../textures/bosses/Atlas-Mole-Spawn.png",
