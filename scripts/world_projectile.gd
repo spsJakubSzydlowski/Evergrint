@@ -85,10 +85,7 @@ func _on_area_entered(area: Area2D) -> void:
 			
 			attackable.take_hit(damage_to_deal, knockback, global_position)
 			queue_free()
-	#elif not attackable.has_method("take_hit"):
-		#MiningManager.spawn_hit_effect(MiningManager.current_tilemap.local_to_map(global_position))
-		#queue_free()
-
+			
 func _on_body_entered(body) -> void:
 	#player
 	if body.has_method("take_hit") and not is_projectile_from_player:
@@ -100,9 +97,9 @@ func _on_body_entered(body) -> void:
 			#knockback = weapon_stats.get("knockback", 0.0)
 			body.take_hit(damage_to_deal)
 			
-	#elif not body.has_method("take_hit"):
-		#MiningManager.spawn_hit_effect(MiningManager.current_tilemap.local_to_map(global_position))
-		#queue_free()
+	elif not body.has_method("take_hit"):
+		MiningManager.spawn_hit_effect(MiningManager.current_tilemap.local_to_map(global_position))
+		queue_free()
 
 func play_anim(anim_name: String, sprite_node):
 	if has_node("AnimationPlayer"):
