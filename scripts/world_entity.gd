@@ -5,7 +5,7 @@ const FACTION_PASSIVE = 1
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var health_bar: TextureProgressBar = $HealthBar
-#@onready var anim: AnimationPlayer = $AnimationPlayer
+@onready var collision: CollisionShape2D = $hurt_box/CollisionShape2D
 
 var entity = ""
 var player = null
@@ -79,14 +79,15 @@ func process_active_behaviour(delta):
 					deal_damage(player)
 					attack_timer = 0.0
 				if is_boss:
-					is_acting = true
-					if last_attack == "rock":
+					if last_attack == "projectiles":
+						is_acting = true
 						AbilityManager.spawn_at_player(self, player)
 						last_attack = "teleport"
 					else:
-						AbilityManager.rock_burst(self, 8)
-						last_attack = "rock"
-					
+						AbilityManager.projectile_burst("boulder", self, 8)
+						last_attack = "projectiles"
+				else:
+					AbilityManager.projectile_burst("arrow", self, 6)
 				attack_timer = 0.0
 				
 	if not is_acting:
@@ -115,7 +116,7 @@ func initialize(entity_id: String):
 		return
 	
 	name = entity.id
-	
+	collision.shape.size = Vector2(entity.get("hitbox_x"), entity.get("hitbox_y"))
 	var anim_path = "res://sprite_frames/" + entity_id + ".tres"
 	if FileAccess.file_exists(anim_path):
 		var new_frames = load(anim_path)
