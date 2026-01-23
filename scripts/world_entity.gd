@@ -30,7 +30,7 @@ var is_chasing = false
 var got_hit = false
 var is_acting = false
 
-var last_attack = ""
+var next_attack = "teleport"
 
 #endregion
 
@@ -102,26 +102,28 @@ func handle_attacks(delta, distance_to_player):
 	if attack_timer < attack_cooldown or player.is_dead:
 		return
 
-	if distance_to_player <= aggro_range:
+	if distance_to_player <= aggro_range and not is_acting:
 		execute_attack_logic()
 		attack_timer = 0.0
 
 func execute_attack_logic():
-	print("jsem boss? " + str(is_boss))
 	if is_boss:
 		perform_boss_cycle()
 	else:
 		AbilityManager.projectile_burst("arrow", self, 6)
 
 func perform_boss_cycle():
-	print("bossing")
-	is_acting = true
-	if last_attack == "projectiles":
+	if next_attack == "teleport":
 		AbilityManager.spawn_at_player(self, player)
-		last_attack = "teleport"
-	else:
+		next_attack = "projectiles"
+		
+	elif next_attack == "projectiles":
 		AbilityManager.projectile_burst("boulder", self, 8)
-		last_attack = "projectiles"
+		next_attack = "wait"
+		
+	elif next_attack == "wait":
+		AbilityManager.wait(self, 1.6)
+		next_attack = "teleport"
 
 func initialize(entity_id: String):
 	entity = DataManager.get_entity(entity_id)
