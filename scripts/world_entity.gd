@@ -76,8 +76,9 @@ func process_active_behaviour(delta):
 			attack_timer += delta
 			if attack_timer >= attack_cooldown:
 				if distance <= attack_range + 5:
-					deal_damage(player)
-					attack_timer = 0.0
+					if not is_boss:
+						deal_damage(player)
+						attack_timer = 0.0
 				if is_boss:
 					if last_attack == "projectiles":
 						is_acting = true
@@ -191,7 +192,7 @@ func die():
 	queue_free()
 
 func deal_damage(body):
-	if body.has_method("take_hit"):
+	if body.has_method("take_hit") and body.can_be_hit:
 		var direction_to_player = global_position.direction_to(player.global_position)
 		var dash_vector = direction_to_player * 10.0
 		
