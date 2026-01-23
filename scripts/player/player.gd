@@ -14,12 +14,15 @@ var object_layer = null
 @onready var animation_player: AnimationPlayer = $WeaponPivot/Hand/AnimationPlayer
 @onready var weapon_collision_shape: CollisionShape2D = $WeaponPivot/Hand/HitArea/CollisionShape2D
 @onready var camera: Camera2D = $Camera2D
+@onready var hit_collision: CollisionShape2D = $hit_collision
 
 #region Movement Variables
 var move_speed : float
 var acceleration = 400.0
 #endregion
+
 var ui: CanvasLayer = null
+var can_be_hit = true
 
 var is_attacking := false
 var can_turn = true
@@ -205,7 +208,8 @@ func ranged_attack(stats, projectile):
 	var direction = Vector2.RIGHT.rotated(weapon_pivot.rotation)
 	
 	if projectile:
-		DataManager.spawn_projectile(projectile, hand_sprite.global_position, stats, direction)
+		var is_projectile_from_player = true
+		DataManager.spawn_projectile(projectile, hand_sprite.global_position, stats, direction, is_projectile_from_player)
 		Inventory.remove_item(projectile, 1)
 
 func _on_inventory_canvas_item_equipped(item_id: String) -> void:
@@ -250,12 +254,14 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 
 func take_hit(damage):
 	if is_dead: return
-
+	
 	current_hp -= damage
 	Signals.player_health_changed.emit(current_hp, max_hp)
 	
 	if current_hp <= 0:
 		die()
+		
+	can_be_hit = false
 
 func die():
 	is_dead = true
@@ -309,3 +315,5 @@ func respawn():
 	
 	Signals.player_health_changed.emit(current_hp, max_hp)
 	
+func _on_invincibility_frames_timeout() -> void:
+	can_be_hit = true
