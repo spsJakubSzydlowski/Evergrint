@@ -1,6 +1,6 @@
 extends Node
 
-func rock_burst(source, count: int):
+func projectile_burst(projectile_id, source, count: int):
 	var tween = source.create_tween()
 	tween.tween_interval(1.0)
 	tween.tween_callback(func():
@@ -10,7 +10,7 @@ func rock_burst(source, count: int):
 			
 			var direction = Vector2.RIGHT.rotated(angle + offset)
 			
-			DataManager.spawn_projectile("boulder", source.global_position, {}, direction)
+			DataManager.spawn_projectile(projectile_id, source.global_position, {}, direction)
 	)
 	
 func spawn_at_player(source, player):
