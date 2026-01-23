@@ -6,8 +6,6 @@ const PROJECTILE_TYPE_ARROW = 1
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision: CollisionShape2D = $CollisionShape2D
 
-#var sprite = null
-#var collision = null
 var player = null
 
 var projectile = null
@@ -63,6 +61,7 @@ func initialize(projectile_id: String, pos: Vector2, used_weapon_stats, dir: Vec
 	rotation = direction.angle()
 	
 	if projectile_stats.get("projectile_type") == PROJECTILE_TYPE_ARROW:
+		collision.rotation_degrees -= 90
 		rotation_degrees -= 90
 
 func move(delta):
