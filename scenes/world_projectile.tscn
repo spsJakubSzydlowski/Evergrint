@@ -7,7 +7,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fgs2s"]
 
 [node name="world_projectile" type="Area2D"]
-collision_layer = 2
+collision_layer = 32
 collision_mask = 7
 script = ExtResource("1_g0qkp")
 
