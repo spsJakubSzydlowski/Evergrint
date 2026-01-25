@@ -23,7 +23,7 @@ gradient = SubResource("Gradient_kil5o")
 width = 16
 height = 3
 
-[node name="world_entity" type="CharacterBody2D" groups=["entity"]]
+[node name="world_entity" type="CharacterBody2D" groups=["Entity"]]
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_c2mjn")
