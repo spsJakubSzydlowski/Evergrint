@@ -72,33 +72,40 @@ func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 
 func _on_area_entered(area: Area2D) -> void:
 	var attackable = area.get_parent()
-
-	if attackable.has_method("take_hit") and is_projectile_from_player and not attackable.is_in_group("Player"):
-		var damage_to_deal: int
-		var knockback: float
+	
+	if not attackable.has_method("take_hit") or not attackable.can_be_hit:
+		return
+	
+	var is_hitting_entity = is_projectile_from_player and attackable.is_in_group("Entity")
+	var is_hiting_player = not is_projectile_from_player and attackable.is_in_group("Player")
+	
+	if is_hitting_entity:
+		player_projectile_hit(attackable)
+	elif is_hiting_player:
+		entity_projectile_hit(attackable)
 		
-		if weapon_stats != {} and projectile_stats != {}:
-			damage_to_deal = (projectile_stats.get("damage", 0) + weapon_stats.get("damage", 0)) / 2
-			knockback = weapon_stats.get("knockback", 0)
-			
-			attackable.take_hit(damage_to_deal, knockback, global_position)
-			queue_free()
+
+func player_projectile_hit(attackable):
+	var damage = (projectile_stats.get("damage", 0) + weapon_stats.get("damage", 0)) / 2
+	var knockback = weapon_stats.get("knockback", 0)
+	attackable.take_hit(damage, knockback, global_position)
+	destroy_projectile()
+
+func entity_projectile_hit(attackable):
+	var damage = projectile_stats.get("damage", 0)
+	var knockback = projectile_stats.get("knockback", 0)
+	attackable.take_hit(damage, knockback, global_position)
+
+func _on_body_entered(body: Node2D) -> void:
+	if not body.is_in_group("Player") and not body.is_in_group("Entity"):
+		var tile_pos = MiningManager.current_tilemap.local_to_map(global_position)
+		MiningManager.spawn_hit_effect(tile_pos)
+		destroy_projectile()
+
+func destroy_projectile():
+	if is_queued_for_deletion(): return
 	
-	#NEFUNGUJE TO!!!
-	#damage to player
-	elif attackable.has_method("take_hit") and not is_projectile_from_player and attackable.is_in_group("Player") and attackable.can_be_hit:
-		var damage_to_deal: int
-		#var knockback: float
-		if projectile_stats != {}:
-			
-			damage_to_deal = (projectile_stats.get("damage", 0))
-			#knockback = weapon_stats.get("knockback", 0.0)
-			attackable.take_hit(damage_to_deal)
-	
-	#Když krtek vystřelí, spustí se tohle
-	elif not attackable.has_method("take_hit"):
-		MiningManager.spawn_hit_effect(MiningManager.current_tilemap.local_to_map(global_position))
-		queue_free()
+	queue_free()
 
 func play_anim(anim_name: String, sprite_node):
 	if has_node("AnimationPlayer"):
