@@ -15,11 +15,13 @@ var loot_items = {}
 var is_dead := false
 
 var is_boss = false
+var can_be_hit = true
 
 var max_hp : int
 var current_hp: int
 
 var attack_damage : int
+var knockback: float
 var attack_range = 12.0
 var start_aggro_range: float
 var aggro_range: float
@@ -157,6 +159,7 @@ func initialize(entity_id: String):
 	aggro_range = start_aggro_range
 	
 	attack_damage = stats.get("attack_damage", 0)
+	knockback = stats.get("knockback", 0)
 	
 	var table_id= stats.get("loot_ref")
 	loot_items = DataManager.get_loot_table_items(table_id)
@@ -167,7 +170,7 @@ func _on_world_entity_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		deal_damage(body)
 
-func take_hit(amount: int, knockback: float, source_pos):
+func take_hit(amount: int, knockback_amount: float, source_pos):
 	if is_dead: return
 	
 	if got_hit == false:
@@ -189,12 +192,12 @@ func take_hit(amount: int, knockback: float, source_pos):
 		return
 	
 	if not is_boss:
-		is_stunned = true
-		apply_knockback(knockback, source_pos)
+		apply_knockback(knockback_amount, source_pos)
 		
-func apply_knockback(knockback, source_pos):
+func apply_knockback(knockback_amount, source_pos):
+	is_stunned = true
 	var knockback_dir = source_pos.direction_to(global_position)
-	var target_pos = global_position + (knockback_dir * knockback * 20.0)
+	var target_pos = global_position + (knockback_dir * knockback_amount * 20.0)
 	
 	var tween = create_tween()
 	tween.tween_property(self, "global_position", target_pos, 0.15).set_trans(Tween.TRANS_BOUNCE)
@@ -216,7 +219,7 @@ func deal_damage(body):
 		tween.tween_property(sprite, "position", dash_vector, 0.05)
 		tween.tween_property(sprite, "position", Vector2.ZERO, 0.15)
 		
-		body.take_hit(attack_damage)
+		body.take_hit(attack_damage, knockback, global_position)
 
 func drop_loot():
 	
