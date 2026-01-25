@@ -3,8 +3,8 @@
 [ext_resource type="Script" uid="uid://c0c4tt6r1hejr" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="SpriteFrames" uid="uid://b3fnay367al5q" path="res://sprite_frames/player.tres" id="2_g2els"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ig7tw"]
-size = Vector2(11, 5.5)
+[sub_resource type="CircleShape2D" id="CircleShape2D_qhqgy"]
+radius = 4.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
 radius = 40.0
@@ -107,18 +107,17 @@ size = Vector2(10, 21)
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 y_sort_enabled = true
 collision_layer = 2
-collision_mask = 21
 script = ExtResource("1_g2els")
+
+[node name="pickup_collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_qhqgy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 y_sort_enabled = true
 sprite_frames = ExtResource("2_g2els")
 animation = &"spawn"
 offset = Vector2(0, -12)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -3)
-shape = SubResource("RectangleShape2D_ig7tw")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0, -12)
@@ -156,13 +155,18 @@ libraries = {
 &"": SubResource("AnimationLibrary_dqkch")
 }
 
-[node name="hit_collision" type="CollisionShape2D" parent="."]
-position = Vector2(-1, -11.5)
-shape = SubResource("RectangleShape2D_qhqgy")
-
 [node name="invincibility_frames" type="Timer" parent="."]
 wait_time = 0.67
 autostart = true
+
+[node name="damage_area" type="Area2D" parent="." groups=["PlayerHitbox"]]
+position = Vector2(0, -12)
+collision_layer = 2
+collision_mask = 36
+
+[node name="damage_collision" type="CollisionShape2D" parent="damage_area"]
+position = Vector2(-1, 0.5)
+shape = SubResource("RectangleShape2D_qhqgy")
 
 [connection signal="area_entered" from="MagnetField" to="." method="_on_magnet_field_area_entered"]
 [connection signal="area_entered" from="WeaponPivot/Hand/HitArea" to="." method="_on_hit_area_area_entered"]
