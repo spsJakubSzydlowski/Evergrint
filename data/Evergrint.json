@@ -312,7 +312,7 @@
 				},
 				{
 					"damage": 12,
-					"attack_speed": 0.3,
+					"attack_speed": 0.45,
 					"knockback": 1.5,
 					"hitbox_x": 16,
 					"hitbox_y": 24,
@@ -675,6 +675,10 @@
 					"name": "attack_damage"
 				},
 				{
+					"typeStr": "4",
+					"name": "knockback"
+				},
+				{
 					"typeStr": "5:HOSTILE,PASSIVE",
 					"name": "faction",
 					"display": null
@@ -702,7 +706,8 @@
 					"faction": 0,
 					"ai_type": 0,
 					"id": "green_slime",
-					"is_boss": false
+					"is_boss": false,
+					"knockback": 0.8
 				},
 				{
 					"id": "mole_boss",
@@ -711,7 +716,8 @@
 					"faction": 0,
 					"ai_type": 0,
 					"loot_ref": "mole_boss",
-					"is_boss": true
+					"is_boss": true,
+					"knockback": 0.8
 				}
 			],
 			"separators": [],
@@ -727,6 +733,10 @@
 				{
 					"typeStr": "3",
 					"name": "damage"
+				},
+				{
+					"typeStr": "4",
+					"name": "knockback"
 				},
 				{
 					"typeStr": "3",
@@ -757,7 +767,8 @@
 					"projectile_type": 1,
 					"id": "arrow",
 					"hitbox_x": 16,
-					"hitbox_y": 6
+					"hitbox_y": 6,
+					"knockback": 0
 				},
 				{
 					"id": "boulder",
@@ -766,7 +777,8 @@
 					"move_speed": 120,
 					"projectile_type": 0,
 					"hitbox_x": 20,
-					"hitbox_y": 20
+					"hitbox_y": 20,
+					"knockback": 0.8
 				}
 			],
 			"separators": [],
