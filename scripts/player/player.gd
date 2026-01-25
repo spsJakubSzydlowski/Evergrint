@@ -14,7 +14,6 @@ var object_layer = null
 @onready var animation_player: AnimationPlayer = $WeaponPivot/Hand/AnimationPlayer
 @onready var weapon_collision_shape: CollisionShape2D = $WeaponPivot/Hand/HitArea/CollisionShape2D
 @onready var camera: Camera2D = $Camera2D
-@onready var hit_collision: CollisionShape2D = $hit_collision
 
 #region Movement Variables
 var move_speed : float
