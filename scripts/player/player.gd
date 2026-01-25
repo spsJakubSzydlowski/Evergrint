@@ -21,15 +21,18 @@ var acceleration = 400.0
 #endregion
 
 var ui: CanvasLayer = null
-var can_be_hit = true
+var can_be_hit : bool = true
 
-var is_attacking := false
-var can_turn = true
+var is_attacking : bool = false
+var can_turn : bool = true
 
 var max_hp : int
 var current_hp : int
 
-var is_dead = false
+var is_dead : bool = false
+var is_stunned: bool = false
+
+var time_stunned: float = 0.4
 
 var hit_entities = []
 
@@ -83,6 +86,9 @@ func setup_camera_limits():
 	camera.limit_bottom = world_height
 
 func _physics_process(delta: float) -> void:
+	if is_dead or is_stunned:
+		return
+
 	move(delta)
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -128,34 +134,33 @@ func _unhandled_input(event: InputEvent) -> void:
 			attack(Inventory.current_equipped_id)
 
 func move(delta):
-	if not is_dead:
-		var direction := Input.get_vector("a", "d", "w", "s").normalized()
-		if direction:
-			velocity = velocity.move_toward(direction * move_speed, acceleration * delta)
-		else:
-			velocity = velocity.move_toward(Vector2.ZERO, acceleration * delta)
+	var direction := Input.get_vector("a", "d", "w", "s").normalized()
+	if direction:
+		velocity = velocity.move_toward(direction * move_speed, acceleration * delta)
+	else:
+		velocity = velocity.move_toward(Vector2.ZERO, acceleration * delta)
+	
+	if direction.x < 0 and can_turn:
+		sprite.flip_h = true
+	
+	if direction.x > 0 and can_turn:
+		sprite.flip_h = false
 		
-		if direction.x < 0 and can_turn:
-			sprite.flip_h = true
-		
-		if direction.x > 0 and can_turn:
-			sprite.flip_h = false
-			
-		move_and_slide()
-		
-		var rect = tile_map.get_used_rect()
-		var tile_size = 16
-		
-		var limit_left = rect.position.x * tile_size
-		var limit_top = rect.position.y * tile_size
-		var limit_right = rect.end.x * tile_size
-		var limit_bottom = rect.end.y * tile_size
-		
-		var player_height_half = 12
-		var player_width_half = 8
-		
-		global_position.x = clamp(global_position.x, limit_left + player_width_half, limit_right - player_width_half)
-		global_position.y = clamp(global_position.y, limit_top + player_height_half, limit_bottom)
+	move_and_slide()
+	
+	var rect = tile_map.get_used_rect()
+	var tile_size = 16
+	
+	var limit_left = rect.position.x * tile_size
+	var limit_top = rect.position.y * tile_size
+	var limit_right = rect.end.x * tile_size
+	var limit_bottom = rect.end.y * tile_size
+	
+	var player_height_half = 12
+	var player_width_half = 8
+	
+	global_position.x = clamp(global_position.x, limit_left + player_width_half, limit_right - player_width_half)
+	global_position.y = clamp(global_position.y, limit_top + player_height_half, limit_bottom)
 
 func attack(item_id):
 	var stats = DataManager.get_weapon_stats(item_id)
@@ -251,16 +256,18 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 	else:
 		hand_sprite.texture = null
 
-func take_hit(damage):
+func take_hit(damage, knockback, source_pos):
 	if is_dead: return
 	
 	current_hp -= damage
 	Signals.player_health_changed.emit(current_hp, max_hp)
+	can_be_hit = false
 	
 	if current_hp <= 0:
 		die()
-		
-	can_be_hit = false
+		return
+	
+	apply_knockback(knockback, source_pos)
 
 func die():
 	is_dead = true
@@ -269,6 +276,17 @@ func die():
 	visible = false
 	Signals.player_died.emit()
 
+func apply_knockback(knockback_amount, source_pos):
+	var knockback_dir = source_pos.direction_to(global_position)
+	var target_pos = global_position + (knockback_dir * knockback_amount * 20.0)
+	
+	var tween = create_tween()
+	tween.tween_property(self, "global_position", target_pos, 0.15).set_trans(Tween.TRANS_BOUNCE)
+	
+	is_stunned = true
+	await get_tree().create_timer(time_stunned).timeout
+	is_stunned = false
+	
 func _on_hit_area_area_entered(area: Area2D) -> void:
 	var attackable = area.get_parent()
 	var item_stats = DataManager.get_weapon_stats(Inventory.current_equipped_id)
