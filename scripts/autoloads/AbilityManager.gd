@@ -15,6 +15,8 @@ func projectile_burst(projectile_id, source, count: int):
 	
 func spawn_at_player(source, player):
 	source.is_acting = true
+	source.can_be_hit = false
+	
 	source.velocity = Vector2.ZERO
 	var target_pos = player.global_position
 	
@@ -33,7 +35,8 @@ func spawn_at_player(source, player):
 	tween.tween_callback(func(): 
 		if source.has_method("play_anim"):
 			source.play_anim("spawn", source.sprite)
-		source.is_acting = false)
+		source.is_acting = false
+		source.can_be_hit = true)
 
 func wait(source, interval):
 	source.is_acting = true
