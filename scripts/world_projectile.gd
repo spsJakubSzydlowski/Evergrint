@@ -72,8 +72,8 @@ func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 
 func _on_area_entered(area: Area2D) -> void:
 	var attackable = area.get_parent()
-	
-	if attackable.has_method("take_hit") and is_projectile_from_player:
+
+	if attackable.has_method("take_hit") and is_projectile_from_player and not attackable.is_in_group("Player"):
 		var damage_to_deal: int
 		var knockback: float
 		
@@ -83,19 +83,20 @@ func _on_area_entered(area: Area2D) -> void:
 			
 			attackable.take_hit(damage_to_deal, knockback, global_position)
 			queue_free()
-			
-func _on_body_entered(body) -> void:
-	#player
-	if body.has_method("take_hit") and not is_projectile_from_player and body.can_be_hit:
+	
+	#NEFUNGUJE TO!!!
+	#damage to player
+	elif attackable.has_method("take_hit") and not is_projectile_from_player and attackable.is_in_group("Player") and attackable.can_be_hit:
 		var damage_to_deal: int
 		#var knockback: float
 		if projectile_stats != {}:
 			
 			damage_to_deal = (projectile_stats.get("damage", 0))
 			#knockback = weapon_stats.get("knockback", 0.0)
-			body.take_hit(damage_to_deal)
-			
-	elif not body.has_method("take_hit"):
+			attackable.take_hit(damage_to_deal)
+	
+	#Když krtek vystřelí, spustí se tohle
+	elif not attackable.has_method("take_hit"):
 		MiningManager.spawn_hit_effect(MiningManager.current_tilemap.local_to_map(global_position))
 		queue_free()
 
