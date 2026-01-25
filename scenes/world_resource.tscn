@@ -6,6 +6,7 @@
 size = Vector2(31, 54)
 
 [node name="world_resource" type="StaticBody2D"]
+collision_mask = 0
 script = ExtResource("1_m5ijx")
 
 [node name="hurt_box" type="Area2D" parent="."]
