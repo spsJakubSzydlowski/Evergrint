@@ -263,6 +263,14 @@ func take_hit(damage, knockback, source_pos):
 	Signals.player_health_changed.emit(current_hp, max_hp)
 	can_be_hit = false
 	
+	var tween = create_tween()
+	sprite.modulate = Color(10, 10, 10, 0.5)
+	
+	tween.tween_interval(0.06)
+	tween.tween_callback(func():
+		sprite.modulate = Color(1, 1, 1, 1)
+	)
+	
 	if current_hp <= 0:
 		die()
 		return
