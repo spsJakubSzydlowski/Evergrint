@@ -16,6 +16,15 @@ var inventory_slots = 50
 
 var is_inventory_open = false
 
+const ITEM_TYPE_NAMES = {
+	0: "Weapon",
+	1: "Tool",
+	2: "Consumable",
+	3: "Material",
+	4: "Placeable",
+	5: "Ammo"
+}
+
 func _ready() -> void:
 	Signals.player_health_changed.connect(update_health_bar)
 
@@ -31,6 +40,9 @@ func on_inventory_updated():
 	emit_equipped_signal()
 
 func _input(event: InputEvent) -> void:
+	if Global.is_player_dead:
+		return
+
 	if Input.is_action_just_pressed("open_inventory"):
 		is_inventory_open = !is_inventory_open
 		inventory_container.visible = is_inventory_open
@@ -71,11 +83,31 @@ func create_slot_in(container, index):
 	new_slot.slot_clicked.connect(_on_slot_clicked)
 	new_slot.find_child("SelectionSprite").visible = (index == active_slot_index)
 			
+	create_tooltip(slot_data, new_slot)
+
+func create_tooltip(slot_data, new_slot):
 	if slot_data["id"] != "":
 		var item = DataManager.get_item(slot_data["id"])
+		var item_id = item.get("id")
 		var item_name = item.get("name", "NULL")
-		new_slot.tooltip_text = str(item_name)
 		
+		var item_type_id = int(item.get("type", 0))
+		var type_str = ITEM_TYPE_NAMES.get(item_type_id, "NULL")
+		
+		var tooltip = item_name + "\n" + type_str
+
+		var weapon_stats = DataManager.get_weapon_stats(item_id)
+		if not weapon_stats.is_empty():
+			tooltip += "\n--- Stats ---"
+			tooltip += "\nDamage: " + str(weapon_stats.get("damage", 0))
+			tooltip += "\nSpeed: " + str(weapon_stats.get("attack_speed", 0))
+			tooltip += "\nKnockback: " + str(weapon_stats.get("knockback", 0))
+		
+		var projectile_stats = DataManager.get_projectile_stats(item_id)
+		if not projectile_stats.is_empty():
+			tooltip += "\nDamage: " + str(projectile_stats.get("damage", 0))
+		
+		new_slot.tooltip_text = tooltip
 		update_slot_visuals(new_slot, slot_data)
 	else:
 		new_slot.tooltip_text = ""
