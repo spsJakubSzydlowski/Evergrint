@@ -281,6 +281,7 @@ func take_hit(damage, knockback, source_pos):
 	apply_knockback(knockback, source_pos)
 
 func die():
+	Global.is_player_dead = true
 	is_dead = true
 	is_attacking = false
 	
@@ -340,6 +341,7 @@ func respawn():
 	current_hp = max_hp
 	can_turn = true
 	is_attacking = false
+	Global.is_player_dead = false
 	
 	Signals.player_health_changed.emit(current_hp, max_hp)
 	
