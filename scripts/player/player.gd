@@ -92,6 +92,9 @@ func _physics_process(delta: float) -> void:
 	move(delta)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if is_dead or is_stunned:
+		return
+
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		var mouse_pos = get_global_mouse_position()
 		var tile_pos = object_layer.local_to_map(mouse_pos)
