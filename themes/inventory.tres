@@ -1,0 +1,16 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://4gdmmmgngu0y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_be3bp"]
+bg_color = Color(0.8312653, 0.46685278, 0.6182727, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[resource]
+TooltipPanel/styles/panel = SubResource("StyleBoxFlat_be3bp")
