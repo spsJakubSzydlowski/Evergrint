@@ -17,10 +17,10 @@ var is_dead := false
 var is_boss = false
 var can_be_hit = true
 
-var max_hp : int
-var current_hp: int
+var max_hp : float
+var current_hp: float
 
-var attack_damage : int
+var attack_damage : float
 var knockback: float
 var attack_range = 12.0
 var start_aggro_range: float
@@ -163,6 +163,10 @@ func initialize(entity_id: String):
 	
 	var table_id= stats.get("loot_ref")
 	loot_items = DataManager.get_loot_table_items(table_id)
+	
+	if Global.current_difficulty == Global.Difficulty.HARD:
+		max_hp *= 1.5
+		attack_damage *= 1.5
 	
 	play_anim("spawn", sprite)
 
