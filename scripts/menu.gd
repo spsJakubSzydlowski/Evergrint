@@ -9,10 +9,12 @@ func _on_button_pressed() -> void:
 	
 func _on_easy_button_pressed() -> void:
 	Global.current_difficulty = Global.Difficulty.EASY
+	Global.set_difficulty("easy")
 	start_game()
 
 func _on_hard_button_pressed() -> void:
 	Global.current_difficulty = Global.Difficulty.HARD
+	Global.set_difficulty("hard")
 	start_game()
 	
 func start_game():
