@@ -1,0 +1,18 @@
+[gd_resource type="SpriteFrames" load_steps=3 format=3 uid="uid://b8440xj6ocwop"]
+
+[ext_resource type="Texture2D" uid="uid://bkp23b8md70vx" path="res://textures/Atlas-projectiles.png" id="1_7uuly"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o515n"]
+atlas = ExtResource("1_7uuly")
+region = Rect2(0, 16, 16, 16)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o515n")
+}],
+"loop": true,
+"name": &"spawn",
+"speed": 5.0
+}]
