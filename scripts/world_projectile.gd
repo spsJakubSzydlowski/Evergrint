@@ -84,7 +84,6 @@ func _on_area_entered(area: Area2D) -> void:
 	elif is_hiting_player:
 		entity_projectile_hit(attackable)
 		
-
 func player_projectile_hit(attackable):
 	var damage = (projectile_stats.get("damage", 0) + weapon_stats.get("damage", 0)) / 2
 	var knockback = weapon_stats.get("knockback", 0)
@@ -94,6 +93,10 @@ func player_projectile_hit(attackable):
 func entity_projectile_hit(attackable):
 	var damage = projectile_stats.get("damage", 0)
 	var knockback = projectile_stats.get("knockback", 0)
+
+	if Global.current_difficulty == Global.Difficulty.HARD:
+		damage *= 1.5
+
 	attackable.take_hit(damage, knockback, global_position)
 
 func _on_body_entered(body: Node2D) -> void:
