@@ -178,6 +178,21 @@
 					}
 				},
 				{
+					"id": "slime_arrow",
+					"name": "Slime Arrow",
+					"type": 5,
+					"stack_limit": 9999,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
+					"tile": {
+						"file": "../textures/Atlas-projectiles.png",
+						"size": 16,
+						"x": 0,
+						"y": 1
+					}
+				},
+				{
 					"id": "wooden_pickaxe",
 					"name": "Wooden Pickaxe",
 					"type": 1,
@@ -464,22 +479,10 @@
 							"amount_max": 2
 						},
 						{
-							"item": "wooden_sword",
-							"weight": 1,
-							"amount_min": 1,
-							"amount_max": 1
-						},
-						{
 							"item": "green_gel",
 							"weight": 90,
 							"amount_min": 1,
 							"amount_max": 4
-						},
-						{
-							"item": "wooden_axe",
-							"weight": 1,
-							"amount_min": 1,
-							"amount_max": 1
 						},
 						{
 							"item": "iron_sword",
@@ -488,10 +491,10 @@
 							"amount_max": 1
 						},
 						{
-							"item": "wooden_pickaxe",
-							"weight": 100,
+							"item": "slime_arrow",
+							"weight": 50,
 							"amount_min": 1,
-							"amount_max": 1
+							"amount_max": 3
 						}
 					]
 				},
@@ -696,6 +699,17 @@
 					"typeStr": "6:LootTables",
 					"name": "loot_ref",
 					"display": null
+				},
+				{
+					"typeStr": "8",
+					"name": "behavior_easy",
+					"opt": true
+				},
+				{
+					"typeStr": "8",
+					"name": "behavior_hard",
+					"opt": true,
+					"display": null
 				}
 			],
 			"lines": [
@@ -707,7 +721,18 @@
 					"ai_type": 0,
 					"id": "green_slime",
 					"is_boss": false,
-					"knockback": 0.8
+					"knockback": 0.8,
+					"behavior_hard": [
+						{
+							"action": "shoot",
+							"projectile_name": "slime_arrow",
+							"projectile_count": 6
+						},
+						{
+							"action": "wait",
+							"time": 1.8
+						}
+					]
 				},
 				{
 					"id": "mole_boss",
@@ -717,7 +742,21 @@
 					"ai_type": 0,
 					"loot_ref": "mole_boss",
 					"is_boss": true,
-					"knockback": 0.8
+					"knockback": 0.8,
+					"behavior_easy": [
+						{
+							"action": "teleport"
+						},
+						{
+							"action": "shoot",
+							"projectile_name": "boulder",
+							"projectile_count": 8
+						},
+						{
+							"action": "wait",
+							"time": 1.6
+						}
+					]
 				}
 			],
 			"separators": [],
@@ -747,6 +786,10 @@
 					"name": "move_speed"
 				},
 				{
+					"typeStr": "4",
+					"name": "distance"
+				},
+				{
 					"typeStr": "5:ENTITY,ARROW",
 					"name": "projectile_type"
 				},
@@ -768,21 +811,93 @@
 					"id": "arrow",
 					"hitbox_x": 16,
 					"hitbox_y": 6,
-					"knockback": 0
+					"knockback": 0,
+					"distance": 300
+				},
+				{
+					"id": "slime_arrow",
+					"damage": 6,
+					"knockback": 0,
+					"pierce": 1,
+					"move_speed": 300,
+					"distance": 300,
+					"projectile_type": 1,
+					"hitbox_x": 16,
+					"hitbox_y": 6
 				},
 				{
 					"id": "boulder",
 					"damage": 28,
 					"pierce": 1,
-					"move_speed": 120,
+					"move_speed": 150,
 					"projectile_type": 0,
 					"hitbox_x": 20,
 					"hitbox_y": 20,
-					"knockback": 0.8
+					"knockback": 0.8,
+					"distance": 200
 				}
 			],
 			"separators": [],
 			"props": {}
+		},
+		{
+			"name": "EnemyStats@behavior_easy",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "action",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "projectile_name",
+					"opt": true
+				},
+				{
+					"typeStr": "3",
+					"name": "projectile_count",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "time",
+					"opt": true
+				}
+			]
+		},
+		{
+			"name": "EnemyStats@behavior_hard",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "action"
+				},
+				{
+					"typeStr": "1",
+					"name": "projectile_name",
+					"opt": true
+				},
+				{
+					"typeStr": "3",
+					"name": "projectile_count",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "time",
+					"opt": true
+				}
+			]
 		}
 	],
 	"customTypes": [],
