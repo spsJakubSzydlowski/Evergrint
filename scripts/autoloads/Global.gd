@@ -5,6 +5,7 @@ var player_pos: Vector2 = Vector2.ZERO
 var is_player_dead: bool = false
 enum Difficulty {EASY, HARD}
 var current_difficulty = Difficulty.EASY
+var difficulty_multiplier = 1.0
 
 var first_time_generation = true
 
@@ -30,6 +31,12 @@ func _ready():
 	randomize()
 	world_seed = randi()
 	print("World seed is: ", world_seed)
+
+func set_difficulty(mode: String):
+	if mode == "hard":
+		difficulty_multiplier = 1.5
+	else:
+		difficulty_multiplier = 1.0
 
 func transition_to(target_layer: String):
 	current_layer = target_layer
