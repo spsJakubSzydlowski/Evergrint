@@ -15,8 +15,11 @@ var is_projectile_from_player: bool = true
 var projectile_stats = null
 var weapon_stats = null
 
+var start_global_position
+
 var direction: Vector2
 var move_speed: float
+var distance: float
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
@@ -56,17 +59,26 @@ func initialize(projectile_id: String, pos: Vector2, used_weapon_stats, dir: Vec
 	 							   projectile_stats.get("hitbox_y", 16))
 	direction = dir
 	move_speed = projectile_stats.get("move_speed", 100.0)
+	distance = projectile_stats.get("distance", 50.0)
 	
 	rotation = direction.angle()
+	
+	start_global_position = global_position
 	
 	if projectile_stats.get("projectile_type") == PROJECTILE_TYPE_ARROW:
 		collision.rotation_degrees -= 90
 		rotation_degrees -= 90
+		
+		if not is_projectile_from_player:
+			distance *= 0.3
 
 func move(delta):
 	if direction:
 		global_position += direction * move_speed * delta
-
+	
+	if global_position.distance_to(start_global_position) > distance:
+		destroy_projectile()
+	
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	queue_free()
 
