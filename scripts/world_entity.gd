@@ -10,6 +10,7 @@ const FACTION_PASSIVE = 1
 var entity = ""
 var player = null
 var loot_items = {}
+var entity_stats = {}
 
 #region Combat Variables
 var is_dead := false
@@ -17,10 +18,10 @@ var is_dead := false
 var is_boss = false
 var can_be_hit = true
 
-var max_hp : float
-var current_hp: float
+var max_hp : int
+var current_hp: int
 
-var attack_damage : float
+var attack_damage : int
 var knockback: float
 var attack_range = 12.0
 var start_aggro_range: float
@@ -32,7 +33,8 @@ var is_chasing = false
 var got_hit = false
 var is_acting = false
 
-var next_attack = "teleport"
+var behavior = {}
+var behavior_index = 0
 
 #endregion
 
@@ -53,22 +55,20 @@ var attack_cooldown = 1.0
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 
-func _physics_process(delta: float) -> void:
-	process_active_behaviour(delta)
+func _physics_process(_delta: float) -> void:
+	process_active_behaviour()
 
-func process_active_behaviour(delta):
+func process_active_behaviour():
 	if faction != FACTION_HOSTILE or is_dead or is_stunned or not player:
 		return
 		
 	var distance_to_player = global_position.distance_to(player.global_position)
 	
-	if not is_acting:
-		handle_movement(distance_to_player)
-		
-	handle_attacks(delta, distance_to_player)
+	handle_movement(distance_to_player)
 	
-	if not is_acting:
-		move_and_slide()
+	handle_attacks(distance_to_player)
+	
+	move_and_slide()
 
 func process_idle_behaviour(delta: float):
 	idle_timer -= delta
@@ -99,33 +99,31 @@ func handle_movement(distance_to_player):
 	else:
 		process_idle_behaviour(get_physics_process_delta_time())
 
-func handle_attacks(delta, distance_to_player):
-	attack_timer += delta
-	if attack_timer < attack_cooldown or player.is_dead:
+func handle_attacks(distance_to_player):
+	if player.is_dead:
 		return
 
 	if distance_to_player <= aggro_range and not is_acting:
 		execute_attack_logic()
-		attack_timer = 0.0
 
 func execute_attack_logic():
-	if is_boss:
-		perform_boss_cycle()
-	else:
-		AbilityManager.projectile_burst("arrow", self, 6)
-
-func perform_boss_cycle():
-	if next_attack == "teleport":
-		AbilityManager.spawn_at_player(self, player)
-		next_attack = "projectiles"
-		
-	elif next_attack == "projectiles":
-		AbilityManager.projectile_burst("boulder", self, 8)
-		next_attack = "wait"
-		
-	elif next_attack == "wait":
-		AbilityManager.wait(self, 1.6)
-		next_attack = "teleport"
+	if behavior.is_empty():
+		return
+	
+	var current_step = behavior[behavior_index]
+	
+	match current_step["action"]:
+		"shoot":
+			var projectile_id = current_step.get("projectile_name", "arrow")
+			var projectile_count = current_step.get("projectile_count", 1)
+			AbilityManager.projectile_burst(projectile_id, self, projectile_count)
+		"wait":
+			var time = current_step.get("time", 1.0)
+			AbilityManager.wait(self, time)
+		"teleport":
+			AbilityManager.spawn_at_player(self, player)
+			
+	behavior_index = (behavior_index + 1) % behavior.size()
 
 func initialize(entity_id: String):
 	entity = DataManager.get_entity(entity_id)
@@ -145,28 +143,33 @@ func initialize(entity_id: String):
 	else:
 		print("Animation was not found")
 
-	var stats = DataManager.get_full_entity_data(entity_id)
-	is_boss = stats.get("is_boss", false)
-	max_hp = stats.get("max_hp", 1)
+	entity_stats = DataManager.get_full_entity_data(entity_id)
+	is_boss = entity_stats.get("is_boss", false)
+	max_hp = entity_stats.get("max_hp", 1)
 	current_hp = max_hp
 	health_bar.max_value = max_hp
 	
 	if is_boss:
 		health_bar.position.y *= 2
 	
-	faction = stats.get("faction")
-	start_aggro_range = stats.get("aggro_range", 100.0)
+	faction = entity_stats.get("faction")
+	start_aggro_range = entity_stats.get("aggro_range", 100.0)
 	aggro_range = start_aggro_range
 	
-	attack_damage = stats.get("attack_damage", 0)
-	knockback = stats.get("knockback", 0)
+	attack_damage = entity_stats.get("attack_damage", 0)
+	knockback = entity_stats.get("knockback", 0)
 	
-	var table_id= stats.get("loot_ref")
+	var table_id= entity_stats.get("loot_ref")
 	loot_items = DataManager.get_loot_table_items(table_id)
 	
 	if Global.current_difficulty == Global.Difficulty.HARD:
-		max_hp *= 1.5
-		attack_damage *= 1.5
+		if entity_stats.has("behavior_hard"):
+			behavior = entity_stats.get("behavior_hard", {})
+		else:
+			behavior = entity_stats.get("behavior_easy", {})
+		
+		max_hp = int(max_hp * Global.difficulty_multiplier)
+		attack_damage = int(attack_damage * Global.difficulty_multiplier)
 	
 	play_anim("spawn", sprite)
 
