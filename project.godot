@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Evergrint"
-run/main_scene="uid://cc1jwci78oig2"
+run/main_scene="uid://bnf23e41dprfh"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
