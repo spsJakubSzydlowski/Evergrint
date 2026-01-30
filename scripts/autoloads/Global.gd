@@ -3,6 +3,9 @@ extends Node
 var world_seed: int = 0
 var player_pos: Vector2 = Vector2.ZERO
 var is_player_dead: bool = false
+enum Difficulty {EASY, HARD}
+var current_difficulty = Difficulty.EASY
+
 var first_time_generation = true
 
 var current_world_id : String = "surface"
