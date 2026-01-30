@@ -37,6 +37,7 @@ var time_stunned: float = 0.4
 var hit_entities = []
 
 func _ready() -> void:
+	velocity = Vector2.ZERO
 	tile_map = get_tree().get_first_node_in_group("tilemap")
 	object_layer = get_tree().get_first_node_in_group("objectmap")
 	setup_camera_limits()
@@ -329,6 +330,7 @@ func _on_magnet_field_area_entered(area: Area2D) -> void:
 		area.start_magnetic_pull(self)
 
 func respawn():
+	velocity  = Vector2.ZERO
 	if tile_map:
 		var rect = tile_map.get_used_rect()
 		var center_map_pos = rect.position + (rect.size / 2)
