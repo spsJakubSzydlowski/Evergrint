@@ -6,6 +6,7 @@ const FACTION_PASSIVE = 1
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var health_bar: TextureProgressBar = $HealthBar
 @onready var collision: CollisionShape2D = $hurt_box/CollisionShape2D
+@onready var visible_timer: Timer = $visible_timer
 
 var entity = ""
 var player = null
@@ -170,7 +171,10 @@ func initialize(entity_id: String):
 		
 		max_hp = int(max_hp * Global.difficulty_multiplier)
 		attack_damage = int(attack_damage * Global.difficulty_multiplier)
-	
+		
+	elif Global.current_difficulty == Global.Difficulty.EASY:
+		behavior = entity_stats.get("behavior_easy", {})
+		
 	play_anim("spawn", sprite)
 
 func _on_world_entity_body_entered(body: Node2D) -> void:
@@ -259,3 +263,13 @@ func play_anim(anim_name: String, sprite_node):
 	if has_node("AnimatedSprite2D"):
 		if sprite_node.sprite_frames.has_animation(anim_name) and sprite_node.animation != anim_name:
 			sprite_node.play(anim_name)
+
+func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
+	visible_timer.stop()
+
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
+	if not is_boss:
+		visible_timer.start(30.0)
+
+func _on_visible_timer_timeout() -> void:
+	queue_free()
