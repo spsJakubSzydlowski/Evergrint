@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c1qq7niewlp5"]
+[gd_scene format=3 uid="uid://c1qq7niewlp5"]
 
 [ext_resource type="Script" uid="uid://c0c4tt6r1hejr" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="SpriteFrames" uid="uid://b3fnay367al5q" path="res://sprite_frames/player.tres" id="2_g2els"]
@@ -104,67 +104,66 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qhqgy"]
 size = Vector2(10, 21)
 
-[node name="Player" type="CharacterBody2D" groups=["Player"]]
+[node name="Player" type="CharacterBody2D" unique_id=382151949 groups=["Player"]]
 y_sort_enabled = true
 collision_layer = 2
 script = ExtResource("1_g2els")
 
-[node name="pickup_collision" type="CollisionShape2D" parent="."]
+[node name="pickup_collision" type="CollisionShape2D" parent="." unique_id=1433754025]
 position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_qhqgy")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1935572899]
 y_sort_enabled = true
 sprite_frames = ExtResource("2_g2els")
 animation = &"spawn"
 offset = Vector2(0, -12)
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=953755070]
 position = Vector2(0, -12)
+zoom = Vector2(0.4, 0.4)
 
-[node name="MagnetField" type="Area2D" parent="."]
+[node name="MagnetField" type="Area2D" parent="." unique_id=2104475133]
 position = Vector2(0, -12)
 collision_layer = 8
 collision_mask = 16
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MagnetField"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MagnetField" unique_id=1956623053]
 shape = SubResource("CircleShape2D_g2els")
 
-[node name="WeaponPivot" type="Node2D" parent="."]
+[node name="WeaponPivot" type="Node2D" parent="." unique_id=1067148515]
 position = Vector2(0, -12)
 
-[node name="Hand" type="Node2D" parent="WeaponPivot"]
+[node name="Hand" type="Node2D" parent="WeaponPivot" unique_id=1117562812]
 visible = false
 
-[node name="Sprite2D" type="Sprite2D" parent="WeaponPivot/Hand"]
+[node name="Sprite2D" type="Sprite2D" parent="WeaponPivot/Hand" unique_id=881053668]
 position = Vector2(8.742276e-08, 0)
 rotation = 0.7853982
 centered = false
 
-[node name="HitArea" type="Area2D" parent="WeaponPivot/Hand"]
+[node name="HitArea" type="Area2D" parent="WeaponPivot/Hand" unique_id=967466155]
 collision_layer = 8
 collision_mask = 5
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponPivot/Hand/HitArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponPivot/Hand/HitArea" unique_id=1964964745]
 shape = SubResource("RectangleShape2D_g2els")
 disabled = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="WeaponPivot/Hand"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="WeaponPivot/Hand" unique_id=1388179357]
 root_node = NodePath("../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_dqkch")
-}
+libraries/ = SubResource("AnimationLibrary_dqkch")
 
-[node name="invincibility_frames" type="Timer" parent="."]
+[node name="invincibility_frames" type="Timer" parent="." unique_id=1754754439]
 wait_time = 0.67
 autostart = true
 
-[node name="damage_area" type="Area2D" parent="." groups=["PlayerHitbox"]]
+[node name="damage_area" type="Area2D" parent="." unique_id=353189222 groups=["PlayerHitbox"]]
 position = Vector2(0, -12)
 collision_layer = 2
 collision_mask = 36
 
-[node name="damage_collision" type="CollisionShape2D" parent="damage_area"]
+[node name="damage_collision" type="CollisionShape2D" parent="damage_area" unique_id=968192332]
 position = Vector2(-1, 0.5)
 shape = SubResource("RectangleShape2D_qhqgy")
 
