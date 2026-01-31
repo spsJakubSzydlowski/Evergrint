@@ -27,7 +27,7 @@ func generate() -> void:
 	notify_runtime_tile_data_update()
 
 func spawn_starting_ladder():
-	var sinkhole_pos = self.local_to_map(Global.center_world_pos)
+	var sinkhole_pos = Global.center_world_pos
 
 	object_layer.set_cell(sinkhole_pos, 2, Vector2i(0, 0))
 	
@@ -64,7 +64,7 @@ func generate_surface(coords):
 func generate_chunk(coords):
 	var stone_tiles : Array[Vector2i] = []
 	
-	var ladder_map_pos = object_layer.local_to_map(Global.center_world_pos)
+	var ladder_map_pos = Global.center_world_pos
 	
 	var changes = Global.world_changes.get(Global.current_world_id, {})
 	
@@ -82,7 +82,7 @@ func generate_chunk(coords):
 			var tile_data = get_cell_tile_data(current_pos)
 			if tile_data and tile_data.get_custom_data("water"):
 				continue
-			
+
 			if dist_from_ladder < ladder_radius:
 				continue
 			
