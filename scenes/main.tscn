@@ -1,36 +1,36 @@
-[gd_scene load_steps=5 format=3 uid="uid://cc1jwci78oig2"]
+[gd_scene format=3 uid="uid://cc1jwci78oig2"]
 
 [ext_resource type="Script" uid="uid://d34cx4vov07yo" path="res://scripts/main.gd" id="1_1bvp3"]
 [ext_resource type="TileSet" uid="uid://iqsu10vvl550" path="res://scenes/layer.tres" id="2_jyhfs"]
 [ext_resource type="Script" uid="uid://bxcrx4d38pbck" path="res://scripts/generate_surface.gd" id="3_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://dmqmrs6wa5bgs" path="res://scenes/UI/death_scene.tscn" id="5_tefeu"]
 
-[node name="main" type="Node2D"]
+[node name="main" type="Node2D" unique_id=1143135882]
 y_sort_enabled = true
 script = ExtResource("1_1bvp3")
 
-[node name="TileMapLayer" type="TileMapLayer" parent="." node_paths=PackedStringArray("object_layer") groups=["tilemap"]]
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=2042884358 node_paths=PackedStringArray("object_layer") groups=["tilemap"]]
 position = Vector2(-2, -1)
 tile_set = ExtResource("2_jyhfs")
 script = ExtResource("3_jyhfs")
 object_layer = NodePath("../ObjectLayer")
 
-[node name="ObjectLayer" type="TileMapLayer" parent="." groups=["objectmap"]]
+[node name="ObjectLayer" type="TileMapLayer" parent="." unique_id=1870995295 groups=["objectmap"]]
 y_sort_enabled = true
 position = Vector2(-2, -1)
 tile_set = ExtResource("2_jyhfs")
 
-[node name="EntitySpawnTimer" type="Timer" parent="."]
+[node name="EntitySpawnTimer" type="Timer" parent="." unique_id=2073219033]
 wait_time = 2.0
 autostart = true
 
-[node name="DeathScreen" parent="." instance=ExtResource("5_tefeu")]
+[node name="DeathScreen" parent="." unique_id=605049590 instance=ExtResource("5_tefeu")]
 visible = false
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=431980317]
 color = Color(0, 0, 0.16862746, 1)
 
-[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="." unique_id=1260856313]
 rotation = -0.7853982
 shadow_enabled = true
 shadow_color = Color(0, 0, 0.09019608, 0.5647059)
