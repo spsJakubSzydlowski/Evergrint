@@ -33,6 +33,10 @@ func _ready():
 	else:
 		spawn_player_at_center()
 
+func _physics_process(_delta: float) -> void:
+	if player:
+		Global.update_chunks(object_layer)
+
 func spawn_entity():
 	var current_enemy_count = get_tree().get_nodes_in_group("entity").size()
 	var spawn_pos = Vector2.ZERO
@@ -61,12 +65,11 @@ func spawn_entity():
 			DataManager.spawn_entity("green_slime", spawn_pos)
 
 func spawn_player_at_center():
-	var rect = tile_map.get_used_rect()
-	var center_map_pos = rect.position + (rect.size / 2)
 	
-	var center_world_pos = tile_map.map_to_local(center_map_pos)
-	
-	DataManager.spawn_player(center_world_pos)
+	var center_world_pos = Global.center_world_pos
+	var center_map_pos = tile_map.map_to_local(center_world_pos)
+	DataManager.spawn_player(center_map_pos)
+	print(center_map_pos)
 
 func _on_timer_timeout() -> void:
 	spawn_entity()
