@@ -1,11 +1,18 @@
 extends Node
 
+signal request_chunk_generation(coords: Vector2i)
+
 var world_seed: int = 0
 var player_pos: Vector2 = Vector2.ZERO
 var is_player_dead: bool = false
 enum Difficulty {EASY, HARD}
 var current_difficulty = Difficulty.EASY
 var difficulty_multiplier = 1.0
+
+var world_width = 1000
+var world_height = 1000
+@warning_ignore("integer_division")
+var center_world_pos = Vector2i(world_width / 2, world_height / 2)
 
 var first_time_generation = true
 
@@ -16,9 +23,9 @@ var world_changes = {
 	"underground": {}
 }
 
-var chunks = {}
-var chunk_size = 10
-var render_distance = 3
+var loaded_chunks = {}
+const CHUNK_SIZE = 8
+const RENDER_DISTANCE = 4
 
 var world_scenes = {
 	"surface": "res://scenes/main.tscn",
@@ -42,43 +49,6 @@ func transition_to(target_layer: String):
 	current_layer = target_layer
 	get_tree().change_scene_to_file(world_scenes[target_layer])
 
-func load_chunk(cx, cy, spawn_function: Callable, parent_node: Node2D):
-	var chunk_pos = Vector2i(cx, cy)
-	if chunks.has(chunk_pos): return
-	
-	chunks[chunk_pos] = null
-	
-	var chunk_node = Node2D.new()
-	chunk_node.name = "Chunk_%d_%d" % [cx, cy]
-	chunk_node.y_sort_enabled = true
-	parent_node.add_child(chunk_node)
-	chunks[chunk_pos] = chunk_node
-	
-	var count = 0
-	for x in range(cx * chunk_size, (cx + 1) * chunk_size):
-		for y in range(cy * chunk_size, (cy + 1) * chunk_size):
-			spawn_function.call(x, y, chunk_node)
-			
-			count += 1
-			if count % 15 == 0:
-				await get_tree().process_frame
-
-func unload_chunk(cx, cy):
-	var chunks_to_remove = []
-	
-	var max_dist = render_distance + 1
-	
-	for chunk_pos in chunks.keys():
-		if abs(chunk_pos.x - cx) > max_dist or abs(chunk_pos.y - cy) > max_dist:
-			chunks_to_remove.append(chunk_pos)
-			
-	for c_pos in chunks_to_remove:
-		var chunk_node = chunks[c_pos]
-		if is_instance_valid(chunk_node):
-			chunk_node.queue_free()
-			
-		chunks.erase(c_pos)
-
 func get_player_world_position():
 	var player = get_tree().get_first_node_in_group("Player")
 	if player:
@@ -89,3 +59,32 @@ func save_player_position():
 	var player = get_tree().get_first_node_in_group("Player")
 	if player:
 		player_pos = player.global_position
+
+func update_chunks(tile_map):
+	var player_chunk_pos = get_player_chunk_pos(tile_map)
+
+	var chunks_to_see = []
+	
+	var max_chunk_x = ceil(world_width / float(CHUNK_SIZE))
+	var max_chunk_y = ceil(world_height / float(CHUNK_SIZE))
+	
+	for x in range(-RENDER_DISTANCE, RENDER_DISTANCE + 1):
+		for y in range(-RENDER_DISTANCE, RENDER_DISTANCE + 1):
+			var chunk_coords = player_chunk_pos + Vector2i(x, y)
+			chunks_to_see.append(chunk_coords)
+			
+			if chunk_coords.x >= 0 and chunk_coords.x < max_chunk_x:
+				if chunk_coords.y >= 0 and chunk_coords.y < max_chunk_y:
+					
+					if not loaded_chunks.has(chunk_coords):
+						loaded_chunks[chunk_coords] = true
+						request_chunk_generation.emit(chunk_coords)
+
+func get_player_chunk_pos(tile_map):
+	var player_global_pos = get_player_world_position()
+	var player_tile_pos = tile_map.local_to_map(player_global_pos)
+	var player_chunk_pos = Vector2i(
+		floor(player_tile_pos.x / float(CHUNK_SIZE)),
+		floor(player_tile_pos.y / float(CHUNK_SIZE))
+	)
+	return player_chunk_pos
