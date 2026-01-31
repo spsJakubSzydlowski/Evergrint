@@ -1,30 +1,25 @@
-[gd_scene load_steps=5 format=3 uid="uid://dsu6pxhlno2ay"]
+[gd_scene format=3 uid="uid://dsu6pxhlno2ay"]
 
 [ext_resource type="Script" uid="uid://c6hc4r471vrvy" path="res://scripts/underground.gd" id="1_cpwbu"]
 [ext_resource type="Script" uid="uid://35m550dd32uc" path="res://scripts/generate_underground.gd" id="2_flqp3"]
 [ext_resource type="TileSet" uid="uid://iqsu10vvl550" path="res://scenes/layer.tres" id="4_5558j"]
 [ext_resource type="PackedScene" uid="uid://dmqmrs6wa5bgs" path="res://scenes/UI/death_scene.tscn" id="4_osycu"]
 
-[node name="underground" type="Node2D"]
+[node name="underground" type="Node2D" unique_id=350268308]
 y_sort_enabled = true
 script = ExtResource("1_cpwbu")
 
-[node name="TileMapLayer" type="TileMapLayer" parent="." node_paths=PackedStringArray("object_layer") groups=["tilemap"]]
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=22413134 node_paths=PackedStringArray("object_layer") groups=["tilemap"]]
 tile_set = ExtResource("4_5558j")
 script = ExtResource("2_flqp3")
 object_layer = NodePath("../ObjectLayer")
 
-[node name="ObjectLayer" type="TileMapLayer" parent="." groups=["objectmap"]]
+[node name="ObjectLayer" type="TileMapLayer" parent="." unique_id=475805565 groups=["objectmap"]]
 y_sort_enabled = true
 tile_set = ExtResource("4_5558j")
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=149757864]
 color = Color(0.5689725, 0.5689728, 0.5689727, 1)
 
-[node name="ChunkTimer" type="Timer" parent="."]
-wait_time = 0.5
-
-[node name="DeathScreen" parent="." instance=ExtResource("4_osycu")]
+[node name="DeathScreen" parent="." unique_id=796033192 instance=ExtResource("4_osycu")]
 visible = false
-
-[connection signal="timeout" from="ChunkTimer" to="TileMapLayer" method="_on_chunk_timer_timeout"]

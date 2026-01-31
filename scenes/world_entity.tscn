@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://crmd7qlpatepp"]
+[gd_scene format=3 uid="uid://crmd7qlpatepp"]
 
 [ext_resource type="Script" uid="uid://bgls5qeawmvub" path="res://scripts/world_entity.gd" id="1_c2mjn"]
 [ext_resource type="SpriteFrames" uid="uid://cx5mjylsy7pp" path="res://sprite_frames/mole_boss.tres" id="2_ey0o3"]
@@ -23,27 +23,27 @@ gradient = SubResource("Gradient_kil5o")
 width = 16
 height = 3
 
-[node name="world_entity" type="CharacterBody2D" groups=["Entity"]]
+[node name="world_entity" type="CharacterBody2D" unique_id=1141203014 groups=["Entity"]]
 y_sort_enabled = true
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_c2mjn")
 
-[node name="hurt_box" type="Area2D" parent="."]
+[node name="hurt_box" type="Area2D" parent="." unique_id=2104406542]
 position = Vector2(0, -16)
 collision_layer = 4
 collision_mask = 3
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hurt_box"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurt_box" unique_id=1839580506]
 shape = SubResource("RectangleShape2D_ey0o3")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=590273700]
 sprite_frames = ExtResource("2_ey0o3")
 animation = &"dig_down"
 offset = Vector2(0, -16)
 flip_h = true
 
-[node name="HealthBar" type="TextureProgressBar" parent="."]
+[node name="HealthBar" type="TextureProgressBar" parent="." unique_id=1321011699]
 visible = false
 offset_left = -8.0
 offset_top = -20.0
@@ -53,4 +53,12 @@ value = 100.0
 texture_under = SubResource("GradientTexture2D_ey0o3")
 texture_progress = SubResource("GradientTexture2D_yxraq")
 
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=219517770]
+
+[node name="visible_timer" type="Timer" parent="." unique_id=1195838863]
+wait_time = 30.0
+
 [connection signal="body_entered" from="hurt_box" to="." method="_on_world_entity_body_entered"]
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="timeout" from="visible_timer" to="." method="_on_visible_timer_timeout"]

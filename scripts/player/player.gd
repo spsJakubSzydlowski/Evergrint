@@ -40,7 +40,7 @@ func _ready() -> void:
 	velocity = Vector2.ZERO
 	tile_map = get_tree().get_first_node_in_group("tilemap")
 	object_layer = get_tree().get_first_node_in_group("objectmap")
-	setup_camera_limits()
+	#setup_camera_limits()
 
 func initialize():
 	var player = DataManager.get_entity("player")
