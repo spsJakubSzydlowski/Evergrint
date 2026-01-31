@@ -4,30 +4,49 @@ const GRASS_TERRAIN = 0
 const WATER_TERRAIN = 2
 
 var river_noise = FastNoiseLite.new()
-var world_width = 200
-var world_height = 200
-
+var world_width = Global.world_width
+var world_height = Global.world_height
 var tree_count = 800
-var occupied_cells = []
+
+var occupied_cells = {}
 
 @export var object_layer: TileMapLayer
 
+func _ready() -> void:
+	Global.request_chunk_generation.connect(_on_chunk_requested)
+
+func _on_chunk_requested(coords: Vector2i):
+	generate_chunk(coords)
+	spawn_trees_in_chunk(coords)
+
 func generate() -> void:
+	occupied_cells.clear()
 	river_noise.seed = Global.world_seed
 	river_noise.frequency = 0.01
 	river_noise.noise_type = FastNoiseLite.TYPE_PERLIN
-	
-	generate_surface()
-	notify_runtime_tile_data_update()
-	spawn_starting_sinkhole()
-	spawn_trees()
 
-func generate_surface():
+	spawn_starting_sinkhole()
+	notify_runtime_tile_data_update()
+
+func generate_chunk(coords):
+	print("Generating chunk")
+
 	var grass_tiles : Array[Vector2i] = []
 	var water_tiles : Array[Vector2i] = []
 	
-	for x in range(world_width):
-		for y in range(world_height):
+	var start_x = coords.x * Global.CHUNK_SIZE
+	var start_y = coords.y * Global.CHUNK_SIZE
+	var end_x = start_x + Global.CHUNK_SIZE
+	var end_y = start_y + Global.CHUNK_SIZE
+	
+	for x in range(start_x, end_x):
+		if x < 0 or x >= world_width: 
+			continue
+		
+		for y in range(start_y, end_y):
+			if y < 0 or y >= world_height:
+				continue
+
 			var current_pos = Vector2i(x, y)
 
 			var val = river_noise.get_noise_2d(x, y)
@@ -41,50 +60,30 @@ func generate_surface():
 		
 	if water_tiles.size() > 0:
 		self.set_cells_terrain_connect(water_tiles, 0, WATER_TERRAIN, false)
-		
-func spawn_trees():
-	@warning_ignore("integer_division")
-	var center_map_pos = Vector2i(world_width / 2, world_height / 2)
-	print("Forestification")
-	seed(Global.world_seed + 123)
-	
-	var all_cells = get_used_cells()
-	
-	var spawned = 0
-	var attempts = 0
-	var max_attempts = tree_count * 5
-	
-	if world_width == 0 or world_height == 0:
-		print("Error: Map size is 0")
-		return
-	
-	while spawned < tree_count and attempts < max_attempts:
-		attempts += 1
-		
-		var random_map_pos = all_cells.pick_random()
-		var world_pos = map_to_local(random_map_pos)
-		
-		var tile_data = get_cell_tile_data(random_map_pos)
-		var source_id = get_cell_source_id(random_map_pos)
-		
-		if source_id == 0 and not occupied_cells.has(random_map_pos):
-			
-			if random_map_pos == center_map_pos:
-				continue
 
-			var changes = Global.world_changes.get(Global.current_world_id, {})
+func spawn_trees_in_chunk(coords):
+	seed(Global.world_seed + coords.x * 37 + coords.y * 131)
 
-			if changes.has(random_map_pos):
-				continue
-			
-			if tile_data and not tile_data.get_custom_data("water") and not occupied_cells.has(random_map_pos):
-				var tree = DataManager.spawn_resource("oak_tree", world_pos)
-				occupied_cells.append(random_map_pos)
-				if tree and randf() > 0.5:
-					var rand_size = randf_range(0.9, 1.25)
-					tree.scale = Vector2(rand_size, rand_size)
-					tree.scale.x *= -1
-				spawned += 1
+	var tree_density = randi() % 3
+	
+	for i in range(tree_density):
+		var local_pos = Vector2i(randi() % Global.CHUNK_SIZE, randi() % Global.CHUNK_SIZE)
+		var global_tile_pos = (coords * Global.CHUNK_SIZE) + local_pos
+		
+		if global_tile_pos.x >= Global.world_width or global_tile_pos.y >= Global.world_height: continue
+		
+		var tile_data = self.get_cell_tile_data(global_tile_pos)
+		if tile_data and tile_data.get_custom_data("water"): continue
+		
+		var world_pos = self.map_to_local(global_tile_pos)
+		var tree = DataManager.spawn_resource("oak_tree", world_pos)
+		
+		if tree:
+			occupied_cells[global_tile_pos] = true 
+
+			var rand_size = randf_range(0.9, 1.25)
+			tree.scale = Vector2(rand_size, rand_size)
+			tree.scale.x *= -1 
 
 func spawn_starting_sinkhole():
 	@warning_ignore("integer_division")
@@ -94,4 +93,4 @@ func spawn_starting_sinkhole():
 
 	object_layer.set_cell(sinkhole_pos, 1, Vector2i(0, 0))
 	
-	occupied_cells.append(sinkhole_pos)
+	occupied_cells[sinkhole_pos] = true
