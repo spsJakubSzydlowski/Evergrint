@@ -57,6 +57,7 @@ texture_progress = SubResource("GradientTexture2D_yxraq")
 
 [node name="visible_timer" type="Timer" parent="." unique_id=1195838863]
 wait_time = 30.0
+autostart = true
 
 [connection signal="body_entered" from="hurt_box" to="." method="_on_world_entity_body_entered"]
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
