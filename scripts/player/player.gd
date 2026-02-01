@@ -78,8 +78,8 @@ func play_anim(anim_name: String, sprite_node):
 
 func setup_camera_limits():
 	var tile_size = 16
-	var world_width = tile_map.get_used_rect().size.x * tile_size
-	var world_height = tile_map.get_used_rect().size.y * tile_size
+	var world_width = Global.world_width * tile_size
+	var world_height = Global.world_height * tile_size
 	
 	camera.limit_left = 0
 	camera.limit_top = 0
@@ -152,7 +152,7 @@ func move(delta):
 		
 	move_and_slide()
 	
-	var rect = tile_map.get_used_rect()
+	var rect = Rect2i(0, 0, Global.world_width, Global.world_height)
 	var tile_size = 16
 	
 	var limit_left = rect.position.x * tile_size
