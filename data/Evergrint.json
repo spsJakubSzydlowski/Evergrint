@@ -37,6 +37,11 @@
 				{
 					"typeStr": "3",
 					"name": "tile_size"
+				},
+				{
+					"typeStr": "1",
+					"name": "tooltip",
+					"opt": true
 				}
 			],
 			"lines": [
@@ -221,6 +226,22 @@
 						"x": 1,
 						"y": 1
 					}
+				},
+				{
+					"id": "old_scissors",
+					"name": "Old Scissors",
+					"type": 2,
+					"stack_limit": 9999,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
+					"tile": {
+						"file": "../textures/Atlas-items-16x16.png",
+						"size": 16,
+						"x": 2,
+						"y": 0
+					},
+					"tooltip": "Use in the underground"
 				}
 			],
 			"separators": [],
@@ -495,6 +516,12 @@
 							"weight": 50,
 							"amount_min": 1,
 							"amount_max": 3
+						},
+						{
+							"item": "old_scissors",
+							"weight": 50,
+							"amount_min": 1,
+							"amount_max": 1
 						}
 					]
 				},
