@@ -48,6 +48,7 @@ func set_difficulty(mode: String):
 func transition_to(target_layer: String):
 	current_layer = target_layer
 	get_tree().change_scene_to_file(world_scenes[target_layer])
+	loaded_chunks.clear()
 
 func get_player_world_position():
 	var player = get_tree().get_first_node_in_group("Player")
