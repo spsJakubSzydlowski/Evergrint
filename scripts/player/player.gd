@@ -332,8 +332,7 @@ func _on_magnet_field_area_entered(area: Area2D) -> void:
 func respawn():
 	velocity  = Vector2.ZERO
 	if tile_map:
-		var rect = tile_map.get_used_rect()
-		var center_map_pos = rect.position + (rect.size / 2)
+		var center_map_pos = Global.center_world_pos
 		var center_world_pos = tile_map.map_to_local(center_map_pos)
 		
 		global_position = Vector2(center_world_pos)
