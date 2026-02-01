@@ -24,6 +24,8 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if player:
 		Global.update_chunks(object_layer)
+	else:
+		print("There is no player!! underground.gd")
 		
 func spawn_player_at_center():
 	var center_world_pos = Global.center_world_pos

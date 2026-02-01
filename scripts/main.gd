@@ -20,7 +20,7 @@ func _ready():
 		
 		spawn_player_at_center()
 		player = get_tree().get_first_node_in_group("Player")
-		
+
 		DataManager.spawn_item("wooden_sword", player.global_position, false)
 		DataManager.spawn_item("wooden_axe", player.global_position, false)
 		DataManager.spawn_item("wooden_hammer", player.global_position, false)
@@ -32,10 +32,14 @@ func _ready():
 		Global.first_time_generation = false
 	else:
 		spawn_player_at_center()
+		player = get_tree().get_first_node_in_group("Player")
+		
 
 func _physics_process(_delta: float) -> void:
 	if player:
 		Global.update_chunks(object_layer)
+	else:
+		print("There is no player!! main.gd")
 
 func spawn_entity():
 	var current_enemy_count = get_tree().get_nodes_in_group("entity").size()
