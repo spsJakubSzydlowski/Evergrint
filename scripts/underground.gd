@@ -19,14 +19,11 @@ func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 	
 	DataManager.spawn_entity("mole_boss", player.global_position - Vector2(80, 80))
-	print(player.global_position)
 
 func _physics_process(_delta: float) -> void:
 	if player:
 		Global.update_chunks(object_layer)
-	else:
-		print("There is no player!! underground.gd")
-		
+
 func spawn_player_at_center():
 	var center_world_pos = Global.center_world_pos
 	var center_map_pos = tile_map.map_to_local(center_world_pos)
@@ -34,4 +31,3 @@ func spawn_player_at_center():
 	await get_tree().process_frame
 	
 	DataManager.spawn_player(center_map_pos)
-	print(center_map_pos)
