@@ -93,7 +93,8 @@ func create_tooltip(slot_data, new_slot):
 		
 		var item_type_id = int(item.get("type", 0))
 		var type_str = ITEM_TYPE_NAMES.get(item_type_id, "NULL")
-		
+		var tooltip_str = item.get("tooltip", "")
+		print(item)
 		var tooltip = item_name + "\n" + type_str
 
 		var weapon_stats = DataManager.get_weapon_stats(item_id)
@@ -107,6 +108,7 @@ func create_tooltip(slot_data, new_slot):
 		if not projectile_stats.is_empty():
 			tooltip += "\nDamage: " + str(projectile_stats.get("damage", 0))
 		
+		tooltip += "\n" + tooltip_str 
 		new_slot.tooltip_text = tooltip
 		update_slot_visuals(new_slot, slot_data)
 	else:
