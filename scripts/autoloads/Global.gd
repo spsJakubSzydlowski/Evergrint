@@ -25,6 +25,7 @@ var world_changes = {
 }
 
 var loaded_chunks = {}
+var chunk_queue: Array[Vector2i] = []
 const CHUNK_SIZE = 8
 const RENDER_DISTANCE = 4
 
@@ -55,7 +56,7 @@ func get_player_world_position():
 	var player = get_tree().get_first_node_in_group("Player")
 	if player:
 		return player.global_position
-	return Vector2i.ZERO
+	return center_world_pos
 
 func save_player_position():
 	var player = get_tree().get_first_node_in_group("Player")
@@ -80,19 +81,30 @@ func update_chunks(tile_map):
 				if chunk_coords.y >= 0 and chunk_coords.y < max_chunk_y:
 					
 					if not loaded_chunks.has(chunk_coords):
-						loaded_chunks[chunk_coords] = true
-						request_chunk_generation.emit(chunk_coords)
+						if not chunk_coords in chunk_queue:
+							chunk_queue.append(chunk_coords)
 	
+	var UNLOAD_DISTANCE = RENDER_DISTANCE + 2
 	for loaded_coords in loaded_chunks.keys():
-		if not loaded_coords in chunks_to_see:
+		var dist_x = abs(loaded_coords.x - player_chunk_pos.x)
+		var dist_y = abs(loaded_coords.y - player_chunk_pos.y)
+		
+		if dist_x > UNLOAD_DISTANCE or dist_y > UNLOAD_DISTANCE:
 			chunks_to_unload.append(loaded_coords)
-	
+
 	for coords in chunks_to_unload:
 		request_chunk_removal.emit(coords)
 		loaded_chunks.erase(coords)
-	
+
+func _process(_delta):
+	if chunk_queue.size() > 0:
+		var next_chunk = chunk_queue.pop_front()
+		loaded_chunks[next_chunk] = true
+		request_chunk_generation.emit(next_chunk)
+
 func get_player_chunk_pos(tile_map):
 	var player_global_pos = get_player_world_position()
+	
 	var player_tile_pos = tile_map.local_to_map(player_global_pos)
 	var player_chunk_pos = Vector2i(
 		floor(player_tile_pos.x / float(CHUNK_SIZE)),
