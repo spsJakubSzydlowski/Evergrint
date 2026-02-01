@@ -56,14 +56,14 @@ func generate_chunk(coords):
 	var end_x = start_x + Global.CHUNK_SIZE
 	var end_y = start_y + Global.CHUNK_SIZE
 	
-	for x in range(start_x, end_x):
-		if x < 0 or x >= world_width: 
-			continue
+	if start_x >= world_width or start_y >= world_height:
+		return
 		
+	if start_x + Global.CHUNK_SIZE <= 0 or start_y + Global.CHUNK_SIZE <= 0:
+		return
+	
+	for x in range(start_x, end_x):
 		for y in range(start_y, end_y):
-			if y < 0 or y >= world_height:
-				continue
-
 			var current_pos = Vector2i(x, y)
 
 			var val = river_noise.get_noise_2d(x, y)
