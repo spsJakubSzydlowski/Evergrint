@@ -1,6 +1,7 @@
 extends Node
 
 signal request_chunk_generation(coords: Vector2i)
+signal request_chunk_removal(coords: Vector2i)
 
 var world_seed: int = 0
 var player_pos: Vector2 = Vector2.ZERO
@@ -65,6 +66,7 @@ func update_chunks(tile_map):
 	var player_chunk_pos = get_player_chunk_pos(tile_map)
 
 	var chunks_to_see = []
+	var chunks_to_unload = []
 	
 	var max_chunk_x = ceil(world_width / float(CHUNK_SIZE))
 	var max_chunk_y = ceil(world_height / float(CHUNK_SIZE))
@@ -80,7 +82,15 @@ func update_chunks(tile_map):
 					if not loaded_chunks.has(chunk_coords):
 						loaded_chunks[chunk_coords] = true
 						request_chunk_generation.emit(chunk_coords)
-
+	
+	for loaded_coords in loaded_chunks.keys():
+		if not loaded_coords in chunks_to_see:
+			chunks_to_unload.append(loaded_coords)
+	
+	for coords in chunks_to_unload:
+		request_chunk_removal.emit(coords)
+		loaded_chunks.erase(coords)
+	
 func get_player_chunk_pos(tile_map):
 	var player_global_pos = get_player_world_position()
 	var player_tile_pos = tile_map.local_to_map(player_global_pos)
