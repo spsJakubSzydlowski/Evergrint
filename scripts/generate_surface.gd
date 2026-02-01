@@ -9,16 +9,34 @@ var world_height = Global.world_height
 var tree_count = 800
 
 var occupied_cells = {}
+var loaded_chunks_entities : Dictionary = {}
 
 @export var object_layer: TileMapLayer
 
 func _ready() -> void:
-	Global.request_chunk_generation.connect(_on_chunk_requested)
+	Global.request_chunk_generation.connect(_on_chunk_requested_gen)
+	Global.request_chunk_removal.connect(_on_chunk_requested_rem)
 
-func _on_chunk_requested(coords: Vector2i):
-	print("Request chunks in surface: " + str(coords))
+func _on_chunk_requested_gen(coords: Vector2i):
 	generate_chunk(coords)
 	spawn_trees_in_chunk(coords)
+	
+func _on_chunk_requested_rem(coords: Vector2i):
+	var start_x = coords.x * Global.CHUNK_SIZE
+	var start_y = coords.y * Global.CHUNK_SIZE
+	
+	for x in range(start_x, start_x + Global.CHUNK_SIZE):
+		for y in range(start_y, start_y + Global.CHUNK_SIZE):
+			self.set_cell(Vector2i(x, y), -1)
+	
+	if loaded_chunks_entities.has(coords):
+		var resource_to_delete = loaded_chunks_entities[coords]
+	
+		for resource in resource_to_delete:
+			if is_instance_valid(resource):
+				resource.queue_free()
+				
+		loaded_chunks_entities.erase(coords)
 
 func generate() -> void:
 	occupied_cells.clear()
@@ -30,8 +48,6 @@ func generate() -> void:
 	notify_runtime_tile_data_update()
 
 func generate_chunk(coords):
-	print("Generating chunk...")
-
 	var grass_tiles : Array[Vector2i] = []
 	var water_tiles : Array[Vector2i] = []
 	
@@ -64,23 +80,37 @@ func generate_chunk(coords):
 
 func spawn_trees_in_chunk(coords):
 	seed(Global.world_seed + coords.x * 37 + coords.y * 131)
+	if not loaded_chunks_entities.has(coords):
+		loaded_chunks_entities[coords] = []
 
 	var tree_density = randi() % 3
 	
 	for i in range(tree_density):
 		var local_pos = Vector2i(randi() % Global.CHUNK_SIZE, randi() % Global.CHUNK_SIZE)
 		var global_tile_pos = (coords * Global.CHUNK_SIZE) + local_pos
-		
+
+		var changes = Global.world_changes.get(Global.current_world_id, {})
+
 		if global_tile_pos.x >= Global.world_width or global_tile_pos.y >= Global.world_height: continue
 		
 		var tile_data = self.get_cell_tile_data(global_tile_pos)
 		if tile_data and tile_data.get_custom_data("water"): continue
 		
-		var world_pos = self.map_to_local(global_tile_pos)
+		var world_pos = MiningManager.current_tilemap.map_to_local(global_tile_pos)
+
+		if changes.has(global_tile_pos):
+			var change_type = changes[global_tile_pos]
+
+			if change_type == "removed":
+				continue
+			elif change_type == "placed":
+				pass
+		
 		var tree = DataManager.spawn_resource("oak_tree", world_pos)
 		
 		if tree:
-			occupied_cells[global_tile_pos] = true 
+			occupied_cells[global_tile_pos] = true
+			loaded_chunks_entities[coords].append(tree)
 
 			var rand_size = randf_range(0.9, 1.25)
 			tree.scale = Vector2(rand_size, rand_size)

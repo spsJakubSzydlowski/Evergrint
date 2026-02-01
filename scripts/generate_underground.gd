@@ -11,7 +11,8 @@ var occupied_cells = {}
 @export var object_layer: TileMapLayer
 
 func _ready() -> void:
-	Global.request_chunk_generation.connect(_on_chunk_requested)
+	Global.request_chunk_generation.connect(_on_chunk_requested_gen)
+	Global.request_chunk_removal.connect(_on_chunk_requested_rem)
 
 func generate() -> void:
 	occupied_cells.clear()
@@ -33,10 +34,25 @@ func spawn_starting_ladder():
 	
 	occupied_cells[sinkhole_pos] = true
 
-func _on_chunk_requested(coords: Vector2i):
+func _on_chunk_requested_gen(coords: Vector2i):
 	generate_surface(coords)
 	generate_chunk(coords)
 
+func _on_chunk_requested_rem(coords: Vector2i):
+	var start_x = coords.x * Global.CHUNK_SIZE
+	var start_y = coords.y * Global.CHUNK_SIZE
+	var center_map_pos = Global.center_world_pos
+
+	for x in range(start_x, start_x + Global.CHUNK_SIZE):
+		for y in range(start_y, start_y + Global.CHUNK_SIZE):
+			var current_pos = Vector2i(x, y)
+			
+			if current_pos == center_map_pos:
+				continue
+				
+			self.set_cell(current_pos, -1)
+			object_layer.set_cell(current_pos, -1)
+	
 func generate_surface(coords):
 	var stone_tiles : Array[Vector2i] = []
 	var lava_tiles : Array[Vector2i] = []
@@ -86,6 +102,9 @@ func generate_chunk(coords):
 			if dist_from_ladder < ladder_radius:
 				continue
 			
+			if current_pos == ladder_map_pos:
+				spawn_starting_ladder()
+			
 			if changes.has(current_pos):
 				var change_type = changes[current_pos]
 
@@ -94,7 +113,7 @@ func generate_chunk(coords):
 				elif change_type == "placed":
 					pass
 			
-			if x % 20 == 0:
+			if x % 5 == 0:
 				await get_tree().process_frame
 
 			var val = cave_noise.get_noise_2d(x, y)
