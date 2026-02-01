@@ -16,6 +16,7 @@ func _ready() -> void:
 	Global.request_chunk_generation.connect(_on_chunk_requested)
 
 func _on_chunk_requested(coords: Vector2i):
+	print("Request chunks in surface: " + str(coords))
 	generate_chunk(coords)
 	spawn_trees_in_chunk(coords)
 
@@ -29,7 +30,7 @@ func generate() -> void:
 	notify_runtime_tile_data_update()
 
 func generate_chunk(coords):
-	print("Generating chunk")
+	print("Generating chunk...")
 
 	var grass_tiles : Array[Vector2i] = []
 	var water_tiles : Array[Vector2i] = []
