@@ -73,7 +73,6 @@ func spawn_player_at_center():
 	var center_world_pos = Global.center_world_pos
 	var center_map_pos = tile_map.map_to_local(center_world_pos)
 	DataManager.spawn_player(center_map_pos)
-	print(center_map_pos)
 
 func _on_timer_timeout() -> void:
 	spawn_entity()
