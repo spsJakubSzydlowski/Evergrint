@@ -27,6 +27,7 @@ const ITEM_TYPE_NAMES = {
 
 func _ready() -> void:
 	Signals.player_health_changed.connect(update_health_bar)
+	Signals.player_died.connect(_on_player_died)
 
 	Inventory.inventory_updated.connect(on_inventory_updated)
 	
@@ -42,16 +43,10 @@ func on_inventory_updated():
 func _input(event: InputEvent) -> void:
 	if Global.is_player_dead:
 		return
-
+		
 	if Input.is_action_just_pressed("open_inventory"):
-		is_inventory_open = !is_inventory_open
-		inventory_container.visible = is_inventory_open
-		hotbar_container.visible = !is_inventory_open
+		toggle_inventory()
 		
-		first_selected_slot_index = -1
-		
-		refresh_ui()
-
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			active_slot_index = posmod(active_slot_index -1, hotbar_slots)
@@ -61,6 +56,15 @@ func _input(event: InputEvent) -> void:
 			active_slot_index = posmod(active_slot_index +1, hotbar_slots)
 			refresh_ui()
 			emit_equipped_signal()
+
+func toggle_inventory():
+	is_inventory_open = !is_inventory_open
+	inventory_container.visible = is_inventory_open
+	hotbar_container.visible = !is_inventory_open
+	
+	first_selected_slot_index = -1
+	
+	refresh_ui()
 
 func refresh_ui():
 	for child in hotbar_container.get_children():
@@ -159,3 +163,7 @@ func _on_world_changed():
 	if get_tree():
 		await get_tree().process_frame
 		emit_equipped_signal()
+
+func _on_player_died():
+	if is_inventory_open:
+		toggle_inventory()
