@@ -1,16 +1,21 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://4gdmmmgngu0y"]
+[gd_resource type="Theme" format=3 uid="uid://4gdmmmgngu0y"]
+
+[ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="1_x7ogh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_be3bp"]
-bg_color = Color(0.8312653, 0.46685278, 0.6182727, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
+bg_color = Color(0.6, 0.6, 0.6, 0)
 border_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 40
 corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
+corner_detail = 1
+anti_aliasing = false
 
 [resource]
+default_font = ExtResource("1_x7ogh")
+default_font_size = 20
+TooltipLabel/constants/outline_size = 40
+TooltipLabel/fonts/font = ExtResource("1_x7ogh")
+TooltipPanel/fonts/title_font = ExtResource("1_x7ogh")
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_be3bp")
