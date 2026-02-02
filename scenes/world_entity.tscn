@@ -30,7 +30,7 @@ collision_mask = 3
 script = ExtResource("1_c2mjn")
 
 [node name="hurt_box" type="Area2D" parent="." unique_id=2104406542]
-position = Vector2(0, -16)
+position = Vector2(0, -15)
 collision_layer = 4
 collision_mask = 3
 
@@ -38,6 +38,7 @@ collision_mask = 3
 shape = SubResource("RectangleShape2D_ey0o3")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=590273700]
+position = Vector2(0, 1)
 sprite_frames = ExtResource("2_ey0o3")
 animation = &"dig_down"
 offset = Vector2(0, -16)
@@ -54,6 +55,7 @@ texture_under = SubResource("GradientTexture2D_ey0o3")
 texture_progress = SubResource("GradientTexture2D_yxraq")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=219517770]
+position = Vector2(0, 1)
 
 [node name="visible_timer" type="Timer" parent="." unique_id=1195838863]
 wait_time = 30.0
