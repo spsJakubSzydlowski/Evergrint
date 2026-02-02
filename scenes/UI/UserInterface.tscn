@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bryjxm5yqvpo5"]
+[gd_scene format=3 uid="uid://bryjxm5yqvpo5"]
 
 [ext_resource type="Script" uid="uid://b6d0iowgh44ec" path="res://scripts/user_interface.gd" id="1_l5hnc"]
 
@@ -18,10 +18,10 @@ gradient = SubResource("Gradient_5mm2x")
 width = 128
 height = 16
 
-[node name="UI" type="CanvasLayer" groups=["ui"]]
+[node name="UI" type="CanvasLayer" unique_id=1839636389 groups=["ui"]]
 script = ExtResource("1_l5hnc")
 
-[node name="hotbar" type="HBoxContainer" parent="."]
+[node name="hotbar" type="HBoxContainer" parent="." unique_id=1735720222]
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 4.0
@@ -30,7 +30,7 @@ mouse_filter = 2
 theme_override_constants/separation = 4
 alignment = 1
 
-[node name="inventory" type="GridContainer" parent="."]
+[node name="inventory" type="GridContainer" parent="." unique_id=581490757]
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 4.0
@@ -40,7 +40,7 @@ theme_override_constants/h_separation = 6
 theme_override_constants/v_separation = 6
 columns = 10
 
-[node name="health_bar" type="TextureProgressBar" parent="."]
+[node name="health_bar" type="TextureProgressBar" parent="." unique_id=1750026888]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
