@@ -8,16 +8,16 @@ var player_pos: Vector2 = Vector2.ZERO
 var is_player_dead: bool = false
 enum Difficulty {EASY, HARD}
 var current_difficulty = Difficulty.EASY
-var difficulty_multiplier = 1.0
+var difficulty_multiplier: float = 1.0
 
-var world_width = 1000
-var world_height = 1000
+var living_boss: bool = false
+
+var world_width: int = 1000
+var world_height: int = 1000
 @warning_ignore("integer_division")
 var center_world_pos = Vector2i(world_width / 2, world_height / 2)
 
-var first_time_generation = true
-
-var current_world_id : String = "surface"
+var first_time_generation: bool = true
 
 var world_changes = {
 	"surface": {},
@@ -33,8 +33,7 @@ var world_scenes = {
 	"surface": "res://scenes/main.tscn",
 	"underground": "res://scenes/underground.tscn"
 }
-
-var current_layer = "surface"
+var current_world_id : String = "surface"
 
 func _ready():
 	randomize()
@@ -48,7 +47,7 @@ func set_difficulty(mode: String):
 		difficulty_multiplier = 1.0
 
 func transition_to(target_layer: String):
-	current_layer = target_layer
+	current_world_id = target_layer
 	get_tree().change_scene_to_file(world_scenes[target_layer])
 	loaded_chunks.clear()
 
