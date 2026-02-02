@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://djardhy0i2xds"]
 
 [ext_resource type="Script" uid="uid://csvgao43fby5h" path="res://scripts/world_resource.gd" id="1_m5ijx"]
+[ext_resource type="Texture2D" uid="uid://dwttdfg2pcqw3" path="res://textures/Atlas-resources.png" id="2_vwx0m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s2mhn"]
 size = Vector2(31, 54)
@@ -17,8 +18,11 @@ position = Vector2(0, -27)
 shape = SubResource("RectangleShape2D_s2mhn")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=78654278]
+texture = ExtResource("2_vwx0m")
 centered = false
 offset = Vector2(-16, -64)
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 64)
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=460627814]
 position = Vector2(0, -10)
