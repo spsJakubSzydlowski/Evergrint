@@ -44,6 +44,9 @@ func load_castle_db(path):
 func get_item(id):
 	return db_data.get("Items", {}).get(id)
 
+func get_consumable_stats(id):
+	return db_data.get("ConsumableStats", {}).get(id)
+
 func get_weapon_stats(id):
 	if db_data.has("ActionStats") and db_data["ActionStats"].has(id):
 		return db_data["ActionStats"][id]
@@ -124,6 +127,10 @@ func spawn_entity(id: String, pos: Vector2):
 	if not is_loaded:
 		await get_tree().create_timer(0.1).timeout
 	
+	var entity_stats = get_full_entity_data(id)
+	if Global.current_world_id != entity_stats.get("spawn_world_id"):
+		return
+
 	var entity_scene = preload("res://scenes/world_entity.tscn")
 	var entity_instance = entity_scene.instantiate()
 	
@@ -131,6 +138,11 @@ func spawn_entity(id: String, pos: Vector2):
 	entity_instance.position = pos
 	
 	entity_instance.initialize(id)
+	
+	if entity_stats.get("is_boss"):
+		Global.living_boss = true
+	
+	return entity_instance
 	
 func spawn_player(pos: Vector2):
 	if not is_loaded:
