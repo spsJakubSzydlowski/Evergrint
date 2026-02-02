@@ -228,8 +228,8 @@
 					}
 				},
 				{
-					"id": "old_scissors",
-					"name": "Old Scissors",
+					"id": "head_of_the_burrower",
+					"name": "Head Of The Burrower",
 					"type": 2,
 					"stack_limit": 9999,
 					"tile_width": 1,
@@ -241,7 +241,7 @@
 						"x": 2,
 						"y": 0
 					},
-					"tooltip": "Use in the underground"
+					"tooltip": "You feel something watching you underground"
 				}
 			],
 			"separators": [],
@@ -518,7 +518,7 @@
 							"amount_max": 3
 						},
 						{
-							"item": "old_scissors",
+							"item": "head_of_the_burrower",
 							"weight": 50,
 							"amount_min": 1,
 							"amount_max": 1
