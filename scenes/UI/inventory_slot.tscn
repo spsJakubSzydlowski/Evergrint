@@ -1,25 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://ccqufb7fkgrn7"]
+[gd_scene format=3 uid="uid://ccqufb7fkgrn7"]
 
-[ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="1_bjo5i"]
+[ext_resource type="Theme" uid="uid://4gdmmmgngu0y" path="res://themes/inventory.tres" id="1_bjo5i"]
 [ext_resource type="Script" uid="uid://disrtctq753n" path="res://scripts/inventory_slot.gd" id="1_et8er"]
 [ext_resource type="Texture2D" uid="uid://bpric1nyeu7w3" path="res://textures/ui.png" id="3_bjo5i"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_et8er"]
-bg_color = Color(0.8819366, 0.8819366, 0.88193655, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-anti_aliasing = false
-
-[sub_resource type="Theme" id="Theme_l3fr4"]
-Label/colors/font_color = Color(1, 1, 1, 1)
-Label/colors/font_outline_color = Color(0, 0, 0, 1)
-Label/constants/outline_size = 5
-Label/font_sizes/font_size = 14
-Label/fonts/font = ExtResource("1_bjo5i")
-Label/styles/normal = SubResource("StyleBoxFlat_et8er")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_et8er"]
 
@@ -33,35 +16,35 @@ region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l3fr4"]
 
-[node name="InventorySlot" type="PanelContainer"]
+[node name="InventorySlot" type="PanelContainer" unique_id=1142797154]
 custom_minimum_size = Vector2(16, 16)
 offset_right = 16.0
 offset_bottom = 16.0
-theme = SubResource("Theme_l3fr4")
+theme = ExtResource("1_bjo5i")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_et8er")
 script = ExtResource("1_et8er")
 
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=916765090]
 modulate = Color(1, 1, 1, 0.91764706)
 position = Vector2(8, 8)
 texture = SubResource("AtlasTexture_2pys4")
 
-[node name="SelectionSprite" type="Sprite2D" parent="."]
+[node name="SelectionSprite" type="Sprite2D" parent="." unique_id=52342579]
 visible = false
 position = Vector2(8, 8)
 texture = SubResource("AtlasTexture_bjo5i")
 
-[node name="Icon" type="TextureRect" parent="."]
+[node name="Icon" type="TextureRect" parent="." unique_id=826525478]
 layout_mode = 2
 mouse_filter = 2
 expand_mode = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2019466112]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 2
 
-[node name="AmountLabel" type="Label" parent="MarginContainer"]
+[node name="AmountLabel" type="Label" parent="MarginContainer" unique_id=2113513284]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
