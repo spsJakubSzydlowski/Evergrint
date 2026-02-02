@@ -40,7 +40,7 @@ func _ready() -> void:
 	velocity = Vector2.ZERO
 	tile_map = get_tree().get_first_node_in_group("tilemap")
 	object_layer = get_tree().get_first_node_in_group("objectmap")
-	#setup_camera_limits()
+	setup_camera_limits()
 
 func initialize():
 	var player = DataManager.get_entity("player")
@@ -116,9 +116,32 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		var distance = global_position.distance_to(mouse_pos)
 		
-		var data = object_layer.get_cell_tile_data(tile_pos)
+		var tile_data = object_layer.get_cell_tile_data(tile_pos)
 		
-		if data:
+		var consumable_stats = DataManager.get_consumable_stats(Inventory.current_equipped_id)
+		if consumable_stats:
+			var summon_item = consumable_stats.get("summon_item")
+			
+			if not summon_item:
+				var hp_to_heal = consumable_stats.get("hp_to_heal", 0)
+				if heal(hp_to_heal):
+					Inventory.remove_item(Inventory.current_equipped_id, 1)
+			else:
+				if Global.living_boss:
+					return
+				
+				var boss_to_spawn = consumable_stats.get("boss_to_spawn")
+				
+				var angle = PI * 2
+				var offset = randf_range(0, 360)
+				var direction = Vector2.RIGHT.rotated(angle + offset)
+				var distance_from_player = 200
+				
+				var boss = await DataManager.spawn_entity(boss_to_spawn, global_position + direction * distance_from_player)
+				if boss:
+					Inventory.remove_item(Inventory.current_equipped_id, 1)
+	
+		if tile_data:
 			var item_stats = DataManager.get_weapon_stats(Inventory.current_equipped_id)
 			var tool_type_enum
 			var tool_power: int
@@ -132,7 +155,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				is_in_distance = distance <= tool_range
 				
 				MiningManager.damage_block(mouse_pos, is_in_distance, tool_type_enum, tool_power)
-			
+		
 	if event.is_action_pressed("attack") and not is_attacking:
 		if Inventory.current_equipped_id != "":
 			attack(Inventory.current_equipped_id)
@@ -165,6 +188,9 @@ func move(delta):
 	
 	global_position.x = clamp(global_position.x, limit_left + player_width_half, limit_right - player_width_half)
 	global_position.y = clamp(global_position.y, limit_top + player_height_half, limit_bottom)
+	
+	#var player_tile_pos = ceil((global_position - Vector2(8008, 8008)) / 16)
+	#print(player_tile_pos)
 
 func attack(item_id):
 	var stats = DataManager.get_weapon_stats(item_id)
@@ -281,6 +307,18 @@ func take_hit(damage, knockback, source_pos):
 	
 	apply_knockback(knockback, source_pos)
 
+func heal(hp_to_heal):
+	var success = false
+	if is_dead: return success
+	
+	if current_hp >= max_hp: return success
+	
+	current_hp += hp_to_heal
+	Signals.player_health_changed.emit(current_hp, max_hp)
+	
+	success = true
+	return success
+
 func die():
 	Global.is_player_dead = true
 	is_dead = true
@@ -299,7 +337,7 @@ func apply_knockback(knockback_amount, source_pos):
 	is_stunned = true
 	await get_tree().create_timer(time_stunned).timeout
 	is_stunned = false
-	
+
 func _on_hit_area_area_entered(area: Area2D) -> void:
 	var attackable = area.get_parent()
 	var item_stats = DataManager.get_weapon_stats(Inventory.current_equipped_id)
