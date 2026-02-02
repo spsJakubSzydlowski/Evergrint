@@ -29,6 +29,7 @@ func _ready():
 		for i in range(10):
 			DataManager.spawn_item("arrow", player.global_position, false)
 			DataManager.spawn_item("head_of_the_burrower", player.global_position, false)
+			DataManager.spawn_item("green_apple", player.global_position, false)
 		
 		Global.first_time_generation = false
 	else:
