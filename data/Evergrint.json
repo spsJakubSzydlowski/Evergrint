@@ -723,6 +723,12 @@
 					"name": "is_boss"
 				},
 				{
+					"typeStr": "1",
+					"name": "spawn_world_id",
+					"opt": true,
+					"display": null
+				},
+				{
 					"typeStr": "6:LootTables",
 					"name": "loot_ref",
 					"display": null
@@ -783,7 +789,8 @@
 							"action": "wait",
 							"time": 1.6
 						}
-					]
+					],
+					"spawn_world_id": "underground"
 				}
 			],
 			"separators": [],
@@ -925,6 +932,49 @@
 					"opt": true
 				}
 			]
+		},
+		{
+			"name": "ConsumableStats",
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "id"
+				},
+				{
+					"typeStr": "3",
+					"name": "hp_to_heal",
+					"opt": true
+				},
+				{
+					"typeStr": "2",
+					"name": "summon_item"
+				},
+				{
+					"typeStr": "6:Entities",
+					"name": "boss_to_spawn",
+					"opt": true,
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"id": "head_of_the_burrower",
+					"boss_to_spawn": "mole_boss",
+					"summon_item": true
+				},
+				{
+					"id": "red_apple",
+					"hp_to_heal": 5,
+					"summon_item": false
+				},
+				{
+					"id": "green_apple",
+					"hp_to_heal": 10,
+					"summon_item": false
+				}
+			],
+			"separators": [],
+			"props": {}
 		}
 	],
 	"customTypes": [],
