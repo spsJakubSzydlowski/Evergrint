@@ -218,6 +218,10 @@ func apply_knockback(knockback_amount, source_pos):
 	
 func die():
 	is_dead = true
+		
+	if is_boss:
+		Global.living_boss = false
+
 	drop_loot()
 	queue_free()
 
