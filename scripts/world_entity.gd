@@ -103,6 +103,9 @@ func handle_movement(distance_to_player):
 
 func handle_attacks(distance_to_player):
 	if player.is_dead:
+		if is_boss:
+			Global.living_boss = false
+			queue_free()
 		return
 
 	if distance_to_player <= aggro_range and not is_acting:
@@ -223,6 +226,7 @@ func die():
 	is_dead = true
 		
 	if is_boss:
+		AudioManager.play_sfx("boss_die", global_position)
 		Global.living_boss = false
 	
 	drop_loot()
