@@ -47,6 +47,56 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("open_inventory"):
 		toggle_inventory()
 		
+	if Input.is_action_just_pressed("hotbar_1"):
+		active_slot_index = 0
+		refresh_ui()
+		emit_equipped_signal()
+		
+	if Input.is_action_just_pressed("hotbar_2"):
+		active_slot_index = 1
+		refresh_ui()
+		emit_equipped_signal()
+		
+	if Input.is_action_just_pressed("hotbar_3"):
+		active_slot_index = 2
+		refresh_ui()
+		emit_equipped_signal()
+		
+	if Input.is_action_just_pressed("hotbar_4"):
+		active_slot_index = 3
+		refresh_ui()
+		emit_equipped_signal()
+		
+	if Input.is_action_just_pressed("hotbar_5"):
+		active_slot_index = 4
+		refresh_ui()
+		emit_equipped_signal()
+		
+	if Input.is_action_just_pressed("hotbar_6"):
+		active_slot_index = 5
+		refresh_ui()
+		emit_equipped_signal()
+		
+	if Input.is_action_just_pressed("hotbar_7"):
+		active_slot_index = 6
+		refresh_ui()
+		emit_equipped_signal()
+		
+	if Input.is_action_just_pressed("hotbar_8"):
+		active_slot_index = 7
+		refresh_ui()
+		emit_equipped_signal()
+		
+	if Input.is_action_just_pressed("hotbar_9"):
+		active_slot_index = 8
+		refresh_ui()
+		emit_equipped_signal()
+		
+	if Input.is_action_just_pressed("hotbar_10"):
+		active_slot_index = 9
+		refresh_ui()
+		emit_equipped_signal()
+		
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			active_slot_index = posmod(active_slot_index -1, hotbar_slots)
@@ -56,6 +106,7 @@ func _input(event: InputEvent) -> void:
 			active_slot_index = posmod(active_slot_index +1, hotbar_slots)
 			refresh_ui()
 			emit_equipped_signal()
+			
 
 func toggle_inventory():
 	is_inventory_open = !is_inventory_open
@@ -103,7 +154,6 @@ func create_tooltip(slot_data, new_slot):
 
 		var weapon_stats = DataManager.get_weapon_stats(item_id)
 		if not weapon_stats.is_empty():
-			tooltip += "\n--- Stats ---"
 			tooltip += "\nDamage: " + str(weapon_stats.get("damage", 0))
 			tooltip += "\nSpeed: " + str(weapon_stats.get("attack_speed", 0))
 			tooltip += "\nKnockback: " + str(weapon_stats.get("knockback", 0))
