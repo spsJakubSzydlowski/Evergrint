@@ -429,7 +429,7 @@
 				{
 					"id": "player",
 					"name": "Player",
-					"max_hp": 10000000,
+					"max_hp": 100,
 					"move_speed": 80,
 					"tile": {
 						"file": "../textures/player-texture.png",
@@ -1072,6 +1072,11 @@
 					"volume": -25,
 					"pitch_min": 0.5,
 					"pitch_max": 0.6
+				},
+				{
+					"id": "boss_die",
+					"file": "../audio/sfx/boss_die.wav",
+					"volume": -10
 				}
 			],
 			"separators": [],
