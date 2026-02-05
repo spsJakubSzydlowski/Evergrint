@@ -11,6 +11,9 @@ func projectile_burst(projectile_id, source, count: int):
 			var direction = Vector2.RIGHT.rotated(angle + offset)
 			
 			DataManager.spawn_projectile(projectile_id, source.global_position, {}, direction)
+		
+			AudioManager.play_sfx(projectile_id)
+	
 	)
 	
 func spawn_at_player(source, player):

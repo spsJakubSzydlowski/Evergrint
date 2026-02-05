@@ -1013,7 +1013,8 @@
 			"lines": [
 				{
 					"id": "boss_summon",
-					"file": "../audio/sfx/boss_summon.wav"
+					"file": "../audio/sfx/boss_summon.wav",
+					"volume": -8
 				},
 				{
 					"id": "bow_release",
@@ -1042,17 +1043,35 @@
 				},
 				{
 					"id": "oak_tree_hit",
-					"file": "../audio/sfx/tree_hit.wav"
+					"file": "../audio/sfx/tree_hit.wav",
+					"volume": -10
 				},
 				{
 					"id": "pickup_item",
-					"file": "../audio/sfx/pickup_item.mp3",
-					"volume": -10
+					"file": "../audio/sfx/pickup_item.wav",
+					"volume": -5
 				},
 				{
 					"id": "player_hit",
 					"file": "../audio/sfx/player_hit.wav",
 					"volume": -15
+				},
+				{
+					"id": "food_crunch",
+					"file": "../audio/sfx/crunch.wav",
+					"volume": -20
+				},
+				{
+					"id": "boulder",
+					"file": "../audio/sfx/projectile_shoot.mp3",
+					"volume": -30
+				},
+				{
+					"id": "player_run",
+					"file": "../audio/sfx/player_run.wav",
+					"volume": -25,
+					"pitch_min": 0.5,
+					"pitch_max": 0.6
 				}
 			],
 			"separators": [],

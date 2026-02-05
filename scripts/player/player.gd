@@ -18,6 +18,9 @@ var object_layer = null
 #region Movement Variables
 var move_speed : float
 var acceleration = 400.0
+
+var footstep_timer := 0.0
+var step_delay := 0.35
 #endregion
 
 var ui: CanvasLayer = null
@@ -128,6 +131,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				var hp_to_heal = consumable_stats.get("hp_to_heal", 0)
 				if heal(hp_to_heal):
 					Inventory.remove_item(Inventory.current_equipped_id, 1)
+					AudioManager.play_sfx("food_crunch")
 			else:
 				if Global.living_boss:
 					return
@@ -167,8 +171,16 @@ func move(delta):
 	var direction := Input.get_vector("a", "d", "w", "s").normalized()
 	if direction:
 		velocity = velocity.move_toward(direction * move_speed, acceleration * delta)
+		
+		footstep_timer -= delta
+		if footstep_timer <= 0:
+			#AudioManager.play_sfx("player_run")
+			footstep_timer = step_delay
+
+		
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, acceleration * delta)
+		footstep_timer = 0.0
 	
 	if direction.x < 0 and can_turn:
 		sprite.flip_h = true
