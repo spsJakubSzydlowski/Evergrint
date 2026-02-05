@@ -20,17 +20,15 @@ func _ready():
 		
 		await spawn_player_at_center()
 		player = get_tree().get_first_node_in_group("Player")
+		Inventory.add_item("wooden_sword")
+		Inventory.add_item("wooden_axe")
+		Inventory.add_item("wooden_bow")
+		Inventory.add_item("wooden_pickaxe")
+		Inventory.add_item("wooden_hammer")
+		Inventory.add_item("arrow", 100)
+		Inventory.add_item("head_of_the_burrower", 10)
+		Inventory.add_item("green_apple", 100)
 
-		DataManager.spawn_item("wooden_sword", player.global_position, false)
-		DataManager.spawn_item("wooden_axe", player.global_position, false)
-		DataManager.spawn_item("wooden_hammer", player.global_position, false)
-		DataManager.spawn_item("wooden_bow", player.global_position, false)
-		DataManager.spawn_item("wooden_pickaxe", player.global_position, false)
-		for i in range(10):
-			DataManager.spawn_item("arrow", player.global_position, false)
-			DataManager.spawn_item("head_of_the_burrower", player.global_position, false)
-			DataManager.spawn_item("green_apple", player.global_position, false)
-		
 		Global.first_time_generation = false
 	else:
 		await spawn_player_at_center()
