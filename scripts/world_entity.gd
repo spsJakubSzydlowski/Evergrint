@@ -93,6 +93,7 @@ func handle_movement(distance_to_player):
 
 	if distance_to_player < attack_range:
 		velocity = Vector2.ZERO
+		deal_damage(player)
 	elif distance_to_player <= aggro_range:
 		var direction = (player.global_position - global_position).normalized()
 		velocity = direction * entity.get("move_speed", 100)
@@ -198,6 +199,8 @@ func take_hit(amount: int, knockback_amount: float, source_pos):
 	if current_hp < (max_hp * 0.5) and is_boss:
 		sprite.modulate = Color(2, 0.5, 0.5)
 	
+	AudioManager.play_entity_sfx(entity.id, "hit", global_position)
+
 	if current_hp <= 0:
 		die()
 		return
@@ -221,7 +224,7 @@ func die():
 		
 	if is_boss:
 		Global.living_boss = false
-
+	
 	drop_loot()
 	queue_free()
 

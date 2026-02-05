@@ -6,15 +6,20 @@ extends CanvasLayer
 func _on_button_pressed() -> void:
 	start_button.visible = false
 	difficulties.visible = true
+	AudioManager.play_sfx("menu_click")
 	
 func _on_easy_button_pressed() -> void:
 	Global.current_difficulty = Global.Difficulty.EASY
 	Global.set_difficulty("easy")
+	
+	AudioManager.play_sfx("menu_click")
 	start_game()
 
 func _on_hard_button_pressed() -> void:
 	Global.current_difficulty = Global.Difficulty.HARD
 	Global.set_difficulty("hard")
+	
+	AudioManager.play_sfx("menu_click")
 	start_game()
 	
 func start_game():

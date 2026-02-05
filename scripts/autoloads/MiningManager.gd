@@ -29,6 +29,7 @@ func damage_block(world_pos: Vector2, is_in_distance: bool, tool_type, damage: i
 			tile_health_map[tile_pos] -= damage
 			
 			spawn_hit_effect(tile_pos)
+			AudioManager.play_sfx("block_hit")
 			
 			if tile_health_map[tile_pos] <= 0:
 				destroy_block(tile_pos, block_info)

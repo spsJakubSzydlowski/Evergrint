@@ -429,7 +429,7 @@
 				{
 					"id": "player",
 					"name": "Player",
-					"max_hp": 100,
+					"max_hp": 10000000,
 					"move_speed": 80,
 					"tile": {
 						"file": "../textures/player-texture.png",
@@ -765,7 +765,8 @@
 							"action": "wait",
 							"time": 1.8
 						}
-					]
+					],
+					"spawn_world_id": "surface"
 				},
 				{
 					"id": "mole_boss",
@@ -971,6 +972,87 @@
 					"id": "green_apple",
 					"hp_to_heal": 10,
 					"summon_item": false
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "Audio",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "13",
+					"name": "file",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "volume",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "pitch_min",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "pitch_max",
+					"opt": true
+				},
+				{
+					"typeStr": "4",
+					"name": "max_distance",
+					"opt": true
+				}
+			],
+			"lines": [
+				{
+					"id": "boss_summon",
+					"file": "../audio/sfx/boss_summon.wav"
+				},
+				{
+					"id": "bow_release",
+					"file": "../audio/sfx/bow-release.wav"
+				},
+				{
+					"id": "menu_click",
+					"file": "../audio/sfx/menu-click.wav",
+					"volume": -30,
+					"pitch_min": 0.8,
+					"pitch_max": 0.8
+				},
+				{
+					"id": "mole_boss_hit",
+					"file": "../audio/sfx/mole-hit.wav"
+				},
+				{
+					"id": "block_hit",
+					"file": "../audio/sfx/stone-pick.wav",
+					"volume": -15
+				},
+				{
+					"id": "sword_swing",
+					"file": "../audio/sfx/sword-swing.wav",
+					"volume": -10
+				},
+				{
+					"id": "oak_tree_hit",
+					"file": "../audio/sfx/tree_hit.wav"
+				},
+				{
+					"id": "pickup_item",
+					"file": "../audio/sfx/pickup_item.mp3",
+					"volume": -10
+				},
+				{
+					"id": "player_hit",
+					"file": "../audio/sfx/player_hit.wav",
+					"volume": -15
 				}
 			],
 			"separators": [],

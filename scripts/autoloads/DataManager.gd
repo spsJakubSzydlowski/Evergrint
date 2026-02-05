@@ -96,6 +96,9 @@ func get_full_entity_data(id):
 func get_resource(id):
 	return db_data.get("Resources", {}).get(id)
 
+func get_audio(id):
+	return db_data.get("Audio", {}).get(id)
+
 func spawn_item(id: String, pos: Vector2, drop = true):
 	if not is_loaded:
 		await get_tree().create_timer(0.1).timeout
@@ -168,7 +171,6 @@ func spawn_resource(id: String, pos: Vector2, parent = null):
 		parent.add_child(resource_instance)
 	else:
 		get_tree().current_scene.add_child(resource_instance)
-	
 	
 	return resource_instance
 

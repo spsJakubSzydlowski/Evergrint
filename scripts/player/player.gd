@@ -95,7 +95,9 @@ func _physics_process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if is_dead:
 		return
-
+	
+	var tile_data
+	
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		var mouse_pos = get_global_mouse_position()
 		var tile_pos = object_layer.local_to_map(mouse_pos)
@@ -116,7 +118,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		var distance = global_position.distance_to(mouse_pos)
 		
-		var tile_data = object_layer.get_cell_tile_data(tile_pos)
+		tile_data = object_layer.get_cell_tile_data(tile_pos)
 		
 		var consumable_stats = DataManager.get_consumable_stats(Inventory.current_equipped_id)
 		if consumable_stats:
@@ -140,6 +142,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				var boss = await DataManager.spawn_entity(boss_to_spawn, global_position + direction * distance_from_player)
 				if boss:
 					Inventory.remove_item(Inventory.current_equipped_id, 1)
+					AudioManager.play_sfx("boss_summon")
 	
 		if tile_data:
 			var item_stats = DataManager.get_weapon_stats(Inventory.current_equipped_id)
@@ -234,6 +237,8 @@ func melee_attack(stats):
 
 	animation_player.speed_scale = stats.get("attack_speed", 1.0)
 	animation_player.play(stats.get("anim_name", "attack_swing_light"))
+	
+	AudioManager.play_sfx("sword_swing")
 
 func ranged_attack(stats, projectile):
 	var mouse_position = get_global_mouse_position()
@@ -245,6 +250,8 @@ func ranged_attack(stats, projectile):
 		var is_projectile_from_player = true
 		DataManager.spawn_projectile(projectile, hand_sprite.global_position, stats, direction, is_projectile_from_player)
 		Inventory.remove_item(projectile, 1)
+		
+		AudioManager.play_sfx("bow_release")
 
 func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 	Inventory.current_equipped_id = item_id
@@ -300,6 +307,8 @@ func take_hit(damage, knockback, source_pos):
 	tween.tween_callback(func():
 		sprite.modulate = Color(1, 1, 1, 1)
 	)
+	
+	AudioManager.play_sfx("player_hit")
 	
 	if current_hp <= 0:
 		die()

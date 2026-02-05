@@ -10,6 +10,7 @@ var is_block = false
 var sprite = null
 var collision
 var resource = null
+var id = ""
 
 var player = null
 
@@ -30,7 +31,8 @@ func initialize(resource_id: String):
 		print("Error: ID ", resource_id, " doesnt exist in database!")
 		return
 	
-	name = resource.id
+	name = resource_id
+	id = resource_id
 	
 	sprite = get_node("Sprite2D")
 	collision = get_node("hurt_box/CollisionShape2D")
@@ -65,14 +67,14 @@ func initialize(resource_id: String):
 func harvest(tool_type, amount: int):
 	if is_harvested: return
 
-
 	if tool_type == prefered_tool_type:
 		current_hp -= amount
 		var tw = create_tween()
 		tw.tween_property(sprite, "modulate", Color.RED, 0.1)
 		tw.tween_property(sprite, "modulate", Color.WHITE, 0.1)
-
-			
+		
+		AudioManager.play_entity_sfx(id, "hit", global_position)
+	
 	if current_hp <= 0:
 		die()
 

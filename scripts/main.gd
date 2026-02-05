@@ -66,7 +66,7 @@ func spawn_entity():
 				found_valid_spot = true
 		
 		if found_valid_spot:
-			DataManager.spawn_entity("green_slime", spawn_pos)
+			await DataManager.spawn_entity("green_slime", spawn_pos)
 
 func spawn_player_at_center():
 	Global.update_chunks(object_layer)

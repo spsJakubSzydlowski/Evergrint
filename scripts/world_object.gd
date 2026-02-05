@@ -47,6 +47,7 @@ func _on_body_entered(body: Node2D) -> void:
 func collect_item():
 	if Inventory.has_free_space():
 		Inventory.add_item(item.id)
+		AudioManager.play_sfx("pickup_item", global_position)
 		queue_free()
 	else:
 		target_player = null

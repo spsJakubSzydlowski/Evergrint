@@ -17,8 +17,6 @@ func _ready() -> void:
 	await get_tree().process_frame
 	
 	player = get_tree().get_first_node_in_group("Player")
-	
-	#DataManager.spawn_entity("mole_boss", player.global_position - Vector2(80, 80))
 
 func _physics_process(_delta: float) -> void:
 	if player:
