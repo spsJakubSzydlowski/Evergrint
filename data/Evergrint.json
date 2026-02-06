@@ -429,7 +429,7 @@
 				{
 					"id": "player",
 					"name": "Player",
-					"max_hp": 100,
+					"max_hp": 10000,
 					"move_speed": 80,
 					"tile": {
 						"file": "../textures/player-texture.png",
@@ -852,7 +852,7 @@
 				{
 					"id": "slime_arrow",
 					"damage": 6,
-					"knockback": 0,
+					"knockback": 0.8,
 					"pierce": 1,
 					"move_speed": 300,
 					"distance": 300,
@@ -1018,7 +1018,8 @@
 				},
 				{
 					"id": "bow_release",
-					"file": "../audio/sfx/bow-release.wav"
+					"file": "../audio/sfx/bow-release.wav",
+					"volume": -8
 				},
 				{
 					"id": "menu_click",
