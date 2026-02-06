@@ -107,6 +107,7 @@ size = Vector2(10, 21)
 [node name="Player" type="CharacterBody2D" unique_id=382151949 groups=["Player"]]
 y_sort_enabled = true
 collision_layer = 2
+safe_margin = 0.001
 script = ExtResource("1_g2els")
 
 [node name="pickup_collision" type="CollisionShape2D" parent="." unique_id=1433754025]
@@ -131,6 +132,7 @@ collision_mask = 16
 shape = SubResource("CircleShape2D_g2els")
 
 [node name="WeaponPivot" type="Node2D" parent="." unique_id=1067148515]
+z_index = 1
 position = Vector2(0, -12)
 
 [node name="Hand" type="Node2D" parent="WeaponPivot" unique_id=1117562812]
