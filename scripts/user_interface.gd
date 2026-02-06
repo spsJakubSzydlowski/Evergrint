@@ -107,7 +107,6 @@ func _input(event: InputEvent) -> void:
 			refresh_ui()
 			emit_equipped_signal()
 			
-
 func toggle_inventory():
 	is_inventory_open = !is_inventory_open
 	inventory_container.visible = is_inventory_open
@@ -143,30 +142,48 @@ func create_slot_in(container, index):
 func create_tooltip(slot_data, new_slot):
 	if slot_data["id"] != "":
 		var item = DataManager.get_item(slot_data["id"])
-		var item_id = item.get("id")
-		var item_name = item.get("name", "NULL")
 		
-		var item_type_id = int(item.get("type", 0))
-		var type_str = ITEM_TYPE_NAMES.get(item_type_id, "NULL")
-		var tooltip_str = item.get("tooltip", "")
-
-		var tooltip = item_name + "\n" + type_str
-
-		var weapon_stats = DataManager.get_weapon_stats(item_id)
-		if not weapon_stats.is_empty():
-			tooltip += "\nDamage: " + str(weapon_stats.get("damage", 0))
-			tooltip += "\nSpeed: " + str(weapon_stats.get("attack_speed", 0))
-			tooltip += "\nKnockback: " + str(weapon_stats.get("knockback", 0))
+		new_slot.set_meta("item_data", item)
 		
-		var projectile_stats = DataManager.get_projectile_stats(item_id)
-		if not projectile_stats.is_empty():
-			tooltip += "\nDamage: " + str(projectile_stats.get("damage", 0))
-		
-		tooltip += "\n" + tooltip_str 
-		new_slot.tooltip_text = tooltip
+		if not new_slot.mouse_entered.is_connected(_on_slot_mouse_entered):
+			new_slot.mouse_entered.connect(_on_slot_mouse_entered.bind(new_slot))
+			new_slot.mouse_exited.connect(_on_slot_mouse_exited)
+			
 		update_slot_visuals(new_slot, slot_data)
 	else:
-		new_slot.tooltip_text = ""
+		new_slot.set_meta("item_data", null)
+		#var item_id = item.get("id")
+		#var item_name = item.get("name", "NULL")
+		#
+		#var item_type_id = int(item.get("type", 0))
+		#var type_str = ITEM_TYPE_NAMES.get(item_type_id, "NULL")
+		#var tooltip_str = item.get("tooltip", "")
+#
+		#var tooltip = item_name + "\n" + type_str
+#
+		#var weapon_stats = DataManager.get_weapon_stats(item_id)
+		#if not weapon_stats.is_empty():
+			#tooltip += "\nDamage: " + str(weapon_stats.get("damage", 0))
+			#tooltip += "\nSpeed: " + str(weapon_stats.get("attack_speed", 0))
+			#tooltip += "\nKnockback: " + str(weapon_stats.get("knockback", 0))
+		#
+		#var projectile_stats = DataManager.get_projectile_stats(item_id)
+		#if not projectile_stats.is_empty():
+			#tooltip += "\nDamage: " + str(projectile_stats.get("damage", 0))
+		#
+		#tooltip += "\n" + tooltip_str 
+		#new_slot.tooltip_text = tooltip
+		#update_slot_visuals(new_slot, slot_data)
+	#else:
+		#new_slot.tooltip_text = ""
+
+func _on_slot_mouse_entered(slot):
+	var item = slot.get_meta("item_data")
+	if item:
+		Tooltip.display_tooltip(item)
+		
+func _on_slot_mouse_exited():
+	Tooltip.hide_tooltip()
 
 func update_slot_visuals(slot_ui, slot_data):
 	var item_id = slot_data["id"]
