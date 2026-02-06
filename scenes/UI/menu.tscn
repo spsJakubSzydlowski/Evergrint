@@ -86,4 +86,3 @@ text = "Hard"
 [connection signal="pressed" from="difficulties/easy_button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="difficulties/easy_button" to="." method="_on_easy_button_pressed"]
 [connection signal="pressed" from="difficulties/hard_button" to="." method="_on_hard_button_pressed"]
-[connection signal="pressed" from="difficulties/hard_button" to="." method="_on_button_pressed"]
