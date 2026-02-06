@@ -99,15 +99,14 @@ func _on_area_entered(area: Area2D) -> void:
 func player_projectile_hit(attackable):
 	var damage = (projectile_stats.get("damage", 0) + weapon_stats.get("damage", 0)) / 2
 	var knockback = weapon_stats.get("knockback", 0)
-	attackable.take_hit(damage, knockback, global_position)
+	attackable.take_hit(damage, knockback, player.global_position)
 	destroy_projectile()
 
 func entity_projectile_hit(attackable):
 	var damage = projectile_stats.get("damage", 0)
 	var knockback = projectile_stats.get("knockback", 0)
 
-	if Global.current_difficulty == Global.Difficulty.HARD:
-		damage *= 1.5
+	damage *= Global.difficulty_multiplier
 
 	attackable.take_hit(damage, knockback, global_position)
 
