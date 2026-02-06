@@ -29,6 +29,7 @@ InventoryCanvas="*res://scenes/UI/UserInterface.tscn"
 MiningManager="*res://scripts/autoloads/MiningManager.gd"
 AbilityManager="*res://scripts/autoloads/AbilityManager.gd"
 AudioManager="*uid://c5rfdyo6mroat"
+Tooltip="*uid://cl6ih68eeb4ox"
 
 [display]
 
