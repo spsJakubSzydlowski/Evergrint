@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://cl6ih68eeb4ox"]
+
+[ext_resource type="Script" uid="uid://b0tq1hm3eyxfe" path="res://scripts/autoloads/TooltipSystem.gd" id="1_ne664"]
+[ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="2_m5ds0"]
+[ext_resource type="Theme" uid="uid://4gdmmmgngu0y" path="res://themes/inventory.tres" id="2_pt5xr"]
+
+[sub_resource type="Theme" id="Theme_tbolh"]
+PanelContainer/styles/panel = null
+
+[node name="tooltip" type="CanvasLayer" unique_id=331667819]
+script = ExtResource("1_ne664")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=2119070636]
+custom_minimum_size = Vector2(150, 0)
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+theme = ExtResource("2_pt5xr")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1815803933]
+layout_mode = 2
+size_flags_vertical = 0
+theme = SubResource("Theme_tbolh")
+theme_override_constants/separation = 0
+
+[node name="title_label" type="RichTextLabel" parent="PanelContainer/HBoxContainer" unique_id=1559309628]
+clip_contents = false
+layout_mode = 2
+theme_override_constants/outline_size = 4
+theme_override_fonts/normal_font = ExtResource("2_m5ds0")
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "???"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+
+[node name="type_label" type="RichTextLabel" parent="PanelContainer/HBoxContainer" unique_id=1817637901]
+clip_contents = false
+layout_mode = 2
+theme_override_constants/outline_size = 4
+theme_override_fonts/normal_font = ExtResource("2_m5ds0")
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "???"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+
+[node name="stats_label" type="RichTextLabel" parent="PanelContainer/HBoxContainer" unique_id=1314216438]
+clip_contents = false
+layout_mode = 2
+theme_override_constants/outline_size = 4
+text = "stats"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="tip_label" type="RichTextLabel" parent="PanelContainer/HBoxContainer" unique_id=162446090]
+clip_contents = false
+layout_mode = 2
+theme_override_constants/outline_size = 4
+text = "tooltip"
+fit_content = true
+scroll_active = false
