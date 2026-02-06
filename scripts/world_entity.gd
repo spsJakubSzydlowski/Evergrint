@@ -37,6 +37,7 @@ var is_acting = false
 var behavior = {}
 var behavior_index = 0
 
+var stun_time = 0.2
 #endregion
 
 #region Movement Variables
@@ -44,6 +45,8 @@ var move_speed: float
 var is_stunned = false
 
 var idle_direction := Vector2.ZERO
+
+var knockback_velocity = Vector2.ZERO
 #endregion
 
 #region Timer Variables
@@ -60,12 +63,16 @@ func _physics_process(_delta: float) -> void:
 	process_active_behaviour()
 
 func process_active_behaviour():
-	if faction != FACTION_HOSTILE or is_dead or is_stunned or not player:
+	if faction != FACTION_HOSTILE or is_dead or not player:
 		return
 		
 	var distance_to_player = global_position.distance_to(player.global_position)
 	
-	handle_movement(distance_to_player)
+	if not is_stunned:
+		handle_movement(distance_to_player)
+	else:
+		velocity = knockback_velocity
+		move_and_slide()
 	
 	handle_attacks(distance_to_player)
 	
@@ -90,7 +97,7 @@ func handle_movement(distance_to_player):
 	if player.is_dead:
 		velocity = Vector2.ZERO
 		return
-
+		
 	if distance_to_player < attack_range:
 		velocity = Vector2.ZERO
 		deal_damage(player)
@@ -209,19 +216,19 @@ func take_hit(amount: int, knockback_amount: float, source_pos):
 		return
 	
 	if not is_boss:
-		apply_knockback(knockback_amount, source_pos)
+		var knockback_dir = (global_position - source_pos).normalized()
+		apply_knockback(knockback_amount, knockback_dir)
 		
-func apply_knockback(knockback_amount, source_pos):
-	is_stunned = true
-	var knockback_dir = source_pos.direction_to(global_position)
-	var target_pos = global_position + (knockback_dir * knockback_amount * 20.0)
-	
+func apply_knockback(knockback_amount, knockback_dir):
+	knockback_velocity = knockback_dir * knockback_amount * 150.0
+
 	var tween = create_tween()
-	tween.tween_property(self, "global_position", target_pos, 0.15).set_trans(Tween.TRANS_BOUNCE)
+	tween.tween_property(self, "knockback_velocity", Vector2.ZERO, 0.15).set_trans(Tween.TRANS_BOUNCE)
 	
-	await get_tree().create_timer(0.2).timeout
+	is_stunned = true
+	await get_tree().create_timer(stun_time).timeout
 	is_stunned = false
-	
+
 func die():
 	is_dead = true
 		
