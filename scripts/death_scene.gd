@@ -22,7 +22,8 @@ func respawn_player():
 	var player = get_tree().get_first_node_in_group("Player")
 	if player:
 		player.respawn()
-
+	
+	respawn_timer.stop()
 	visible = false
 	die_label.visible = false
 
