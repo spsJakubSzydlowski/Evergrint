@@ -19,8 +19,7 @@ var object_layer = null
 var move_speed : float
 var acceleration = 400.0
 
-var footstep_timer := 0.0
-var step_delay := 0.35
+var knockback_velocity = Vector2.ZERO
 #endregion
 
 var ui: CanvasLayer = null
@@ -91,9 +90,10 @@ func setup_camera_limits():
 
 func _physics_process(delta: float) -> void:
 	if is_dead or is_stunned:
-		return
-
-	move(delta)
+		velocity = knockback_velocity
+		move_and_slide()
+	else:
+		move(delta)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if is_dead:
@@ -171,17 +171,9 @@ func move(delta):
 	var direction := Input.get_vector("a", "d", "w", "s").normalized()
 	if direction:
 		velocity = velocity.move_toward(direction * move_speed, acceleration * delta)
-		
-		footstep_timer -= delta
-		if footstep_timer <= 0:
-			#AudioManager.play_sfx("player_run")
-			footstep_timer = step_delay
-
-		
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, acceleration * delta)
-		footstep_timer = 0.0
-	
+
 	if direction.x < 0 and can_turn:
 		sprite.flip_h = true
 	
@@ -306,7 +298,7 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 		hand_sprite.texture = null
 
 func take_hit(damage, knockback, source_pos):
-	if is_dead: return
+	if is_dead or not can_be_hit: return
 	
 	current_hp -= damage
 	Signals.player_health_changed.emit(current_hp, max_hp)
@@ -350,10 +342,10 @@ func die():
 
 func apply_knockback(knockback_amount, source_pos):
 	var knockback_dir = source_pos.direction_to(global_position)
-	var target_pos = global_position + (knockback_dir * knockback_amount * 20.0)
-	
+	knockback_velocity = knockback_dir * knockback_amount * 350.0
+
 	var tween = create_tween()
-	tween.tween_property(self, "global_position", target_pos, 0.15).set_trans(Tween.TRANS_BOUNCE)
+	tween.tween_property(self, "knockback_velocity", Vector2.ZERO, 0.15).set_trans(Tween.TRANS_BOUNCE)
 	
 	is_stunned = true
 	await get_tree().create_timer(time_stunned).timeout
