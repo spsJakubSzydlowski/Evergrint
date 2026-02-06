@@ -2,9 +2,17 @@
 
 [ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="1_x7ogh"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_be3bp"]
-bg_color = Color(0.46554878, 0.6261802, 1.0324832, 0)
-border_color = Color(0.075987734, 3.6338715e-05, 0.28281313, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x7ogh"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.070000015, 0.4899999, 0.7, 0.78431374)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.003199997, 0.09727999, 0.16, 0.78431374)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -13,9 +21,5 @@ anti_aliasing = false
 
 [resource]
 default_font = ExtResource("1_x7ogh")
-default_font_size = 30
-TooltipLabel/colors/font_outline_color = Color(0, 0, 0, 1)
-TooltipLabel/constants/outline_size = 10
-TooltipLabel/fonts/font = ExtResource("1_x7ogh")
-TooltipLabel/styles/normal = null
-TooltipPanel/styles/panel = SubResource("StyleBoxFlat_be3bp")
+default_font_size = 15
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_x7ogh")
