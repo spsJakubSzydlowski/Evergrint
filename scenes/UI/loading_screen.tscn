@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://ktjib8kmqghc"]
+
+[ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="1_35dpi"]
+[ext_resource type="Script" uid="uid://de1yjfba1tftj" path="res://scripts/loading_screen.gd" id="1_pe18t"]
+
+[node name="loading_screen" type="CanvasLayer" unique_id=829138240]
+script = ExtResource("1_pe18t")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1683665779]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect" unique_id=1551713573]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 200.0
+grow_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ColorRect/MarginContainer" unique_id=516075097]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_constants/outline_size = 4
+theme_override_fonts/normal_font = ExtResource("1_35dpi")
+theme_override_font_sizes/normal_font_size = 30
+text = "Loading..."
+vertical_alignment = 2
+
+[node name="Timer" type="Timer" parent="." unique_id=938394316]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -30,6 +30,7 @@ MiningManager="*res://scripts/autoloads/MiningManager.gd"
 AbilityManager="*res://scripts/autoloads/AbilityManager.gd"
 AudioManager="*uid://c5rfdyo6mroat"
 Tooltip="*uid://cl6ih68eeb4ox"
+SceneChanger="*uid://cq24jxsp1mlrs"
 
 [display]
 
