@@ -252,7 +252,8 @@ func ranged_attack(stats, projectile):
 	
 	if projectile:
 		var is_projectile_from_player = true
-		DataManager.spawn_projectile(projectile, hand_sprite.global_position, stats, direction, is_projectile_from_player)
+		var projectile_spawn_pos = hand_sprite.global_position + (direction * 20.0)
+		DataManager.spawn_projectile(projectile, projectile_spawn_pos, stats, direction, is_projectile_from_player)
 		Inventory.remove_item(projectile, 1)
 		
 		AudioManager.play_sfx("bow_release")
