@@ -108,6 +108,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var data = object_layer.get_cell_tile_data(tile_pos)
 
 		if data and data.get_custom_data("is_sinkhole"):
+			if global_position.distance_to(mouse_pos) > 200.0: return
 			Global.save_player_position()
 
 			if get_tree().current_scene.name == "main":
@@ -196,9 +197,6 @@ func move(delta):
 	global_position.x = clamp(global_position.x, limit_left + player_width_half, limit_right - player_width_half)
 	global_position.y = clamp(global_position.y, limit_top + player_height_half, limit_bottom)
 	
-	#var player_tile_pos = ceil((global_position - Vector2(8008, 8008)) / 16)
-	#print(player_tile_pos)
-
 func attack(item_id):
 	var stats = DataManager.get_weapon_stats(item_id)
 	
