@@ -118,7 +118,7 @@ func spawn_trees_in_chunk(coords):
 
 func spawn_starting_sinkhole():
 	@warning_ignore("integer_division")
-	var center_map_pos = Vector2i(world_width / 2, world_height / 2)
+	var center_map_pos = Global.center_world_pos
 	
 	var sinkhole_pos = center_map_pos
 
