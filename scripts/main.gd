@@ -11,6 +11,7 @@ func _ready():
 		await DataManager.database_ready
 	
 	Global.current_world_id = "surface"
+	Global.current_tilemap = tile_map
 	MiningManager.current_tilemap = object_layer
 	Inventory.update_inventory()
 	
