@@ -49,6 +49,12 @@ func display_tooltip(item):
 	if not projectile_stats.is_empty():
 		stats_label.text += "Damage: " + str(projectile_stats.get("damage", 0))
 	
+	var consumable_stats = DataManager.get_consumable_stats(item_id)
+	if consumable_stats:
+		var hp_to_heal = consumable_stats.get("hp_to_heal", 0)
+		if hp_to_heal:
+			stats_label.text += "Heal: " + str(hp_to_heal)
+
 	panel_container.reset_size()
 	
 	set_process(true)
