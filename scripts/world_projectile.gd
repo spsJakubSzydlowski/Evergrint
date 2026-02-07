@@ -114,6 +114,7 @@ func _on_body_entered(body: Node2D) -> void:
 	if not body.is_in_group("Player") and not body.is_in_group("Entity"):
 		var tile_pos = MiningManager.current_tilemap.local_to_map(global_position)
 		MiningManager.spawn_hit_effect(tile_pos)
+		AudioManager.play_sfx("projectile_break", global_position)
 		destroy_projectile()
 
 func destroy_projectile():
