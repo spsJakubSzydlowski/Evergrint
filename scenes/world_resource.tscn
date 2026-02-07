@@ -11,7 +11,7 @@ collision_mask = 0
 script = ExtResource("1_m5ijx")
 
 [node name="hurt_box" type="Area2D" parent="." unique_id=76206755]
-collision_mask = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurt_box" unique_id=1156559355]
 position = Vector2(0, -27)
@@ -28,5 +28,7 @@ region_rect = Rect2(0, 0, 32, 64)
 position = Vector2(0, -10)
 rect = Rect2(-24, -58, 47, 68)
 
+[connection signal="body_entered" from="hurt_box" to="." method="_on_hurt_box_body_entered"]
+[connection signal="body_exited" from="hurt_box" to="." method="_on_hurt_box_body_exited"]
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
