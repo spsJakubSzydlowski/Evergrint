@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://bryjxm5yqvpo5"]
 
 [ext_resource type="Script" uid="uid://b6d0iowgh44ec" path="res://scripts/user_interface.gd" id="1_l5hnc"]
+[ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="2_yl4mc"]
 
 [sub_resource type="Gradient" id="Gradient_vn1aj"]
-colors = PackedColorArray(0.21977985, 0, 0.02846973, 1, 0.012617188, 0.012617188, 0.012617188, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.012617188, 0.012617188, 0.012617188, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_jxkd3"]
 gradient = SubResource("Gradient_vn1aj")
@@ -51,3 +52,33 @@ offset_bottom = 22.0
 grow_horizontal = 0
 texture_under = SubResource("GradientTexture2D_jxkd3")
 texture_progress = SubResource("GradientTexture2D_ipdp0")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1303517195]
+custom_minimum_size = Vector2(128, 0)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -50.0
+offset_bottom = 100.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 6
+
+[node name="compas" type="Control" parent="MarginContainer" unique_id=1570309618]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+
+[node name="compas_label" type="RichTextLabel" parent="MarginContainer/compas" unique_id=852359123]
+visible = false
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 4
+theme_override_fonts/normal_font = ExtResource("2_yl4mc")
+theme_override_font_sizes/normal_font_size = 20
+text = "0"
+fit_content = true
