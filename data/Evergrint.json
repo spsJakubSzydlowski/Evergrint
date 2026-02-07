@@ -1029,7 +1029,7 @@
 					"pitch_max": 0.8
 				},
 				{
-					"id": "mole_boss_hit",
+					"id": "mole_boss_hurt",
 					"file": "../audio/sfx/mole-hit.wav"
 				},
 				{
@@ -1064,7 +1064,7 @@
 				},
 				{
 					"id": "boulder",
-					"file": "../audio/sfx/projectile_shoot.mp3",
+					"file": "../audio/sfx/boulder_projectile_shoot.mp3",
 					"volume": -30
 				},
 				{
@@ -1078,6 +1078,23 @@
 					"id": "boss_die",
 					"file": "../audio/sfx/boss_die.wav",
 					"volume": -10
+				},
+				{
+					"id": "green_slime_hurt",
+					"file": "../audio/sfx/slime_hurt.wav",
+					"volume": 0
+				},
+				{
+					"id": "projectile_break",
+					"file": "../audio/sfx/projectile_break.wav",
+					"volume": -20,
+					"pitch_min": 0.6,
+					"pitch_max": 0.7
+				},
+				{
+					"id": "slime_arrow",
+					"file": "../audio/sfx/arrow_projectile_shoot.wav",
+					"volume": -40
 				}
 			],
 			"separators": [],
