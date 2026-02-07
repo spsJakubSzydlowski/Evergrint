@@ -6,6 +6,8 @@ extends CanvasLayer
 @onready var tip_label: RichTextLabel = $PanelContainer/HBoxContainer/tip_label
 @onready var type_label: RichTextLabel = $PanelContainer/HBoxContainer/type_label
 
+var show_tooltips = true
+
 const ITEM_TYPE_NAMES = {
 	0: "Weapon",
 	1: "Tool",
@@ -16,9 +18,13 @@ const ITEM_TYPE_NAMES = {
 }
 
 func _ready() -> void:
+	panel_container.reset_size()
 	hide_tooltip()
 
 func display_tooltip(item):
+	if not show_tooltips:
+		return
+
 	var item_id = item.get("id")
 	
 	if not title_label:
@@ -52,7 +58,6 @@ func _process(_delta: float) -> void:
 	var mouse_pos = get_viewport().get_mouse_position()
 	panel_container.global_position = mouse_pos + Vector2(8, 8)
 	
-
 func hide_tooltip():
 	set_process(false)
 	stats_label.text = ""
