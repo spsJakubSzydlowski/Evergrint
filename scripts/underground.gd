@@ -8,6 +8,7 @@ func _ready() -> void:
 	Global.loaded_chunks.clear()
 	
 	Global.current_world_id = "underground"
+	Global.current_tilemap = tile_map
 	MiningManager.current_tilemap = object_layer
 
 	tile_map.generate()
