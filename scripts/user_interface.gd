@@ -5,6 +5,7 @@ signal item_equipped(item_id)
 @onready var hotbar_container: HBoxContainer = $hotbar
 @onready var health_bar: TextureProgressBar = $health_bar
 @onready var inventory_container: GridContainer = $inventory
+@onready var compas_label: RichTextLabel = $MarginContainer/compas/compas_label
 
 var first_selected_slot_index = -1
 
@@ -25,6 +26,8 @@ const ITEM_TYPE_NAMES = {
 	5: "Ammo"
 }
 
+var selected_slot_contents = null
+
 func _ready() -> void:
 	Signals.player_health_changed.connect(update_health_bar)
 	Signals.player_died.connect(_on_player_died)
@@ -35,6 +38,35 @@ func _ready() -> void:
 	
 	refresh_ui()
 	emit_equipped_signal()
+
+func _process(_delta: float) -> void:
+	if Global.current_tilemap:
+		var relative_pos = Vector2i(Global.get_player_tilemap_position(Global.current_tilemap)) - Global.center_world_pos
+		
+		compas_label.text = get_compas_text(relative_pos)
+		
+	if selected_slot_contents:
+		var mouse_pos = get_viewport().get_mouse_position()
+		selected_slot_contents.global_position = mouse_pos + Vector2(-8, -8)
+
+func get_compas_text(relative_pos):
+	var text_n_s = "0"
+	var text_w_e = "0"
+	
+	if relative_pos.y < 0:
+		text_n_s = str(abs(relative_pos.y)) + "N"
+	elif relative_pos.y > 0:
+		text_n_s = str(relative_pos.y) + "S"
+	
+	if relative_pos.x < 0:
+		text_w_e = str(abs(relative_pos.x)) + "W"
+	elif relative_pos.x > 0:
+		text_w_e = str(relative_pos.x) + "E"
+	
+	if text_n_s == "" and text_w_e == "":
+		return "0N 0E"
+	
+	return text_n_s + " " + text_w_e
 
 func on_inventory_updated():
 	refresh_ui()
@@ -97,6 +129,9 @@ func _input(event: InputEvent) -> void:
 		refresh_ui()
 		emit_equipped_signal()
 		
+	if Input.is_action_just_pressed("stats"):
+		compas_label.visible = not compas_label.visible
+		
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			active_slot_index = posmod(active_slot_index -1, hotbar_slots)
@@ -108,6 +143,7 @@ func _input(event: InputEvent) -> void:
 			emit_equipped_signal()
 			
 func toggle_inventory():
+	Tooltip.show_tooltips = true
 	is_inventory_open = !is_inventory_open
 	inventory_container.visible = is_inventory_open
 	hotbar_container.visible = !is_inventory_open
@@ -152,30 +188,6 @@ func create_tooltip(slot_data, new_slot):
 		update_slot_visuals(new_slot, slot_data)
 	else:
 		new_slot.set_meta("item_data", null)
-		#var item_id = item.get("id")
-		#var item_name = item.get("name", "NULL")
-		#
-		#var item_type_id = int(item.get("type", 0))
-		#var type_str = ITEM_TYPE_NAMES.get(item_type_id, "NULL")
-		#var tooltip_str = item.get("tooltip", "")
-#
-		#var tooltip = item_name + "\n" + type_str
-#
-		#var weapon_stats = DataManager.get_weapon_stats(item_id)
-		#if not weapon_stats.is_empty():
-			#tooltip += "\nDamage: " + str(weapon_stats.get("damage", 0))
-			#tooltip += "\nSpeed: " + str(weapon_stats.get("attack_speed", 0))
-			#tooltip += "\nKnockback: " + str(weapon_stats.get("knockback", 0))
-		#
-		#var projectile_stats = DataManager.get_projectile_stats(item_id)
-		#if not projectile_stats.is_empty():
-			#tooltip += "\nDamage: " + str(projectile_stats.get("damage", 0))
-		#
-		#tooltip += "\n" + tooltip_str 
-		#new_slot.tooltip_text = tooltip
-		#update_slot_visuals(new_slot, slot_data)
-	#else:
-		#new_slot.tooltip_text = ""
 
 func _on_slot_mouse_entered(slot):
 	var item = slot.get_meta("item_data")
@@ -218,13 +230,23 @@ func update_health_bar(current_hp, max_hp):
 	health_bar.max_value = max_hp
 	health_bar.value = current_hp
 
-func _on_slot_clicked(index):
-	if first_selected_slot_index == -1 and not Inventory.slots[index].id == "":
+func _on_slot_clicked(index, slot_ui):
+	var slot_data = Inventory.slots[index]
+	if first_selected_slot_index == -1 and not slot_data.id == "":
+		Tooltip.show_tooltips = false
 		first_selected_slot_index = index
-	else:
+		show_item_at_cursor(slot_ui)
+		AudioManager.play_sfx("inventory_slot_pop")
+	elif not first_selected_slot_index == -1:
+		Tooltip.show_tooltips = true
 		Inventory.swap_slot(first_selected_slot_index, index)
 		first_selected_slot_index = -1
 		refresh_ui()
+		AudioManager.play_sfx("inventory_slot_pop")
+
+func show_item_at_cursor(slot_ui):
+	selected_slot_contents = slot_ui.find_child("Contents")
+	selected_slot_contents.z_index = 100
 
 func _on_world_changed():
 	if get_tree():
