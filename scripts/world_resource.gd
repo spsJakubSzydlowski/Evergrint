@@ -121,3 +121,13 @@ func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	set_physics_process(false)
 	collision.disabled = true
 	sprite.hide()
+
+func _on_hurt_box_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Player"):
+		var tween = create_tween()
+		tween.tween_property(self, "modulate:a", 0.5, 0.15)
+
+func _on_hurt_box_body_exited(body: Node2D) -> void:
+	if body.is_in_group("Player"):
+		var tween = create_tween()
+		tween.tween_property(self, "modulate:a", 1.0, 0.15)
