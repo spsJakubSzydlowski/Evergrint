@@ -5,7 +5,9 @@ signal request_chunk_removal(coords: Vector2i)
 
 var world_seed: int = 0
 var player_pos: Vector2 = Vector2.ZERO
+
 var is_player_dead: bool = false
+
 enum Difficulty {EASY, HARD}
 var current_difficulty = Difficulty.EASY
 var difficulty_multiplier: float = 1.0
@@ -34,6 +36,7 @@ var world_scenes = {
 	"underground": "res://scenes/underground.tscn"
 }
 var current_world_id : String = "surface"
+var current_tilemap = null
 
 func _ready():
 	randomize()
@@ -55,7 +58,13 @@ func get_player_world_position():
 	var player = get_tree().get_first_node_in_group("Player")
 	if player:
 		return player.global_position
-	return center_world_pos
+	return Vector2.ZERO
+
+func get_player_tilemap_position(tilemap):
+	var player = get_tree().get_first_node_in_group("Player")
+	if player:
+		return tilemap.local_to_map(player.global_position)
+	return Vector2i.ZERO
 
 func save_player_position():
 	var player = get_tree().get_first_node_in_group("Player")
