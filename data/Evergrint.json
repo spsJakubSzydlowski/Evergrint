@@ -1095,6 +1095,13 @@
 					"id": "slime_arrow",
 					"file": "../audio/sfx/arrow_projectile_shoot.wav",
 					"volume": -40
+				},
+				{
+					"id": "inventory_slot_pop",
+					"file": "../audio/sfx/inventory_slot_pop.wav",
+					"volume": -25,
+					"pitch_min": 1.4,
+					"pitch_max": 1.4
 				}
 			],
 			"separators": [],
