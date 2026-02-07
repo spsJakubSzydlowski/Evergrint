@@ -17,6 +17,7 @@ object_layer = NodePath("../ObjectLayer")
 [node name="ObjectLayer" type="TileMapLayer" parent="." unique_id=475805565 groups=["objectmap"]]
 y_sort_enabled = true
 tile_set = ExtResource("4_5558j")
+navigation_enabled = false
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=149757864]
 color = Color(0.5689725, 0.5689728, 0.5689727, 1)

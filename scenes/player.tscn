@@ -3,8 +3,8 @@
 [ext_resource type="Script" uid="uid://c0c4tt6r1hejr" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="SpriteFrames" uid="uid://b3fnay367al5q" path="res://sprite_frames/player.tres" id="2_g2els"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_qhqgy"]
-radius = 4.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dqkch"]
+size = Vector2(10, 6)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
 radius = 40.0
@@ -111,8 +111,8 @@ safe_margin = 0.001
 script = ExtResource("1_g2els")
 
 [node name="pickup_collision" type="CollisionShape2D" parent="." unique_id=1433754025]
-position = Vector2(0, -4)
-shape = SubResource("CircleShape2D_qhqgy")
+position = Vector2(-1, -3)
+shape = SubResource("RectangleShape2D_dqkch")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1935572899]
 y_sort_enabled = true
