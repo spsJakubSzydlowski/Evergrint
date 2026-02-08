@@ -2,7 +2,7 @@
 
 ## About
 
-Evergrint is a 2D RPG made in Godot Engine inspired by games like Terraria, Forager and Minecraft. Explore world, fight enemies, gather better equipment and fight boss!
+Evergrint is a 2D RPG made in Godot Engine inspired by games like Terraria, Forager and Minecraft. Explore the world, fight enemies, gather better items and summon a boss underground!
 
 ## Play
 
