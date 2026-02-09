@@ -8,3 +8,6 @@ signal player_died
 
 @warning_ignore("unused_signal")
 signal block_destroyed(global_pos)
+
+@warning_ignore("unused_signal")
+signal boss_died(entity_id)

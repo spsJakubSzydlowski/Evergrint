@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://35m550dd32uc" path="res://scripts/generate_underground.gd" id="2_flqp3"]
 [ext_resource type="TileSet" uid="uid://iqsu10vvl550" path="res://scenes/layer.tres" id="4_5558j"]
 [ext_resource type="PackedScene" uid="uid://dmqmrs6wa5bgs" path="res://scenes/UI/death_scene.tscn" id="4_osycu"]
+[ext_resource type="PackedScene" uid="uid://csl6umu8jjb8h" path="res://scenes/UI/demo_screen.tscn" id="5_osycu"]
+[ext_resource type="Script" uid="uid://ekofeb8466ha" path="res://scripts/demo_screen.gd" id="6_iubgi"]
 
 [node name="underground" type="Node2D" unique_id=350268308]
 y_sort_enabled = true
@@ -24,3 +26,7 @@ color = Color(0.5689725, 0.5689728, 0.5689727, 1)
 
 [node name="DeathScreen" parent="." unique_id=796033192 instance=ExtResource("4_osycu")]
 visible = false
+
+[node name="demo_screen" parent="." unique_id=1097633503 instance=ExtResource("5_osycu")]
+visible = false
+script = ExtResource("6_iubgi")

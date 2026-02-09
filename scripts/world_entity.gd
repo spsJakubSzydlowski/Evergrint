@@ -9,6 +9,7 @@ const FACTION_PASSIVE = 1
 @onready var visible_timer: Timer = $visible_timer
 
 var entity = ""
+var entity_name = ""
 var player = null
 var loot_items = {}
 var entity_stats = {}
@@ -145,6 +146,7 @@ func initialize(entity_id: String):
 		return
 	
 	name = entity.id
+	entity_name = entity.id
 	collision.shape.size = Vector2(entity.get("hitbox_x"), entity.get("hitbox_y"))
 	
 	var anim_path = "res://sprite_frames/" + entity_id + ".tres"
@@ -218,7 +220,7 @@ func take_hit(amount: int, knockback_amount: float, source_pos):
 	if not is_boss:
 		var knockback_dir = (global_position - source_pos).normalized()
 		apply_knockback(knockback_amount, knockback_dir)
-		
+
 func apply_knockback(knockback_amount, knockback_dir):
 	knockback_velocity = knockback_dir * knockback_amount * 150.0
 
@@ -233,6 +235,7 @@ func die():
 	is_dead = true
 		
 	if is_boss:
+		Signals.boss_died.emit(entity_name)
 		AudioManager.play_sfx("boss_die", global_position)
 		Global.living_boss = false
 	

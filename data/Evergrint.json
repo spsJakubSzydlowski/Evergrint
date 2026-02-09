@@ -429,7 +429,7 @@
 				{
 					"id": "player",
 					"name": "Player",
-					"max_hp": 10000,
+					"max_hp": 100,
 					"move_speed": 80,
 					"tile": {
 						"file": "../textures/player-texture.png",
@@ -496,8 +496,8 @@
 						{
 							"item": "green_apple",
 							"weight": 80,
-							"amount_min": 1,
-							"amount_max": 2
+							"amount_min": 2,
+							"amount_max": 4
 						},
 						{
 							"item": "green_gel",
@@ -507,19 +507,31 @@
 						},
 						{
 							"item": "iron_sword",
-							"weight": 1,
+							"weight": 10,
 							"amount_min": 1,
 							"amount_max": 1
 						},
 						{
 							"item": "slime_arrow",
 							"weight": 50,
-							"amount_min": 1,
-							"amount_max": 3
+							"amount_min": 8,
+							"amount_max": 12
 						},
 						{
 							"item": "head_of_the_burrower",
 							"weight": 50,
+							"amount_min": 1,
+							"amount_max": 1
+						},
+						{
+							"item": "wooden_hammer",
+							"weight": 10,
+							"amount_min": 1,
+							"amount_max": 1
+						},
+						{
+							"item": "wooden_bow",
+							"weight": 10,
 							"amount_min": 1,
 							"amount_max": 1
 						}
@@ -862,7 +874,7 @@
 				},
 				{
 					"id": "boulder",
-					"damage": 28,
+					"damage": 20,
 					"pierce": 1,
 					"move_speed": 150,
 					"projectile_type": 0,
@@ -1060,7 +1072,9 @@
 				{
 					"id": "food_crunch",
 					"file": "../audio/sfx/crunch.wav",
-					"volume": -20
+					"volume": -20,
+					"pitch_min": 0.95,
+					"pitch_max": 1.05
 				},
 				{
 					"id": "boulder",

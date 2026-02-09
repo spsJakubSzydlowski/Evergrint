@@ -3,6 +3,8 @@ extends Node
 signal request_chunk_generation(coords: Vector2i)
 signal request_chunk_removal(coords: Vector2i)
 
+var mole_boss_kills = 0
+
 var world_seed: int = 0
 var player_pos: Vector2 = Vector2.ZERO
 
@@ -39,6 +41,8 @@ var current_world_id : String = "surface"
 var current_tilemap = null
 
 func _ready():
+	Signals.boss_died.connect(_on_boss_died)
+	
 	randomize()
 	world_seed = randi()
 	print("World seed is: ", world_seed)
@@ -119,3 +123,7 @@ func get_player_chunk_pos(tile_map):
 		floor(player_tile_pos.y / float(CHUNK_SIZE))
 	)
 	return player_chunk_pos
+
+func _on_boss_died(boss_id):
+	if boss_id == "mole_boss":
+		mole_boss_kills += 1

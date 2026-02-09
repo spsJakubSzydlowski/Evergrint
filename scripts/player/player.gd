@@ -163,7 +163,16 @@ func _unhandled_input(event: InputEvent) -> void:
 				is_in_distance = distance <= tool_range
 				
 				MiningManager.damage_block(mouse_pos, is_in_distance, tool_type_enum, tool_power)
-		
+	
+	if event.is_action_pressed("heal"):
+		var equipped_consumable_id = Inventory.get_heal()
+		var consumable_stats = DataManager.get_consumable_stats(equipped_consumable_id)
+
+		if consumable_stats:
+			if heal(consumable_stats.get("hp_to_heal")):
+				AudioManager.play_sfx("food_crunch")
+				Inventory.remove_item(equipped_consumable_id, 1)
+	
 	if event.is_action_pressed("attack") and not is_attacking:
 		if Inventory.current_equipped_id != "":
 			attack(Inventory.current_equipped_id)

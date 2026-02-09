@@ -76,5 +76,12 @@ func get_equipped_ammo():
 			return slot["id"]
 	return null
 
+func get_heal():
+	for slot in slots:
+		var consumable_stats = DataManager.get_consumable_stats(slot["id"])
+		if consumable_stats and consumable_stats.get("hp_to_heal"):
+			return slot["id"]
+	return null
+
 func update_inventory():
 	inventory_updated.emit()
