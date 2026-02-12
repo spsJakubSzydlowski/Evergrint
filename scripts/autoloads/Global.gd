@@ -23,11 +23,6 @@ var center_world_pos = Vector2i(world_width / 2, world_height / 2)
 
 var first_time_generation: bool = true
 
-var world_changes = {
-	"surface": {},
-	"underground": {}
-}
-
 var loaded_chunks = {}
 var chunk_queue: Array[Vector2i] = []
 const CHUNK_SIZE = 8
@@ -47,14 +42,14 @@ func _ready():
 	world_seed = randi()
 	print("World seed is: ", world_seed)
 
-func set_difficulty(mode: String):
+func set_difficulty_mult(mode: String):
 	if mode == "hard":
 		difficulty_multiplier = 1.5
 	else:
 		difficulty_multiplier = 1.0
 
 func transition_to(target_layer: String):
-	SceneChanger.change_scene(world_scenes[target_layer])
+	SceneChanger.change_scene_save_game(world_scenes[target_layer])
 	current_world_id = target_layer
 	loaded_chunks.clear()
 

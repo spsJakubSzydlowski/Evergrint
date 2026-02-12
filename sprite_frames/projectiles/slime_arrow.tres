@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=3 format=3 uid="uid://b8440xj6ocwop"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://b8440xj6ocwop"]
 
 [ext_resource type="Texture2D" uid="uid://bkp23b8md70vx" path="res://textures/Atlas-projectiles.png" id="1_7uuly"]
 

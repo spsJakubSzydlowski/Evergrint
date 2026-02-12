@@ -30,12 +30,13 @@ AbilityManager="*res://scripts/autoloads/AbilityManager.gd"
 AudioManager="*uid://c5rfdyo6mroat"
 Tooltip="*uid://cl6ih68eeb4ox"
 SceneChanger="*uid://cq24jxsp1mlrs"
+SpriteFramesRegistry="*uid://dioel3tfbe4ax"
+SaveManager="*uid://bvcwm1g6dsb5p"
 
 [display]
 
 window/size/viewport_width=640
 window/size/viewport_height=360
-window/size/mode=3
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"

@@ -41,10 +41,10 @@ func destroy_block(tile_pos: Vector2, block_info: Dictionary):
 	current_tilemap.set_cells_terrain_connect([fixed_pos], 0, -1)
 	
 	var world_id = Global.current_world_id
-	if not Global.world_changes.has(world_id):
-		Global.world_changes[world_id] = {}
+	if not SaveManager.world_changes.has(world_id):
+		SaveManager.world_changes[world_id] = {}
 	
-	Global.world_changes[world_id][fixed_pos] = "removed"
+	SaveManager.world_changes[world_id][fixed_pos] = "removed"
 
 	var table_id = block_info.get("loot_ref")
 	if table_id == "" or table_id == null:
