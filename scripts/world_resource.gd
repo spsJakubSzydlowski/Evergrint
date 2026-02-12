@@ -82,13 +82,13 @@ func die():
 	is_harvested = true
 	var map_pos = MiningManager.current_tilemap.local_to_map(global_position)
 
-	var fixed_pos = Vector2i(map_pos)
+	var fixed_pos = var_to_str(Vector2i(map_pos))
 	
-	var world_id = Global.current_world_id
-	if not Global.world_changes.has(world_id):
-		Global.world_changes[world_id] = {}
+	var current_world_id = Global.current_world_id
+	if not SaveManager.world_changes.has(current_world_id):
+		SaveManager.world_changes[current_world_id] = {}
 		
-	Global.world_changes[world_id][fixed_pos] = "removed"
+	SaveManager.world_changes[current_world_id][fixed_pos] = "removed"
 
 	drop_loot()
 	queue_free()

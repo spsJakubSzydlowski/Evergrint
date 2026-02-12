@@ -38,13 +38,12 @@ func initialize(projectile_id: String, pos: Vector2, used_weapon_stats, dir: Vec
 	sprite = get_node("AnimatedSprite2D")
 	collision = get_node("CollisionShape2D")
 	
-	var anim_path = "res://sprite_frames/projectiles/" + projectile_id + ".tres"
-	if FileAccess.file_exists(anim_path):
-		var new_frames = load(anim_path)
-		sprite.sprite_frames = new_frames
+	var sprite_frames = SpriteFramesRegistry.get_frames(projectile_id)
+	if sprite_frames:
+		sprite.sprite_frames = sprite_frames
 		sprite.play("spawn")
 	else:
-		print("Animation was not found")
+		print("sprite_frame was not found for projectile: " + str(projectile_id))
 	
 	global_position = pos
 

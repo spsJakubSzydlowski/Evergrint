@@ -148,14 +148,13 @@ func initialize(entity_id: String):
 	name = entity.id
 	entity_name = entity.id
 	collision.shape.size = Vector2(entity.get("hitbox_x"), entity.get("hitbox_y"))
-	
-	var anim_path = "res://sprite_frames/" + entity_id + ".tres"
-	if FileAccess.file_exists(anim_path):
-		var new_frames = load(anim_path)
-		sprite.sprite_frames = new_frames
+
+	var sprite_frames = SpriteFramesRegistry.get_frames(entity_id)
+	if sprite_frames:
+		sprite.sprite_frames = sprite_frames
 		sprite.play("spawn")
 	else:
-		print("Animation was not found")
+		print("sprite_frame was not found for entity: " + entity_name)
 
 	entity_stats = DataManager.get_full_entity_data(entity_id)
 	is_boss = entity_stats.get("is_boss", false)

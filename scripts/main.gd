@@ -23,13 +23,13 @@ func _ready():
 		player = get_tree().get_first_node_in_group("Player")
 		Inventory.add_item("wooden_sword")
 		Inventory.add_item("wooden_axe")
-		Inventory.add_item("wooden_bow")
 		Inventory.add_item("wooden_pickaxe")
-		Inventory.add_item("wooden_hammer")
-		Inventory.add_item("iron_sword")
-		Inventory.add_item("arrow", 100)
-		Inventory.add_item("head_of_the_burrower", 10)
-		Inventory.add_item("green_apple", 100)
+		#Inventory.add_item("wooden_bow")
+		#Inventory.add_item("wooden_hammer")
+		#Inventory.add_item("iron_sword")
+		#Inventory.add_item("arrow", 100)
+		#Inventory.add_item("head_of_the_burrower", 10)
+		#Inventory.add_item("green_apple", 100)
 
 		Global.first_time_generation = false
 	else:

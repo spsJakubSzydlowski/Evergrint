@@ -82,7 +82,7 @@ func generate_chunk(coords):
 	
 	var ladder_map_pos = Global.center_world_pos
 	
-	var changes = Global.world_changes.get(Global.current_world_id, {})
+	var changes = SaveManager.world_changes.get(Global.current_world_id, {})
 	
 	var start_x = coords.x * Global.CHUNK_SIZE
 	var start_y = coords.y * Global.CHUNK_SIZE

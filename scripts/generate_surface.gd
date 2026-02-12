@@ -89,7 +89,7 @@ func spawn_trees_in_chunk(coords):
 		var local_pos = Vector2i(randi() % Global.CHUNK_SIZE, randi() % Global.CHUNK_SIZE)
 		var global_tile_pos = (coords * Global.CHUNK_SIZE) + local_pos
 
-		var changes = Global.world_changes.get(Global.current_world_id, {})
+		var changes = SaveManager.world_changes.get(Global.current_world_id, {})
 
 		if global_tile_pos.x >= Global.world_width or global_tile_pos.y >= Global.world_height: continue
 		
@@ -98,8 +98,8 @@ func spawn_trees_in_chunk(coords):
 		
 		var world_pos = MiningManager.current_tilemap.map_to_local(global_tile_pos)
 
-		if changes.has(global_tile_pos):
-			var change_type = changes[global_tile_pos]
+		if changes.has(var_to_str(global_tile_pos)):
+			var change_type = changes[var_to_str(global_tile_pos)]
 
 			if change_type == "removed":
 				continue
@@ -112,7 +112,7 @@ func spawn_trees_in_chunk(coords):
 			occupied_cells[global_tile_pos] = true
 			loaded_chunks_entities[coords].append(tree)
 
-			var rand_size = randf_range(0.9, 1.25)
+			var rand_size = randf_range(0.95, 1.2)
 			tree.scale = Vector2(rand_size, rand_size)
 			tree.scale.x *= -1 
 
