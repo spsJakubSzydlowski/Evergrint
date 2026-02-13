@@ -50,9 +50,13 @@ func load_world(world_name: String) -> bool:
 	if data:
 		var loaded_seed = data["seed"]
 		var loaded_difficulty = data["difficulty"]
+		var inventory = data["player_inventory"]
+		var first_time_generation = data["first_time"]
 		
 		Global.world_seed = loaded_seed
 		Global.current_difficulty = loaded_difficulty
+		Inventory.slots = str_to_var(inventory)
+		Global.first_time_generation = first_time_generation
 		
 		world_changes = {"surface": {}, "underground": {}}
 		var changes = data["changes"]
@@ -94,6 +98,8 @@ func save_to_disk(world_name: String):
 	
 	if file:
 		var data_to_save = {
+				"first_time": Global.first_time_generation,
+				"player_inventory": var_to_str(Inventory.slots),
 				"seed": Global.world_seed,
 				"difficulty": Global.current_difficulty,
 				"changes": {
