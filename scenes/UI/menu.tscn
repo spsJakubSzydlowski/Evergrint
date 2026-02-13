@@ -145,7 +145,10 @@ grow_vertical = 2
 [node name="name_edit" type="LineEdit" parent="world_name_sect/HBoxContainer" unique_id=1563360307]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_2un8v")
 placeholder_text = "World Name"
+context_menu_enabled = false
+emoji_menu_enabled = false
 
 [node name="name_enter" type="Button" parent="world_name_sect/HBoxContainer" unique_id=1545674238]
 custom_minimum_size = Vector2(50, 0)
