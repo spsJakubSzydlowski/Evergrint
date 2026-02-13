@@ -98,8 +98,8 @@ func spawn_trees_in_chunk(coords):
 		
 		var world_pos = MiningManager.current_tilemap.map_to_local(global_tile_pos)
 
-		if changes.has(var_to_str(global_tile_pos)):
-			var change_type = changes[var_to_str(global_tile_pos)]
+		if changes.has(global_tile_pos):
+			var change_type = changes[global_tile_pos]
 
 			if change_type == "removed":
 				continue
