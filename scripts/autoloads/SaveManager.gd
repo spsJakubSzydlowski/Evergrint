@@ -17,9 +17,79 @@ func _ready() -> void:
 	if not DirAccess.dir_exists_absolute(worlds_path):
 		DirAccess.make_dir_absolute(worlds_path)
 
-func save_game():
-	print("Saving game...")
-	var file_path = worlds_path.path_join("save_01.json")
+func create_world(world_name: String) -> bool:
+	var success = true
+	
+	if not worlds_path.path_join(world_name + ".json"):
+		success = false
+		return success
+	
+	print("Creating new world...")
+	Global.world_seed = randi()
+	world_changes = {"surface": {}, "underground": {}}
+	
+	save_to_disk(world_name)
+	return success
+
+func save_world(world_name: String):
+	print("Saving world: " + world_name)
+	
+	save_to_disk(world_name)
+
+func load_world(world_name: String) -> bool:
+	var success = false
+	print("Loading world: " + world_name)
+	var file_path = worlds_path.path_join(world_name + ".json")
+	if not FileAccess.file_exists(file_path):
+		return success
+	
+	var file = FileAccess.open(file_path, FileAccess.READ)
+	var data = JSON.parse_string(file.get_as_text())
+	file.close()
+	
+	if data:
+		var loaded_seed = data["seed"]
+		var loaded_difficulty = data["difficulty"]
+		
+		Global.world_seed = loaded_seed
+		Global.current_difficulty = loaded_difficulty
+		
+		world_changes = {"surface": {}, "underground": {}}
+		var changes = data["changes"]
+		
+		for layer in ["surface", "underground"]:
+			for pos_string in changes[layer].keys():
+				var pos = str_to_var(pos_string)
+				world_changes[layer][pos] = changes[layer][pos_string]
+		
+		print("Game loaded from file: ", file_path)
+		print("World seed: " + str(Global.world_seed))
+		print("World name: " + world_name)
+		print("World difficulty " + str(Global.current_difficulty))
+		success = true
+		return success
+	return success
+
+func get_all_worlds():
+	var worlds_folder = DirAccess.open(worlds_path)
+	var worlds = []
+	
+	if worlds_folder:
+		worlds_folder.list_dir_begin()
+		var world_full_name = worlds_folder.get_next()
+		
+		while world_full_name != "":
+			if world_full_name.get_extension() == "json":
+				var world_name = world_full_name.get_basename()
+				worlds.append(world_name)
+			world_full_name = worlds_folder.get_next()
+			
+		return worlds
+	
+	return worlds
+
+func save_to_disk(world_name: String):
+	var file_path = worlds_path.path_join(world_name + ".json")
 	var file = FileAccess.open(file_path, FileAccess.WRITE)
 	
 	if file:
@@ -40,4 +110,6 @@ func save_game():
 		file.store_string(JSON.stringify(data_to_save, "\t"))
 		file.close()
 		print("Game saved in file: ", file_path)
-		
+		print("World seed: " + str(Global.world_seed))
+		print("World name: " + world_name)
+		print("World difficulty: " + str(Global.current_difficulty))
