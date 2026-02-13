@@ -126,6 +126,12 @@ func save_to_disk(world_name: String):
 		file.store_string(JSON.stringify(data_to_save, "\t"))
 		file.close()
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		if Global.world_name != "":
+			save_world(Global.world_name)
+		get_tree().quit()
+
 func _on_autosave_timeout():
 	print("Autosaving...")
 	if Global.world_name != "":
