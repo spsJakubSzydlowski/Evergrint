@@ -24,7 +24,8 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.59607846)
 
-[node name="menu" type="Control" parent="." unique_id=1662024094]
+[node name="menu_sect" type="Control" parent="." unique_id=1662024094]
+visible = false
 custom_minimum_size = Vector2(300, 300)
 layout_mode = 3
 anchors_preset = 8
@@ -41,7 +42,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="menu" unique_id=1089514598]
+[node name="VBoxContainer" type="VBoxContainer" parent="menu_sect" unique_id=1089514598]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -55,19 +56,19 @@ offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="new_game_button" type="Button" parent="menu/VBoxContainer" unique_id=1958340941]
+[node name="new_game_button" type="Button" parent="menu_sect/VBoxContainer" unique_id=1958340941]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_2un8v")
 text = "New Game"
 metadata/_edit_use_anchors_ = true
 
-[node name="load_game_button" type="Button" parent="menu/VBoxContainer" unique_id=132519748]
+[node name="load_game_button" type="Button" parent="menu_sect/VBoxContainer" unique_id=132519748]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_2un8v")
 text = "Load Game"
 metadata/_edit_use_anchors_ = true
 
-[node name="difficulties" type="Control" parent="." unique_id=1090422321]
+[node name="difficulties_sect" type="Control" parent="." unique_id=1090422321]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -78,7 +79,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="easy_button" type="Button" parent="difficulties" unique_id=2012507709]
+[node name="easy_button" type="Button" parent="difficulties_sect" unique_id=2012507709]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -95,7 +96,7 @@ size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("3_2un8v")
 text = "Easy"
 
-[node name="hard_button" type="Button" parent="difficulties" unique_id=399569356]
+[node name="hard_button" type="Button" parent="difficulties_sect" unique_id=399569356]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -112,7 +113,48 @@ size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("3_2un8v")
 text = "Hard"
 
-[connection signal="pressed" from="menu/VBoxContainer/new_game_button" to="." method="_on_new_game_button_pressed"]
-[connection signal="pressed" from="menu/VBoxContainer/load_game_button" to="." method="_on_load_game_button_pressed"]
-[connection signal="pressed" from="difficulties/easy_button" to="." method="_on_easy_button_pressed"]
-[connection signal="pressed" from="difficulties/hard_button" to="." method="_on_hard_button_pressed"]
+[node name="world_name_sect" type="Control" parent="." unique_id=1953426897]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="world_name_sect" unique_id=278904440]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -102.0
+offset_top = -20.0
+offset_right = 102.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="name_edit" type="LineEdit" parent="world_name_sect/HBoxContainer" unique_id=1563360307]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+placeholder_text = "World Name"
+
+[node name="name_enter" type="Button" parent="world_name_sect/HBoxContainer" unique_id=1545674238]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+disabled = true
+
+[connection signal="pressed" from="menu_sect/VBoxContainer/new_game_button" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="menu_sect/VBoxContainer/load_game_button" to="." method="_on_load_game_button_pressed"]
+[connection signal="pressed" from="difficulties_sect/easy_button" to="." method="_on_easy_button_pressed"]
+[connection signal="pressed" from="difficulties_sect/hard_button" to="." method="_on_hard_button_pressed"]
+[connection signal="text_changed" from="world_name_sect/HBoxContainer/name_edit" to="." method="_on_name_edit_text_changed"]
+[connection signal="pressed" from="world_name_sect/HBoxContainer/name_enter" to="." method="_on_name_enter_pressed"]
