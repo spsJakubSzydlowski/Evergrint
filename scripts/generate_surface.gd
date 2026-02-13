@@ -87,7 +87,7 @@ func spawn_trees_in_chunk(coords):
 	
 	for i in range(tree_density):
 		var local_pos = Vector2i(randi() % Global.CHUNK_SIZE, randi() % Global.CHUNK_SIZE)
-		var global_tile_pos = (coords * Global.CHUNK_SIZE) + local_pos
+		var global_tile_pos = Vector2i((coords * Global.CHUNK_SIZE) + local_pos)
 
 		var changes = SaveManager.world_changes.get(Global.current_world_id, {})
 
