@@ -1,5 +1,7 @@
 extends Node
 
+var autosave_timer: Timer
+
 var worlds_path: String
 
 var world_changes = {
@@ -8,14 +10,22 @@ var world_changes = {
 }
 
 func _init() -> void:
-	if OS.has_feature("editor"):
-		worlds_path = ProjectSettings.globalize_path("res://Worlds")
+	if OS.has_feature("web"):
+		worlds_path = "user://Worlds"
+	elif OS.has_feature("editor"):
+		worlds_path = "user://Worlds"
 	else:
 		worlds_path = OS.get_executable_path().get_base_dir().path_join("Worlds")
 
 func _ready() -> void:
 	if not DirAccess.dir_exists_absolute(worlds_path):
 		DirAccess.make_dir_absolute(worlds_path)
+		
+	autosave_timer = Timer.new()
+	autosave_timer.wait_time = 10.0
+	autosave_timer.autostart = true
+	autosave_timer.timeout.connect(_on_autosave_timeout)
+	add_child(autosave_timer)
 
 func create_world(world_name: String) -> bool:
 	var success = true
@@ -55,7 +65,7 @@ func load_world(world_name: String) -> bool:
 		
 		Global.world_seed = loaded_seed
 		Global.current_difficulty = loaded_difficulty
-		Inventory.slots = str_to_var(inventory)
+		Inventory.slots = inventory
 		Global.first_time_generation = first_time_generation
 		
 		world_changes = {"surface": {}, "underground": {}}
@@ -63,13 +73,9 @@ func load_world(world_name: String) -> bool:
 		
 		for layer in ["surface", "underground"]:
 			for pos_string in changes[layer].keys():
-				var pos = str_to_var(pos_string)
-				world_changes[layer][pos] = changes[layer][pos_string]
+				var pos_vector = str_to_var(pos_string)
+				world_changes[layer][pos_vector] = changes[layer][pos_string]
 		
-		print("Game loaded from file: ", file_path)
-		print("World seed: " + str(Global.world_seed))
-		print("World name: " + world_name)
-		print("World difficulty " + str(Global.current_difficulty))
 		success = true
 		return success
 	return success
@@ -99,7 +105,7 @@ func save_to_disk(world_name: String):
 	if file:
 		var data_to_save = {
 				"first_time": Global.first_time_generation,
-				"player_inventory": var_to_str(Inventory.slots),
+				"player_inventory": Inventory.slots,
 				"seed": Global.world_seed,
 				"difficulty": Global.current_difficulty,
 				"changes": {
@@ -110,12 +116,17 @@ func save_to_disk(world_name: String):
 		
 		for layer in world_changes.keys():
 			for pos in world_changes[layer].keys():
-				var pos_string = pos
+				var actual_pos = pos
+				if typeof(pos) == TYPE_STRING:
+					actual_pos = str_to_var(pos.replace('"', ''))
+				
+				var pos_string = var_to_str(actual_pos)
 				data_to_save["changes"][layer][pos_string] = world_changes[layer][pos]
 				
 		file.store_string(JSON.stringify(data_to_save, "\t"))
 		file.close()
-		print("Game saved in file: ", file_path)
-		print("World seed: " + str(Global.world_seed))
-		print("World name: " + world_name)
-		print("World difficulty: " + str(Global.current_difficulty))
+
+func _on_autosave_timeout():
+	print("Autosaving...")
+	if Global.world_name != "":
+		save_world(Global.world_name)
