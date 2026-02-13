@@ -8,4 +8,4 @@ func change_scene_save_game(path: String):
 	
 	get_tree().root.add_child(ls)
 	
-	SaveManager.save_game()
+	SaveManager.save_world(Global.world_name)
