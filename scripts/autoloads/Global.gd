@@ -5,6 +5,8 @@ signal request_chunk_removal(coords: Vector2i)
 
 var mole_boss_kills = 0
 
+var world_name: String
+
 var world_seed: int = 0
 var player_pos: Vector2 = Vector2.ZERO
 
@@ -39,8 +41,6 @@ func _ready():
 	Signals.boss_died.connect(_on_boss_died)
 	
 	randomize()
-	world_seed = randi()
-	print("World seed is: ", world_seed)
 
 func set_difficulty_mult(mode: String):
 	if mode == "hard":
