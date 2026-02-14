@@ -1,23 +1,16 @@
 [gd_scene format=3 uid="uid://bryjxm5yqvpo5"]
 
 [ext_resource type="Script" uid="uid://b6d0iowgh44ec" path="res://scripts/user_interface.gd" id="1_l5hnc"]
+[ext_resource type="Texture2D" uid="uid://bpric1nyeu7w3" path="res://textures/ui.png" id="2_vr1b1"]
 [ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="2_yl4mc"]
 
-[sub_resource type="Gradient" id="Gradient_vn1aj"]
-colors = PackedColorArray(0, 0, 0, 1, 0.012617188, 0.012617188, 0.012617188, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_lgjxu"]
+atlas = ExtResource("2_vr1b1")
+region = Rect2(0, 16, 0, 16)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_jxkd3"]
-gradient = SubResource("Gradient_vn1aj")
-width = 128
-height = 16
-
-[sub_resource type="Gradient" id="Gradient_5mm2x"]
-colors = PackedColorArray(0.7058824, 0.1254902, 0.16470589, 1, 0.7058824, 0.1254902, 0.16470589, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_ipdp0"]
-gradient = SubResource("Gradient_5mm2x")
-width = 128
-height = 16
+[sub_resource type="AtlasTexture" id="AtlasTexture_3wpr7"]
+atlas = ExtResource("2_vr1b1")
+region = Rect2(0, 32, 0, 0)
 
 [node name="UI" type="CanvasLayer" unique_id=1839636389 groups=["ui"]]
 script = ExtResource("1_l5hnc")
@@ -50,8 +43,9 @@ offset_top = 6.0
 offset_right = -6.0
 offset_bottom = 22.0
 grow_horizontal = 0
-texture_under = SubResource("GradientTexture2D_jxkd3")
-texture_progress = SubResource("GradientTexture2D_ipdp0")
+value = 100.0
+texture_under = SubResource("AtlasTexture_lgjxu")
+texture_progress = SubResource("AtlasTexture_3wpr7")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1303517195]
 custom_minimum_size = Vector2(128, 0)
