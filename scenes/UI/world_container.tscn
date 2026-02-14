@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://gpxb6pupp8w6"]
+
+[ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="1_8qqdf"]
+[ext_resource type="Script" uid="uid://cqyfh8mwndxhi" path="res://scripts/world_container.gd" id="1_mruwf"]
+
+[node name="world_container" type="Button" unique_id=698314981]
+custom_minimum_size = Vector2(280, 50)
+offset_right = 150.0
+offset_bottom = 50.0
+script = ExtResource("1_mruwf")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=392283182]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="world_name" type="Label" parent="." unique_id=1663495987]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("1_8qqdf")
+text = "null"
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]
