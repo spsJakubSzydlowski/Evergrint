@@ -48,6 +48,9 @@ func save_world(world_name: String):
 
 func load_world(world_name: String) -> bool:
 	var success = false
+	if world_name == "" or world_name == null:
+		return success
+	
 	print("Loading world: " + world_name)
 	var file_path = worlds_path.path_join(world_name + ".json")
 	if not FileAccess.file_exists(file_path):
@@ -99,6 +102,9 @@ func get_all_worlds():
 	return worlds
 
 func save_to_disk(world_name: String):
+	if world_name == "" or world_name == null:
+		return
+
 	var file_path = worlds_path.path_join(world_name + ".json")
 	var file = FileAccess.open(file_path, FileAccess.WRITE)
 	
