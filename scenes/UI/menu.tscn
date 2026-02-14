@@ -155,6 +155,50 @@ custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 disabled = true
 
+[node name="load_world_sect" type="Control" parent="." unique_id=541936842]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="load_world_sect" unique_id=1941956638]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -163.5
+offset_right = 150.0
+offset_bottom = 163.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="load_world_sect/VBoxContainer" unique_id=1551406155]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("3_2un8v")
+theme_override_font_sizes/font_size = 20
+text = "Worlds"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="load_world_sect/VBoxContainer" unique_id=1200597244]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="worlds_list" type="VBoxContainer" parent="load_world_sect/VBoxContainer/ScrollContainer" unique_id=81402820]
+layout_mode = 2
+
 [connection signal="pressed" from="menu_sect/VBoxContainer/new_game_button" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="menu_sect/VBoxContainer/load_game_button" to="." method="_on_load_game_button_pressed"]
 [connection signal="pressed" from="difficulties_sect/easy_button" to="." method="_on_easy_button_pressed"]
