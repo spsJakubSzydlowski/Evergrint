@@ -95,7 +95,7 @@ func process_idle_behaviour(delta: float):
 		sprite.flip_h = idle_direction.x < 0
 
 func handle_movement(distance_to_player):
-	if player.is_dead:
+	if player.current_state == player.State.DEAD:
 		velocity = Vector2.ZERO
 		return
 		
@@ -110,7 +110,7 @@ func handle_movement(distance_to_player):
 		process_idle_behaviour(get_physics_process_delta_time())
 
 func handle_attacks(distance_to_player):
-	if player.is_dead:
+	if player.current_state == player.State.DEAD:
 		if is_boss:
 			Global.living_boss = false
 			queue_free()
