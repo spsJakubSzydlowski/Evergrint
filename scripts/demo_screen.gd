@@ -28,7 +28,7 @@ func _on_button_pressed() -> void:
 
 
 func _on_itch_pressed() -> void:
-	pass
+	OS.shell_open("https://kubki.itch.io/evergrint")
 
 func _on_github_pressed() -> void:
 	OS.shell_open("https://github.com/spsJakubSzydlowski/Evergrint")
