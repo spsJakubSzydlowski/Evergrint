@@ -231,7 +231,7 @@
 					"id": "head_of_the_burrower",
 					"name": "Head Of The Burrower",
 					"type": 2,
-					"stack_limit": 9999,
+					"stack_limit": 30,
 					"tile_width": 1,
 					"tile_height": 1,
 					"tile_size": 16,
@@ -334,7 +334,7 @@
 					"tool_range": 0
 				},
 				{
-					"damage": 1,
+					"damage": 3,
 					"attack_speed": 0.5,
 					"knockback": 0.2,
 					"hitbox_x": 22,
@@ -361,7 +361,7 @@
 					"tool_range": 0
 				},
 				{
-					"damage": 8,
+					"damage": 100,
 					"attack_speed": 0.6,
 					"knockback": 1,
 					"hitbox_x": 0,
