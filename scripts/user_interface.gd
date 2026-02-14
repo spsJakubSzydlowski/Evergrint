@@ -220,7 +220,7 @@ func update_slot_visuals(slot_ui, slot_data):
 	
 	var label = slot_ui.find_child("AmountLabel")
 	if not label: print("No amount label found!")
-	label.text = str(amount) if amount > 1 else ""
+	label.text = str(int(amount)) if amount > 1 else ""
 	
 func emit_equipped_signal():
 	var active_slot_data = Inventory.slots[active_slot_index]
