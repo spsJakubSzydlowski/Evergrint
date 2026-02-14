@@ -3,14 +3,19 @@ extends CanvasLayer
 @onready var sections = {
 	"menu": $menu_sect,
 	"difficulty": $difficulties_sect,
-	"name": $world_name_sect
+	"name": $world_name_sect,
+	"worlds": $load_world_sect
 }
 @onready var name_edit: LineEdit = $world_name_sect/HBoxContainer/name_edit
 @onready var name_enter: Button = $world_name_sect/HBoxContainer/name_enter
+@onready var worlds_list: VBoxContainer = $load_world_sect/VBoxContainer/ScrollContainer/worlds_list
+
+var world_container = preload("res://scenes/UI/world_container.tscn")
 
 var action = "" #create/load
 
 func _ready() -> void:
+	Signals.play_world.connect(_play_world_signal)
 	switch_to_section("menu")
 
 func switch_to_section(target_section: String):
@@ -40,16 +45,29 @@ func _on_name_edit_text_changed(new_text: String) -> void:
 	for world_name in worlds:
 		if new_text == world_name or new_text == "":
 			name_enter.disabled = true
-		
+
 func _on_new_game_button_pressed() -> void:
 	play_click()
 	switch_to_section("name")
 	action = "create"
-	
+
 func _on_load_game_button_pressed() -> void:
 	play_click()
-	switch_to_section("name")
+	switch_to_section("worlds")
 	action = "load"
+	
+	for child in worlds_list.get_children():
+		worlds_list.remove_child(child)
+		child.queue_free()
+	
+	var all_worlds = SaveManager.get_all_worlds()
+	for world in all_worlds:
+		var new_world = world_container.instantiate()
+		
+		new_world.get_node("world_name").text = world
+		new_world.world_name = world
+		
+		worlds_list.add_child(new_world)
 
 func _on_easy_button_pressed() -> void:
 	setup_and_start(Global.Difficulty.EASY, "easy")
@@ -63,7 +81,11 @@ func setup_and_start(difficulty_type, difficulty_name: String):
 	Global.set_difficulty_mult(difficulty_name)
 	start_game(Global.world_name)
 
+func _play_world_signal(world_name):
+	start_game(world_name)
+
 func start_game(world_name: String):
+	print(world_name)
 	if action == "create":
 		if not SaveManager.create_world(world_name):
 			print("This world already exist!")
@@ -74,6 +96,6 @@ func start_game(world_name: String):
 			return
 	
 	Global.transition_to("surface")
-	
+
 func play_click():
 	AudioManager.play_sfx("menu_click")
