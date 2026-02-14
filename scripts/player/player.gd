@@ -3,6 +3,16 @@ extends CharacterBody2D
 const WEAPON_TYPE_MELEE = 0
 const WEAPON_TYPE_RANGED = 1
 
+enum State {
+	IDLE,
+	MOVE,
+	ATTACK,
+	STUNNED,
+	DEAD,
+	MINE
+}
+var current_state = State.IDLE
+
 var tile_map = null
 var object_layer = null
 
@@ -14,6 +24,7 @@ var object_layer = null
 @onready var animation_player: AnimationPlayer = $WeaponPivot/Hand/AnimationPlayer
 @onready var weapon_collision_shape: CollisionShape2D = $WeaponPivot/Hand/HitArea/CollisionShape2D
 @onready var camera: Camera2D = $Camera2D
+@onready var invincibility_frames: Timer = $invincibility_frames
 
 #region Movement Variables
 var move_speed : float
@@ -25,16 +36,14 @@ var knockback_velocity = Vector2.ZERO
 var ui: CanvasLayer = null
 var can_be_hit : bool = true
 
-var is_attacking : bool = false
+var is_dead = false
+
 var can_turn : bool = true
 
 var max_hp : int
 var current_hp : int
 
-var is_dead : bool = false
-var is_stunned: bool = false
-
-var time_stunned: float = 0.4
+var stun_time: float = 0.4
 
 var hit_entities = []
 
@@ -89,96 +98,62 @@ func setup_camera_limits():
 	camera.limit_bottom = world_height
 
 func _physics_process(delta: float) -> void:
-	if is_dead or is_stunned:
-		velocity = knockback_velocity
-		move_and_slide()
-	else:
-		move(delta)
+	match current_state:
+		State.DEAD:
+			velocity = Vector2.ZERO
+		State.STUNNED:
+			velocity = velocity.move_toward(Vector2.ZERO, acceleration * delta)
+		State.IDLE, State.MOVE, State.ATTACK:
+			velocity = move(delta)
+	
+	var final_velocity = velocity + knockback_velocity
+	
+	var old_velocity = velocity
+	velocity = final_velocity
+
+	move_and_slide()
+	
+	velocity = old_velocity
 
 func _unhandled_input(event: InputEvent) -> void:
-	if is_dead:
+	if current_state == State.DEAD:
 		return
 	
-	var tile_data
-	
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		var mouse_pos = get_global_mouse_position()
-		var tile_pos = object_layer.local_to_map(mouse_pos)
-
-		var data = object_layer.get_cell_tile_data(tile_pos)
-
-		if data and data.get_custom_data("is_sinkhole"):
-			if global_position.distance_to(mouse_pos) > 200.0: return
-			Global.save_player_position()
-
-			if get_tree().current_scene.name == "main":
-				Global.transition_to("underground")
-			else:
-				Global.transition_to("surface")
-	
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		var mouse_pos = get_global_mouse_position()
-		var tile_pos = object_layer.local_to_map(mouse_pos)
-		
-		var distance = global_position.distance_to(mouse_pos)
-		
-		tile_data = object_layer.get_cell_tile_data(tile_pos)
-		
-		var consumable_stats = DataManager.get_consumable_stats(Inventory.current_equipped_id)
-		if consumable_stats:
-			var summon_item = consumable_stats.get("summon_item")
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			_handle_interact_input()
+		elif event.button_index == MOUSE_BUTTON_LEFT:
+			_handle_action_input()
 			
-			if not summon_item:
-				var hp_to_heal = consumable_stats.get("hp_to_heal", 0)
-				if heal(hp_to_heal):
-					Inventory.remove_item(Inventory.current_equipped_id, 1)
-					AudioManager.play_sfx("food_crunch")
-			else:
-				if Global.living_boss:
-					return
-				
-				var boss_to_spawn = consumable_stats.get("boss_to_spawn")
-				
-				var angle = PI * 2
-				var offset = randf_range(0, 360)
-				var direction = Vector2.RIGHT.rotated(angle + offset)
-				var distance_from_player = 200
-				
-				var boss = await DataManager.spawn_entity(boss_to_spawn, global_position + direction * distance_from_player)
-				if boss:
-					Inventory.remove_item(Inventory.current_equipped_id, 1)
-					AudioManager.play_sfx("boss_summon")
-	
-		if tile_data:
-			var item_stats = DataManager.get_weapon_stats(Inventory.current_equipped_id)
-			var tool_type_enum
-			var tool_power: int
-			var tool_range: int
-			var is_in_distance: bool
-			
-			if item_stats != {} and not is_attacking:
-				tool_type_enum = item_stats.get("tool_type")
-				tool_power = item_stats.get("tool_power", 0)
-				tool_range = item_stats.get("tool_range", 0)
-				is_in_distance = distance <= tool_range
-				
-				MiningManager.damage_block(mouse_pos, is_in_distance, tool_type_enum, tool_power)
-	
 	if event.is_action_pressed("heal"):
-		var equipped_consumable_id = Inventory.get_heal()
-		var consumable_stats = DataManager.get_consumable_stats(equipped_consumable_id)
-
-		if consumable_stats:
-			if heal(consumable_stats.get("hp_to_heal")):
-				AudioManager.play_sfx("food_crunch")
-				Inventory.remove_item(equipped_consumable_id, 1)
+		_handle_quick_heal()
 	
-	if event.is_action_pressed("attack") and not is_attacking:
-		if Inventory.current_equipped_id != "":
+	if event.is_action_pressed("attack"):
+		change_state(State.ATTACK)
+
+func change_state(new_state):
+	if current_state == new_state:
+		return
+
+	match current_state:
+		State.ATTACK:
+			pass
+		State.MOVE:
+			pass
+			
+	current_state = new_state
+	
+	match current_state:
+		State.ATTACK:
 			attack(Inventory.current_equipped_id)
+		State.DEAD:
+			_on_player_dead()
+		State.STUNNED:
+			_on_player_stunned()
 
 func move(delta):
 	var direction := Input.get_vector("a", "d", "w", "s").normalized()
+	
 	if direction:
 		velocity = velocity.move_toward(direction * move_speed, acceleration * delta)
 	else:
@@ -190,8 +165,6 @@ func move(delta):
 	if direction.x > 0 and can_turn:
 		sprite.flip_h = false
 		
-	move_and_slide()
-	
 	var rect = Rect2i(0, 0, Global.world_width, Global.world_height)
 	var tile_size = 16
 	
@@ -206,15 +179,83 @@ func move(delta):
 	global_position.x = clamp(global_position.x, limit_left + player_width_half, limit_right - player_width_half)
 	global_position.y = clamp(global_position.y, limit_top + player_height_half, limit_bottom)
 	
+	return velocity
+	
+func _handle_attack_input():
+	if current_state == State.IDLE or current_state == State.MOVE:
+		if Inventory.current_equipped_id != "":
+			change_state(State.ATTACK)
+
+func _handle_interact_input():
+	var mouse_pos = get_global_mouse_position()
+	var tile_pos = object_layer.local_to_map(mouse_pos)
+
+	var data = object_layer.get_cell_tile_data(tile_pos)
+
+	if data and data.get_custom_data("is_sinkhole"):
+		if global_position.distance_to(mouse_pos) > 200.0: return
+		Global.save_player_position()
+
+		if get_tree().current_scene.name == "main":
+			Global.transition_to("underground")
+		else:
+			Global.transition_to("surface")
+
+func _handle_action_input():
+	var mouse_pos = get_global_mouse_position()
+	var distance = global_position.distance_to(mouse_pos)
+	var item_id = Inventory.current_equipped_id
+	
+	var consumable_stats = DataManager.get_consumable_stats(item_id)
+	var weapon_stats = DataManager.get_weapon_stats(item_id)
+
+	if consumable_stats:
+		_handle_consumable_logic(consumable_stats, item_id)
+		return
+	
+	if weapon_stats:
+		_handle_mining_logic(weapon_stats, mouse_pos, distance)
+
+func _handle_consumable_logic(consumable_stats, item_id):
+	var boss_to_spawn = consumable_stats.get("boss_to_spawn")
+	
+	if boss_to_spawn:
+		if Global.living_boss: return
+		
+		var direction = Vector2.RIGHT.rotated(randf_range(0, TAU))
+		var spawn_pos = global_position + direction * 200
+		
+		var boss = await DataManager.spawn_entity(boss_to_spawn, spawn_pos)
+		if boss:
+			Inventory.remove_item(item_id, 1)
+			AudioManager.play_sfx("boss_summon")
+	else:
+		if heal(consumable_stats.get("hp_to_heal", 0)):
+			Inventory.remove_item(item_id, 1)
+			AudioManager.play_sfx("food_crunch")
+	
+func _handle_mining_logic(weapon_stats, mouse_pos, distance):
+	var tile_pos = object_layer.local_to_map(mouse_pos)
+	var tile_data = object_layer.get_cell_tile_data(tile_pos)
+	
+	if tile_data and current_state != State.ATTACK:
+		var tool_range = weapon_stats.get("tool_range", 0)
+		var is_in_distance = distance <= tool_range
+		
+		MiningManager.damage_block(
+			mouse_pos,
+			is_in_distance,
+			weapon_stats.get("tool_type"),
+			weapon_stats.get("tool_power", 0)
+		)
+
 func attack(item_id):
 	var stats = DataManager.get_weapon_stats(item_id)
-	
 	if stats == {}:
+		change_state(State.IDLE)
 		return
 	
 	hit_entities.clear()
-	is_attacking = true
-	can_turn = false
 	hand.visible = true
 	weapon_collision_shape.disabled = false
 
@@ -232,8 +273,9 @@ func attack(item_id):
 	
 	weapon_collision_shape.disabled = true
 	hand.visible = false
-	can_turn = true
-	is_attacking = false
+	
+	if current_state != State.DEAD and current_state != State.STUNNED:
+		change_state(State.IDLE)
 
 func melee_attack(stats):
 	var mouse_position = get_global_mouse_position()
@@ -311,6 +353,7 @@ func take_hit(damage, knockback, source_pos):
 	current_hp -= damage
 	Signals.player_health_changed.emit(current_hp, max_hp)
 	can_be_hit = false
+	invincibility_frames.start()
 	
 	var tween = create_tween()
 	sprite.modulate = Color(10, 10, 10, 0.5)
@@ -328,6 +371,16 @@ func take_hit(damage, knockback, source_pos):
 	
 	apply_knockback(knockback, source_pos)
 
+func _handle_quick_heal():
+	var equipped_consumable_id = Inventory.get_heal()
+	var consumable_stats = DataManager.get_consumable_stats(equipped_consumable_id)
+	
+	if not consumable_stats: return
+	
+	if heal(consumable_stats.get("hp_to_heal")):
+		AudioManager.play_sfx("food_crunch")
+		Inventory.remove_item(equipped_consumable_id, 1)
+
 func heal(hp_to_heal):
 	var success = false
 	if is_dead: return success
@@ -340,44 +393,57 @@ func heal(hp_to_heal):
 	success = true
 	return success
 
-func die():
-	Global.is_player_dead = true
-	is_dead = true
-	is_attacking = false
+func _on_player_stunned():
+	var timer = get_tree().create_timer(stun_time)
+	await timer.timeout
 	
+	if current_state == State.STUNNED:
+		change_state(State.IDLE)
+
+func _on_player_dead():
+	Global.is_player_dead = true
 	visible = false
+	velocity = Vector2.ZERO
+	
 	Signals.player_died.emit()
+
+func die():
+	change_state(State.DEAD)
 
 func apply_knockback(knockback_amount, source_pos):
 	var knockback_dir = source_pos.direction_to(global_position)
-	knockback_velocity = knockback_dir * knockback_amount * 350.0
-
+	knockback_velocity = knockback_dir * knockback_amount * 500
+	change_state(State.STUNNED)
+	
 	var tween = create_tween()
 	tween.tween_property(self, "knockback_velocity", Vector2.ZERO, 0.15).set_trans(Tween.TRANS_BOUNCE)
 	
-	is_stunned = true
-	await get_tree().create_timer(time_stunned).timeout
-	is_stunned = false
+	tween.tween_callback(func():
+		if current_state != State.DEAD:
+			change_state(State.MOVE)
+	)
 
 func _on_hit_area_area_entered(area: Area2D) -> void:
 	var attackable = area.get_parent()
-	var item_stats = DataManager.get_weapon_stats(Inventory.current_equipped_id)
 	
-	if attackable in hit_entities:
+	if attackable in hit_entities or attackable.is_in_group("Player"):
 		return
 	
-	if attackable.has_method("take_hit") and is_attacking and not attackable.is_in_group("Player"):
-		var damage_to_deal: int
-		var knockback: float
+	if current_state != State.ATTACK:
+		return
+	
+	var item_stats = DataManager.get_weapon_stats(Inventory.current_equipped_id)
+	if item_stats == {}:
+		return
+	
+	if attackable.has_method("take_hit"):
+		var damage_to_deal = item_stats.get("damage", 0)
+		var knockback = item_stats.get("knockback", 0.0)
 		
-		if item_stats != {}:
-			damage_to_deal = item_stats.get("damage", 0)
-			knockback = item_stats.get("knockback", 0.0)
-			
-			attackable.take_hit(damage_to_deal, knockback, global_position)
-			hit_entities.append(attackable)
-			
-	if attackable.has_method("harvest") and is_attacking and not attackable.is_in_group("Player"):
+		attackable.take_hit(damage_to_deal, knockback, global_position)
+		hit_entities.append(attackable)
+	
+	elif attackable.has_method("harvest"):
 		var tool_type_enum = item_stats.get("tool_type")
 		var tool_power = item_stats.get("tool_power")
 	
@@ -396,14 +462,12 @@ func respawn():
 		
 		global_position = Vector2(center_world_pos)
 		
-	visible = true
-	is_dead = false
 	current_hp = max_hp
-	can_turn = true
-	is_attacking = false
+	visible = true
 	Global.is_player_dead = false
-	
 	Signals.player_health_changed.emit(current_hp, max_hp)
 	
+	change_state(State.IDLE)
+
 func _on_invincibility_frames_timeout() -> void:
 	can_be_hit = true
