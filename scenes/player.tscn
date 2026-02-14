@@ -157,7 +157,7 @@ libraries/ = SubResource("AnimationLibrary_dqkch")
 
 [node name="invincibility_frames" type="Timer" parent="." unique_id=1754754439]
 wait_time = 0.67
-autostart = true
+one_shot = true
 
 [node name="damage_area" type="Area2D" parent="." unique_id=353189222 groups=["PlayerHitbox"]]
 position = Vector2(0, -12)
