@@ -24,12 +24,12 @@ func _ready():
 		Inventory.add_item("wooden_sword")
 		Inventory.add_item("wooden_axe")
 		Inventory.add_item("wooden_pickaxe")
-		#Inventory.add_item("wooden_bow")
+		Inventory.add_item("wooden_bow")
 		#Inventory.add_item("wooden_hammer")
 		#Inventory.add_item("iron_sword")
-		#Inventory.add_item("arrow", 100)
-		#Inventory.add_item("head_of_the_burrower", 10)
-		#Inventory.add_item("green_apple", 100)
+		Inventory.add_item("arrow", 1000)
+		Inventory.add_item("head_of_the_burrower", 10)
+		Inventory.add_item("green_apple", 100)
 
 		Global.first_time_generation = false
 	else:
@@ -62,7 +62,7 @@ func spawn_entity(first_slime = false):
 				distance = randf_range((get_viewport_rect().end.x / 2), (get_viewport_rect().end.x / 2) + 100)
 
 			var offset = Vector2(cos(random_angle), sin(random_angle)) * distance
-			print(offset)
+
 			spawn_pos = player.global_position + offset
 
 			var map_pos = tile_map.local_to_map(spawn_pos)
