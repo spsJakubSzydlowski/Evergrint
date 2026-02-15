@@ -39,6 +39,7 @@ var can_be_hit : bool = true
 var is_dead = false
 
 var can_turn : bool = true
+var can_attack : bool = true
 
 var max_hp : int
 var current_hp : int
@@ -250,10 +251,16 @@ func _handle_mining_logic(weapon_stats, mouse_pos, distance):
 		)
 
 func attack(item_id):
+	if not can_attack:
+		change_state(State.IDLE)
+		return
+	
 	var stats = DataManager.get_weapon_stats(item_id)
 	if stats == {}:
 		change_state(State.IDLE)
 		return
+	
+	can_attack = false
 	
 	hit_entities.clear()
 	hand.visible = true
@@ -273,6 +280,7 @@ func attack(item_id):
 	
 	weapon_collision_shape.disabled = true
 	hand.visible = false
+	can_attack = true
 	
 	if current_state != State.DEAD and current_state != State.STUNNED:
 		change_state(State.IDLE)
