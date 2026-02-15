@@ -5,6 +5,16 @@
 [ext_resource type="Script" uid="uid://bxcrx4d38pbck" path="res://scripts/generate_surface.gd" id="3_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://dmqmrs6wa5bgs" path="res://scenes/UI/death_scene.tscn" id="5_tefeu"]
 
+[sub_resource type="Environment" id="Environment_jyhfs"]
+background_mode = 3
+tonemap_white = 9.17
+tonemap_agx_white = 2.0
+tonemap_agx_contrast = 2.0
+glow_enabled = true
+glow_intensity = 0.8
+glow_hdr_threshold = 0.1
+adjustment_enabled = true
+
 [node name="main" type="Node2D" unique_id=1143135882]
 y_sort_enabled = true
 script = ExtResource("1_1bvp3")
@@ -20,6 +30,11 @@ y_sort_enabled = true
 position = Vector2(-2, -1)
 tile_set = ExtResource("2_jyhfs")
 
+[node name="ObjectLayer" type="TileMapLayer" parent="ObjectLayer" unique_id=1277742061 groups=["objectmap"]]
+y_sort_enabled = true
+position = Vector2(-2, -1)
+tile_set = ExtResource("2_jyhfs")
+
 [node name="EntitySpawnTimer" type="Timer" parent="." unique_id=2073219033]
 wait_time = 5.0
 autostart = true
@@ -28,13 +43,9 @@ autostart = true
 visible = false
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=431980317]
-color = Color(0, 0, 0.16862746, 1)
+color = Color(0.8960107, 0.9293727, 0.92904943, 1)
 
-[node name="DirectionalLight2D" type="DirectionalLight2D" parent="." unique_id=1260856313]
-rotation = -0.7853982
-shadow_enabled = true
-shadow_color = Color(0, 0, 0.09019608, 0.5647059)
-shadow_filter = 2
-shadow_filter_smooth = 0.7
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1276355657]
+environment = SubResource("Environment_jyhfs")
 
 [connection signal="timeout" from="EntitySpawnTimer" to="." method="_on_timer_timeout"]
