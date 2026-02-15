@@ -122,7 +122,8 @@ func spawn_trees_in_chunk(coords):
 
 			var rand_size = randf_range(0.95, 1.2)
 			tree.scale = Vector2(rand_size, rand_size)
-			tree.scale.x *= -1 
+			if randi_range(1, 2) == 1:
+				tree.scale.x *= -1 
 
 func spawn_starting_sinkhole():
 	@warning_ignore("integer_division")
