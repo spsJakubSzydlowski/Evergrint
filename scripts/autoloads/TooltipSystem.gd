@@ -18,8 +18,8 @@ const ITEM_TYPE_NAMES = {
 }
 
 func _ready() -> void:
-	panel_container.reset_size()
 	hide_tooltip()
+	panel_container.reset_size()
 
 func display_tooltip(item):
 	if not show_tooltips:
@@ -29,7 +29,7 @@ func display_tooltip(item):
 	
 	if not title_label:
 		return
-		
+
 	title_label.text = item.get("name", "NULL")
 	
 	tip_label.text = item.get("tooltip", "")
@@ -67,4 +67,6 @@ func _process(_delta: float) -> void:
 func hide_tooltip():
 	set_process(false)
 	stats_label.text = ""
+	type_label.text = ""
+	tip_label.text = ""
 	self.visible = false
