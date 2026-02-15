@@ -92,6 +92,7 @@ func spawn_trees_in_chunk(coords):
 		var changes = SaveManager.world_changes.get(Global.current_world_id, {})
 
 		if global_tile_pos.x >= Global.world_width or global_tile_pos.y >= Global.world_height: continue
+		if occupied_cells.has(global_tile_pos): continue
 		
 		var tile_data = self.get_cell_tile_data(global_tile_pos)
 		if tile_data and tile_data.get_custom_data("water"): continue
