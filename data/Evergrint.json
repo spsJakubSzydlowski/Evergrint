@@ -977,12 +977,12 @@
 				},
 				{
 					"id": "red_apple",
-					"hp_to_heal": 5,
+					"hp_to_heal": 50,
 					"summon_item": false
 				},
 				{
 					"id": "green_apple",
-					"hp_to_heal": 10,
+					"hp_to_heal": 25,
 					"summon_item": false
 				}
 			],
