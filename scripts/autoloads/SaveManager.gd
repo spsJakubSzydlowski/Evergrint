@@ -36,6 +36,7 @@ func create_world(world_name: String) -> bool:
 	
 	print("Creating new world...")
 	Global.world_seed = randi()
+	Global.world_name = world_name
 	world_changes = {"surface": {}, "underground": {}}
 	
 	save_to_disk(world_name)
@@ -70,6 +71,7 @@ func load_world(world_name: String) -> bool:
 		Global.current_difficulty = loaded_difficulty
 		Inventory.slots = inventory
 		Global.first_time_generation = first_time_generation
+		Global.world_name = world_name
 		
 		world_changes = {"surface": {}, "underground": {}}
 		var changes = data["changes"]
@@ -139,6 +141,6 @@ func _notification(what: int) -> void:
 		get_tree().quit()
 
 func _on_autosave_timeout():
-	print("Autosaving...")
 	if Global.world_name != "":
+		print("Autosaving... World name: " + Global.world_name)
 		save_world(Global.world_name)
