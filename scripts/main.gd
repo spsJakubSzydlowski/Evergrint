@@ -4,7 +4,7 @@ var player = null
 @onready var tile_map: TileMapLayer = $TileMapLayer
 @onready var object_layer: TileMapLayer = $ObjectLayer
 
-@export var max_entities = 200
+@export var max_entities = 20
 
 func _ready():
 	if not DataManager.is_loaded:
@@ -36,12 +36,13 @@ func _ready():
 		await spawn_player_at_center()
 		player = get_tree().get_first_node_in_group("Player")
 		
+	spawn_entity(true)
 
 func _physics_process(_delta: float) -> void:
 	if player:
 		Global.update_chunks(object_layer)
 		
-func spawn_entity():
+func spawn_entity(first_slime = false):
 	var current_enemy_count = get_tree().get_nodes_in_group("entity").size()
 	var spawn_pos = Vector2.ZERO
 	var attempts = 0
@@ -54,10 +55,14 @@ func spawn_entity():
 		while not found_valid_spot and attempts < 20:
 			attempts += 1
 			var random_angle = randf() * 2 * PI
-			var distance = randf_range(get_viewport_rect().end.x, get_viewport_rect().end.x + 200)
+			var distance
+			if first_slime:
+				distance = randf_range((get_viewport_rect().end.x / 2), (get_viewport_rect().end.x / 1.9))
+			else:
+				distance = randf_range((get_viewport_rect().end.x / 2), (get_viewport_rect().end.x / 2) + 100)
 
 			var offset = Vector2(cos(random_angle), sin(random_angle)) * distance
-
+			print(offset)
 			spawn_pos = player.global_position + offset
 
 			var map_pos = tile_map.local_to_map(spawn_pos)

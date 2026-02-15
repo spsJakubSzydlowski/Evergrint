@@ -289,7 +289,7 @@ func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	if not is_boss:
-		visible_timer.start(30.0)
+		visible_timer.start(60.0)
 
 func _on_visible_timer_timeout() -> void:
 	queue_free()

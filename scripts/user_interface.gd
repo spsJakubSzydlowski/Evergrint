@@ -73,7 +73,7 @@ func on_inventory_updated():
 	emit_equipped_signal()
 
 func _input(event: InputEvent) -> void:
-	if Global.is_player_dead:
+	if Global.is_player_dead or Global.world_name == "":
 		return
 		
 	if Input.is_action_just_pressed("open_inventory"):
