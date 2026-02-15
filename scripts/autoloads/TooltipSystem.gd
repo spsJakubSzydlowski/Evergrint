@@ -29,9 +29,11 @@ func display_tooltip(item):
 	
 	if not title_label:
 		return
-
-	title_label.text = item.get("name", "NULL")
 	
+	stats_label.text = ""
+	tip_label.text = ""
+	
+	title_label.text = item.get("name", "NULL")
 	tip_label.text = item.get("tooltip", "")
 	
 	var item_type_id = int(item.get("type", 0))
@@ -54,7 +56,8 @@ func display_tooltip(item):
 		var hp_to_heal = consumable_stats.get("hp_to_heal", 0)
 		if hp_to_heal:
 			stats_label.text += "Heal: " + str(hp_to_heal)
-
+	
+	await get_tree().process_frame
 	panel_container.reset_size()
 	
 	set_process(true)
