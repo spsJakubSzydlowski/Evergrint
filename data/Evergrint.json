@@ -361,7 +361,7 @@
 					"tool_range": 0
 				},
 				{
-					"damage": 100,
+					"damage": 8,
 					"attack_speed": 0.6,
 					"knockback": 1,
 					"hitbox_x": 0,
