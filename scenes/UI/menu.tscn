@@ -4,6 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://bim3u6yxyy3wn" path="res://textures/bgs/menu_bg.png" id="2_2un8v"]
 [ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="3_2un8v"]
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2un8v"]
+load_path = "res://.godot/imported/Logo.png-eba33c1468ebc461df2a0db399715a4b.ctex"
+
 [node name="menu" type="CanvasLayer" unique_id=81474863]
 script = ExtResource("1_u81ku")
 
@@ -25,7 +28,6 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.59607846)
 
 [node name="menu_sect" type="Control" parent="." unique_id=1662024094]
-visible = false
 custom_minimum_size = Vector2(300, 300)
 layout_mode = 3
 anchors_preset = 8
@@ -67,6 +69,15 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("3_2un8v")
 text = "Load Game"
 metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="menu_sect" unique_id=1023055607]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 76.0
+grow_horizontal = 2
+texture = SubResource("CompressedTexture2D_2un8v")
+expand_mode = 1
 
 [node name="difficulties_sect" type="Control" parent="." unique_id=1090422321]
 visible = false
@@ -114,6 +125,7 @@ theme_override_fonts/font = ExtResource("3_2un8v")
 text = "Hard"
 
 [node name="world_name_sect" type="Control" parent="." unique_id=1953426897]
+visible = false
 custom_minimum_size = Vector2(300, 300)
 layout_mode = 3
 anchors_preset = 8
@@ -156,6 +168,7 @@ layout_mode = 2
 disabled = true
 
 [node name="load_world_sect" type="Control" parent="." unique_id=541936842]
+visible = false
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5

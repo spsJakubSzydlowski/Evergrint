@@ -85,7 +85,6 @@ func _play_world_signal(world_name):
 	start_game(world_name)
 
 func start_game(world_name: String):
-	print(world_name)
 	if action == "create":
 		if not SaveManager.create_world(world_name):
 			print("This world already exist!")
