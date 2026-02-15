@@ -8,6 +8,8 @@ var world_width = Global.world_width
 var world_height = Global.world_height
 var tree_count = 800
 
+var sinkhole_radius = 8.0
+
 var occupied_cells = {}
 var loaded_chunks_entities : Dictionary = {}
 
@@ -82,18 +84,23 @@ func spawn_trees_in_chunk(coords):
 	seed(Global.world_seed + coords.x * 37 + coords.y * 131)
 	if not loaded_chunks_entities.has(coords):
 		loaded_chunks_entities[coords] = []
-
+	
+	var sinkhole_map_pos = Global.center_world_pos
+	
 	var tree_density = randi() % 3
 	
 	for i in range(tree_density):
 		var local_pos = Vector2i(randi() % Global.CHUNK_SIZE, randi() % Global.CHUNK_SIZE)
 		var global_tile_pos = Vector2i((coords * Global.CHUNK_SIZE) + local_pos)
-
+		
+		var dist_from_sinkhole = Vector2(global_tile_pos).distance_to(Vector2(sinkhole_map_pos))
+		
 		var changes = SaveManager.world_changes.get(Global.current_world_id, {})
 
 		if global_tile_pos.x >= Global.world_width or global_tile_pos.y >= Global.world_height: continue
 		if occupied_cells.has(global_tile_pos): continue
-		
+		if dist_from_sinkhole < sinkhole_radius: continue
+
 		var tile_data = self.get_cell_tile_data(global_tile_pos)
 		if tile_data and tile_data.get_custom_data("water"): continue
 		
