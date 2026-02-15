@@ -25,7 +25,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.59607846)
+color = Color(0, 0, 0, 0.23529412)
 
 [node name="menu_sect" type="Control" parent="." unique_id=1662024094]
 custom_minimum_size = Vector2(300, 300)
