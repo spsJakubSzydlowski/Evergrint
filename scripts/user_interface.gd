@@ -29,6 +29,7 @@ const ITEM_TYPE_NAMES = {
 var selected_slot_contents = null
 
 func _ready() -> void:
+	Signals.play_world.connect(_on_play_world)
 	Signals.player_health_changed.connect(update_health_bar)
 	Signals.player_died.connect(_on_player_died)
 
@@ -36,9 +37,25 @@ func _ready() -> void:
 	
 	get_tree().tree_changed.connect(_on_world_changed)
 	
-	refresh_ui()
-	emit_equipped_signal()
+	set_process(false)
 
+func _on_play_world(_world_name):
+	set_process(true)
+	
+	for i in range(hotbar_slots):
+		create_slot_in(hotbar_container, i)
+		
+	for i in range(inventory_slots):
+		create_slot_in(inventory_container, i)
+	
+	is_inventory_open = false
+	inventory_container.visible = false
+	hotbar_container.visible = true
+	
+	refresh_ui()
+	await  get_tree().create_timer(0.1).timeout
+	emit_equipped_signal()
+		
 func _process(_delta: float) -> void:
 	if Global.current_tilemap:
 		var relative_pos = Vector2i(Global.get_player_tilemap_position(Global.current_tilemap)) - Global.center_world_pos
@@ -79,55 +96,12 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("open_inventory"):
 		toggle_inventory()
 		
-	if Input.is_action_just_pressed("hotbar_1"):
-		active_slot_index = 0
-		refresh_ui()
-		emit_equipped_signal()
-		
-	if Input.is_action_just_pressed("hotbar_2"):
-		active_slot_index = 1
-		refresh_ui()
-		emit_equipped_signal()
-		
-	if Input.is_action_just_pressed("hotbar_3"):
-		active_slot_index = 2
-		refresh_ui()
-		emit_equipped_signal()
-		
-	if Input.is_action_just_pressed("hotbar_4"):
-		active_slot_index = 3
-		refresh_ui()
-		emit_equipped_signal()
-		
-	if Input.is_action_just_pressed("hotbar_5"):
-		active_slot_index = 4
-		refresh_ui()
-		emit_equipped_signal()
-		
-	if Input.is_action_just_pressed("hotbar_6"):
-		active_slot_index = 5
-		refresh_ui()
-		emit_equipped_signal()
-		
-	if Input.is_action_just_pressed("hotbar_7"):
-		active_slot_index = 6
-		refresh_ui()
-		emit_equipped_signal()
-		
-	if Input.is_action_just_pressed("hotbar_8"):
-		active_slot_index = 7
-		refresh_ui()
-		emit_equipped_signal()
-		
-	if Input.is_action_just_pressed("hotbar_9"):
-		active_slot_index = 8
-		refresh_ui()
-		emit_equipped_signal()
-		
-	if Input.is_action_just_pressed("hotbar_10"):
-		active_slot_index = 9
-		refresh_ui()
-		emit_equipped_signal()
+	for i in range(10):
+		if Input.is_action_just_pressed("hotbar_" + str(i + 1)):
+			active_slot_index = i
+			refresh_ui()
+			emit_equipped_signal()
+			break
 		
 	if Input.is_action_just_pressed("stats"):
 		compas_label.visible = not compas_label.visible
@@ -153,74 +127,84 @@ func toggle_inventory():
 	refresh_ui()
 
 func refresh_ui():
-	for child in hotbar_container.get_children():
-		child.queue_free()
-	for child in inventory_container.get_children():
-		child.queue_free()
-
+	var current_container
 	if is_inventory_open:
-		for i in range(inventory_slots):
-			create_slot_in(inventory_container, i)
+		current_container = inventory_container
 	else:
-		for i in range(hotbar_slots):
-			create_slot_in(hotbar_container, i)
+		current_container = hotbar_container
+
+	var slots = current_container.get_children()
+	
+	for i in range(slots.size()):
+		var slot_ui = slots[i]
+		var slot_data = Inventory.slots[i]
+		
+		slot_ui.find_child("SelectionSprite").visible = (i == active_slot_index)
+	
+		if slot_data:
+			update_slot_visuals(slot_ui, slot_data)
+			update_tooltip_data(slot_data, slot_ui)
+		else:
+			update_slot_visuals(slot_ui, slot_data)
+			update_tooltip_data(slot_data, slot_ui)
 		
 func create_slot_in(container, index):
-	var slot_data = Inventory.slots[index]
 	var new_slot = slot_scene.instantiate()
 	container.add_child(new_slot)
 	
+	new_slot.slot_index = index
+	
+	new_slot.set_meta("item_data", null)
 	new_slot.slot_clicked.connect(_on_slot_clicked)
-	new_slot.find_child("SelectionSprite").visible = (index == active_slot_index)
-			
-	create_tooltip(slot_data, new_slot)
+	new_slot.mouse_entered.connect(_on_slot_mouse_entered.bind(new_slot))
+	new_slot.mouse_exited.connect(_on_slot_mouse_exited)
 
-func create_tooltip(slot_data, new_slot):
-	if slot_data["id"] != "":
+func update_tooltip_data(slot_data, slot_ui):
+	if slot_data and slot_data.get("id", "") != "":
 		var item = DataManager.get_item(slot_data["id"])
-		
-		new_slot.set_meta("item_data", item)
-		
-		if not new_slot.mouse_entered.is_connected(_on_slot_mouse_entered):
-			new_slot.mouse_entered.connect(_on_slot_mouse_entered.bind(new_slot))
-			new_slot.mouse_exited.connect(_on_slot_mouse_exited)
-			
-		update_slot_visuals(new_slot, slot_data)
+		slot_ui.set_meta("item_data", item)
 	else:
-		new_slot.set_meta("item_data", null)
+		slot_ui.set_meta("item_data", null)
 
 func _on_slot_mouse_entered(slot):
-	var item = slot.get_meta("item_data")
-	if item:
-		Tooltip.display_tooltip(item)
-		
+	if slot.has_meta("item_data"):
+		var item = slot.get_meta("item_data", null)
+		if item:
+			Tooltip.display_tooltip(item)
+	
 func _on_slot_mouse_exited():
 	Tooltip.hide_tooltip()
 
 func update_slot_visuals(slot_ui, slot_data):
+	var icon_rect = slot_ui.find_child("Icon")
+	var amount_label = slot_ui.find_child("AmountLabel")
+	
+	if slot_data == null or slot_data["id"] == "":
+		icon_rect.texture = null
+		amount_label.text = ""
+		return
+	
 	var item_id = slot_data["id"]
 	var amount = slot_data["amount"]
 	var item = DataManager.get_item(item_id)
-	
-	var icon_rect = slot_ui.find_child("Icon")
-	var path = "res://" + item.tile.file.replace("../", "")
+
+	var image_path = "res://" + item.tile.file.replace("../", "")
 	
 	var atlas_tex = AtlasTexture.new()
-	atlas_tex.atlas = load(path)
+	atlas_tex.atlas = load(image_path)
+	
 	var ts_base = Vector2i(item.get("tile_size"), item.get("tile_size"))
 	
 	var pos_x = item.tile.x * ts_base.x
 	var pos_y = item.tile.y * ts_base.y
-			
+	
 	var region_w = item.tile_width * ts_base.x
 	var region_h = item.tile_height * ts_base.y
 	
 	atlas_tex.region = Rect2(pos_x, pos_y, region_w, region_h)
-	icon_rect.texture = atlas_tex
 	
-	var label = slot_ui.find_child("AmountLabel")
-	if not label: print("No amount label found!")
-	label.text = str(int(amount)) if amount > 1 else ""
+	icon_rect.texture = atlas_tex
+	amount_label.text = str(int(amount)) if amount > 1 else ""
 	
 func emit_equipped_signal():
 	var active_slot_data = Inventory.slots[active_slot_index]
@@ -240,9 +224,13 @@ func _on_slot_clicked(index, slot_ui):
 	elif not first_selected_slot_index == -1:
 		Tooltip.show_tooltips = true
 		Inventory.swap_slot(first_selected_slot_index, index)
+		selected_slot_contents.position = Vector2.ZERO
+		selected_slot_contents.z_index = 0
+		selected_slot_contents = null
 		first_selected_slot_index = -1
-		refresh_ui()
 		AudioManager.play_sfx("inventory_slot_pop")
+		
+	refresh_ui()
 
 func show_item_at_cursor(slot_ui):
 	selected_slot_contents = slot_ui.find_child("Contents")
