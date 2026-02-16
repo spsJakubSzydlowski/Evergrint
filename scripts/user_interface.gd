@@ -123,6 +123,10 @@ func toggle_inventory():
 	hotbar_container.visible = !is_inventory_open
 	
 	first_selected_slot_index = -1
+	if selected_slot_contents:
+		selected_slot_contents.position = Vector2.ZERO
+		selected_slot_contents.z_index = 0
+		selected_slot_contents = null
 	
 	refresh_ui()
 
