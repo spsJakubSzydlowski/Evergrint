@@ -11,6 +11,7 @@ var current_action_state : ActionState = ActionState.NONE
 
 var tile_map = null
 var object_layer = null
+var ui: CanvasLayer = null
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -30,14 +31,12 @@ var dash_velocity = 200.0
 var dash_duration = 0.1
 var dash_cooldown = 1
 
+var stun_time: float = 0.4
+
 var knockback_velocity = Vector2.ZERO
 #endregion
 
-var ui: CanvasLayer = null
 var can_be_hit : bool = true
-
-var is_dead = false
-
 var can_turn : bool = true
 var can_attack : bool = true
 var can_dash : bool = true
@@ -45,16 +44,12 @@ var can_dash : bool = true
 var max_hp : int
 var current_hp : int
 
-var stun_time: float = 0.4
-
 var hit_entities = []
 
 func _ready() -> void:
 	velocity = Vector2.ZERO
 	tile_map = get_tree().get_first_node_in_group("tilemap")
 	object_layer = get_tree().get_first_node_in_group("objectmap")
-	
-	dash_cooldown_timer.wait_time = dash_cooldown
 	
 	setup_camera_limits()
 
@@ -279,7 +274,8 @@ func attack(item_id):
 	
 	var stats = DataManager.get_weapon_stats(item_id)
 	if stats == {}:
-		change_move_state(MoveState.IDLE)
+		can_attack = true
+		change_action_state(ActionState.NONE)
 		return
 	
 	can_attack = false
@@ -379,7 +375,8 @@ func _on_inventory_canvas_item_equipped(item_id: String) -> void:
 		hand_sprite.texture = null
 
 func take_hit(damage, knockback, source_pos):
-	if is_dead or not can_be_hit: return
+	if current_action_state == ActionState.DEAD: return
+	if not can_be_hit: return
 	
 	current_hp -= damage
 	Signals.player_health_changed.emit(current_hp, max_hp)
@@ -414,7 +411,7 @@ func _handle_quick_heal():
 
 func heal(hp_to_heal):
 	var success = false
-	if is_dead: return success
+	if current_action_state == ActionState.DEAD: return success
 	
 	if current_hp >= max_hp: return success
 	
