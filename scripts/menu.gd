@@ -32,7 +32,7 @@ func _on_name_enter_pressed() -> void:
 	if action == "create":
 		switch_to_section("difficulty")
 	else:
-		start_game(world_name)
+		Signals.play_world.emit(world_name)
 
 func _on_name_edit_text_changed(new_text: String) -> void:
 	if action == "load":
@@ -79,6 +79,7 @@ func setup_and_start(difficulty_type, difficulty_name: String):
 	play_click()
 	Global.current_difficulty = difficulty_type
 	Global.set_difficulty_mult(difficulty_name)
+	Signals.play_world.emit(Global.world_name)
 	start_game(Global.world_name)
 
 func _play_world_signal(world_name):
@@ -89,12 +90,14 @@ func start_game(world_name: String):
 		if not SaveManager.create_world(world_name):
 			print("This world already exist!")
 			return
+			
 	elif action == "load":
 		if not SaveManager.load_world(world_name):
 			print("This world doesnt exist!")
 			return
 	
 	Global.transition_to("surface")
+	return
 
 func play_click():
 	AudioManager.play_sfx("menu_click")
