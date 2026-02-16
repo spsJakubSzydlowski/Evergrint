@@ -3,15 +3,11 @@ extends CharacterBody2D
 const WEAPON_TYPE_MELEE = 0
 const WEAPON_TYPE_RANGED = 1
 
-enum State {
-	IDLE,
-	MOVE,
-	ATTACK,
-	STUNNED,
-	DEAD,
-	MINE
-}
-var current_state = State.IDLE
+enum MoveState { IDLE, MOVE, DASH }
+enum ActionState { NONE, ATTACK, STUNNED, DEAD }
+
+var current_move_state : MoveState = MoveState.IDLE
+var current_action_state : ActionState = ActionState.NONE
 
 var tile_map = null
 var object_layer = null
@@ -25,10 +21,14 @@ var object_layer = null
 @onready var weapon_collision_shape: CollisionShape2D = $WeaponPivot/Hand/HitArea/CollisionShape2D
 @onready var camera: Camera2D = $Camera2D
 @onready var invincibility_frames: Timer = $invincibility_frames
+@onready var dash_cooldown_timer: Timer = $dash_cooldown
 
 #region Movement Variables
 var move_speed : float
-var acceleration = 400.0
+var acceleration = 1500.0
+var dash_velocity = 200.0
+var dash_duration = 0.1
+var dash_cooldown = 1
 
 var knockback_velocity = Vector2.ZERO
 #endregion
@@ -40,6 +40,7 @@ var is_dead = false
 
 var can_turn : bool = true
 var can_attack : bool = true
+var can_dash : bool = true
 
 var max_hp : int
 var current_hp : int
@@ -52,6 +53,9 @@ func _ready() -> void:
 	velocity = Vector2.ZERO
 	tile_map = get_tree().get_first_node_in_group("tilemap")
 	object_layer = get_tree().get_first_node_in_group("objectmap")
+	
+	dash_cooldown_timer.wait_time = dash_cooldown
+	
 	setup_camera_limits()
 
 func initialize():
@@ -99,13 +103,17 @@ func setup_camera_limits():
 	camera.limit_bottom = world_height
 
 func _physics_process(delta: float) -> void:
-	match current_state:
-		State.DEAD:
+	match current_move_state:
+		MoveState.DASH:
+			pass
+		MoveState.IDLE, MoveState.MOVE:
+			velocity = move()
+	
+	match current_action_state:
+		ActionState.DEAD:
 			velocity = Vector2.ZERO
-		State.STUNNED:
-			velocity = velocity.move_toward(Vector2.ZERO, acceleration * delta)
-		State.IDLE, State.MOVE, State.ATTACK:
-			velocity = move(delta)
+		ActionState.STUNNED:
+			velocity.move_toward(Vector2.ZERO, acceleration * delta)
 	
 	var final_velocity = velocity + knockback_velocity
 	
@@ -117,7 +125,7 @@ func _physics_process(delta: float) -> void:
 	velocity = old_velocity
 
 func _unhandled_input(event: InputEvent) -> void:
-	if current_state == State.DEAD:
+	if current_action_state == ActionState.DEAD:
 		return
 	
 	if event is InputEventMouseButton and event.pressed:
@@ -130,29 +138,43 @@ func _unhandled_input(event: InputEvent) -> void:
 		_handle_quick_heal()
 	
 	if event.is_action_pressed("attack"):
-		change_state(State.ATTACK)
+		change_action_state(ActionState.ATTACK)
+		
+	if event.is_action_pressed("dash"):
+		if can_dash:
+			change_move_state(MoveState.DASH)
 
-func change_state(new_state):
-	if current_state == new_state:
-		return
-
-	match current_state:
-		State.ATTACK:
-			pass
-		State.MOVE:
-			pass
-			
-	current_state = new_state
+func change_move_state(new_state: MoveState):
+	if current_move_state == new_state: return
 	
-	match current_state:
-		State.ATTACK:
-			attack(Inventory.current_equipped_id)
-		State.DEAD:
-			_on_player_dead()
-		State.STUNNED:
-			_on_player_stunned()
+	current_move_state = new_state
+	
+	match current_move_state:
+		MoveState.IDLE:
+			pass
+		MoveState.MOVE:
+			move()
+		MoveState.DASH:
+			_on_player_dash()
 
-func move(delta):
+func change_action_state(new_state: ActionState):
+	if current_action_state == new_state: return
+	
+	current_action_state = new_state
+	
+	match current_action_state:
+		ActionState.NONE:
+			pass
+		ActionState.ATTACK:
+			attack(Inventory.current_equipped_id)
+		ActionState.STUNNED:
+			_on_player_stunned()
+		ActionState.DEAD:
+			_on_player_dead()
+
+func move():
+	var delta = get_process_delta_time()
+	
 	var direction := Input.get_vector("a", "d", "w", "s").normalized()
 	
 	if direction:
@@ -181,11 +203,11 @@ func move(delta):
 	global_position.y = clamp(global_position.y, limit_top + player_height_half, limit_bottom)
 	
 	return velocity
-	
+
 func _handle_attack_input():
-	if current_state == State.IDLE or current_state == State.MOVE:
+	if current_move_state in [MoveState.IDLE, MoveState.MOVE]:
 		if Inventory.current_equipped_id != "":
-			change_state(State.ATTACK)
+			change_action_state(ActionState.ATTACK)
 
 func _handle_interact_input():
 	var mouse_pos = get_global_mouse_position()
@@ -234,12 +256,12 @@ func _handle_consumable_logic(consumable_stats, item_id):
 		if heal(consumable_stats.get("hp_to_heal", 0)):
 			Inventory.remove_item(item_id, 1)
 			AudioManager.play_sfx("food_crunch")
-	
+
 func _handle_mining_logic(weapon_stats, mouse_pos, distance):
 	var tile_pos = object_layer.local_to_map(mouse_pos)
 	var tile_data = object_layer.get_cell_tile_data(tile_pos)
 	
-	if tile_data and current_state != State.ATTACK:
+	if tile_data and current_action_state != ActionState.ATTACK:
 		var tool_range = weapon_stats.get("tool_range", 0)
 		var is_in_distance = distance <= tool_range
 		
@@ -252,12 +274,12 @@ func _handle_mining_logic(weapon_stats, mouse_pos, distance):
 
 func attack(item_id):
 	if not can_attack:
-		change_state(State.IDLE)
+		change_move_state(MoveState.IDLE)
 		return
 	
 	var stats = DataManager.get_weapon_stats(item_id)
 	if stats == {}:
-		change_state(State.IDLE)
+		change_move_state(MoveState.IDLE)
 		return
 	
 	can_attack = false
@@ -282,8 +304,9 @@ func attack(item_id):
 	hand.visible = false
 	can_attack = true
 	
-	if current_state != State.DEAD and current_state != State.STUNNED:
-		change_state(State.IDLE)
+	if current_action_state not in [ActionState.DEAD, ActionState.STUNNED]:
+		change_action_state(ActionState.NONE)
+		change_move_state(MoveState.IDLE)
 
 func melee_attack(stats):
 	var mouse_position = get_global_mouse_position()
@@ -401,12 +424,28 @@ func heal(hp_to_heal):
 	success = true
 	return success
 
+func _on_player_dash():
+	velocity = Vector2.ZERO
+	can_dash = false
+	dash_cooldown_timer.start(dash_cooldown)
+	
+	var direction := Input.get_vector("a", "d", "w", "s").normalized()
+	if direction == Vector2.ZERO:
+		direction = Vector2.RIGHT
+	
+	velocity = direction * dash_velocity
+	
+	await get_tree().create_timer(dash_duration).timeout
+	
+	if current_move_state == MoveState.DASH:
+		change_move_state(MoveState.IDLE)
+
 func _on_player_stunned():
 	var timer = get_tree().create_timer(stun_time)
 	await timer.timeout
 	
-	if current_state == State.STUNNED:
-		change_state(State.IDLE)
+	if current_action_state == ActionState.STUNNED:
+		change_move_state(MoveState.IDLE)
 
 func _on_player_dead():
 	Global.is_player_dead = true
@@ -416,19 +455,19 @@ func _on_player_dead():
 	Signals.player_died.emit()
 
 func die():
-	change_state(State.DEAD)
+	change_action_state(ActionState.DEAD)
 
 func apply_knockback(knockback_amount, source_pos):
 	var knockback_dir = source_pos.direction_to(global_position)
 	knockback_velocity = knockback_dir * knockback_amount * 500
-	change_state(State.STUNNED)
+	change_action_state(ActionState.STUNNED)
 	
 	var tween = create_tween()
 	tween.tween_property(self, "knockback_velocity", Vector2.ZERO, 0.15).set_trans(Tween.TRANS_BOUNCE)
 	
 	tween.tween_callback(func():
-		if current_state != State.DEAD:
-			change_state(State.MOVE)
+		if current_action_state != ActionState.DEAD:
+			change_move_state(MoveState.MOVE)
 	)
 
 func _on_hit_area_area_entered(area: Area2D) -> void:
@@ -437,7 +476,7 @@ func _on_hit_area_area_entered(area: Area2D) -> void:
 	if attackable in hit_entities or attackable.is_in_group("Player"):
 		return
 	
-	if current_state != State.ATTACK:
+	if current_action_state != ActionState.ATTACK:
 		return
 	
 	var item_stats = DataManager.get_weapon_stats(Inventory.current_equipped_id)
@@ -475,7 +514,12 @@ func respawn():
 	Global.is_player_dead = false
 	Signals.player_health_changed.emit(current_hp, max_hp)
 	
-	change_state(State.IDLE)
+	change_move_state(MoveState.IDLE)
+	change_action_state(ActionState.NONE)
 
 func _on_invincibility_frames_timeout() -> void:
 	can_be_hit = true
+
+func _on_dash_cooldown_timeout() -> void:
+	change_move_state(MoveState.IDLE)
+	can_dash = true
