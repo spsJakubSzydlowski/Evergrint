@@ -1031,7 +1031,7 @@
 				{
 					"id": "bow_release",
 					"file": "../audio/sfx/bow-release.wav",
-					"volume": -8
+					"volume": -12
 				},
 				{
 					"id": "menu_click",
