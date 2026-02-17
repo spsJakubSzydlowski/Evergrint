@@ -9,6 +9,8 @@ extends CanvasLayer
 @onready var name_edit: LineEdit = $world_name_sect/HBoxContainer/name_edit
 @onready var name_enter: Button = $world_name_sect/HBoxContainer/name_enter
 @onready var worlds_list: VBoxContainer = $load_world_sect/VBoxContainer/ScrollContainer/worlds_list
+@onready var new_game_button: Button = $menu_sect/MarginContainer2/VBoxContainer/new_game_button
+@onready var load_game_button: Button = $menu_sect/MarginContainer2/VBoxContainer/load_game_button
 
 var world_container = preload("res://scenes/UI/world_container.tscn")
 
@@ -79,7 +81,7 @@ func _on_load_game_button_pressed() -> void:
 	for world in all_worlds:
 		var new_world = world_container.instantiate()
 		
-		new_world.get_node("world_name").text = world
+		new_world.find_child("world_name").text = world
 		new_world.world_name = world
 		
 		worlds_list.add_child(new_world)
@@ -115,3 +117,20 @@ func start_game(world_name: String):
 
 func play_click():
 	AudioManager.play_sfx("menu_click")
+
+func _on_new_game_button_mouse_entered() -> void:
+	new_game_button.set("theme_override_colors/font_hover_color", Color(0, 0, 0))
+	new_game_button.set("theme_override_constants/outline_size", 0)
+
+func _on_new_game_button_mouse_exited() -> void:
+	new_game_button.set("theme_override_colors/font_color", Color(1, 1, 1))
+	new_game_button.set("theme_override_constants/outline_size", 4)
+
+
+func _on_load_game_button_mouse_entered() -> void:
+	load_game_button.set("theme_override_colors/font_hover_color", Color(0, 0, 0))
+	load_game_button.set("theme_override_constants/outline_size", 0)
+
+func _on_load_game_button_mouse_exited() -> void:
+	load_game_button.set("theme_override_colors/font_color", Color(1, 1, 1))
+	load_game_button.set("theme_override_constants/outline_size", 4)
