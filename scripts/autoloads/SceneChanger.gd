@@ -9,4 +9,3 @@ func change_scene_save_game(path: String):
 	get_tree().root.add_child(ls)
 	
 	Global.living_boss = false
-	SaveManager.save_world(Global.world_name)
