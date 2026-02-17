@@ -159,6 +159,7 @@ custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_2un8v")
 placeholder_text = "World Name"
+max_length = 32
 context_menu_enabled = false
 emoji_menu_enabled = false
 
