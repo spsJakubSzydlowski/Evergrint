@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b6d0iowgh44ec" path="res://scripts/user_interface.gd" id="1_l5hnc"]
 [ext_resource type="Texture2D" uid="uid://bpric1nyeu7w3" path="res://textures/ui.png" id="2_vr1b1"]
-[ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="2_yl4mc"]
+[ext_resource type="FontFile" uid="uid://bhb416jjh7m1l" path="res://fonts/Alkhemikal.ttf" id="3_vr1b1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lgjxu"]
 atlas = ExtResource("2_vr1b1")
@@ -10,7 +10,9 @@ region = Rect2(0, 16, 0, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3wpr7"]
 atlas = ExtResource("2_vr1b1")
-region = Rect2(0, 32, 0, 0)
+region = Rect2(0, 32, 0, 16)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lgjxu"]
 
 [node name="UI" type="CanvasLayer" unique_id=1839636389 groups=["ui"]]
 script = ExtResource("1_l5hnc")
@@ -72,7 +74,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/outline_size = 4
-theme_override_fonts/normal_font = ExtResource("2_yl4mc")
-theme_override_font_sizes/normal_font_size = 20
+theme_override_fonts/normal_font = ExtResource("3_vr1b1")
+theme_override_font_sizes/normal_font_size = 15
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lgjxu")
 text = "0"
 fit_content = true
