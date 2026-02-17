@@ -1,10 +1,12 @@
 [gd_scene format=3 uid="uid://cl6ih68eeb4ox"]
 
 [ext_resource type="Script" uid="uid://b0tq1hm3eyxfe" path="res://scripts/autoloads/TooltipSystem.gd" id="1_ne664"]
-[ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="2_m5ds0"]
 [ext_resource type="Theme" uid="uid://4gdmmmgngu0y" path="res://themes/inventory.tres" id="2_pt5xr"]
+[ext_resource type="FontFile" uid="uid://4ilhd7wvom77" path="res://fonts/Jacquard24-Regular.ttf" id="3_tbolh"]
+[ext_resource type="FontFile" uid="uid://bhb416jjh7m1l" path="res://fonts/Alkhemikal.ttf" id="4_tbolh"]
 
 [sub_resource type="Theme" id="Theme_tbolh"]
+default_font = ExtResource("3_tbolh")
 PanelContainer/styles/panel = null
 
 [node name="tooltip" type="CanvasLayer" unique_id=331667819]
@@ -27,7 +29,7 @@ theme_override_constants/separation = 0
 clip_contents = false
 layout_mode = 2
 theme_override_constants/outline_size = 4
-theme_override_fonts/normal_font = ExtResource("2_m5ds0")
+theme_override_fonts/normal_font = ExtResource("4_tbolh")
 theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "???"
@@ -39,7 +41,7 @@ horizontal_alignment = 1
 clip_contents = false
 layout_mode = 2
 theme_override_constants/outline_size = 4
-theme_override_fonts/normal_font = ExtResource("2_m5ds0")
+theme_override_fonts/normal_font = ExtResource("4_tbolh")
 theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
 text = "???"
@@ -51,6 +53,7 @@ horizontal_alignment = 1
 clip_contents = false
 layout_mode = 2
 theme_override_constants/outline_size = 4
+theme_override_fonts/normal_font = ExtResource("4_tbolh")
 text = "stats"
 fit_content = true
 scroll_active = false
@@ -60,6 +63,7 @@ autowrap_mode = 0
 clip_contents = false
 layout_mode = 2
 theme_override_constants/outline_size = 4
+theme_override_fonts/normal_font = ExtResource("4_tbolh")
 text = "tooltip"
 fit_content = true
 scroll_active = false
