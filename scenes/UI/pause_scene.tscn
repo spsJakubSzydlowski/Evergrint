@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://dmfdyfauwq42r"]
+
+[ext_resource type="FontFile" uid="uid://4ilhd7wvom77" path="res://fonts/Jacquard24-Regular.ttf" id="1_6ot2y"]
+
+[sub_resource type="Theme" id="Theme_jn470"]
+default_font = ExtResource("1_6ot2y")
+default_font_size = 20
+
+[node name="pause_scene" type="CanvasLayer" unique_id=1737368638]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=34453893]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.39215687)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=28617897]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+
+[node name="buttons" type="VBoxContainer" parent="MarginContainer" unique_id=570414179]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="resume_button" type="Button" parent="MarginContainer/buttons" unique_id=822233425]
+layout_mode = 2
+theme = SubResource("Theme_jn470")
+text = "Resume"
+
+[node name="new_game_button" type="Button" parent="MarginContainer/buttons" unique_id=1814721283]
+layout_mode = 2
+theme = SubResource("Theme_jn470")
+text = "New Game"
+
+[node name="save_game_button" type="Button" parent="MarginContainer/buttons" unique_id=1881967795]
+layout_mode = 2
+theme = SubResource("Theme_jn470")
+text = "Save Game"
+
+[node name="load_game_button" type="Button" parent="MarginContainer/buttons" unique_id=224354645]
+layout_mode = 2
+theme = SubResource("Theme_jn470")
+text = "Load Game"
+
+[node name="savequit_button" type="Button" parent="MarginContainer/buttons" unique_id=826733271]
+layout_mode = 2
+theme = SubResource("Theme_jn470")
+text = "Save & Quit"
