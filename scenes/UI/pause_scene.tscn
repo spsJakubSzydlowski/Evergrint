@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://dmfdyfauwq42r"]
 
-[ext_resource type="FontFile" uid="uid://4ilhd7wvom77" path="res://fonts/Jacquard24-Regular.ttf" id="1_6ot2y"]
+[ext_resource type="FontFile" uid="uid://gdelwc207xyq" path="res://fonts/Jacquard_font.tres" id="2_jn470"]
 
 [sub_resource type="Theme" id="Theme_jn470"]
-default_font = ExtResource("1_6ot2y")
+default_font = ExtResource("2_jn470")
 default_font_size = 20
 
 [node name="pause_scene" type="CanvasLayer" unique_id=1737368638]
@@ -30,24 +30,23 @@ theme_override_constants/separation = 10
 [node name="resume_button" type="Button" parent="MarginContainer/buttons" unique_id=822233425]
 layout_mode = 2
 theme = SubResource("Theme_jn470")
+theme_override_fonts/font = ExtResource("2_jn470")
 text = "Resume"
 
 [node name="new_game_button" type="Button" parent="MarginContainer/buttons" unique_id=1814721283]
 layout_mode = 2
 theme = SubResource("Theme_jn470")
+theme_override_fonts/font = ExtResource("2_jn470")
 text = "New Game"
-
-[node name="save_game_button" type="Button" parent="MarginContainer/buttons" unique_id=1881967795]
-layout_mode = 2
-theme = SubResource("Theme_jn470")
-text = "Save Game"
 
 [node name="load_game_button" type="Button" parent="MarginContainer/buttons" unique_id=224354645]
 layout_mode = 2
 theme = SubResource("Theme_jn470")
+theme_override_fonts/font = ExtResource("2_jn470")
 text = "Load Game"
 
 [node name="savequit_button" type="Button" parent="MarginContainer/buttons" unique_id=826733271]
 layout_mode = 2
 theme = SubResource("Theme_jn470")
+theme_override_fonts/font = ExtResource("2_jn470")
 text = "Save & Quit"
