@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://djt5varnl7su1" path="res://scripts/menu.gd" id="1_u81ku"]
 [ext_resource type="Texture2D" uid="uid://bim3u6yxyy3wn" path="res://textures/bgs/menu_bg.png" id="2_2un8v"]
 [ext_resource type="FontFile" uid="uid://gdelwc207xyq" path="res://fonts/Jacquard_font.tres" id="3_ny0ke"]
+[ext_resource type="StyleBox" uid="uid://pufkbrmg787q" path="res://misc/button_hovered_style.tres" id="4_78n2u"]
 [ext_resource type="Texture2D" uid="uid://bpric1nyeu7w3" path="res://textures/ui.png" id="4_ny0ke"]
 [ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="6_78n2u"]
 
@@ -590,18 +591,6 @@ content_margin_top = 0.0
 content_margin_right = 5.0
 content_margin_bottom = 0.0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ny0ke"]
-atlas = ExtResource("4_ny0ke")
-region = Rect2(0, 48, 128, 32)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_78n2u"]
-content_margin_left = 5.0
-content_margin_top = 0.0
-content_margin_right = 5.0
-content_margin_bottom = 0.0
-texture = SubResource("AtlasTexture_ny0ke")
-modulate_color = Color(0.9529412, 0.9529412, 0.9529412, 1)
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iysyy"]
 content_margin_left = 5.0
 content_margin_top = 0.0
@@ -619,6 +608,12 @@ content_margin_right = 5.0
 content_margin_bottom = 0.0
 texture = SubResource("AtlasTexture_78n2u")
 modulate_color = Color(0.9515795, 0.95157963, 0.9515795, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_svcqa"]
+content_margin_left = 5.0
+content_margin_top = 0.0
+content_margin_right = 5.0
+content_margin_bottom = 0.0
 
 [node name="menu" type="CanvasLayer" unique_id=81474863]
 script = ExtResource("1_u81ku")
@@ -641,7 +636,6 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.23529412)
 
 [node name="menu_sect" type="Control" parent="." unique_id=1662024094]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -683,11 +677,15 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme = SubResource("Theme_svcqa")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("3_ny0ke")
 theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxEmpty_ny0ke")
-theme_override_styles/hover = SubResource("StyleBoxTexture_78n2u")
+theme_override_styles/pressed = ExtResource("4_78n2u")
+theme_override_styles/hover = ExtResource("4_78n2u")
+theme_override_styles/hover_pressed = ExtResource("4_78n2u")
 text = "New Game"
 metadata/_edit_use_anchors_ = true
 
@@ -695,16 +693,39 @@ metadata/_edit_use_anchors_ = true
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0.48178947, 0.48178947, 0.48178947, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("3_ny0ke")
 theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxEmpty_iysyy")
+theme_override_styles/pressed = ExtResource("4_78n2u")
 theme_override_styles/hover = SubResource("StyleBoxTexture_svcqa")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_svcqa")
 text = "Load Game"
 metadata/_edit_use_anchors_ = true
 
+[node name="quit_button" type="Button" parent="menu_sect/MarginContainer2/VBoxContainer" unique_id=995031695]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0.48178947, 0.48178947, 0.48178947, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("3_ny0ke")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxEmpty_iysyy")
+theme_override_styles/pressed = ExtResource("4_78n2u")
+theme_override_styles/hover = SubResource("StyleBoxTexture_svcqa")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_svcqa")
+text = "Quit"
+metadata/_edit_use_anchors_ = true
+
 [node name="create_world_sect" type="Control" parent="." unique_id=1953426897]
-custom_minimum_size = Vector2(300, 250)
+visible = false
+custom_minimum_size = Vector2(300, 300)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -718,6 +739,21 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="create_world_label" type="Label" parent="create_world_sect" unique_id=1194972565]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -87.5
+offset_right = 87.5
+offset_bottom = 21.0
+grow_horizontal = 2
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("3_ny0ke")
+theme_override_font_sizes/font_size = 25
+text = "Create world"
+horizontal_alignment = 1
+
 [node name="MarginContainer" type="MarginContainer" parent="create_world_sect" unique_id=2058561190]
 layout_mode = 1
 anchors_preset = 5
@@ -727,7 +763,7 @@ offset_left = -87.5
 offset_right = 87.5
 offset_bottom = 77.0
 grow_horizontal = 2
-theme_override_constants/margin_top = 15
+theme_override_constants/margin_top = 50
 
 [node name="VBoxContainer" type="VBoxContainer" parent="create_world_sect/MarginContainer" unique_id=774462087]
 layout_mode = 2
@@ -787,6 +823,7 @@ text = "Create New World"
 
 [node name="load_world_sect" type="Control" parent="." unique_id=541936842]
 visible = false
+custom_minimum_size = Vector2(300, 300)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -800,45 +837,89 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="load_world_sect" unique_id=1941956638]
+[node name="select_world_label" type="Label" parent="load_world_sect" unique_id=1551406155]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -163.5
-offset_right = 150.0
-offset_bottom = 163.5
+offset_left = -43.5
+offset_right = 43.5
+offset_bottom = 21.0
 grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 16
-
-[node name="Label" type="Label" parent="load_world_sect/VBoxContainer" unique_id=1551406155]
-layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("3_ny0ke")
-theme_override_font_sizes/font_size = 20
-text = "Worlds"
+theme_override_font_sizes/font_size = 25
+text = "Select World"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="load_world_sect/VBoxContainer" unique_id=1200597244]
-custom_minimum_size = Vector2(300, 300)
+[node name="HBoxContainer" type="HBoxContainer" parent="load_world_sect" unique_id=1602366559]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -127.0
+offset_top = -40.0
+offset_right = 127.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="return_button" type="Button" parent="load_world_sect/HBoxContainer" unique_id=163887886]
+custom_minimum_size = Vector2(125, 25)
 layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("6_78n2u")
+text = "Return"
+
+[node name="play_button" type="Button" parent="load_world_sect/HBoxContainer" unique_id=1914677344]
+custom_minimum_size = Vector2(125, 25)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("6_78n2u")
+disabled = true
+text = "Play Selected World"
+
+[node name="MarginContainer" type="MarginContainer" parent="load_world_sect" unique_id=1421921816]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_right = 150.0
+offset_bottom = 225.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 35
+
+[node name="VBoxContainer" type="VBoxContainer" parent="load_world_sect/MarginContainer" unique_id=1941956638]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="load_world_sect/MarginContainer/VBoxContainer" unique_id=1200597244]
+custom_minimum_size = Vector2(300, 220)
+layout_mode = 2
+size_flags_horizontal = 4
 horizontal_scroll_mode = 0
 
-[node name="worlds_list" type="VBoxContainer" parent="load_world_sect/VBoxContainer/ScrollContainer" unique_id=81402820]
+[node name="worlds_list" type="VBoxContainer" parent="load_world_sect/MarginContainer/VBoxContainer/ScrollContainer" unique_id=81402820]
 layout_mode = 2
 
-[connection signal="mouse_entered" from="menu_sect/MarginContainer2/VBoxContainer/new_game_button" to="." method="_on_new_game_button_mouse_entered"]
-[connection signal="mouse_exited" from="menu_sect/MarginContainer2/VBoxContainer/new_game_button" to="." method="_on_new_game_button_mouse_exited"]
+[connection signal="mouse_entered" from="menu_sect/MarginContainer2/VBoxContainer/new_game_button" to="." method="_on_button_mouse_entered" binds= [NodePath("menu_sect/MarginContainer2/VBoxContainer/new_game_button")]]
+[connection signal="mouse_exited" from="menu_sect/MarginContainer2/VBoxContainer/new_game_button" to="." method="_on_button_mouse_exited" binds= [NodePath("menu_sect/MarginContainer2/VBoxContainer/new_game_button")]]
 [connection signal="pressed" from="menu_sect/MarginContainer2/VBoxContainer/new_game_button" to="." method="_on_new_game_button_pressed"]
-[connection signal="mouse_entered" from="menu_sect/MarginContainer2/VBoxContainer/load_game_button" to="." method="_on_load_game_button_mouse_entered"]
-[connection signal="mouse_exited" from="menu_sect/MarginContainer2/VBoxContainer/load_game_button" to="." method="_on_load_game_button_mouse_exited"]
+[connection signal="mouse_entered" from="menu_sect/MarginContainer2/VBoxContainer/load_game_button" to="." method="_on_button_mouse_entered" binds= [NodePath("menu_sect/MarginContainer2/VBoxContainer/load_game_button")]]
+[connection signal="mouse_exited" from="menu_sect/MarginContainer2/VBoxContainer/load_game_button" to="." method="_on_button_mouse_exited" binds= [NodePath("menu_sect/MarginContainer2/VBoxContainer/load_game_button")]]
 [connection signal="pressed" from="menu_sect/MarginContainer2/VBoxContainer/load_game_button" to="." method="_on_load_game_button_pressed"]
+[connection signal="mouse_entered" from="menu_sect/MarginContainer2/VBoxContainer/quit_button" to="." method="_on_button_mouse_entered" binds= [NodePath("menu_sect/MarginContainer2/VBoxContainer/quit_button")]]
+[connection signal="mouse_exited" from="menu_sect/MarginContainer2/VBoxContainer/quit_button" to="." method="_on_button_mouse_exited" binds= [NodePath("menu_sect/MarginContainer2/VBoxContainer/quit_button")]]
+[connection signal="pressed" from="menu_sect/MarginContainer2/VBoxContainer/quit_button" to="." method="_on_quit_button_pressed"]
 [connection signal="text_changed" from="create_world_sect/MarginContainer/VBoxContainer/name_edit" to="." method="_on_name_edit_text_changed"]
 [connection signal="text_changed" from="create_world_sect/MarginContainer/VBoxContainer/seed_edit" to="." method="_on_seed_edit_text_changed"]
 [connection signal="pressed" from="create_world_sect/MarginContainer/VBoxContainer/difficulty_button" to="." method="_on_difficulty_button_pressed"]
 [connection signal="pressed" from="create_world_sect/HBoxContainer/return_button" to="." method="_on_return_button_pressed"]
 [connection signal="pressed" from="create_world_sect/HBoxContainer/create_button" to="." method="_on_create_button_pressed"]
+[connection signal="pressed" from="load_world_sect/HBoxContainer/return_button" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="load_world_sect/HBoxContainer/play_button" to="." method="_on_play_button_pressed"]
