@@ -3,6 +3,7 @@ extends Node
 const CURRENT_SAVE_VERSION = 1
 
 var autosave_timer: Timer
+const AUTOSAVE_TIMER_TIME = 30.0
 
 var worlds_path: String
 
@@ -24,12 +25,12 @@ func _ready() -> void:
 		DirAccess.make_dir_absolute(worlds_path)
 		
 	autosave_timer = Timer.new()
-	autosave_timer.wait_time = 10.0
+	autosave_timer.wait_time = AUTOSAVE_TIMER_TIME
 	autosave_timer.autostart = true
 	autosave_timer.timeout.connect(_on_autosave_timeout)
 	add_child(autosave_timer)
 
-func create_world(world_name: String) -> bool:
+func create_world(world_name: String, world_seed = -1) -> bool:
 	var success = true
 	
 	if not worlds_path.path_join(world_name + ".json"):
@@ -37,7 +38,10 @@ func create_world(world_name: String) -> bool:
 		return success
 	
 	print("Creating new world: ", world_name)
-	Global.world_seed = randi()
+	if world_seed != -1:
+		Global.world_seed = world_seed
+	else:
+		Global.world_seed = randi()
 	Global.world_name = world_name
 	world_changes = {"surface": {}, "underground": {}}
 	
