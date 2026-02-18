@@ -14,3 +14,6 @@ signal boss_died(entity_id)
 
 @warning_ignore("unused_signal")
 signal play_world(world_name)
+
+@warning_ignore("unused_signal")
+signal select_world(world_name)
