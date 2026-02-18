@@ -2,10 +2,9 @@
 
 [ext_resource type="Script" uid="uid://djt5varnl7su1" path="res://scripts/menu.gd" id="1_u81ku"]
 [ext_resource type="Texture2D" uid="uid://bim3u6yxyy3wn" path="res://textures/bgs/menu_bg.png" id="2_2un8v"]
-[ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="3_2un8v"]
-[ext_resource type="FontFile" uid="uid://4ilhd7wvom77" path="res://fonts/Jacquard24-Regular.ttf" id="3_iysyy"]
+[ext_resource type="FontFile" uid="uid://gdelwc207xyq" path="res://fonts/Jacquard_font.tres" id="3_ny0ke"]
 [ext_resource type="Texture2D" uid="uid://bpric1nyeu7w3" path="res://textures/ui.png" id="4_ny0ke"]
-[ext_resource type="FontFile" uid="uid://bhb416jjh7m1l" path="res://fonts/Alkhemikal.ttf" id="6_78n2u"]
+[ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="6_78n2u"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2un8v"]
 load_path = "res://.godot/imported/Logo.png-eba33c1468ebc461df2a0db399715a4b.ctex"
@@ -642,6 +641,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.23529412)
 
 [node name="menu_sect" type="Control" parent="." unique_id=1662024094]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -684,8 +684,8 @@ size_flags_horizontal = 4
 theme = SubResource("Theme_svcqa")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 4
-theme_override_fonts/font = ExtResource("3_iysyy")
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_ny0ke")
+theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxEmpty_ny0ke")
 theme_override_styles/hover = SubResource("StyleBoxTexture_78n2u")
 text = "New Game"
@@ -696,59 +696,15 @@ custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/outline_size = 4
-theme_override_fonts/font = ExtResource("3_iysyy")
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_ny0ke")
+theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxEmpty_iysyy")
 theme_override_styles/hover = SubResource("StyleBoxTexture_svcqa")
 text = "Load Game"
 metadata/_edit_use_anchors_ = true
 
-[node name="difficulties_sect" type="Control" parent="." unique_id=1090422321]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="easy_button" type="Button" parent="difficulties_sect" unique_id=2012507709]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -49.0
-offset_top = -11.5
-offset_right = -11.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-theme_override_fonts/font = ExtResource("3_2un8v")
-text = "Easy"
-
-[node name="hard_button" type="Button" parent="difficulties_sect" unique_id=399569356]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 11.0
-offset_top = -11.5
-offset_right = 49.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-theme_override_fonts/font = ExtResource("3_2un8v")
-text = "Hard"
-
-[node name="world_name_sect" type="Control" parent="." unique_id=1953426897]
-custom_minimum_size = Vector2(300, 300)
+[node name="create_world_sect" type="Control" parent="." unique_id=1953426897]
+custom_minimum_size = Vector2(300, 250)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -762,21 +718,22 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="world_name_sect" unique_id=278904440]
+[node name="MarginContainer" type="MarginContainer" parent="create_world_sect" unique_id=2058561190]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -102.0
-offset_top = -20.0
-offset_right = 102.0
-offset_bottom = 20.0
+offset_left = -87.5
+offset_right = 87.5
+offset_bottom = 77.0
 grow_horizontal = 2
-grow_vertical = 2
+theme_override_constants/margin_top = 15
 
-[node name="name_edit" type="LineEdit" parent="world_name_sect/HBoxContainer" unique_id=1563360307]
+[node name="VBoxContainer" type="VBoxContainer" parent="create_world_sect/MarginContainer" unique_id=774462087]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="name_edit" type="LineEdit" parent="create_world_sect/MarginContainer/VBoxContainer" unique_id=1563360307]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("6_78n2u")
@@ -785,12 +742,51 @@ max_length = 32
 context_menu_enabled = false
 emoji_menu_enabled = false
 
-[node name="name_enter" type="Button" parent="world_name_sect/HBoxContainer" unique_id=1545674238]
-custom_minimum_size = Vector2(50, 0)
+[node name="seed_edit" type="LineEdit" parent="create_world_sect/MarginContainer/VBoxContainer" unique_id=813218659]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("6_78n2u")
+placeholder_text = "World Seed"
+max_length = 64
+
+[node name="difficulty_button" type="Button" parent="create_world_sect/MarginContainer/VBoxContainer" unique_id=286548965]
+custom_minimum_size = Vector2(150, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("6_78n2u")
+text = "Difficulty: Easy"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="create_world_sect" unique_id=2009507260]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -127.0
+offset_top = -40.0
+offset_right = 127.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="return_button" type="Button" parent="create_world_sect/HBoxContainer" unique_id=1545674238]
+custom_minimum_size = Vector2(125, 25)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("6_78n2u")
+text = "Return"
+
+[node name="create_button" type="Button" parent="create_world_sect/HBoxContainer" unique_id=1167297674]
+custom_minimum_size = Vector2(125, 25)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("6_78n2u")
 disabled = true
+text = "Create New World"
 
 [node name="load_world_sect" type="Control" parent="." unique_id=541936842]
+visible = false
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -823,7 +819,7 @@ theme_override_constants/separation = 16
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/outline_size = 4
-theme_override_fonts/font = ExtResource("3_iysyy")
+theme_override_fonts/font = ExtResource("3_ny0ke")
 theme_override_font_sizes/font_size = 20
 text = "Worlds"
 
@@ -841,7 +837,8 @@ layout_mode = 2
 [connection signal="mouse_entered" from="menu_sect/MarginContainer2/VBoxContainer/load_game_button" to="." method="_on_load_game_button_mouse_entered"]
 [connection signal="mouse_exited" from="menu_sect/MarginContainer2/VBoxContainer/load_game_button" to="." method="_on_load_game_button_mouse_exited"]
 [connection signal="pressed" from="menu_sect/MarginContainer2/VBoxContainer/load_game_button" to="." method="_on_load_game_button_pressed"]
-[connection signal="pressed" from="difficulties_sect/easy_button" to="." method="_on_easy_button_pressed"]
-[connection signal="pressed" from="difficulties_sect/hard_button" to="." method="_on_hard_button_pressed"]
-[connection signal="text_changed" from="world_name_sect/HBoxContainer/name_edit" to="." method="_on_name_edit_text_changed"]
-[connection signal="pressed" from="world_name_sect/HBoxContainer/name_enter" to="." method="_on_name_enter_pressed"]
+[connection signal="text_changed" from="create_world_sect/MarginContainer/VBoxContainer/name_edit" to="." method="_on_name_edit_text_changed"]
+[connection signal="text_changed" from="create_world_sect/MarginContainer/VBoxContainer/seed_edit" to="." method="_on_seed_edit_text_changed"]
+[connection signal="pressed" from="create_world_sect/MarginContainer/VBoxContainer/difficulty_button" to="." method="_on_difficulty_button_pressed"]
+[connection signal="pressed" from="create_world_sect/HBoxContainer/return_button" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="create_world_sect/HBoxContainer/create_button" to="." method="_on_create_button_pressed"]
