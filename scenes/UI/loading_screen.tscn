@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ktjib8kmqghc"]
 
-[ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="1_35dpi"]
 [ext_resource type="Script" uid="uid://de1yjfba1tftj" path="res://scripts/loading_screen.gd" id="1_pe18t"]
+[ext_resource type="FontFile" uid="uid://bhb416jjh7m1l" path="res://fonts/Alkhemikal.ttf" id="2_pe18t"]
 
 [node name="loading_screen" type="CanvasLayer" unique_id=829138240]
 script = ExtResource("1_pe18t")
@@ -28,10 +28,11 @@ theme_override_constants/margin_bottom = 10
 [node name="RichTextLabel" type="RichTextLabel" parent="ColorRect/MarginContainer" unique_id=516075097]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_constants/outline_size = 4
-theme_override_fonts/normal_font = ExtResource("1_35dpi")
+theme_override_constants/outline_size = 0
+theme_override_fonts/normal_font = ExtResource("2_pe18t")
 theme_override_font_sizes/normal_font_size = 30
 text = "Loading..."
+fit_content = true
 vertical_alignment = 2
 
 [node name="Timer" type="Timer" parent="." unique_id=938394316]
