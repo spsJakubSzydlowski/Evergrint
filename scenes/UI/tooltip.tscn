@@ -2,11 +2,10 @@
 
 [ext_resource type="Script" uid="uid://b0tq1hm3eyxfe" path="res://scripts/autoloads/TooltipSystem.gd" id="1_ne664"]
 [ext_resource type="Theme" uid="uid://4gdmmmgngu0y" path="res://themes/inventory.tres" id="2_pt5xr"]
-[ext_resource type="FontFile" uid="uid://4ilhd7wvom77" path="res://fonts/Jacquard24-Regular.ttf" id="3_tbolh"]
-[ext_resource type="FontFile" uid="uid://bhb416jjh7m1l" path="res://fonts/Alkhemikal.ttf" id="4_tbolh"]
+[ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="4_tbolh"]
 
 [sub_resource type="Theme" id="Theme_tbolh"]
-default_font = ExtResource("3_tbolh")
+default_font = ExtResource("4_tbolh")
 PanelContainer/styles/panel = null
 
 [node name="tooltip" type="CanvasLayer" unique_id=331667819]
