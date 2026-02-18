@@ -55,15 +55,15 @@ func get_safe_world_name(input_name: String):
 	
 	safe_name = safe_name.validate_filename()
 	
-	if safe_name == "" or safe_name == "_":
-		safe_name = "Unnamed_World"
-	
 	if safe_name.length() > 32:
 		safe_name = safe_name.substr(0, 32)
 		
 	var regex = RegEx.new()
 	regex.compile("_+")
 	safe_name = regex.sub(safe_name, "_", true)
+	
+	if safe_name == "" or safe_name == "_":
+		safe_name = "Unnamed_World" + str(randi())
 	
 	return safe_name
 
