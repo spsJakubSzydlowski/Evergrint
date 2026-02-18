@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://gpxb6pupp8w6"]
 
+[ext_resource type="ButtonGroup" uid="uid://blg0026c1didl" path="res://misc/world_button_group.tres" id="1_7komf"]
 [ext_resource type="Script" uid="uid://cqyfh8mwndxhi" path="res://scripts/world_container.gd" id="1_mruwf"]
 [ext_resource type="FontFile" uid="uid://bhb416jjh7m1l" path="res://fonts/Alkhemikal.ttf" id="2_mruwf"]
 
@@ -11,6 +12,8 @@ spacing_glyph = 1
 custom_minimum_size = Vector2(280, 50)
 offset_right = 150.0
 offset_bottom = 50.0
+toggle_mode = true
+button_group = ExtResource("1_7komf")
 script = ExtResource("1_mruwf")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=392283182]
@@ -37,3 +40,4 @@ theme_override_fonts/font = SubResource("FontVariation_mruwf")
 text = "null"
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="toggled" from="." to="." method="_on_toggled"]
