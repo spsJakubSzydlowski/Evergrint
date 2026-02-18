@@ -9,7 +9,7 @@ extends CanvasLayer
 enum Actions {NONE, CREATE, LOAD}
 var current_action = Actions.NONE
 var selected_difficulty = Global.Difficulty.EASY
-
+var selected_world_name = ""
 
 #region MENU_SECT Variables
 @onready var new_game_button: Button = $menu_sect/MarginContainer2/VBoxContainer/new_game_button
@@ -25,19 +25,29 @@ var selected_difficulty = Global.Difficulty.EASY
 #endregion
 
 #region LOAD_WORLD_SECT Variables
-@onready var worlds_list: VBoxContainer = $load_world_sect/VBoxContainer/ScrollContainer/worlds_list
+@onready var worlds_list: VBoxContainer = $load_world_sect/MarginContainer/VBoxContainer/ScrollContainer/worlds_list
+@onready var play_button: Button = $load_world_sect/HBoxContainer/play_button
 #endregion
 
 var world_container = preload("res://scenes/UI/world_container.tscn")
+var all_worlds
 
 func _ready() -> void:
+	all_worlds = SaveManager.get_all_worlds()
 	Signals.play_world.connect(_play_world_signal)
+	Signals.select_world.connect(_select_world_signal)
 	switch_to_section("menu")
 
 func switch_to_section(target_section: String):
 	for section_name in sections:
 		sections[section_name].visible = (section_name == target_section)
-
+	
+	if target_section == "menu":
+		if all_worlds.is_empty():
+			load_game_button.disabled = true
+		else:
+			load_game_button.disabled = false
+	
 func get_safe_world_name(input_name: String):
 	var safe_name = input_name.strip_edges()
 	
@@ -101,6 +111,14 @@ func play_click():
 
 #region SIGNALS
 
+func _select_world_signal(world_name):
+	if world_name != "":
+		selected_world_name = world_name
+		play_button.disabled = false
+	else:
+		selected_world_name = world_name
+		play_button.disabled = true
+
 func _play_world_signal(world_name):
 	start_game(world_name)
 
@@ -117,13 +135,13 @@ func _on_new_game_button_pressed() -> void:
 	switch_to_section("create")
 	current_action = Actions.CREATE
 
-func _on_load_game_button_mouse_entered() -> void:
-	load_game_button.set("theme_override_colors/font_hover_color", Color(0, 0, 0))
-	load_game_button.set("theme_override_constants/outline_size", 0)
-
-func _on_load_game_button_mouse_exited() -> void:
-	load_game_button.set("theme_override_colors/font_color", Color(1, 1, 1))
-	load_game_button.set("theme_override_constants/outline_size", 4)
+func _on_button_mouse_entered(button):
+	if get_node(button).disabled == false:
+		get_node(button).set("theme_override_constants/outline_size", 0)
+		
+func _on_button_mouse_exited(button):
+	if get_node(button).disabled == false:
+		get_node(button).set("theme_override_constants/outline_size", 4)
 
 func _on_load_game_button_pressed() -> void:
 	play_click()
@@ -134,7 +152,6 @@ func _on_load_game_button_pressed() -> void:
 		worlds_list.remove_child(child)
 		child.queue_free()
 	
-	var all_worlds = SaveManager.get_all_worlds()
 	for world in all_worlds:
 		var new_world = world_container.instantiate()
 		
@@ -144,10 +161,9 @@ func _on_load_game_button_pressed() -> void:
 		worlds_list.add_child(new_world)
 
 func _on_name_edit_text_changed(new_text: String) -> void:
-	var worlds = SaveManager.get_all_worlds()
 	create_button.disabled = false
 
-	for world_name in worlds:
+	for world_name in all_worlds:
 		if new_text == world_name or new_text == "":
 			create_button.disabled = true
 
@@ -167,8 +183,15 @@ func _on_create_button_pressed() -> void:
 	play_click()
 	setup_and_start()
 
+func _on_play_button_pressed() -> void:
+	play_click()
+	Signals.play_world.emit(selected_world_name)
+
 func _on_return_button_pressed() -> void:
 	play_click()
 	switch_to_section("menu")
+
+func _on_quit_button_pressed() -> void:
+	get_tree().quit()
 
 #endregion
