@@ -37,7 +37,6 @@ func load_castle_db(path):
 		is_loaded = true
 		database_ready.emit()
 		
-		#print("Database loaded successfully. Sheets found: ", db_data.keys())
 	else:
 		print("JSON Parse Error: ", json.get_error_message(), " at line ", json.get_error_line())
 			
