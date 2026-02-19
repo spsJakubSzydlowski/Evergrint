@@ -17,6 +17,8 @@ var inventory_slots = 50
 
 var is_inventory_open = false
 
+var current_container
+
 const ITEM_TYPE_NAMES = {
 	0: "Weapon",
 	1: "Tool",
@@ -42,6 +44,12 @@ func _ready() -> void:
 func _on_play_world(_world_name):
 	set_process(true)
 	
+	if current_container:
+		for i in hotbar_container.get_children():
+			i.queue_free()
+		for i in inventory_container.get_children():
+			i.queue_free()
+				
 	for i in range(hotbar_slots):
 		create_slot_in(hotbar_container, i)
 		
@@ -131,14 +139,12 @@ func toggle_inventory():
 	refresh_ui()
 
 func refresh_ui():
-	var current_container
 	if is_inventory_open:
 		current_container = inventory_container
 	else:
 		current_container = hotbar_container
 
 	var slots = current_container.get_children()
-	
 	for i in range(slots.size()):
 		var slot_ui = slots[i]
 		var slot_data = Inventory.slots[i]
@@ -211,8 +217,9 @@ func update_slot_visuals(slot_ui, slot_data):
 	amount_label.text = str(int(amount)) if amount > 1 else ""
 	
 func emit_equipped_signal():
-	var active_slot_data = Inventory.slots[active_slot_index]
-	item_equipped.emit(active_slot_data["id"])
+	if Inventory.slots != []:
+		var active_slot_data = Inventory.slots[active_slot_index]
+		item_equipped.emit(active_slot_data["id"])
 
 func update_health_bar(current_hp, max_hp):
 	health_bar.max_value = max_hp
