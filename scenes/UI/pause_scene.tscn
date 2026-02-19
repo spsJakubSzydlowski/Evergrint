@@ -1,12 +1,18 @@
 [gd_scene format=3 uid="uid://dmfdyfauwq42r"]
 
-[ext_resource type="FontFile" uid="uid://gdelwc207xyq" path="res://fonts/Jacquard_font.tres" id="2_jn470"]
+[ext_resource type="Script" uid="uid://xykfkm7by3jv" path="res://scripts/pause_scene.gd" id="1_jn470"]
+[ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="2_ywp2t"]
+[ext_resource type="StyleBox" uid="uid://pufkbrmg787q" path="res://misc/button_hovered_style.tres" id="3_ywp2t"]
 
-[sub_resource type="Theme" id="Theme_jn470"]
-default_font = ExtResource("2_jn470")
-default_font_size = 20
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2xhoh"]
+content_margin_left = 5.0
+content_margin_top = 0.0
+content_margin_right = 5.0
+content_margin_bottom = 0.0
 
 [node name="pause_scene" type="CanvasLayer" unique_id=1737368638]
+process_mode = 3
+script = ExtResource("1_jn470")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=34453893]
 anchors_preset = 15
@@ -23,30 +29,66 @@ theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 
 [node name="buttons" type="VBoxContainer" parent="MarginContainer" unique_id=570414179]
-custom_minimum_size = Vector2(200, 0)
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 8
 
 [node name="resume_button" type="Button" parent="MarginContainer/buttons" unique_id=822233425]
 layout_mode = 2
-theme = SubResource("Theme_jn470")
-theme_override_fonts/font = ExtResource("2_jn470")
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("2_ywp2t")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2xhoh")
+theme_override_styles/pressed = ExtResource("3_ywp2t")
+theme_override_styles/hover = ExtResource("3_ywp2t")
 text = "Resume"
 
-[node name="new_game_button" type="Button" parent="MarginContainer/buttons" unique_id=1814721283]
+[node name="new_game_button" type="Button" parent="MarginContainer/buttons" unique_id=216373225]
 layout_mode = 2
-theme = SubResource("Theme_jn470")
-theme_override_fonts/font = ExtResource("2_jn470")
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("2_ywp2t")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2xhoh")
+theme_override_styles/pressed = ExtResource("3_ywp2t")
+theme_override_styles/hover = ExtResource("3_ywp2t")
 text = "New Game"
 
-[node name="load_game_button" type="Button" parent="MarginContainer/buttons" unique_id=224354645]
+[node name="load_game_button" type="Button" parent="MarginContainer/buttons" unique_id=1596311609]
 layout_mode = 2
-theme = SubResource("Theme_jn470")
-theme_override_fonts/font = ExtResource("2_jn470")
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("2_ywp2t")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2xhoh")
+theme_override_styles/pressed = ExtResource("3_ywp2t")
+theme_override_styles/hover = ExtResource("3_ywp2t")
 text = "Load Game"
 
-[node name="savequit_button" type="Button" parent="MarginContainer/buttons" unique_id=826733271]
+[node name="savequit_button" type="Button" parent="MarginContainer/buttons" unique_id=1122844524]
 layout_mode = 2
-theme = SubResource("Theme_jn470")
-theme_override_fonts/font = ExtResource("2_jn470")
-text = "Save & Quit"
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("2_ywp2t")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2xhoh")
+theme_override_styles/pressed = ExtResource("3_ywp2t")
+theme_override_styles/hover = ExtResource("3_ywp2t")
+text = "Quit"
+
+[connection signal="mouse_entered" from="MarginContainer/buttons/resume_button" to="." method="_on_button_mouse_entered" binds= [NodePath("MarginContainer/buttons/resume_button")]]
+[connection signal="mouse_exited" from="MarginContainer/buttons/resume_button" to="." method="_on_button_mouse_exited" binds= [NodePath("MarginContainer/buttons/resume_button")]]
+[connection signal="pressed" from="MarginContainer/buttons/resume_button" to="." method="_on_resume_button_pressed"]
+[connection signal="mouse_entered" from="MarginContainer/buttons/new_game_button" to="." method="_on_button_mouse_entered" binds= [NodePath("MarginContainer/buttons/new_game_button")]]
+[connection signal="mouse_exited" from="MarginContainer/buttons/new_game_button" to="." method="_on_button_mouse_exited" binds= [NodePath("MarginContainer/buttons/new_game_button")]]
+[connection signal="mouse_entered" from="MarginContainer/buttons/load_game_button" to="." method="_on_button_mouse_entered" binds= [NodePath("MarginContainer/buttons/load_game_button")]]
+[connection signal="mouse_exited" from="MarginContainer/buttons/load_game_button" to="." method="_on_button_mouse_exited" binds= [NodePath("MarginContainer/buttons/load_game_button")]]
+[connection signal="mouse_entered" from="MarginContainer/buttons/savequit_button" to="." method="_on_button_mouse_entered" binds= [NodePath("MarginContainer/buttons/savequit_button")]]
+[connection signal="mouse_exited" from="MarginContainer/buttons/savequit_button" to="." method="_on_button_mouse_exited" binds= [NodePath("MarginContainer/buttons/savequit_button")]]
+[connection signal="pressed" from="MarginContainer/buttons/savequit_button" to="." method="_on_savequit_button_pressed"]
