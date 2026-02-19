@@ -5,7 +5,7 @@ signal slot_clicked(index, slot_ui)
 var slot_index = -1
 
 func _gui_input(event: InputEvent) -> void:
-	if Global.is_player_dead:
+	if Global.is_player_dead or Global.world_name == "":
 		return
 
 	if event is InputEventMouseButton:
