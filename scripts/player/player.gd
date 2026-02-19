@@ -40,6 +40,7 @@ var can_be_hit : bool = true
 var can_turn : bool = true
 var can_attack : bool = true
 var can_dash : bool = true
+var direction_right : bool = true
 
 var max_hp : int
 var current_hp : int
@@ -179,9 +180,11 @@ func move():
 
 	if direction.x < 0 and can_turn:
 		sprite.flip_h = true
+		direction_right = false
 	
 	if direction.x > 0 and can_turn:
 		sprite.flip_h = false
+		direction_right = true
 		
 	var rect = Rect2i(0, 0, Global.world_width, Global.world_height)
 	var tile_size = 16
@@ -428,7 +431,10 @@ func _on_player_dash():
 	
 	var direction := Input.get_vector("a", "d", "w", "s").normalized()
 	if direction == Vector2.ZERO:
-		direction = Vector2.RIGHT
+		if direction_right:
+			direction = Vector2.RIGHT
+		else:
+			direction = Vector2.LEFT
 	
 	velocity = direction * dash_velocity
 	
