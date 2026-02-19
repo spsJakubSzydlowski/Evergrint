@@ -5,6 +5,7 @@
 [ext_resource type="TileSet" uid="uid://iqsu10vvl550" path="res://scenes/layer.tres" id="4_5558j"]
 [ext_resource type="PackedScene" uid="uid://dmqmrs6wa5bgs" path="res://scenes/UI/death_scene.tscn" id="4_osycu"]
 [ext_resource type="PackedScene" uid="uid://csl6umu8jjb8h" path="res://scenes/UI/demo_screen.tscn" id="5_osycu"]
+[ext_resource type="PackedScene" uid="uid://dmfdyfauwq42r" path="res://scenes/UI/pause_scene.tscn" id="6_iubgi"]
 
 [node name="underground" type="Node2D" unique_id=350268308]
 y_sort_enabled = true
@@ -27,4 +28,7 @@ color = Color(0.5787881, 0.68823117, 0.68787116, 1)
 visible = false
 
 [node name="demo_screen" parent="." unique_id=1097633503 instance=ExtResource("5_osycu")]
+visible = false
+
+[node name="pause_scene" parent="." unique_id=1737368638 instance=ExtResource("6_iubgi")]
 visible = false
