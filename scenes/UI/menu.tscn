@@ -634,7 +634,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.23529412)
+color = Color(0, 0, 0, 0.5882353)
 
 [node name="menu_sect" type="Control" parent="." unique_id=1662024094]
 layout_mode = 3
@@ -770,24 +770,41 @@ theme_override_constants/margin_top = 50
 
 [node name="VBoxContainer" type="VBoxContainer" parent="create_world_sect/MarginContainer" unique_id=774462087]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 2
+
+[node name="name_label" type="Label" parent="create_world_sect/MarginContainer/VBoxContainer" unique_id=850379978]
+layout_mode = 2
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("6_78n2u")
+theme_override_font_sizes/font_size = 15
+text = "World Name"
 
 [node name="name_edit" type="LineEdit" parent="create_world_sect/MarginContainer/VBoxContainer" unique_id=1563360307]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("6_78n2u")
-placeholder_text = "World Name"
 max_length = 32
 context_menu_enabled = false
 emoji_menu_enabled = false
 
+[node name="seed_label" type="Label" parent="create_world_sect/MarginContainer/VBoxContainer" unique_id=237636059]
+layout_mode = 2
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("6_78n2u")
+theme_override_font_sizes/font_size = 15
+text = "World Seed"
+
 [node name="seed_edit" type="LineEdit" parent="create_world_sect/MarginContainer/VBoxContainer" unique_id=813218659]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("6_78n2u")
-placeholder_text = "World Seed"
+placeholder_text = "Leave blank for a random seed"
 max_length = 64
 
-[node name="difficulty_button" type="Button" parent="create_world_sect/MarginContainer/VBoxContainer" unique_id=286548965]
+[node name="MarginContainer" type="MarginContainer" parent="create_world_sect/MarginContainer/VBoxContainer" unique_id=1174197564]
+layout_mode = 2
+theme_override_constants/margin_top = 15
+
+[node name="difficulty_button" type="Button" parent="create_world_sect/MarginContainer/VBoxContainer/MarginContainer" unique_id=286548965]
 custom_minimum_size = Vector2(150, 20)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -812,6 +829,7 @@ custom_minimum_size = Vector2(125, 25)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
+theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("6_78n2u")
 text = "Return"
 
@@ -820,6 +838,8 @@ custom_minimum_size = Vector2(125, 25)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
+theme_override_colors/font_disabled_color = Color(0.84313726, 0.84313726, 0.84313726, 0.84313726)
+theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("6_78n2u")
 disabled = true
 text = "Create New World"
@@ -920,8 +940,10 @@ layout_mode = 2
 [connection signal="mouse_exited" from="menu_sect/MarginContainer2/VBoxContainer/quit_button" to="." method="_on_button_mouse_exited" binds= [NodePath("menu_sect/MarginContainer2/VBoxContainer/quit_button")]]
 [connection signal="pressed" from="menu_sect/MarginContainer2/VBoxContainer/quit_button" to="." method="_on_quit_button_pressed"]
 [connection signal="text_changed" from="create_world_sect/MarginContainer/VBoxContainer/name_edit" to="." method="_on_name_edit_text_changed"]
+[connection signal="visibility_changed" from="create_world_sect/MarginContainer/VBoxContainer/name_edit" to="." method="_on_name_edit_visibility_changed"]
 [connection signal="text_changed" from="create_world_sect/MarginContainer/VBoxContainer/seed_edit" to="." method="_on_seed_edit_text_changed"]
-[connection signal="pressed" from="create_world_sect/MarginContainer/VBoxContainer/difficulty_button" to="." method="_on_difficulty_button_pressed"]
+[connection signal="visibility_changed" from="create_world_sect/MarginContainer/VBoxContainer/seed_edit" to="." method="_on_seed_edit_visibility_changed"]
+[connection signal="pressed" from="create_world_sect/MarginContainer/VBoxContainer/MarginContainer/difficulty_button" to="." method="_on_difficulty_button_pressed"]
 [connection signal="pressed" from="create_world_sect/HBoxContainer/return_button" to="." method="_on_return_button_pressed"]
 [connection signal="pressed" from="create_world_sect/HBoxContainer/create_button" to="." method="_on_create_button_pressed"]
 [connection signal="pressed" from="load_world_sect/HBoxContainer/return_button" to="." method="_on_return_button_pressed"]
