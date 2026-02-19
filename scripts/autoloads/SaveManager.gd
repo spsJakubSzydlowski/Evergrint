@@ -37,7 +37,9 @@ func create_world(world_name: String, world_seed: int) -> bool:
 	if not worlds_path.path_join(world_name + ".json"):
 		success = false
 		return success
-
+	
+	Global.time_created = Time.get_datetime_string_from_system()
+	Global.last_played = Global.time_created
 	Global.first_time_generation = true
 	Global.world_name = world_name
 	Global.world_seed = world_seed
@@ -55,13 +57,17 @@ func load_world(world_name: String) -> bool:
 	var backup_path = file_path + ".bak"
 	var used_backup = false
 	
+	update_last_played(file_path)
+	
 	var data = _read_json_file(file_path)
+	print("File path ", file_path)
 	if data == null and FileAccess.file_exists(backup_path):
 		print("Main save corrupted, trying backup...")
 		data = _read_json_file(backup_path)
 		used_backup = true
 	
 	if data == null:
+		print_debug("ERROR: World JSON has not load currently")
 		return success
 
 	var save_version = data.get("version", 0)
@@ -70,15 +76,16 @@ func load_world(world_name: String) -> bool:
 	
 	var loaded_name = data.get("world_name", world_name)
 	var loaded_seed = data.get("seed", 0)
+	var loaded_last_played = data.get("last_played", null)
 	var loaded_difficulty = data.get("difficulty", 0)
 	var inventory = data.get("player_inventory", [])
-	#var first_time_generation = data.get("first_time", true)
-	
+
 	Global.world_name = loaded_name
 	Global.world_seed = loaded_seed
+	Global.last_played = loaded_last_played
 	Global.current_difficulty = loaded_difficulty
 	Inventory.slots = inventory
-	Global.first_time_generation = false#first_time_generation
+	Global.first_time_generation = false
 	Global.world_name = world_name
 	
 	world_changes = {"surface": {}, "underground": {}}
@@ -98,6 +105,24 @@ func load_world(world_name: String) -> bool:
 	success = true
 	return success
 
+func update_last_played(file_path):
+	if not FileAccess.file_exists(file_path): return null
+	
+	var data = _read_json_file(file_path)
+	
+	if data == null: return null
+	
+	var current_time = Time.get_datetime_string_from_system()
+	
+	data["last_played"] = current_time
+	
+	var file = FileAccess.open(file_path, FileAccess.WRITE)
+	if file:
+		var json_string = JSON.stringify(data, "\t")
+		file.store_string(json_string)
+		file.close()
+		return data
+
 func _read_json_file(path: String):
 	if not FileAccess.file_exists(path): return null
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -115,10 +140,34 @@ func get_all_worlds():
 		
 		while world_full_name != "":
 			if world_full_name.get_extension() == "json":
-				var world_name = world_full_name.get_basename()
-				worlds.append(world_name)
+				var full_file_path = worlds_path + "/" + world_full_name
+				
+				var world_data = _read_json_file(full_file_path)
+				if world_data != null and typeof(world_data) == TYPE_DICTIONARY:
+					var w_name = world_data["world_name"]
+					var l_played = world_data["last_played"]
+					var time_dict = Time.get_datetime_dict_from_datetime_string(l_played, false)
+					
+					var normal_l_played = "%d/%d/%d %02d:%02d:%02d" % [
+						time_dict.day, 
+						time_dict.month, 
+						time_dict.year, 
+						time_dict.hour, 
+						time_dict.minute,
+						time_dict.second
+					]
+					
+					var world_info_dict = {
+						"world_name": w_name,
+						"last_played": normal_l_played
+					}
+					
+					worlds.append(world_info_dict)
+					
 			world_full_name = worlds_folder.get_next()
-			
+		
+		worlds.sort_custom(func(a, b): return a.get("last_played", 0) > b.get("last_played", 0))
+		
 		return worlds
 	
 	return worlds
@@ -127,12 +176,15 @@ func save_to_disk(world_name: String):
 	if world_name == "" or world_name == null:
 		return
 	
+	Global.last_played = Time.get_datetime_string_from_system()
 	var file_path = worlds_path.path_join(world_name + ".json")
 	var temp_path = file_path + ".tmp"
 	var backup_path = file_path + ".bak"
 	
 	var data_to_save = {
 			"version": CURRENT_SAVE_VERSION,
+			"time_created": Global.time_created,
+			"last_played": Global.last_played,
 			"world_name": Global.world_name,
 			"first_time": Global.first_time_generation,
 			"player_inventory": Inventory.slots,
