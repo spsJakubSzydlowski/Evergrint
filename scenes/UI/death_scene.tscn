@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dmqmrs6wa5bgs"]
 
 [ext_resource type="Script" uid="uid://c3nltt07aq3cj" path="res://scripts/death_scene.gd" id="1_8qcic"]
-[ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="2_n3bxj"]
+[ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="2_n3bxj"]
 
 [node name="DeathScreen" type="CanvasLayer" unique_id=1278488282]
 script = ExtResource("1_8qcic")
@@ -15,45 +15,41 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.49411765)
 
-[node name="DieLabel" type="Label" parent="." unique_id=1379238175]
+[node name="respawn_timer" type="Timer" parent="." unique_id=1241627309]
+wait_time = 5.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=760924500]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -73.0
-offset_top = -28.0
-offset_right = 82.0
-offset_bottom = 22.0
+offset_left = -61.0
+offset_top = -38.0
+offset_right = 61.0
+offset_bottom = 38.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = -8
+
+[node name="DieLabel" type="Label" parent="VBoxContainer" unique_id=1379238175]
+layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 0.15134397, 0.10833255, 1)
 theme_override_fonts/font = ExtResource("2_n3bxj")
 theme_override_font_sizes/font_size = 36
 text = "You Died"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="respawn_label" type="Label" parent="." unique_id=1377545877]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -73.0
-offset_top = -3.0
-offset_right = 82.0
-offset_bottom = 47.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="respawn_label" type="Label" parent="VBoxContainer" unique_id=1377545877]
+layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 0.15134397, 0.10833255, 1)
 theme_override_fonts/font = ExtResource("2_n3bxj")
 theme_override_font_sizes/font_size = 36
 text = "0"
 horizontal_alignment = 1
-
-[node name="respawn_timer" type="Timer" parent="." unique_id=1241627309]
-wait_time = 5.0
+vertical_alignment = 1
 
 [connection signal="timeout" from="respawn_timer" to="." method="_on_respawn_timer_timeout"]
