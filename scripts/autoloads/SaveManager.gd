@@ -30,19 +30,17 @@ func _ready() -> void:
 	autosave_timer.timeout.connect(_on_autosave_timeout)
 	add_child(autosave_timer)
 
-func create_world(world_name: String, world_seed = -1) -> bool:
+func create_world(world_name: String, world_seed: int) -> bool:
+	print("Creating world: ", world_name, "World seed: ", str(world_seed), ".")
 	var success = true
 	
 	if not worlds_path.path_join(world_name + ".json"):
 		success = false
 		return success
-	
-	print("Creating new world: ", world_name)
-	if world_seed != -1:
-		Global.world_seed = world_seed
-	else:
-		Global.world_seed = randi()
+
+	Global.first_time_generation = true
 	Global.world_name = world_name
+	Global.world_seed = world_seed
 	world_changes = {"surface": {}, "underground": {}}
 	
 	save_to_disk(world_name)
@@ -74,13 +72,13 @@ func load_world(world_name: String) -> bool:
 	var loaded_seed = data.get("seed", 0)
 	var loaded_difficulty = data.get("difficulty", 0)
 	var inventory = data.get("player_inventory", [])
-	var first_time_generation = data.get("first_time", true)
+	#var first_time_generation = data.get("first_time", true)
 	
 	Global.world_name = loaded_name
 	Global.world_seed = loaded_seed
 	Global.current_difficulty = loaded_difficulty
 	Inventory.slots = inventory
-	Global.first_time_generation = first_time_generation
+	Global.first_time_generation = false#first_time_generation
 	Global.world_name = world_name
 	
 	world_changes = {"surface": {}, "underground": {}}
@@ -96,7 +94,7 @@ func load_world(world_name: String) -> bool:
 		print("Restoring main save from backup...")
 		save_to_disk(world_name)
 	
-	print("World ", world_name, " (v", save_version, ") loaded successfully.")
+	print("World: ", world_name, " (v", save_version, ") loaded successfully.")
 	success = true
 	return success
 
@@ -157,7 +155,7 @@ func save_to_disk(world_name: String):
 	
 	var file = FileAccess.open(temp_path, FileAccess.WRITE)
 	if file:
-		file.store_string(JSON.stringify(data_to_save))
+		file.store_string(JSON.stringify(data_to_save, "\t"))
 		file.close()
 		
 		var dir = DirAccess.open(worlds_path)
@@ -169,7 +167,7 @@ func save_to_disk(world_name: String):
 		
 		dir.rename(world_name + ".json.tmp", world_name + ".json")
 		
-		print("World Saved, backup created")
+		print("World: ", world_name, " Saved. Backup created.")
 
 func migrate_save_data(data, old_version):
 	print("Migrating save from v", old_version, " to v", CURRENT_SAVE_VERSION)
