@@ -10,6 +10,7 @@ enum Actions {NONE, CREATE, LOAD}
 var current_action = Actions.NONE
 var selected_difficulty = Global.Difficulty.EASY
 var selected_world_name = ""
+var world_seed
 
 #region MENU_SECT Variables
 @onready var new_game_button: Button = $menu_sect/MarginContainer2/VBoxContainer/new_game_button
@@ -33,6 +34,7 @@ var world_container = preload("res://scenes/UI/world_container.tscn")
 var all_worlds
 
 func _ready() -> void:
+	Global.first_time_generation = false
 	all_worlds = SaveManager.get_all_worlds()
 	Signals.play_world.connect(_play_world_signal)
 	Signals.select_world.connect(_select_world_signal)
@@ -79,7 +81,10 @@ func setup_and_start():
 	play_click()
 	
 	var world_name = get_safe_world_name(name_edit.text)
-	var world_seed = get_seed_int(seed_edit.text)
+	if seed_edit.text != "":
+		world_seed = get_seed_int(seed_edit.text)
+	else:
+		world_seed = randi()
 	
 	Global.world_name = world_name
 	Global.world_seed = world_seed
@@ -97,7 +102,7 @@ func start_game(world_name: String):
 		if not SaveManager.create_world(world_name, Global.world_seed):
 			print("This world already exist!")
 			return
-			
+	
 	elif current_action == Actions.LOAD:
 		if not SaveManager.load_world(world_name):
 			print("This world doesnt exist!")
