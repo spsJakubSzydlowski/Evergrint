@@ -20,7 +20,7 @@ var world_seed
 #region CREATE_WORLD_SECT Variables
 @onready var name_edit: LineEdit = $create_world_sect/MarginContainer/VBoxContainer/name_edit
 @onready var seed_edit: LineEdit = $create_world_sect/MarginContainer/VBoxContainer/seed_edit
-@onready var difficulty_button: Button = $create_world_sect/MarginContainer/VBoxContainer/difficulty_button
+@onready var difficulty_button: Button = $create_world_sect/MarginContainer/VBoxContainer/MarginContainer/difficulty_button
 @onready var return_button: Button = $create_world_sect/HBoxContainer/return_button
 @onready var create_button: Button = $create_world_sect/HBoxContainer/create_button
 #endregion
@@ -34,11 +34,16 @@ var world_container = preload("res://scenes/UI/world_container.tscn")
 var all_worlds
 
 func _ready() -> void:
+	Global.world_name = ""
 	Global.first_time_generation = false
 	all_worlds = SaveManager.get_all_worlds()
 	Signals.play_world.connect(_play_world_signal)
 	Signals.select_world.connect(_select_world_signal)
 	switch_to_section("menu")
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("escape"):
+		switch_to_section("menu")
 
 func switch_to_section(target_section: String):
 	for section_name in sections:
@@ -160,15 +165,17 @@ func _on_load_game_button_pressed() -> void:
 	for world in all_worlds:
 		var new_world = world_container.instantiate()
 		
-		new_world.find_child("world_name").text = world
-		new_world.world_name = world
+		new_world.find_child("world_name_label").text = world.get("world_name", "???")
+		new_world.find_child("last_played_label").text = world.get("last_played", "null")
+		new_world.world_name = world.get("world_name", "???")
 		
 		worlds_list.add_child(new_world)
 
 func _on_name_edit_text_changed(new_text: String) -> void:
 	create_button.disabled = false
 
-	for world_name in all_worlds:
+	for world in all_worlds:
+		var world_name = world.get("world_name")
 		if new_text == world_name or new_text == "":
 			create_button.disabled = true
 
@@ -198,5 +205,14 @@ func _on_return_button_pressed() -> void:
 
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()
+
+func _on_name_edit_visibility_changed() -> void:
+	if name_edit:
+		name_edit.text = ""
+
+func _on_seed_edit_visibility_changed() -> void:
+	if seed_edit:
+		seed_edit.text = ""
+
 
 #endregion
