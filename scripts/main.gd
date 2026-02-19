@@ -30,8 +30,9 @@ func _ready():
 		Inventory.add_item("arrow", 1000)
 		Inventory.add_item("head_of_the_burrower", 10)
 		Inventory.add_item("green_apple", 100)
-
+		
 		Global.first_time_generation = false
+
 	else:
 		await spawn_player_at_center()
 		player = get_tree().get_first_node_in_group("Player")
