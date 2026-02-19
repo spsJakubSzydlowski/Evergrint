@@ -1,8 +1,8 @@
 extends CanvasLayer
 
-@onready var die_label: Label = $DieLabel
-@onready var respawn_label: Label = $respawn_label
+@onready var respawn_label: Label = $VBoxContainer/respawn_label
 @onready var respawn_timer: Timer = $respawn_timer
+@onready var die_label: Label = $VBoxContainer/DieLabel
 
 func _ready() -> void:
 	visible = false
