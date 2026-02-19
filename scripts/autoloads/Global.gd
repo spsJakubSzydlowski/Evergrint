@@ -6,8 +6,11 @@ signal request_chunk_removal(coords: Vector2i)
 var mole_boss_kills = 0
 
 var world_name: String
-
 var world_seed: int = 0
+
+var time_created = null
+var last_played = null
+
 var player_pos: Vector2 = Vector2.ZERO
 
 var is_player_dead: bool = false
