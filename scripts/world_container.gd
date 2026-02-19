@@ -1,6 +1,7 @@
 extends Button
 
 var world_name: String = ""
+var last_played: String = ""
 const WORLD_BUTTON_GROUP = preload("uid://blg0026c1didl")
 
 func _ready() -> void:
