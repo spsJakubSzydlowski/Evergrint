@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://d34cx4vov07yo" path="res://scripts/main.gd" id="1_1bvp3"]
 [ext_resource type="TileSet" uid="uid://iqsu10vvl550" path="res://scenes/layer.tres" id="2_jyhfs"]
 [ext_resource type="Script" uid="uid://bxcrx4d38pbck" path="res://scripts/generate_surface.gd" id="3_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://dmfdyfauwq42r" path="res://scenes/UI/pause_scene.tscn" id="5_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dmqmrs6wa5bgs" path="res://scenes/UI/death_scene.tscn" id="5_tefeu"]
 
 [sub_resource type="Environment" id="Environment_jyhfs"]
@@ -41,6 +42,8 @@ autostart = true
 
 [node name="DeathScreen" parent="." unique_id=605049590 instance=ExtResource("5_tefeu")]
 visible = false
+
+[node name="pause_scene" parent="." unique_id=1737368638 instance=ExtResource("5_tbgi4")]
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=431980317]
 color = Color(0.8960107, 0.9293727, 0.92904943, 1)
