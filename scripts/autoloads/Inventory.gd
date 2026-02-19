@@ -10,6 +10,10 @@ var slots = []
 var inventory_full = false
 
 func _ready() -> void:
+	Signals.play_world.connect(_on_play_world.bind())
+	
+func _on_play_world(_world_name):
+	slots = []
 	for i in range(slots_amount):
 		slots.append({"id": "", "amount": 0})
 
