@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://bnf23e41dprfh"]
+
+[ext_resource type="Script" uid="uid://djt5varnl7su1" path="res://scripts/menu.gd" id="1_3gbhm"]
+[ext_resource type="Texture2D" uid="uid://bim3u6yxyy3wn" path="res://textures/bgs/menu_bg.png" id="2_lakgf"]
+[ext_resource type="PackedScene" uid="uid://co638b82nx0qm" path="res://scenes/UI/menu/menu_sect.tscn" id="3_lbp3g"]
+[ext_resource type="PackedScene" uid="uid://dy7n17gef32m8" path="res://scenes/UI/menu/create_world_sect.tscn" id="4_e7jq3"]
+[ext_resource type="PackedScene" uid="uid://dd408p4uwi3r2" path="res://scenes/UI/menu/load_world_sect.tscn" id="5_433gc"]
+[ext_resource type="PackedScene" uid="uid://cxxi7ytbtx2m4" path="res://scenes/UI/menu/options_sect.tscn" id="6_hdcf1"]
+
+[node name="menu" type="CanvasLayer" unique_id=81474863]
+process_mode = 3
+script = ExtResource("1_3gbhm")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1200394602]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_lakgf")
+expand_mode = 3
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1019657308]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="menu_sect" parent="." unique_id=1163080949 instance=ExtResource("3_lbp3g")]
+
+[node name="create_world_sect" parent="." unique_id=1242943887 instance=ExtResource("4_e7jq3")]
+visible = true
+
+[node name="load_world_sect" parent="." unique_id=1844151191 instance=ExtResource("5_433gc")]
+
+[node name="options_sect" parent="." unique_id=1406288854 instance=ExtResource("6_hdcf1")]
+visible = false
