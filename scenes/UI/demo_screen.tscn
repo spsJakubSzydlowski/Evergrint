@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://csl6umu8jjb8h"]
 
 [ext_resource type="Script" uid="uid://ekofeb8466ha" path="res://scripts/demo_screen.gd" id="1_kcx3k"]
-[ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="1_x6ekg"]
+[ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="2_0jkhy"]
 [ext_resource type="Texture2D" uid="uid://cq0ljs827dqu2" path="res://textures/logos/itchio-logo-textless-white.png" id="3_0jkhy"]
 [ext_resource type="Texture2D" uid="uid://c2idsxw8hma3o" path="res://textures/logos/GitHub_Invertocat_White.png" id="4_xgm04"]
 
@@ -32,9 +32,9 @@ clip_contents = false
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 theme_override_constants/outline_size = 4
-theme_override_fonts/normal_font = ExtResource("1_x6ekg")
+theme_override_fonts/normal_font = ExtResource("2_0jkhy")
 theme_override_font_sizes/normal_font_size = 25
-text = "Thanks for playing the DEMO"
+text = "Thanks for playing the EVERGRINT!"
 fit_content = true
 horizontal_alignment = 1
 
@@ -52,7 +52,7 @@ offset_right = 50.0
 offset_bottom = 13.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("1_x6ekg")
+theme_override_fonts/font = ExtResource("2_0jkhy")
 theme_override_font_sizes/font_size = 20
 text = "Continue"
 
