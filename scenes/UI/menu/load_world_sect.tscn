@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://dd408p4uwi3r2"]
+
+[ext_resource type="Script" uid="uid://xke23h6b3fne" path="res://scripts/load_world_sect.gd" id="1_f1kk4"]
+[ext_resource type="FontFile" uid="uid://gdelwc207xyq" path="res://fonts/Jacquard_font.tres" id="1_ia0jn"]
+[ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="2_f1kk4"]
+
+[node name="load_world_sect" type="Control" unique_id=1844151191]
+visible = false
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_f1kk4")
+
+[node name="select_world_label" type="Label" parent="." unique_id=1864763307]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -43.5
+offset_right = 43.5
+offset_bottom = 21.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("1_ia0jn")
+theme_override_font_sizes/font_size = 25
+text = "Select World"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1224710842]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -127.0
+offset_top = -40.0
+offset_right = 127.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="return_button" type="Button" parent="HBoxContainer" unique_id=407312052]
+custom_minimum_size = Vector2(125, 25)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("2_f1kk4")
+text = "Return"
+
+[node name="play_button" type="Button" parent="HBoxContainer" unique_id=696087457]
+custom_minimum_size = Vector2(125, 25)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("2_f1kk4")
+disabled = true
+text = "Play Selected World"
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2143290867]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_right = 150.0
+offset_bottom = 225.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 35
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1818547871]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=824045459]
+custom_minimum_size = Vector2(300, 220)
+layout_mode = 2
+size_flags_horizontal = 4
+horizontal_scroll_mode = 0
+
+[node name="worlds_list" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=1753194546]
+layout_mode = 2
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="HBoxContainer/return_button" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/play_button" to="." method="_on_play_button_pressed"]
