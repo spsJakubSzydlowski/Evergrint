@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 @onready var options_sect: Control = $options_sect
-var menu = "res://scenes/UI/menu.tscn"
+var menu = "res://scenes/UI/menu/menu.tscn"
 
 func _ready() -> void:
 	visible = false
