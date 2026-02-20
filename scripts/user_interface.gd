@@ -2,10 +2,12 @@ extends CanvasLayer
 
 signal item_equipped(item_id)
 
-@onready var hotbar_container: HBoxContainer = $hotbar
-@onready var health_bar: TextureProgressBar = $health_bar
-@onready var inventory_container: GridContainer = $inventory
-@onready var compas_label: RichTextLabel = $MarginContainer/compas/compas_label
+@onready var hotbar_container: HBoxContainer = $inventory_margin/hotbar
+@onready var inventory_container: GridContainer = $inventory_margin/inventory
+
+@onready var health_bar: TextureProgressBar = $MarginContainer/VBoxContainer/health_bar
+@onready var health_label: Label = $MarginContainer/VBoxContainer/health_bar/health_label
+@onready var compas_label: RichTextLabel = $MarginContainer/VBoxContainer/compas/compas_label
 
 var first_selected_slot_index = -1
 
@@ -39,6 +41,8 @@ func _ready() -> void:
 	
 	get_tree().tree_changed.connect(_on_world_changed)
 	
+	health_label.visible = false
+	
 	set_process(false)
 
 func _on_play_world(_world_name):
@@ -63,15 +67,17 @@ func _on_play_world(_world_name):
 	refresh_ui()
 	await  get_tree().create_timer(0.1).timeout
 	emit_equipped_signal()
-		
+
 func _process(_delta: float) -> void:
+	var mouse_pos = get_viewport().get_mouse_position()
+	health_label.global_position = mouse_pos + Vector2(4, 4)
+	
 	if Global.current_tilemap:
 		var relative_pos = Vector2i(Global.get_player_tilemap_position(Global.current_tilemap)) - Global.center_world_pos
 		
 		compas_label.text = get_compas_text(relative_pos)
 		
 	if selected_slot_contents:
-		var mouse_pos = get_viewport().get_mouse_position()
 		selected_slot_contents.global_position = mouse_pos + Vector2(-8, -8)
 
 func get_compas_text(relative_pos):
@@ -123,7 +129,7 @@ func _input(event: InputEvent) -> void:
 			active_slot_index = posmod(active_slot_index +1, hotbar_slots)
 			refresh_ui()
 			emit_equipped_signal()
-			
+
 func toggle_inventory():
 	Tooltip.show_tooltips = true
 	is_inventory_open = !is_inventory_open
@@ -157,7 +163,7 @@ func refresh_ui():
 		else:
 			update_slot_visuals(slot_ui, slot_data)
 			update_tooltip_data(slot_data, slot_ui)
-		
+
 func create_slot_in(container, index):
 	var new_slot = slot_scene.instantiate()
 	container.add_child(new_slot)
@@ -255,3 +261,12 @@ func _on_world_changed():
 func _on_player_died():
 	if is_inventory_open:
 		toggle_inventory()
+
+func _on_health_bar_mouse_entered() -> void:
+	health_label.visible = true
+
+func _on_health_bar_mouse_exited() -> void:
+	health_label.visible = false
+
+func _on_health_bar_value_changed(value: float) -> void:
+	health_label.text = str(int(value)) + "/" + str(int(health_bar.max_value))
