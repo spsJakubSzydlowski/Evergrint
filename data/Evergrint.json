@@ -1052,7 +1052,7 @@
 				{
 					"id": "sword_swing",
 					"file": "../audio/sfx/sword-swing.wav",
-					"volume": -10
+					"volume": -12
 				},
 				{
 					"id": "oak_tree_hit",
@@ -1062,7 +1062,7 @@
 				{
 					"id": "pickup_item",
 					"file": "../audio/sfx/pickup_item.wav",
-					"volume": -5
+					"volume": -10
 				},
 				{
 					"id": "player_hit",
@@ -1096,7 +1096,7 @@
 				{
 					"id": "green_slime_hurt",
 					"file": "../audio/sfx/slime_hurt.wav",
-					"volume": 0
+					"volume": -5
 				},
 				{
 					"id": "projectile_break",
@@ -1113,7 +1113,7 @@
 				{
 					"id": "inventory_slot_pop",
 					"file": "../audio/sfx/inventory_slot_pop.wav",
-					"volume": -25,
+					"volume": -20,
 					"pitch_min": 1.4,
 					"pitch_max": 1.4
 				}
