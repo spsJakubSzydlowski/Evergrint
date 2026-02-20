@@ -1,5 +1,6 @@
 extends CanvasLayer
 
+@onready var options_sect: Control = $options_sect
 var menu = "res://scenes/UI/menu.tscn"
 
 func _ready() -> void:
@@ -7,7 +8,10 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("escape"):
-		toggle_menu()
+		if not options_sect.visible:
+			toggle_menu()
+		else:
+			options_sect.visible = not options_sect.visible
 
 func play_click():
 	AudioManager.play_sfx("menu_click")
@@ -36,3 +40,7 @@ func _on_savequit_button_pressed() -> void:
 	play_click()
 	get_tree().paused = false
 	SceneChanger.change_scene_save_game(menu)
+
+func _on_options_button_pressed() -> void:
+	play_click()
+	options_sect.visible = not options_sect.visible
