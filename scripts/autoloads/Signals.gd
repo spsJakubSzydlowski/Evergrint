@@ -17,3 +17,6 @@ signal play_world(world_name)
 
 @warning_ignore("unused_signal")
 signal select_world(world_name)
+
+@warning_ignore("unused_signal")
+signal switch_to_section(section: String)
