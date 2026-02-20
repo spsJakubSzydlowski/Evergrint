@@ -28,12 +28,6 @@ func _input(event: InputEvent) -> void:
 func _on_switch_to_section(target_section: String):
 	for section_name in sections:
 		sections[section_name].visible = (section_name == target_section)
-	
-	#if target_section == "menu":
-		#if all_worlds.is_empty():
-			#load_game_button.disabled = true
-		#else:
-			#load_game_button.disabled = false
 
 func start_game(world_name: String):
 	if current_action == Actions.CREATE:
