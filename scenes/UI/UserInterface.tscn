@@ -12,70 +12,91 @@ region = Rect2(0, 16, 0, 16)
 atlas = ExtResource("2_vr1b1")
 region = Rect2(0, 32, 0, 16)
 
+[sub_resource type="FontVariation" id="FontVariation_vr1b1"]
+base_font = ExtResource("3_vr1b1")
+spacing_glyph = 1
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lgjxu"]
 
 [node name="UI" type="CanvasLayer" unique_id=1839636389 groups=["ui"]]
 script = ExtResource("1_l5hnc")
 
-[node name="hotbar" type="HBoxContainer" parent="." unique_id=1735720222]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 4.0
-offset_bottom = 4.0
-mouse_filter = 2
-theme_override_constants/separation = 4
-alignment = 1
-
-[node name="inventory" type="GridContainer" parent="." unique_id=581490757]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 4.0
-offset_bottom = 4.0
-mouse_filter = 2
-theme_override_constants/h_separation = 6
-theme_override_constants/v_separation = 6
-columns = 10
-
-[node name="health_bar" type="TextureProgressBar" parent="." unique_id=1750026888]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=84909399]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -134.0
-offset_top = 6.0
-offset_right = -6.0
-offset_bottom = 22.0
+offset_left = -128.0
+offset_bottom = 40.0
 grow_horizontal = 0
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1515849928]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="health_bar" type="TextureProgressBar" parent="MarginContainer/VBoxContainer" unique_id=1750026888]
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 0
 value = 100.0
 texture_under = SubResource("AtlasTexture_lgjxu")
 texture_progress = SubResource("AtlasTexture_3wpr7")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1303517195]
-custom_minimum_size = Vector2(128, 0)
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -50.0
-offset_bottom = 100.0
-grow_horizontal = 0
-theme_override_constants/margin_top = 22
-theme_override_constants/margin_right = 6
-
-[node name="compas" type="Control" parent="MarginContainer" unique_id=1570309618]
-custom_minimum_size = Vector2(128, 0)
-layout_mode = 2
-
-[node name="compas_label" type="RichTextLabel" parent="MarginContainer/compas" unique_id=852359123]
-visible = false
-clip_contents = false
+[node name="health_label" type="Label" parent="MarginContainer/VBoxContainer/health_bar" unique_id=39607274]
+z_index = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/outline_size = 4
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_vr1b1")
+theme_override_font_sizes/font_size = 10
+text = "100/100"
+
+[node name="compas" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1570309618]
+custom_minimum_size = Vector2(128, 32)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="compas_label" type="RichTextLabel" parent="MarginContainer/VBoxContainer/compas" unique_id=852359123]
+visible = false
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/outline_size = 2
 theme_override_fonts/normal_font = ExtResource("3_vr1b1")
-theme_override_font_sizes/normal_font_size = 15
+theme_override_font_sizes/normal_font_size = 12
 theme_override_styles/focus = SubResource("StyleBoxEmpty_lgjxu")
 text = "0"
 fit_content = true
+
+[node name="inventory_margin" type="MarginContainer" parent="." unique_id=2022433650]
+offset_right = 5.0
+offset_bottom = 5.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+
+[node name="hotbar" type="HBoxContainer" parent="inventory_margin" unique_id=1735720222]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="inventory" type="GridContainer" parent="inventory_margin" unique_id=581490757]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 3
+theme_override_constants/v_separation = 3
+columns = 10
+
+[connection signal="mouse_entered" from="MarginContainer/VBoxContainer/health_bar" to="." method="_on_health_bar_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/VBoxContainer/health_bar" to="." method="_on_health_bar_mouse_exited"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/health_bar" to="." method="_on_health_bar_value_changed"]
