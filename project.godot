@@ -32,6 +32,7 @@ Tooltip="*uid://cl6ih68eeb4ox"
 SceneChanger="*uid://cq24jxsp1mlrs"
 SpriteFramesRegistry="*uid://dioel3tfbe4ax"
 SaveManager="*uid://bvcwm1g6dsb5p"
+SettingsManager="*uid://b2v58gqhxxutb"
 
 [display]
 
