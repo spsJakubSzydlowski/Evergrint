@@ -44,7 +44,7 @@ func _ready():
 func _physics_process(_delta: float) -> void:
 	if player:
 		Global.update_chunks(object_layer)
-		
+
 func spawn_entity(first_slime = false):
 	var current_enemy_count = get_tree().get_nodes_in_group("entity").size()
 	var spawn_pos = Vector2.ZERO
