@@ -3,35 +3,37 @@
 [ext_resource type="Theme" uid="uid://4gdmmmgngu0y" path="res://themes/inventory.tres" id="1_bjo5i"]
 [ext_resource type="Script" uid="uid://disrtctq753n" path="res://scripts/inventory_slot.gd" id="1_et8er"]
 [ext_resource type="Texture2D" uid="uid://bpric1nyeu7w3" path="res://textures/ui.png" id="3_bjo5i"]
-[ext_resource type="FontFile" uid="uid://ckn860qeuoe4s" path="res://fonts/PixelMaster.ttf" id="4_2pys4"]
+[ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="4_2pys4"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_et8er"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_mi4c3"]
+atlas = ExtResource("3_bjo5i")
+region = Rect2(0, 80, 36, 36)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_2pys4"]
 atlas = ExtResource("3_bjo5i")
-region = Rect2(0, 0, 16, 16)
+region = Rect2(37, 80, 36, 36)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_bjo5i"]
-atlas = ExtResource("3_bjo5i")
-region = Rect2(16, 0, 16, 16)
+[sub_resource type="FontVariation" id="FontVariation_mi4c3"]
+base_font = ExtResource("4_2pys4")
 
 [node name="InventorySlot" type="PanelContainer" unique_id=1142797154]
-custom_minimum_size = Vector2(16, 16)
+custom_minimum_size = Vector2(20, 20)
 offset_right = 16.0
 offset_bottom = 16.0
 theme = ExtResource("1_bjo5i")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_et8er")
 script = ExtResource("1_et8er")
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=916765090]
-modulate = Color(1, 1, 1, 0.91764706)
-position = Vector2(8, 8)
-texture = SubResource("AtlasTexture_2pys4")
+[node name="Sprite" type="NinePatchRect" parent="." unique_id=1723159891]
+layout_mode = 2
+texture = SubResource("AtlasTexture_mi4c3")
 
-[node name="SelectionSprite" type="Sprite2D" parent="." unique_id=52342579]
+[node name="SelectionSprite" type="NinePatchRect" parent="." unique_id=829274018]
 visible = false
-position = Vector2(8, 8)
-texture = SubResource("AtlasTexture_bjo5i")
+layout_mode = 2
+texture = SubResource("AtlasTexture_2pys4")
 
 [node name="Contents" type="Control" parent="." unique_id=629074446]
 layout_mode = 2
@@ -39,18 +41,29 @@ mouse_filter = 2
 
 [node name="Icon" type="TextureRect" parent="Contents" unique_id=826525478]
 z_index = 1
-layout_mode = 0
-offset_right = 16.0
-offset_bottom = 16.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 expand_mode = 3
+stretch_mode = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="Contents" unique_id=2019466112]
 layout_mode = 0
-offset_right = 16.0
-offset_bottom = 16.0
+offset_right = 20.0
+offset_bottom = 18.0
 mouse_filter = 2
-theme_override_constants/margin_left = 1
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_bottom = -1
 
 [node name="AmountLabel" type="Label" parent="Contents/MarginContainer" unique_id=2113513284]
 z_index = 2
@@ -58,8 +71,9 @@ layout_mode = 2
 size_flags_vertical = 8
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
-theme_override_fonts/font = ExtResource("4_2pys4")
-theme_override_font_sizes/font_size = 12
+theme_override_fonts/font = SubResource("FontVariation_mi4c3")
+theme_override_font_sizes/font_size = 7
+text = "999"
 vertical_alignment = 2
 
 [connection signal="mouse_entered" from="." to="." method="_on_slot_mouse_entered"]
