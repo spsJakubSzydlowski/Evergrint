@@ -30,14 +30,15 @@ offset_right = 61.0
 offset_bottom = 38.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = -8
+theme_override_constants/separation = -4
 
 [node name="DieLabel" type="Label" parent="VBoxContainer" unique_id=1379238175]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(1, 0.15134397, 0.10833255, 1)
+theme_override_colors/font_color = Color(1, 0.20392157, 0.10980392, 1)
+theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("2_n3bxj")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 30
 text = "You Died"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -45,9 +46,10 @@ vertical_alignment = 1
 [node name="respawn_label" type="Label" parent="VBoxContainer" unique_id=1377545877]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(1, 0.15134397, 0.10833255, 1)
+theme_override_colors/font_color = Color(1, 0.20392157, 0.10980392, 1)
+theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("2_n3bxj")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 30
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
