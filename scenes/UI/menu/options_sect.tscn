@@ -1,0 +1,106 @@
+[gd_scene format=3 uid="uid://cxxi7ytbtx2m4"]
+
+[ext_resource type="FontFile" uid="uid://gdelwc207xyq" path="res://fonts/Jacquard_font.tres" id="1_n6e25"]
+[ext_resource type="Script" uid="uid://daf2xgjpv1vf2" path="res://scripts/options_sect.gd" id="1_ujlrg"]
+[ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="2_ujlrg"]
+
+[sub_resource type="Gradient" id="Gradient_78n2u"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_svcqa"]
+gradient = SubResource("Gradient_78n2u")
+width = 6
+height = 16
+
+[sub_resource type="Gradient" id="Gradient_svcqa"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ofy2k"]
+gradient = SubResource("Gradient_svcqa")
+width = 6
+height = 16
+
+[node name="options_sect" type="Control" unique_id=1406288854]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ujlrg")
+
+[node name="options_label" type="Label" parent="." unique_id=189433397]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -54.5
+offset_right = 54.5
+offset_bottom = 26.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("1_n6e25")
+theme_override_font_sizes/font_size = 25
+text = "Options"
+horizontal_alignment = 1
+
+[node name="done_button" type="Button" parent="." unique_id=1777498154]
+custom_minimum_size = Vector2(200, 25)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -62.5
+offset_top = -25.0
+offset_right = 62.5
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("2_ujlrg")
+text = "Done"
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1906008244]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -77.5
+offset_right = 77.5
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=209020768]
+layout_mode = 2
+
+[node name="sound_container" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=803445112]
+layout_mode = 2
+
+[node name="sound_label" type="Label" parent="MarginContainer/VBoxContainer/sound_container" unique_id=1747709259]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ujlrg")
+text = "Sound: 100%"
+
+[node name="sound_slider" type="HSlider" parent="MarginContainer/VBoxContainer/sound_container" unique_id=1401948976]
+custom_minimum_size = Vector2(150, 25)
+layout_mode = 2
+theme_override_icons/grabber = SubResource("GradientTexture2D_svcqa")
+theme_override_icons/grabber_highlight = SubResource("GradientTexture2D_ofy2k")
+max_value = 200.0
+value = 100.0
+rounded = true
+
+[connection signal="pressed" from="done_button" to="." method="_on_done_button_pressed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/sound_container/sound_slider" to="." method="_on_sound_slider_value_changed"]
