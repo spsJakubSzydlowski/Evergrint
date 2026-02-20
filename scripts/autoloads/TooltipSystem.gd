@@ -1,10 +1,11 @@
 extends CanvasLayer
 
-@onready var title_label: RichTextLabel = $PanelContainer/HBoxContainer/title_label
 @onready var panel_container: PanelContainer = $PanelContainer
-@onready var stats_label: RichTextLabel = $PanelContainer/HBoxContainer/stats_label
-@onready var tip_label: RichTextLabel = $PanelContainer/HBoxContainer/tip_label
-@onready var type_label: RichTextLabel = $PanelContainer/HBoxContainer/type_label
+@onready var nine_patch_rect: NinePatchRect = $PanelContainer/NinePatchRect
+@onready var title_label: RichTextLabel = %title_label
+@onready var type_label: RichTextLabel = %type_label
+@onready var stats_label: RichTextLabel = %stats_label
+@onready var tip_label: RichTextLabel = %tip_label
 
 var show_tooltips = true
 
