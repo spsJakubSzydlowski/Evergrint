@@ -1122,7 +1122,7 @@
 					"file": "../audio/sfx/button_hover.wav",
 					"pitch_min": 1,
 					"pitch_max": 1.05,
-					"volume": -35
+					"volume": -25
 				},
 				{
 					"id": "player_dash",
