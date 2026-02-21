@@ -436,6 +436,8 @@ func _on_player_dash():
 		else:
 			direction = Vector2.LEFT
 	
+	AudioManager.play_sfx("player_dash", global_position)
+	
 	velocity = direction * dash_velocity
 	
 	await get_tree().create_timer(dash_duration).timeout
