@@ -35,7 +35,7 @@ WORLDS
 
 HOW TO WIN?
 
-    Demo ends after killing the Mole boss.
+    Game ends after killing the Mole boss.
 
 ## Notes
 
