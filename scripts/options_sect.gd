@@ -15,6 +15,9 @@ func _ready() -> void:
 func _on_sound_slider_value_changed(value: float) -> void:
 	sound_label.text = "Sound: " + str(int(value)) + "%"
 	SettingsManager.update_setting("sound_volume", int(value))
+	
+	if sound_slider.has_focus() and int(value) % 6 == 0:
+		AudioManager.play_sfx("slider_ratch")
 
 func _on_done_button_pressed() -> void:
 	play_click()
