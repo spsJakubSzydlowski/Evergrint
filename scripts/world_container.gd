@@ -19,3 +19,7 @@ func _on_toggled(toggled_on: bool) -> void:
 		Signals.select_world.emit(world_name)
 	else:
 		Signals.select_world.emit("")
+
+func _on_delete_button_pressed() -> void:
+	AudioManager.play_sfx("menu_click")
+	print("World to delete: " + world_name)
