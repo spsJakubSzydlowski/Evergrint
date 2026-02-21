@@ -548,9 +548,9 @@
 						},
 						{
 							"item": "arrow",
-							"weight": 20,
-							"amount_min": 2,
-							"amount_max": 4
+							"weight": 50,
+							"amount_min": 10,
+							"amount_max": 14
 						}
 					]
 				},
@@ -1116,6 +1116,27 @@
 					"volume": -20,
 					"pitch_min": 1.4,
 					"pitch_max": 1.4
+				},
+				{
+					"id": "button_hover",
+					"file": "../audio/sfx/button_hover.wav",
+					"pitch_min": 1,
+					"pitch_max": 1.05,
+					"volume": -35
+				},
+				{
+					"id": "player_dash",
+					"file": "../audio/sfx/player_dash.wav",
+					"volume": -15,
+					"pitch_min": 1.1,
+					"pitch_max": 1.2
+				},
+				{
+					"id": "slider_ratch",
+					"file": "../audio/sfx/slider_ratch.wav",
+					"volume": -40,
+					"pitch_min": 1.1,
+					"pitch_max": 1.2
 				}
 			],
 			"separators": [],
