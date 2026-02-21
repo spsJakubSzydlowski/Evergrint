@@ -16,6 +16,8 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="Evergrint"
 run/main_scene="uid://bnf23e41dprfh"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="Evergrint"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
 [autoload]
@@ -39,8 +41,8 @@ SettingsManager="*uid://b2v58gqhxxutb"
 window/size/viewport_width=640
 window/size/viewport_height=360
 window/size/mode=3
-window/size/window_width_override=1280
-window/size/window_height_override=720
+window/size/window_width_override=1600
+window/size/window_height_override=900
 window/stretch/mode="canvas_items"
 window/stretch/scale_mode="integer"
 
@@ -56,6 +58,7 @@ ui=""
 Player=""
 PlayerHitbox=""
 Entity=""
+menu_buttons=""
 
 [gui]
 
@@ -178,6 +181,7 @@ escape={
 2d_physics/layer_4="PlayerHitbox"
 2d_physics/layer_5="Loot"
 2d_physics/layer_6="Projectiles"
+2d_physics/layer_7="water"
 
 [physics]
 
