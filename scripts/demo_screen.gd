@@ -15,7 +15,7 @@ func _ready() -> void:
 func _on_boss_died(boss_id):
 	if boss_id == "mole_boss" and Global.mole_boss_kills == 1:
 		var tween = create_tween()
-		tween.tween_interval(1.0)
+		tween.tween_interval(1.8)
 		tween.tween_callback(start_transition)
 
 func start_transition():
@@ -24,15 +24,14 @@ func start_transition():
 	tween.tween_property(color_rect, "modulate:a", 1.0, 0.25)
 
 func _on_button_pressed() -> void:
+	AudioManager.play_sfx("menu_click")
 	visible = false
-
 
 func _on_itch_pressed() -> void:
 	OS.shell_open("https://kubki.itch.io/evergrint")
 
 func _on_github_pressed() -> void:
 	OS.shell_open("https://github.com/spsJakubSzydlowski/Evergrint")
-
 
 func _on_itch_mouse_entered() -> void:
 	var tween = create_tween()
