@@ -107,6 +107,7 @@ size = Vector2(10, 21)
 [node name="Player" type="CharacterBody2D" unique_id=382151949 groups=["Player"]]
 y_sort_enabled = true
 collision_layer = 2
+collision_mask = 65
 safe_margin = 0.001
 script = ExtResource("1_g2els")
 
