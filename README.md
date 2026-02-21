@@ -1,8 +1,8 @@
-# Evergrint DEMO
+# Evergrint
 
 ## About
 
-Evergrint is a 2D RPG made in Godot Engine inspired by games like Terraria, Forager and Minecraft. Explore the world, fight enemies, gather better items and summon a boss underground!
+Evergrint is a 2D RPG game made in Godot Engine inspired by games like Terraria, Forager and Minecraft. Explore the world, fight enemies, gather better items and summon a boss underground!
 
 ## Play
 
@@ -35,10 +35,10 @@ WORLDS
 
 HOW TO WIN?
 
-    Demo ends after killing the Mole boss.
+    Game ends after killing the Mole boss.
 
 ## Notes
 
-This is an early demo release. More content is planned after release.
+This is an early tech demo release. More content is planned after release.
 
 Feedback is welcome!
