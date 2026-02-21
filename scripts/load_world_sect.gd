@@ -38,6 +38,9 @@ func _on_return_button_pressed() -> void:
 func _on_visibility_changed() -> void:
 	if not visible: return
 	
+	selected_world_name = ""
+	play_button.disabled = true
+	
 	for child in worlds_list.get_children():
 		worlds_list.remove_child(child)
 		child.queue_free()
