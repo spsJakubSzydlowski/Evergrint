@@ -20,7 +20,11 @@ func _ready() -> void:
 	Signals.play_world.connect(_play_world_signal)
 	Signals.switch_to_section.connect(_on_switch_to_section)
 	Signals.switch_to_section.emit("menu")
-
+	
+	for child in get_tree().get_nodes_in_group("menu_buttons"):
+		if child is Button:
+			child.mouse_entered.connect(_on_any_button_mouse_entered.bind(child.name))
+	
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("escape"):
 		Signals.switch_to_section.emit("menu")
@@ -44,6 +48,9 @@ func start_game(world_name: String):
 	return
 
 #region SIGNALS
+
+func _on_any_button_mouse_entered(_button):
+	AudioManager.play_sfx("button_hover")
 
 func _play_world_signal(world_name):
 	start_game(world_name)
