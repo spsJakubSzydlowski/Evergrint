@@ -83,7 +83,7 @@ max_length = 64
 layout_mode = 2
 theme_override_constants/margin_top = 15
 
-[node name="difficulty_button" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer" unique_id=1981797484]
+[node name="difficulty_button" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer" unique_id=1981797484 groups=["menu_buttons"]]
 custom_minimum_size = Vector2(150, 20)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -103,7 +103,7 @@ offset_right = 127.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="return_button" type="Button" parent="HBoxContainer" unique_id=1513847915]
+[node name="return_button" type="Button" parent="HBoxContainer" unique_id=1513847915 groups=["menu_buttons"]]
 custom_minimum_size = Vector2(125, 25)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -112,7 +112,7 @@ theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("2_s0unq")
 text = "Return"
 
-[node name="create_button" type="Button" parent="HBoxContainer" unique_id=925407941]
+[node name="create_button" type="Button" parent="HBoxContainer" unique_id=925407941 groups=["menu_buttons"]]
 custom_minimum_size = Vector2(125, 25)
 layout_mode = 2
 size_flags_horizontal = 8
