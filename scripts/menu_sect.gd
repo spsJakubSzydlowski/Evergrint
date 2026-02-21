@@ -7,6 +7,12 @@ var menu = null
 
 func _ready() -> void:
 	menu = get_parent()
+	
+	var worlds_list = SaveManager.get_all_worlds()
+	if worlds_list.is_empty():
+		load_game_button.disabled = true
+	else:
+		load_game_button.disabled = false
 
 func play_click():
 	AudioManager.play_sfx("menu_click")
@@ -26,6 +32,8 @@ func _on_options_button_pressed() -> void:
 	Signals.switch_to_section.emit("options")
 
 func _on_quit_button_pressed() -> void:
+	play_click()
+	await get_tree().create_timer(0.1).timeout
 	get_tree().quit()
 
 func _on_button_mouse_entered(button):
