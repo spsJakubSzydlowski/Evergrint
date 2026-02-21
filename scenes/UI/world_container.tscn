@@ -3,10 +3,61 @@
 [ext_resource type="ButtonGroup" uid="uid://blg0026c1didl" path="res://misc/world_button_group.tres" id="1_7komf"]
 [ext_resource type="Script" uid="uid://cqyfh8mwndxhi" path="res://scripts/world_container.gd" id="1_mruwf"]
 [ext_resource type="FontFile" uid="uid://bhb416jjh7m1l" path="res://fonts/Alkhemikal.ttf" id="2_mruwf"]
+[ext_resource type="Texture2D" uid="uid://bpric1nyeu7w3" path="res://textures/ui.png" id="4_gjqxc"]
+[ext_resource type="Texture2D" uid="uid://bbmwill2tlqr7" path="res://textures/ui2.png" id="4_h6myp"]
 
 [sub_resource type="FontVariation" id="FontVariation_mruwf"]
 base_font = ExtResource("2_mruwf")
 spacing_glyph = 1
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gjqxc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ny0ke"]
+atlas = ExtResource("4_gjqxc")
+region = Rect2(0, 48, 128, 32)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bjcmb"]
+content_margin_left = 5.0
+content_margin_top = 0.0
+content_margin_right = 5.0
+content_margin_bottom = 0.0
+texture = SubResource("AtlasTexture_ny0ke")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s5n4w"]
+content_margin_left = 5.0
+content_margin_top = 0.0
+content_margin_right = 5.0
+content_margin_bottom = 0.0
+texture = SubResource("AtlasTexture_ny0ke")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+modulate_color = Color(0.9529412, 0.9529412, 0.9529412, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rhuxa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tdap2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rqws6"]
+atlas = ExtResource("4_h6myp")
+region = Rect2(177, 17, 14, 14)
 
 [node name="world_container" type="Button" unique_id=698314981]
 custom_minimum_size = Vector2(300, 50)
@@ -53,5 +104,31 @@ theme_override_fonts/font = SubResource("FontVariation_mruwf")
 theme_override_font_sizes/font_size = 12
 text = "null"
 
-[connection signal="pressed" from="." to="." method="_on_pressed"]
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=2063261500]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -23.0
+offset_top = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="delete_button" type="Button" parent="MarginContainer2" unique_id=746231973]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_gjqxc")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_bjcmb")
+theme_override_styles/hover = SubResource("StyleBoxTexture_s5n4w")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_rhuxa")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_tdap2")
+icon = SubResource("AtlasTexture_rqws6")
+icon_alignment = 1
+
 [connection signal="toggled" from="." to="." method="_on_toggled"]
+[connection signal="pressed" from="MarginContainer2/delete_button" to="." method="_on_delete_button_pressed"]
