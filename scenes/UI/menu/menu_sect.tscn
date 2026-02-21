@@ -615,7 +615,6 @@ content_margin_right = 5.0
 content_margin_bottom = 0.0
 
 [node name="menu_sect" type="Control" unique_id=1163080949]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -652,7 +651,7 @@ custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="new_game_button" type="Button" parent="MarginContainer2/VBoxContainer" unique_id=1814287591]
+[node name="new_game_button" type="Button" parent="MarginContainer2/VBoxContainer" unique_id=1814287591 groups=["menu_buttons"]]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -688,7 +687,7 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_svcqa")
 text = "Load Game"
 metadata/_edit_use_anchors_ = true
 
-[node name="options_button" type="Button" parent="MarginContainer2/VBoxContainer" unique_id=854196306]
+[node name="options_button" type="Button" parent="MarginContainer2/VBoxContainer" unique_id=854196306 groups=["menu_buttons"]]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_horizontal = 4
