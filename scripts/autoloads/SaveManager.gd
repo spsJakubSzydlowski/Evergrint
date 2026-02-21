@@ -13,12 +13,7 @@ var world_changes = {
 }
 
 func _init() -> void:
-	if OS.has_feature("web"):
-		worlds_path = "user://Worlds"
-	elif OS.has_feature("editor"):
-		worlds_path = "user://Worlds"
-	else:
-		worlds_path = OS.get_executable_path().get_base_dir().path_join("Worlds")
+	worlds_path = "user://Worlds"
 
 func _ready() -> void:
 	if not DirAccess.dir_exists_absolute(worlds_path):
