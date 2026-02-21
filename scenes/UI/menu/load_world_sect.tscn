@@ -50,7 +50,7 @@ offset_right = 127.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="return_button" type="Button" parent="HBoxContainer" unique_id=407312052]
+[node name="return_button" type="Button" parent="HBoxContainer" unique_id=407312052 groups=["menu_buttons"]]
 custom_minimum_size = Vector2(125, 25)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -58,7 +58,7 @@ size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("2_f1kk4")
 text = "Return"
 
-[node name="play_button" type="Button" parent="HBoxContainer" unique_id=696087457]
+[node name="play_button" type="Button" parent="HBoxContainer" unique_id=696087457 groups=["menu_buttons"]]
 custom_minimum_size = Vector2(125, 25)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -87,10 +87,12 @@ alignment = 1
 custom_minimum_size = Vector2(300, 220)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_constants/scrollbar_h_separation = 5
 horizontal_scroll_mode = 0
 
 [node name="worlds_list" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=1753194546]
 layout_mode = 2
+theme_override_constants/separation = 5
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="HBoxContainer/return_button" to="." method="_on_return_button_pressed"]
