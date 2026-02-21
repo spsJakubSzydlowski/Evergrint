@@ -9,13 +9,7 @@ var default_settings = {
 var current_settings = default_settings.duplicate()
 
 func _init() -> void:
-	if OS.has_feature("web"):
-		settings_path = "user://settings.json"
-	elif OS.has_feature("editor"):
-		settings_path = "user://settings.json"
-	else:
-		settings_path = OS.get_executable_path().get_base_dir().path_join("settings.json")
-
+	settings_path = "user://settings.json"
 
 func _ready() -> void:
 	load_settings()
