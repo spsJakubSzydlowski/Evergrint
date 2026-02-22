@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b6d0iowgh44ec" path="res://scripts/user_interface.gd" id="1_l5hnc"]
 [ext_resource type="Texture2D" uid="uid://bpric1nyeu7w3" path="res://textures/ui.png" id="2_vr1b1"]
 [ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="3_vr1b1"]
+[ext_resource type="PackedScene" uid="uid://ckof8acru4xl0" path="res://scenes/UI/equip_canvas.tscn" id="4_lgjxu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lgjxu"]
 atlas = ExtResource("2_vr1b1")
@@ -96,6 +97,24 @@ mouse_filter = 2
 theme_override_constants/h_separation = 3
 theme_override_constants/v_separation = 3
 columns = 10
+
+[node name="equip_margin" type="MarginContainer" parent="." unique_id=402117128]
+visible = false
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="equip_canvas" parent="." unique_id=868587407 instance=ExtResource("4_lgjxu")]
+offset_left = 5.0
+offset_top = 160.0
+offset_right = 40.0
+offset_bottom = 195.0
 
 [connection signal="mouse_entered" from="MarginContainer/VBoxContainer/health_bar" to="." method="_on_health_bar_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/VBoxContainer/health_bar" to="." method="_on_health_bar_mouse_exited"]
