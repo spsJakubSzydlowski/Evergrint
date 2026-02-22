@@ -100,6 +100,28 @@ func load_world(world_name: String) -> bool:
 	success = true
 	return success
 
+func delete_world(world_name: String):
+	var normal_path = worlds_path + "/" + world_name + ".json"
+	var bak_path = worlds_path + "/" + world_name + ".json.bak"
+	
+	if FileAccess.file_exists(normal_path):
+		var error = DirAccess.remove_absolute(normal_path)
+		if error == OK:
+			print("World " + world_name + " Was successfully deleted!")
+		else:
+			printerr("Error occurred while deleting world: ", error)
+	else:
+		print("This world doesn't exist!")
+		
+	if FileAccess.file_exists(bak_path):
+		var error = DirAccess.remove_absolute(bak_path)
+		if error == OK:
+			print("World backup " + world_name + " Was successfully deleted!")
+		else:
+			printerr("Error occurred while deleting backup: ", error)
+	else:
+		print("This world backup doesn't exist!")
+
 func update_last_played(file_path):
 	if not FileAccess.file_exists(file_path): return null
 	
