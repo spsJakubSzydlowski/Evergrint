@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://ey0uja0yfe63"]
+
+[ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="1_7sffo"]
+[ext_resource type="Script" uid="uid://beil6j5i5t6sq" path="res://scripts/delete_world_sect.gd" id="1_q8k0s"]
+[ext_resource type="StyleBox" uid="uid://bmm6te7auhgk5" path="res://misc/button_pressed_style.tres" id="2_q8k0s"]
+[ext_resource type="StyleBox" uid="uid://pufkbrmg787q" path="res://misc/button_hovered_style.tres" id="3_afbkx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3ires"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_frjhx"]
+
+[node name="delete_world_sect" type="Control" unique_id=830936469]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_q8k0s")
+
+[node name="delete_world_label" type="Label" parent="." unique_id=135793398]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("1_7sffo")
+theme_override_font_sizes/font_size = 25
+text = "Delete world"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1438599284]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 40
+
+[node name="yes_button" type="Button" parent="VBoxContainer" unique_id=1427314076 groups=["menu_buttons"]]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("1_7sffo")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3ires")
+theme_override_styles/pressed = ExtResource("2_q8k0s")
+theme_override_styles/hover = ExtResource("3_afbkx")
+text = "Yes"
+
+[node name="no_button" type="Button" parent="VBoxContainer" unique_id=628513147 groups=["menu_buttons"]]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("1_7sffo")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxEmpty_frjhx")
+theme_override_styles/pressed = ExtResource("2_q8k0s")
+theme_override_styles/hover = ExtResource("3_afbkx")
+text = "No"
+
+[connection signal="pressed" from="VBoxContainer/yes_button" to="." method="_on_yes_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/no_button" to="." method="_on_no_button_pressed"]
