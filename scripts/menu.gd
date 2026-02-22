@@ -4,7 +4,8 @@ extends CanvasLayer
 	"menu": $menu_sect,
 	"create": $create_world_sect,
 	"worlds": $load_world_sect,
-	"options": $options_sect
+	"options": $options_sect,
+	"delete_world": $delete_world_sect
 }
 
 enum Actions {NONE, CREATE, LOAD}
