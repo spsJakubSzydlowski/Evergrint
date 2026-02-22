@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://ckof8acru4xl0"]
+
+[ext_resource type="Script" uid="uid://d34e2w57p2val" path="res://scripts/equip_canvas.gd" id="1_jfsup"]
+
+[node name="equip_canvas" type="Control" unique_id=868587407]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_jfsup")
+
+[node name="container" type="VBoxContainer" parent="." unique_id=1953832594]
+layout_mode = 0
+offset_right = 6.0
+offset_bottom = 6.0
+theme_override_constants/separation = 2
