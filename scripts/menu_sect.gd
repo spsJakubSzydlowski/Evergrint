@@ -4,11 +4,12 @@ extends Control
 @onready var load_game_button: Button = $MarginContainer2/VBoxContainer/load_game_button
 
 var menu = null
+var worlds_list
 
 func _ready() -> void:
 	menu = get_parent()
 	
-	var worlds_list = SaveManager.get_all_worlds()
+	worlds_list = SaveManager.get_all_worlds()
 	if worlds_list.is_empty():
 		load_game_button.disabled = true
 	else:
@@ -43,3 +44,12 @@ func _on_button_mouse_entered(button):
 func _on_button_mouse_exited(button):
 	if get_node(button).disabled == false:
 		get_node(button).set("theme_override_constants/outline_size", 4)
+
+func _on_visibility_changed() -> void:
+	worlds_list = SaveManager.get_all_worlds()
+	if not load_game_button: return
+	
+	if worlds_list.is_empty():
+		load_game_button.disabled = true
+	else:
+		load_game_button.disabled = false
