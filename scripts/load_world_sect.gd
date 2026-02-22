@@ -41,6 +41,8 @@ func _on_visibility_changed() -> void:
 	selected_world_name = ""
 	play_button.disabled = true
 	
+	all_worlds = SaveManager.get_all_worlds()
+	
 	for child in worlds_list.get_children():
 		worlds_list.remove_child(child)
 		child.queue_free()
