@@ -779,6 +779,7 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_svcqa")
 text = "Quit"
 metadata/_edit_use_anchors_ = true
 
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="mouse_entered" from="MarginContainer2/VBoxContainer/new_game_button" to="." method="_on_button_mouse_entered" binds= [NodePath("MarginContainer2/VBoxContainer/new_game_button")]]
 [connection signal="mouse_exited" from="MarginContainer2/VBoxContainer/new_game_button" to="." method="_on_button_mouse_exited" binds= [NodePath("MarginContainer2/VBoxContainer/new_game_button")]]
 [connection signal="pressed" from="MarginContainer2/VBoxContainer/new_game_button" to="." method="_on_new_game_button_pressed"]
