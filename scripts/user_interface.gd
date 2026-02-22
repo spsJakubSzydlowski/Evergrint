@@ -231,7 +231,8 @@ func update_health_bar(current_hp, max_hp):
 	health_bar.max_value = max_hp
 	health_bar.value = current_hp
 
-func _on_slot_clicked(index, slot_ui):
+func _on_slot_clicked(slot_ui):
+	var index = slot_ui.get_index()
 	var slot_data = Inventory.slots[index]
 	if first_selected_slot_index == -1 and not slot_data.id == "":
 		Tooltip.show_tooltips = false
