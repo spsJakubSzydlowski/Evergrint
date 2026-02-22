@@ -1,6 +1,6 @@
 extends PanelContainer
 
-signal slot_clicked(index, slot_ui)
+signal slot_clicked(slot_ui)
 
 var slot_index = -1
 
@@ -10,4 +10,4 @@ func _gui_input(event: InputEvent) -> void:
 
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			slot_clicked.emit(slot_index, self)
+			slot_clicked.emit(self)
