@@ -44,6 +44,7 @@ autostart = true
 visible = false
 
 [node name="pause_scene" parent="." unique_id=1737368638 instance=ExtResource("5_tbgi4")]
+visible = false
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=431980317]
 color = Color(0.8960107, 0.9293727, 0.92904943, 1)
