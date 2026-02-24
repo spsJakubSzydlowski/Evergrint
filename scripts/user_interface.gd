@@ -175,9 +175,6 @@ func refresh_ui():
 		if slot_data:
 			update_slot_visuals(slot_ui, slot_data)
 			update_tooltip_data(slot_data, slot_ui)
-		#else:
-			#update_slot_visuals(slot_ui, slot_data)
-			#update_tooltip_data(slot_data, slot_ui)
 
 func create_slot_in(container, index):
 	var new_slot = slot_scene.instantiate()
@@ -209,6 +206,9 @@ func _on_slot_mouse_exited():
 func update_slot_visuals(slot_ui, slot_data):
 	var icon_rect = slot_ui.find_child("Icon")
 	var amount_label = slot_ui.find_child("AmountLabel")
+	
+	if not icon_rect or not amount_label: 
+		printerr("Error occured while updating slot visuals. args:\n", slot_ui, "\n,", slot_data)
 	
 	if slot_data == null or slot_data["id"] == "":
 		icon_rect.texture = null
@@ -255,7 +255,7 @@ func _on_slot_clicked(slot_ui):
 	if first_selected_slot_index == -1 and not slot_data.id == "":
 		Tooltip.show_tooltips = false
 		first_selected_slot_index = index
-		
+
 		active_slot_index = index
 		show_item_at_cursor(slot_ui)
 		AudioManager.play_sfx("inventory_slot_pop")
