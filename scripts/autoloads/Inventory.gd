@@ -68,7 +68,6 @@ func has_free_space():
 	return false
 
 func swap_slot(index_a, index_b):
-	
 	var temp = slots[index_a]
 	slots[index_a] = slots[index_b]
 	slots[index_b] = temp
