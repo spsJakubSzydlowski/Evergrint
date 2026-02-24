@@ -52,11 +52,13 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 10
 
 [node name="yes_button" type="Button" parent="VBoxContainer" unique_id=1427314076 groups=["menu_buttons"]]
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 2
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("1_7sffo")
 theme_override_font_sizes/font_size = 20
@@ -68,6 +70,8 @@ text = "Yes"
 [node name="no_button" type="Button" parent="VBoxContainer" unique_id=628513147 groups=["menu_buttons"]]
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 2
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("1_7sffo")
 theme_override_font_sizes/font_size = 20
@@ -76,5 +80,9 @@ theme_override_styles/pressed = ExtResource("2_q8k0s")
 theme_override_styles/hover = ExtResource("3_afbkx")
 text = "No"
 
+[connection signal="mouse_entered" from="VBoxContainer/yes_button" to="." method="_on_button_mouse_entered" binds= [NodePath("VBoxContainer/yes_button")]]
+[connection signal="mouse_exited" from="VBoxContainer/yes_button" to="." method="_on_button_mouse_exited" binds= [NodePath("VBoxContainer/yes_button")]]
 [connection signal="pressed" from="VBoxContainer/yes_button" to="." method="_on_yes_button_pressed"]
+[connection signal="mouse_entered" from="VBoxContainer/no_button" to="." method="_on_button_mouse_entered" binds= [NodePath("VBoxContainer/no_button")]]
+[connection signal="mouse_exited" from="VBoxContainer/no_button" to="." method="_on_button_mouse_exited" binds= [NodePath("VBoxContainer/no_button")]]
 [connection signal="pressed" from="VBoxContainer/no_button" to="." method="_on_no_button_pressed"]
