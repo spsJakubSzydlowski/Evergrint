@@ -119,14 +119,28 @@ func _input(event: InputEvent) -> void:
 		
 	if Input.is_action_just_pressed("stats"):
 		compas_label.visible = not compas_label.visible
-		
+	
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			active_slot_index = posmod(active_slot_index -1, hotbar_slots)
+			
+			first_selected_slot_index = -1
+			if selected_slot_contents:
+				selected_slot_contents.position = Vector2.ZERO
+				selected_slot_contents.z_index = 0
+				selected_slot_contents = null
+				
 			refresh_ui()
 			emit_equipped_signal()
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			active_slot_index = posmod(active_slot_index +1, hotbar_slots)
+			
+			first_selected_slot_index = -1
+			if selected_slot_contents:
+				selected_slot_contents.position = Vector2.ZERO
+				selected_slot_contents.z_index = 0
+				selected_slot_contents = null
+				
 			refresh_ui()
 			emit_equipped_signal()
 
@@ -155,14 +169,15 @@ func refresh_ui():
 		var slot_ui = slots[i]
 		var slot_data = Inventory.slots[i]
 		
-		slot_ui.find_child("SelectionSprite").visible = (i == active_slot_index)
+		if not active_slot_index > hotbar_slots:
+			slot_ui.find_child("SelectionSprite").visible = (i == active_slot_index)
 	
 		if slot_data:
 			update_slot_visuals(slot_ui, slot_data)
 			update_tooltip_data(slot_data, slot_ui)
-		else:
-			update_slot_visuals(slot_ui, slot_data)
-			update_tooltip_data(slot_data, slot_ui)
+		#else:
+			#update_slot_visuals(slot_ui, slot_data)
+			#update_tooltip_data(slot_data, slot_ui)
 
 func create_slot_in(container, index):
 	var new_slot = slot_scene.instantiate()
@@ -224,6 +239,8 @@ func update_slot_visuals(slot_ui, slot_data):
 	
 func emit_equipped_signal():
 	if Inventory.slots != []:
+		#if not first_selected_slot_index == -1:
+			#show_item_at_cursor(current_container.get_child(active_slot_index))
 		var active_slot_data = Inventory.slots[active_slot_index]
 		item_equipped.emit(active_slot_data["id"])
 
@@ -234,21 +251,30 @@ func update_health_bar(current_hp, max_hp):
 func _on_slot_clicked(slot_ui):
 	var index = slot_ui.get_index()
 	var slot_data = Inventory.slots[index]
+
 	if first_selected_slot_index == -1 and not slot_data.id == "":
 		Tooltip.show_tooltips = false
 		first_selected_slot_index = index
+		
+		active_slot_index = index
 		show_item_at_cursor(slot_ui)
 		AudioManager.play_sfx("inventory_slot_pop")
+		
 	elif not first_selected_slot_index == -1:
 		Tooltip.show_tooltips = true
 		Inventory.swap_slot(first_selected_slot_index, index)
-		selected_slot_contents.position = Vector2.ZERO
-		selected_slot_contents.z_index = 0
-		selected_slot_contents = null
+		active_slot_index = index
+		
+		if selected_slot_contents:
+			selected_slot_contents.position = Vector2.ZERO
+			selected_slot_contents.z_index = 0
+			selected_slot_contents = null
+		
 		first_selected_slot_index = -1
 		AudioManager.play_sfx("inventory_slot_pop")
 		
 	refresh_ui()
+	emit_equipped_signal()
 
 func show_item_at_cursor(slot_ui):
 	selected_slot_contents = slot_ui.find_child("Contents")
