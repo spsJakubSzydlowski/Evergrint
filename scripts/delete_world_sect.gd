@@ -32,3 +32,10 @@ func _on_delete_world(_world_name):
 	else:
 		Signals.switch_to_section.emit("worlds")
 	
+func _on_button_mouse_entered(button):
+	if get_node(button).disabled == false:
+		get_node(button).set("theme_override_constants/outline_size", 0)
+
+func _on_button_mouse_exited(button):
+	if get_node(button).disabled == false:
+		get_node(button).set("theme_override_constants/outline_size", 4)
