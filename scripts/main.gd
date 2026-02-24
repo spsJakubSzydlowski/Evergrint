@@ -21,9 +21,10 @@ func _ready():
 		
 		await spawn_player_at_center()
 		player = get_tree().get_first_node_in_group("Player")
-		Inventory.add_item("wooden_sword")
-		Inventory.add_item("wooden_axe")
-		Inventory.add_item("wooden_pickaxe")
+		for i in range(10):
+			Inventory.add_item("wooden_sword")
+			Inventory.add_item("wooden_axe")
+			Inventory.add_item("wooden_pickaxe")
 		
 		Global.first_time_generation = false
 
