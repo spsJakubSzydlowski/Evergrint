@@ -49,6 +49,8 @@ func _on_equipment_slot_clicked(slot_ui):
 	
 	if main_ui.first_selected_slot_index != -1:
 		_try_equip_item(slot_type, slot_ui)
+	else:
+		_try_unequip_item(slot_type, slot_ui)
 		
 func _try_equip_item(slot_type, equipment_slot_ui):
 	var inventory_index = main_ui.first_selected_slot_index
@@ -69,8 +71,23 @@ func _try_equip_item(slot_type, equipment_slot_ui):
 			main_ui.selected_slot_contents = null
 			
 		main_ui.first_selected_slot_index = -1
+		main_ui.selected_equip_slot_index = -1
 		Tooltip.show_tooltips = true
 		
 		main_ui.refresh_ui()
-	else:
-		print("This slot is not empty!")
+
+func _try_unequip_item(slot_type, equipment_slot_ui):
+	var index = equipment_slot_ui.get_index()
+	
+	if Equipment.equipped[slot_type].id != "":
+
+		main_ui.show_item_at_cursor(equipment_slot_ui)
+		
+		var empty_data = {"id": "", "amount": 0}
+		main_ui.update_slot_visuals(equipment_slot_ui, empty_data)
+		main_ui.update_tooltip_data(empty_data, equipment_slot_ui)
+		
+		main_ui.selected_equip_slot_index = index
+		Tooltip.show_tooltips = false
+		
+		main_ui.refresh_ui()
