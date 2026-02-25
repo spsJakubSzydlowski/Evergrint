@@ -10,6 +10,7 @@ signal item_equipped(item_id)
 @onready var compas_label: RichTextLabel = $MarginContainer/VBoxContainer/compas/compas_label
 
 var first_selected_slot_index = -1
+var selected_equip_slot_index = -1
 
 var slot_scene = preload("res://scenes/UI/inventory_slot.tscn")
 var active_slot_index = 0
@@ -125,6 +126,7 @@ func _input(event: InputEvent) -> void:
 			active_slot_index = posmod(active_slot_index -1, hotbar_slots)
 			
 			first_selected_slot_index = -1
+			selected_equip_slot_index = -1
 			if selected_slot_contents:
 				selected_slot_contents.position = Vector2.ZERO
 				selected_slot_contents.z_index = 0
@@ -136,6 +138,7 @@ func _input(event: InputEvent) -> void:
 			active_slot_index = posmod(active_slot_index +1, hotbar_slots)
 			
 			first_selected_slot_index = -1
+			selected_equip_slot_index = -1
 			if selected_slot_contents:
 				selected_slot_contents.position = Vector2.ZERO
 				selected_slot_contents.z_index = 0
@@ -151,6 +154,7 @@ func toggle_inventory():
 	hotbar_container.visible = !is_inventory_open
 	
 	first_selected_slot_index = -1
+	selected_equip_slot_index = -1
 	if selected_slot_contents:
 		selected_slot_contents.position = Vector2.ZERO
 		selected_slot_contents.z_index = 0
@@ -239,8 +243,6 @@ func update_slot_visuals(slot_ui, slot_data):
 	
 func emit_equipped_signal():
 	if Inventory.slots != []:
-		#if not first_selected_slot_index == -1:
-			#show_item_at_cursor(current_container.get_child(active_slot_index))
 		var active_slot_data = Inventory.slots[active_slot_index]
 		item_equipped.emit(active_slot_data["id"])
 
@@ -251,26 +253,40 @@ func update_health_bar(current_hp, max_hp):
 func _on_slot_clicked(slot_ui):
 	var index = slot_ui.get_index()
 	var slot_data = Inventory.slots[index]
-
-	if first_selected_slot_index == -1 and not slot_data.id == "":
+	
+	#first click, not empty
+	if first_selected_slot_index == -1 and selected_equip_slot_index == -1 and not slot_data.id == "":
 		Tooltip.show_tooltips = false
 		first_selected_slot_index = index
-
 		active_slot_index = index
 		show_item_at_cursor(slot_ui)
 		AudioManager.play_sfx("inventory_slot_pop")
-		
-	elif not first_selected_slot_index == -1:
+	
+	#something is in hand
+	elif selected_slot_contents:
 		Tooltip.show_tooltips = true
-		Inventory.swap_slot(first_selected_slot_index, index)
-		active_slot_index = index
 		
-		if selected_slot_contents:
-			selected_slot_contents.position = Vector2.ZERO
-			selected_slot_contents.z_index = 0
-			selected_slot_contents = null
+		if first_selected_slot_index != -1:
+			Inventory.swap_slot(first_selected_slot_index, index)
+			first_selected_slot_index = -1
+
+		elif selected_equip_slot_index != -1:
+			var slot_type = Equipment.EQUIPMENT_TYPES[selected_equip_slot_index]
+			
+			if Inventory.slots[index].id == "":
+				Inventory.slots[index] = Equipment.equipped[slot_type].duplicate()
+				
+				Equipment.equipped[slot_type].id = ""
+				Equipment.equipped[slot_type].amount = 0
+				
+				selected_equip_slot_index = -1
+			else:
+				return
+				
+		selected_slot_contents.position = Vector2.ZERO
+		selected_slot_contents.z_index = 0
+		selected_slot_contents = null
 		
-		first_selected_slot_index = -1
 		AudioManager.play_sfx("inventory_slot_pop")
 		
 	refresh_ui()
