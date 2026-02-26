@@ -32,6 +32,7 @@ const ITEM_TYPE_NAMES = {
 }
 
 var selected_slot_contents = null
+var selected_slot_data = {"id": "", "amount": 0}
 
 func _ready() -> void:
 	Signals.play_world.connect(_on_play_world)
@@ -79,7 +80,7 @@ func _process(_delta: float) -> void:
 		compas_label.text = get_compas_text(relative_pos)
 		
 	if selected_slot_contents:
-		selected_slot_contents.global_position = mouse_pos + Vector2(-8, -8)
+		selected_slot_contents.global_position = mouse_pos #+ Vector2(-8, -8)
 
 func get_compas_text(relative_pos):
 	var text_n_s = "0"
@@ -253,39 +254,43 @@ func update_health_bar(current_hp, max_hp):
 func _on_slot_clicked(slot_ui):
 	var index = slot_ui.get_index()
 	var slot_data = Inventory.slots[index]
+	print(selected_slot_data.id)
 	
 	#first click, not empty
 	if first_selected_slot_index == -1 and selected_equip_slot_index == -1 and not slot_data.id == "":
+		selected_slot_data = slot_data
+		show_item_at_cursor(slot_ui)
+		Inventory.slots[index] = {"id": "", "amount": 0}
+		
 		Tooltip.show_tooltips = false
 		first_selected_slot_index = index
 		active_slot_index = index
-		show_item_at_cursor(slot_ui)
+		
 		AudioManager.play_sfx("inventory_slot_pop")
 	
-	#something is in hand
-	elif selected_slot_contents:
+	elif selected_slot_data.id:
 		Tooltip.show_tooltips = true
 		
 		if first_selected_slot_index != -1:
 			Inventory.swap_slot(first_selected_slot_index, index)
+			Inventory.slots[index] = selected_slot_data
+			
+			selected_slot_data = {"id": "", "amount": 0}
+			selected_slot_contents.queue_free()
+			selected_slot_contents = null
 			first_selected_slot_index = -1
 
 		elif selected_equip_slot_index != -1:
-			var slot_type = Equipment.EQUIPMENT_TYPES[selected_equip_slot_index]
-			
+
 			if Inventory.slots[index].id == "":
-				Inventory.slots[index] = Equipment.equipped[slot_type].duplicate()
-				
-				Equipment.equipped[slot_type].id = ""
-				Equipment.equipped[slot_type].amount = 0
+				Inventory.slots[index] = selected_slot_data
+				selected_slot_data = {"id": "", "amount": 0}
+				selected_slot_contents.queue_free()
+				selected_slot_contents = null
 				
 				selected_equip_slot_index = -1
 			else:
 				return
-				
-		selected_slot_contents.position = Vector2.ZERO
-		selected_slot_contents.z_index = 0
-		selected_slot_contents = null
 		
 		AudioManager.play_sfx("inventory_slot_pop")
 		
@@ -293,7 +298,8 @@ func _on_slot_clicked(slot_ui):
 	emit_equipped_signal()
 
 func show_item_at_cursor(slot_ui):
-	selected_slot_contents = slot_ui.find_child("Contents")
+	selected_slot_contents = slot_ui.find_child("Contents").duplicate()
+	add_child(selected_slot_contents)
 	selected_slot_contents.z_index = 100
 
 func _on_world_changed():
