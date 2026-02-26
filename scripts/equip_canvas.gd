@@ -47,29 +47,28 @@ func _on_equipment_slot_mouse_exited():
 func _on_equipment_slot_clicked(slot_ui):
 	var slot_type = slot_ui.get_meta("equipment_type")
 	
-	if main_ui.first_selected_slot_index != -1:
+	if Equipment.equipped[slot_type].id == "":
 		_try_equip_item(slot_type, slot_ui)
 	else:
 		_try_unequip_item(slot_type, slot_ui)
 		
 func _try_equip_item(slot_type, equipment_slot_ui):
-	var inventory_index = main_ui.first_selected_slot_index
-	var item_id = Inventory.slots[inventory_index].id
-	
+	var held_item_id = main_ui.selected_slot_data.id
+	var held_item_amount = main_ui.selected_slot_data.amount
 	var selected_contents = main_ui.selected_slot_contents
-	
-	if selected_contents and Equipment.equipped[slot_type].id == "":
-		Equipment.equipped[slot_type].id = item_id
-		Equipment.equipped[slot_type].amount = Inventory.slots[inventory_index].amount
+
+	if held_item_id:
+		Equipment.equipped[slot_type].id = held_item_id
+		Equipment.equipped[slot_type].amount = held_item_amount
 		
 		main_ui.update_slot_visuals(equipment_slot_ui, Equipment.equipped[slot_type])
 		main_ui.update_tooltip_data(Equipment.equipped[slot_type], equipment_slot_ui)
 		
-		Inventory.slots[inventory_index] = {"id": "", "amount": 0}
-		
 		if main_ui.selected_slot_contents:
-			main_ui.selected_slot_contents = null
-			
+			selected_contents.queue_free()
+			selected_contents = null
+		
+		main_ui.selected_slot_data = {"id": "", "amount": 0}
 		main_ui.first_selected_slot_index = -1
 		main_ui.selected_equip_slot_index = -1
 		Tooltip.show_tooltips = true
@@ -80,12 +79,14 @@ func _try_unequip_item(slot_type, equipment_slot_ui):
 	var index = equipment_slot_ui.get_index()
 	
 	if Equipment.equipped[slot_type].id != "":
-
+		main_ui.selected_slot_data = Equipment.equipped[slot_type].duplicate()
 		main_ui.show_item_at_cursor(equipment_slot_ui)
 		
-		var empty_data = {"id": "", "amount": 0}
-		main_ui.update_slot_visuals(equipment_slot_ui, empty_data)
-		main_ui.update_tooltip_data(empty_data, equipment_slot_ui)
+		Equipment.equipped[slot_type].id = ""
+		Equipment.equipped[slot_type].amount = 0
+				
+		main_ui.update_slot_visuals(equipment_slot_ui, Equipment.equipped[slot_type])
+		main_ui.update_tooltip_data(Equipment.equipped[slot_type], equipment_slot_ui)
 		
 		main_ui.selected_equip_slot_index = index
 		Tooltip.show_tooltips = false
