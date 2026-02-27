@@ -14,7 +14,7 @@
 					"display": null
 				},
 				{
-					"typeStr": "5:Weapon,Tool,Consumable,Material,Placeable,Ammo",
+					"typeStr": "5:Weapon,Tool,Consumable,Material,Placeable,Ammo,Armor",
 					"name": "type"
 				},
 				{
@@ -242,6 +242,21 @@
 						"y": 0
 					},
 					"tooltip": "You feel something watching you underground"
+				},
+				{
+					"id": "wooden_chestplate",
+					"name": "Wooden Chestplate",
+					"type": 6,
+					"stack_limit": 1,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
+					"tile": {
+						"file": "../textures/Atlas-armor.png",
+						"size": 16,
+						"x": 0,
+						"y": 0
+					}
 				}
 			],
 			"separators": [],
@@ -551,6 +566,12 @@
 							"weight": 50,
 							"amount_min": 10,
 							"amount_max": 14
+						},
+						{
+							"item": "wooden_chestplate",
+							"weight": 100,
+							"amount_min": 1,
+							"amount_max": 1
 						}
 					]
 				},
@@ -1137,6 +1158,27 @@
 					"volume": -40,
 					"pitch_min": 1.1,
 					"pitch_max": 1.2
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "ArmorStats",
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "id"
+				},
+				{
+					"typeStr": "3",
+					"name": "armor"
+				}
+			],
+			"lines": [
+				{
+					"id": "wooden_chestplate",
+					"armor": 1
 				}
 			],
 			"separators": [],
