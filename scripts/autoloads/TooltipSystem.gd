@@ -15,7 +15,8 @@ const ITEM_TYPE_NAMES = {
 	2: "Consumable",
 	3: "Material",
 	4: "Placeable",
-	5: "Ammo"
+	5: "Ammo",
+	6: "Armor"
 }
 
 func _ready() -> void:
@@ -47,6 +48,10 @@ func display_tooltip(item):
 		stats_label.text += "Damage: " + str(weapon_stats.get("damage", 0))
 		stats_label.text += "\nSpeed: " + str(weapon_stats.get("attack_speed", 0))
 		stats_label.text += "\nKnockback: " + str(weapon_stats.get("knockback", 0))
+	
+	var armor_stats = DataManager.get_armor_stats(item_id)
+	if not armor_stats.is_empty():
+		stats_label.text += "Armor: " + str(armor_stats.get("armor", 0))
 	
 	var projectile_stats = DataManager.get_projectile_stats(item_id)
 	if not projectile_stats.is_empty():
