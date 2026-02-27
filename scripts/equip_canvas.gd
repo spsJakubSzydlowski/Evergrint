@@ -56,8 +56,11 @@ func _try_equip_item(slot_type, equipment_slot_ui):
 	var held_item_id = main_ui.selected_slot_data.id
 	var held_item_amount = main_ui.selected_slot_data.amount
 	var selected_contents = main_ui.selected_slot_contents
-
+	
 	if held_item_id:
+		if not DataManager.get_armor_stats(held_item_id):
+			return
+		
 		Equipment.equipped[slot_type].id = held_item_id
 		Equipment.equipped[slot_type].amount = held_item_amount
 		
@@ -77,6 +80,9 @@ func _try_equip_item(slot_type, equipment_slot_ui):
 
 func _try_unequip_item(slot_type, equipment_slot_ui):
 	var index = equipment_slot_ui.get_index()
+	var held_item_id = main_ui.selected_slot_data.id
+	
+	if held_item_id: return
 	
 	if Equipment.equipped[slot_type].id != "":
 		main_ui.selected_slot_data = Equipment.equipped[slot_type].duplicate()
