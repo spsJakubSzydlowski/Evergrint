@@ -58,8 +58,12 @@ func _try_equip_item(slot_type, equipment_slot_ui):
 	var selected_contents = main_ui.selected_slot_contents
 	
 	if held_item_id:
-		if not DataManager.get_armor_stats(held_item_id):
-			return
+		var armor_stats = DataManager.get_armor_stats(held_item_id)
+		if not armor_stats: return
+		
+		var armor_slot_type = armor_stats.get("slot_type")
+		
+		if not armor_slot_type == slot_type: return
 		
 		Equipment.equipped[slot_type].id = held_item_id
 		Equipment.equipped[slot_type].amount = held_item_amount
@@ -75,6 +79,8 @@ func _try_equip_item(slot_type, equipment_slot_ui):
 		main_ui.first_selected_slot_index = -1
 		main_ui.selected_equip_slot_index = -1
 		Tooltip.show_tooltips = true
+		
+		AudioManager.play_sfx("inventory_slot_pop")
 		
 		main_ui.refresh_ui()
 
@@ -96,5 +102,7 @@ func _try_unequip_item(slot_type, equipment_slot_ui):
 		
 		main_ui.selected_equip_slot_index = index
 		Tooltip.show_tooltips = false
+		
+		AudioManager.play_sfx("inventory_slot_pop")
 		
 		main_ui.refresh_ui()
