@@ -80,7 +80,7 @@ func _process(_delta: float) -> void:
 		compas_label.text = get_compas_text(relative_pos)
 		
 	if selected_slot_contents:
-		selected_slot_contents.global_position = mouse_pos #+ Vector2(-8, -8)
+		selected_slot_contents.global_position = mouse_pos
 
 func get_compas_text(relative_pos):
 	var text_n_s = "0"
@@ -254,9 +254,7 @@ func update_health_bar(current_hp, max_hp):
 func _on_slot_clicked(slot_ui):
 	var index = slot_ui.get_index()
 	var slot_data = Inventory.slots[index]
-	print(selected_slot_data.id)
-	
-	#first click, not empty
+
 	if first_selected_slot_index == -1 and selected_equip_slot_index == -1 and not slot_data.id == "":
 		selected_slot_data = slot_data
 		show_item_at_cursor(slot_ui)
@@ -300,6 +298,7 @@ func _on_slot_clicked(slot_ui):
 func show_item_at_cursor(slot_ui):
 	selected_slot_contents = slot_ui.find_child("Contents").duplicate()
 	add_child(selected_slot_contents)
+	selected_slot_contents.top_level = true
 	selected_slot_contents.z_index = 100
 
 func _on_world_changed():
