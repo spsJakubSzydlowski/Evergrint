@@ -36,6 +36,7 @@ SpriteFramesRegistry="*uid://dioel3tfbe4ax"
 SaveManager="*uid://bvcwm1g6dsb5p"
 SettingsManager="*uid://b2v58gqhxxutb"
 Equipment="*uid://dpf1rjtqtavfi"
+Enums="*uid://ckdqhn6bbfgf2"
 
 [display]
 
