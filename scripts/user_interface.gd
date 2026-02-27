@@ -11,6 +11,7 @@ signal item_equipped(item_id)
 
 var first_selected_slot_index = -1
 var selected_equip_slot_index = -1
+var dragging_from_index = -1
 
 var slot_scene = preload("res://scenes/UI/inventory_slot.tscn")
 var active_slot_index = 0
@@ -28,7 +29,8 @@ const ITEM_TYPE_NAMES = {
 	2: "Consumable",
 	3: "Material",
 	4: "Placeable",
-	5: "Ammo"
+	5: "Ammo",
+	6: "Armor"
 }
 
 var selected_slot_contents = null
@@ -72,7 +74,8 @@ func _on_play_world(_world_name):
 
 func _process(_delta: float) -> void:
 	var mouse_pos = get_viewport().get_mouse_position()
-	health_label.global_position = mouse_pos + Vector2(4, 4)
+	if health_label.visible:
+		health_label.global_position = mouse_pos + Vector2(4, 4)
 	
 	if Global.current_tilemap:
 		var relative_pos = Vector2i(Global.get_player_tilemap_position(Global.current_tilemap)) - Global.center_world_pos
@@ -129,8 +132,7 @@ func _input(event: InputEvent) -> void:
 			first_selected_slot_index = -1
 			selected_equip_slot_index = -1
 			if selected_slot_contents:
-				selected_slot_contents.position = Vector2.ZERO
-				selected_slot_contents.z_index = 0
+				selected_slot_contents.queue_free()
 				selected_slot_contents = null
 				
 			refresh_ui()
@@ -141,25 +143,28 @@ func _input(event: InputEvent) -> void:
 			first_selected_slot_index = -1
 			selected_equip_slot_index = -1
 			if selected_slot_contents:
-				selected_slot_contents.position = Vector2.ZERO
-				selected_slot_contents.z_index = 0
+				selected_slot_contents.queue_free()
 				selected_slot_contents = null
 				
 			refresh_ui()
 			emit_equipped_signal()
 
 func toggle_inventory():
+	if is_inventory_open and selected_slot_data.id:
+		Inventory.slots[dragging_from_index] = selected_slot_data
+		selected_slot_data = {"id": "", "amount": 0}
+		if selected_slot_contents:
+			selected_slot_contents.queue_free()
+			selected_slot_contents = null
+		
 	Tooltip.show_tooltips = true
 	is_inventory_open = !is_inventory_open
 	inventory_container.visible = is_inventory_open
 	hotbar_container.visible = !is_inventory_open
 	
+	
 	first_selected_slot_index = -1
 	selected_equip_slot_index = -1
-	if selected_slot_contents:
-		selected_slot_contents.position = Vector2.ZERO
-		selected_slot_contents.z_index = 0
-		selected_slot_contents = null
 	
 	refresh_ui()
 
@@ -180,6 +185,8 @@ func refresh_ui():
 		if slot_data:
 			update_slot_visuals(slot_ui, slot_data)
 			update_tooltip_data(slot_data, slot_ui)
+			
+	emit_equipped_signal()
 
 func create_slot_in(container, index):
 	var new_slot = slot_scene.instantiate()
@@ -243,7 +250,10 @@ func update_slot_visuals(slot_ui, slot_data):
 	amount_label.text = str(int(amount)) if amount > 1 else ""
 	
 func emit_equipped_signal():
-	if Inventory.slots != []:
+	if selected_slot_data.id:
+		var active_slot_data = selected_slot_data
+		item_equipped.emit(active_slot_data["id"])
+	elif Inventory.slots != []:
 		var active_slot_data = Inventory.slots[active_slot_index]
 		item_equipped.emit(active_slot_data["id"])
 
@@ -262,7 +272,7 @@ func _on_slot_clicked(slot_ui):
 		
 		Tooltip.show_tooltips = false
 		first_selected_slot_index = index
-		active_slot_index = index
+		dragging_from_index = index
 		
 		AudioManager.play_sfx("inventory_slot_pop")
 	
@@ -293,7 +303,6 @@ func _on_slot_clicked(slot_ui):
 		AudioManager.play_sfx("inventory_slot_pop")
 		
 	refresh_ui()
-	emit_equipped_signal()
 
 func show_item_at_cursor(slot_ui):
 	selected_slot_contents = slot_ui.find_child("Contents").duplicate()
