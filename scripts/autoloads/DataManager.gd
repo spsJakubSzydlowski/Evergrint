@@ -59,6 +59,11 @@ func get_projectile_stats(id):
 		return db_data["ProjectileStats"][id]
 	return {}
 
+func get_armor_stats(id):
+	if db_data.has("ArmorStats") and db_data["ArmorStats"].has(id):
+		return db_data["ArmorStats"][id]
+	return {}
+
 func get_loot_table(id):
 	return db_data.get("LootTables", {}).get(id)
 
