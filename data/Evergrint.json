@@ -1171,6 +1171,11 @@
 					"name": "id"
 				},
 				{
+					"typeStr": "1",
+					"name": "slot_type",
+					"display": null
+				},
+				{
 					"typeStr": "3",
 					"name": "armor"
 				}
@@ -1178,7 +1183,8 @@
 			"lines": [
 				{
 					"id": "wooden_chestplate",
-					"armor": 1
+					"armor": 1,
+					"slot_type": "chest"
 				}
 			],
 			"separators": [],
