@@ -1,6 +1,6 @@
 extends Node
 
-const CURRENT_SAVE_VERSION = 1
+const CURRENT_SAVE_VERSION = 2
 
 var autosave_timer: Timer
 const AUTOSAVE_TIMER_TIME = 30.0
@@ -29,7 +29,8 @@ func create_world(world_name: String, world_seed: int) -> bool:
 	print("Creating world: ", world_name, "World seed: ", str(world_seed), ".")
 	var success = true
 	
-	if not worlds_path.path_join(world_name + ".json"):
+	var file_path = worlds_path.path_join(world_name + ".json")
+	if FileAccess.file_exists(file_path):
 		success = false
 		return success
 	
@@ -74,12 +75,14 @@ func load_world(world_name: String) -> bool:
 	var loaded_last_played = data.get("last_played", null)
 	var loaded_difficulty = data.get("difficulty", 0)
 	var inventory = data.get("player_inventory", [])
+	var equipped = data.get("equipped", {}).duplicate(true)
 
 	Global.world_name = loaded_name
 	Global.world_seed = loaded_seed
 	Global.last_played = loaded_last_played
 	Global.current_difficulty = loaded_difficulty
 	Inventory.slots = inventory
+	Equipment.equipped = equipped
 	Global.first_time_generation = false
 	Global.world_name = world_name
 	
@@ -205,6 +208,7 @@ func save_to_disk(world_name: String):
 			"world_name": Global.world_name,
 			"first_time": Global.first_time_generation,
 			"player_inventory": Inventory.slots,
+			"equipped": Equipment.equipped,
 			"seed": Global.world_seed,
 			"difficulty": Global.current_difficulty,
 			"changes": {
@@ -241,8 +245,11 @@ func save_to_disk(world_name: String):
 func migrate_save_data(data, old_version):
 	print("Migrating save from v", old_version, " to v", CURRENT_SAVE_VERSION)
 	
-	if old_version < 1:
-		pass
+	if old_version < 2:
+		if not data.has("equipped"):
+			data["equipped"] = Equipment.equipped_default
+			print("Migrated to v2")
+			old_version = 2
 		
 	data["version"] = CURRENT_SAVE_VERSION
 	return data
