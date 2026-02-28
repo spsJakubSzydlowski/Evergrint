@@ -61,9 +61,11 @@ func remove_item(item_id: String, amount: int = 1):
 	
 	update_inventory()
 
-func has_free_space():
+func has_free_space(item_id):
 	for slot in slots:
-		if slot["id"] == "":
+		var item_amount = slot["amount"]
+		var item_stack_limit = DataManager.get_item(item_id).get("stack_limit")
+		if slot["id"] == "" or (item_amount < item_stack_limit and slot["id"] == item_id):
 			return true
 	return false
 
