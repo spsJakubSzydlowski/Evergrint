@@ -4,6 +4,7 @@ signal item_equipped(item_id)
 
 @onready var hotbar_container: HBoxContainer = $inventory_margin/hotbar
 @onready var inventory_container: GridContainer = $inventory_margin/inventory
+@onready var equip_canvas: Control = $equip_canvas
 
 @onready var health_bar: TextureProgressBar = $MarginContainer/VBoxContainer/health_bar
 @onready var health_label: Label = $MarginContainer/VBoxContainer/health_bar/health_label
@@ -156,12 +157,12 @@ func toggle_inventory():
 		if selected_slot_contents:
 			selected_slot_contents.queue_free()
 			selected_slot_contents = null
-		
+	
 	Tooltip.show_tooltips = true
 	is_inventory_open = !is_inventory_open
 	inventory_container.visible = is_inventory_open
 	hotbar_container.visible = !is_inventory_open
-	
+	equip_canvas.visible = is_inventory_open
 	
 	first_selected_slot_index = -1
 	selected_equip_slot_index = -1
