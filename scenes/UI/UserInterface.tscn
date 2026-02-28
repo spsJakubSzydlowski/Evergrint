@@ -98,23 +98,12 @@ theme_override_constants/h_separation = 3
 theme_override_constants/v_separation = 3
 columns = 10
 
-[node name="equip_margin" type="MarginContainer" parent="." unique_id=402117128]
-visible = false
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -20.0
-offset_right = 40.0
-offset_bottom = 20.0
-grow_vertical = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_bottom = 5
-
 [node name="equip_canvas" parent="." unique_id=868587407 instance=ExtResource("4_lgjxu")]
+visible = false
 offset_left = 5.0
-offset_top = 160.0
+offset_top = 125.0
 offset_right = 40.0
-offset_bottom = 195.0
+offset_bottom = 160.0
 
 [connection signal="mouse_entered" from="MarginContainer/VBoxContainer/health_bar" to="." method="_on_health_bar_mouse_entered"]
 [connection signal="mouse_exited" from="MarginContainer/VBoxContainer/health_bar" to="." method="_on_health_bar_mouse_exited"]
