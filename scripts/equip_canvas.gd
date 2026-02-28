@@ -1,7 +1,8 @@
 extends Control
 
 var slot_scene = preload("res://scenes/UI/inventory_slot.tscn")
-@onready var container: VBoxContainer = $container
+@onready var container: HBoxContainer = $container
+@onready var armor_label: Label = $TextureRect/armor_label
 
 var main_ui = null
 
@@ -16,8 +17,12 @@ var slot_nodes = {}
 
 func _ready() -> void:
 	Signals.play_world.connect(_on_play_world)
-	
+
 func _on_play_world(_world_name):
+	await get_tree().process_frame
+	visible = false
+	armor_label.text = "0"
+	
 	main_ui = get_tree().get_first_node_in_group("ui")
 	
 	for child in container.get_children():
@@ -26,8 +31,12 @@ func _on_play_world(_world_name):
 	for type in SLOTS_CONFIG.keys():
 		var new_slot = slot_scene.instantiate()
 		container.add_child(new_slot)
-		
 		new_slot.set_meta("equipment_type", type)
+		
+		var equipped_data = Equipment.equipped.get(type, {"id": "", "amount": 0})
+		if equipped_data.id != "":
+			armor_label.text = str(Equipment.get_armor_amount())
+			main_ui.update_slot_visuals(new_slot, equipped_data)
 		
 		new_slot.mouse_entered.connect(_on_equipment_slot_mouse_entered.bind(new_slot))
 		new_slot.mouse_exited.connect(_on_equipment_slot_mouse_exited)
@@ -80,6 +89,7 @@ func _try_equip_item(slot_type, equipment_slot_ui):
 		main_ui.selected_equip_slot_index = -1
 		Tooltip.show_tooltips = true
 		
+		armor_label.text = str(Equipment.get_armor_amount())
 		AudioManager.play_sfx("inventory_slot_pop")
 		
 		main_ui.refresh_ui()
@@ -103,6 +113,7 @@ func _try_unequip_item(slot_type, equipment_slot_ui):
 		main_ui.selected_equip_slot_index = index
 		Tooltip.show_tooltips = false
 		
+		armor_label.text = str(Equipment.get_armor_amount())
 		AudioManager.play_sfx("inventory_slot_pop")
 		
 		main_ui.refresh_ui()
