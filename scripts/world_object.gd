@@ -20,6 +20,8 @@ func initialize(item_id: String):
 	
 	name = item.id
 	
+	set_meta("item_id", item.id)
+	
 	if item.has("tile"):
 		var raw_path = item.tile.file
 		var clean_path = "res://" + raw_path.replace("../", "")
@@ -45,7 +47,7 @@ func _on_body_entered(body: Node2D) -> void:
 		collect_item()
 
 func collect_item():
-	if Inventory.has_free_space():
+	if Inventory.has_free_space(item.id):
 		Inventory.add_item(item.id)
 		AudioManager.play_sfx("pickup_item", global_position)
 		queue_free()
@@ -53,17 +55,21 @@ func collect_item():
 		target_player = null
 
 func magnetic_pull(delta):
-	if target_player:
-		await get_tree().create_timer(0.1).timeout
-		current_pull_speed += 250 * delta
-		
-		var direction = (target_player.global_position - global_position).normalized()
-		global_position += direction * current_pull_speed * delta
-		
-		var target_angle = direction.angle() + PI/2
-		
-		rotation += sin(Time.get_ticks_msec() * 0.01) * 0.05 
-		rotation = lerp_angle(rotation, target_angle, 10.0 * delta)
+	if target_player == null:
+		current_pull_speed = 0
+		rotation = 0
+		return
+
+	current_pull_speed += 250 * delta
+	
+	var direction = (target_player.global_position - global_position).normalized()
+	global_position += direction * current_pull_speed * delta
+	
+	var target_angle = direction.angle() + PI/2
+	
+	rotation += sin(Time.get_ticks_msec() * 0.01) * 0.05 
+	rotation = lerp_angle(rotation, target_angle, 10.0 * delta)
 
 func start_magnetic_pull(player):
+	await get_tree().create_timer(0.1).timeout
 	target_player = player
