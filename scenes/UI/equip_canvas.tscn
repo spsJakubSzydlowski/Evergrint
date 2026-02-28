@@ -1,14 +1,65 @@
 [gd_scene format=3 uid="uid://ckof8acru4xl0"]
 
 [ext_resource type="Script" uid="uid://d34e2w57p2val" path="res://scripts/equip_canvas.gd" id="1_jfsup"]
+[ext_resource type="Texture2D" uid="uid://bbmwill2tlqr7" path="res://textures/ui2.png" id="2_6hk73"]
+[ext_resource type="PackedScene" uid="uid://ccqufb7fkgrn7" path="res://scenes/UI/inventory_slot.tscn" id="2_bj86r"]
+[ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="4_kh7my"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bj86r"]
+atlas = ExtResource("2_6hk73")
+region = Rect2(213, 19, 22, 26)
 
 [node name="equip_canvas" type="Control" unique_id=868587407]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_jfsup")
 
-[node name="container" type="VBoxContainer" parent="." unique_id=1953832594]
+[node name="container" type="HBoxContainer" parent="." unique_id=1493611567]
 layout_mode = 0
-offset_right = 6.0
-offset_bottom = 6.0
-theme_override_constants/separation = 2
+offset_right = 86.0
+offset_bottom = 20.0
+theme_override_constants/separation = 3
+
+[node name="InventorySlot" parent="container" unique_id=1142797154 instance=ExtResource("2_bj86r")]
+layout_mode = 2
+
+[node name="InventorySlot2" parent="container" unique_id=1250579199 instance=ExtResource("2_bj86r")]
+layout_mode = 2
+
+[node name="InventorySlot3" parent="container" unique_id=178619501 instance=ExtResource("2_bj86r")]
+layout_mode = 2
+
+[node name="InventorySlot4" parent="container" unique_id=120730952 instance=ExtResource("2_bj86r")]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1254772283]
+layout_mode = 1
+offset_left = 92.0
+offset_top = -5.0
+offset_right = 114.0
+offset_bottom = 24.545454
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_bj86r")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="armor_label" type="Label" parent="TextureRect" unique_id=1354735664]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.0
+offset_top = -11.5
+offset_right = 13.0
+offset_bottom = 11.500001
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("4_kh7my")
+theme_override_font_sizes/font_size = 11
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
