@@ -73,6 +73,7 @@ func load_world(world_name: String) -> bool:
 	var loaded_name = data.get("world_name", world_name)
 	var loaded_seed = data.get("seed", 0)
 	var loaded_last_played = data.get("last_played", null)
+	var loaded_time_created = data.get("time_created", null)
 	var loaded_difficulty = data.get("difficulty", 0)
 	var inventory = data.get("player_inventory", [])
 	var equipped = data.get("equipped", {}).duplicate(true)
@@ -80,6 +81,7 @@ func load_world(world_name: String) -> bool:
 	Global.world_name = loaded_name
 	Global.world_seed = loaded_seed
 	Global.last_played = loaded_last_played
+	Global.time_created = loaded_time_created
 	Global.current_difficulty = loaded_difficulty
 	Inventory.slots = inventory
 	Equipment.equipped = equipped
