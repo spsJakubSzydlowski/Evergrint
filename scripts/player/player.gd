@@ -44,6 +44,7 @@ var direction_right : bool = true
 
 var max_hp : int
 var current_hp : int
+var armor : int
 
 var hit_entities = []
 
@@ -51,6 +52,8 @@ func _ready() -> void:
 	velocity = Vector2.ZERO
 	tile_map = get_tree().get_first_node_in_group("tilemap")
 	object_layer = get_tree().get_first_node_in_group("objectmap")
+	
+	Signals.equip_changed.connect(_on_equip_changed)
 	
 	setup_camera_limits()
 
@@ -77,9 +80,11 @@ func initialize():
 		
 	var stats = DataManager.get_full_entity_data("player")
 	max_hp = stats.get("max_hp", 100)
-	current_hp = max_hp
+	armor = Equipment.get_armor_amount()
 	
 	move_speed = stats.get("move_speed", 100.0)
+	
+	current_hp = max_hp
 	
 	Signals.player_health_changed.emit(current_hp, max_hp)
 
@@ -381,6 +386,9 @@ func take_hit(damage, knockback, source_pos):
 	if current_action_state == ActionState.DEAD: return
 	if not can_be_hit: return
 	
+	damage -= armor
+	if damage <= 0: damage = 1
+	
 	current_hp -= damage
 	Signals.player_health_changed.emit(current_hp, max_hp)
 	can_be_hit = false
@@ -528,3 +536,6 @@ func _on_invincibility_frames_timeout() -> void:
 func _on_dash_cooldown_timeout() -> void:
 	change_move_state(MoveState.IDLE)
 	can_dash = true
+
+func _on_equip_changed():
+	armor = Equipment.get_armor_amount()
