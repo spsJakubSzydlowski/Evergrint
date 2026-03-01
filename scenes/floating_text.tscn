@@ -1,0 +1,96 @@
+[gd_scene format=3 uid="uid://dxc0ygftfdgab"]
+
+[ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="1_vqah5"]
+[ext_resource type="Script" uid="uid://c5wfxx1ndfvwm" path="res://scripts/floating_text.gd" id="2_ki2nc"]
+
+[sub_resource type="Animation" id="Animation_27d3m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-20, -11.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_073qt"]
+resource_name = "pop_up"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2744917),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-20, -11.5), Vector2(-20, -35)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_k77jv"]
+_data = {
+&"RESET": SubResource("Animation_27d3m"),
+&"pop_up": SubResource("Animation_073qt")
+}
+
+[node name="Node2D" type="Node2D" unique_id=2038908628]
+z_index = 1
+script = ExtResource("2_ki2nc")
+
+[node name="anim" type="AnimationPlayer" parent="." unique_id=1607842825]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_k77jv")
+
+[node name="Label" type="Label" parent="." unique_id=1168532017]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("1_vqah5")
+theme_override_font_sizes/font_size = 14
+text = "jiji"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="animation_finished" from="anim" to="." method="_on_animation_player_animation_finished"]
