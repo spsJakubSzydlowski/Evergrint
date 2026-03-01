@@ -428,6 +428,10 @@
 				},
 				{
 					"typeStr": "3",
+					"name": "armor"
+				},
+				{
+					"typeStr": "3",
 					"name": "hitbox_x"
 				},
 				{
@@ -455,7 +459,8 @@
 						"height": 3
 					},
 					"hitbox_x": 0,
-					"hitbox_y": 0
+					"hitbox_y": 0,
+					"armor": 0
 				},
 				{
 					"id": "green_slime",
@@ -469,7 +474,8 @@
 					},
 					"move_speed": 25,
 					"hitbox_x": 14,
-					"hitbox_y": 6
+					"hitbox_y": 6,
+					"armor": 0
 				},
 				{
 					"id": "mole_boss",
@@ -485,7 +491,8 @@
 						"height": 2
 					},
 					"hitbox_x": 24,
-					"hitbox_y": 24
+					"hitbox_y": 24,
+					"armor": 0
 				}
 			],
 			"separators": [],
