@@ -53,7 +53,7 @@ func initialize(resource_id: String):
 			
 			var region_w = resource.tile_width * ts_base.x
 			var region_h = resource.tile_height * ts_base.y
-			
+
 			sprite.region_rect = Rect2(pos_x, pos_y, region_w, region_h)
 	
 	collision.shape.size = Vector2(resource.get("hitbox_x", 16), resource.get("hitbox_y", 16))
@@ -108,7 +108,7 @@ func drop_loot():
 			var amount = randi_range(entry.get("amount_min"), entry.get("amount_max"))
 			
 			for i in range(amount):
-				DataManager.spawn_item(item_id, global_position, true)
+				DataManager.spawn_item(item_id, global_position)
 
 func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
 	set_process(true)
