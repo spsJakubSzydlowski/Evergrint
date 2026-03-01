@@ -3,7 +3,7 @@ extends Node
 const CURRENT_SAVE_VERSION = 2
 
 var autosave_timer: Timer
-const AUTOSAVE_TIMER_TIME = 30.0
+const AUTOSAVE_TIMER_TIME = 5.0
 
 var worlds_path: String
 
@@ -63,7 +63,7 @@ func load_world(world_name: String) -> bool:
 		used_backup = true
 	
 	if data == null:
-		print_debug("ERROR: World JSON has not load currently")
+		printerr("ERROR: World JSON has not load currently")
 		return success
 
 	var save_version = data.get("version", 0)
@@ -242,7 +242,6 @@ func save_to_disk(world_name: String):
 		
 		dir.rename(world_name + ".json.tmp", world_name + ".json")
 		
-		print("World: ", world_name, " Saved. Backup created.")
 
 func migrate_save_data(data, old_version):
 	print("Migrating save from v", old_version, " to v", CURRENT_SAVE_VERSION)
@@ -264,5 +263,5 @@ func _notification(what: int) -> void:
 
 func _on_autosave_timeout():
 	if Global.world_name != "":
-		print("Autosaving... World name: " + Global.world_name)
+		Signals.autosaving.emit()
 		save_to_disk(Global.world_name)
