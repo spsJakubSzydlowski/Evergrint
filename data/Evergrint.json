@@ -465,7 +465,7 @@
 				{
 					"id": "green_slime",
 					"name": "Green Slime",
-					"max_hp": 20,
+					"max_hp": 50,
 					"tile": {
 						"file": "../textures/Atlas-enemies.png",
 						"size": 16,
