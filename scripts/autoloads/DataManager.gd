@@ -103,32 +103,43 @@ func get_resource(id):
 func get_audio(id):
 	return db_data.get("Audio", {}).get(id)
 
-func spawn_item(id: String, pos: Vector2, drop = true):
+func spawn_item(id: String, pos: Vector2, dropped = false):
 	if not is_loaded:
 		await get_tree().create_timer(0.1).timeout
+
+	var item_scene = preload("res://scenes/world_object.tscn")
+	var item_instance = item_scene.instantiate()
 	
-	(func():
-		var item_scene = preload("res://scenes/world_object.tscn")
-		var item_instance = item_scene.instantiate()
+	item_instance.dropped = dropped
+	if dropped:
+		item_instance.can_be_picked = false
+
+	get_tree().current_scene.add_child(item_instance)
+	item_instance.global_position = pos
 	
-		get_tree().current_scene.add_child(item_instance)
-		item_instance.global_position = pos
+	var direction = Vector2.ZERO
+	if not dropped:
+		direction = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized()
+	else:
+		var screen_size = get_viewport().get_visible_rect().size
+		var screen_center = screen_size / 2
+		var mouse_pos = get_viewport().get_mouse_position()
+		direction = (mouse_pos - screen_center).normalized()
 		
-		if drop:
-			var random_direction = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized()
-			var jump_distance = randf_range(10.0, 30.0)
-			var target_pos = pos + (random_direction * jump_distance)
-			
-			var tween = get_tree().create_tween().set_parallel(true)
-			tween.bind_node(item_instance)
-			
-			tween.tween_property(item_instance, "global_position", target_pos, 0.5).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-			
-			item_instance.scale = Vector2.ZERO
-			tween.tween_property(item_instance, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
-		
-		item_instance.initialize(id)
-	).call_deferred()
+	var jump_distance = randf_range(10.0, 30.0)
+	var target_pos = pos + (direction * jump_distance)
+	
+	var tween = get_tree().create_tween().set_parallel(true)
+	tween.bind_node(item_instance)
+	
+	tween.tween_property(item_instance, "global_position", target_pos, 0.5).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	
+	item_instance.scale = Vector2.ZERO
+	tween.tween_property(item_instance, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	
+	item_instance.initialize(id)
+	
+	return item_instance
 	
 func spawn_entity(id: String, pos: Vector2):
 	if not is_loaded:
@@ -166,7 +177,6 @@ func spawn_player(pos: Vector2):
 func spawn_resource(id: String, pos: Vector2, parent = null):
 	var resource_scene = preload("res://scenes/world_resource.tscn")
 	var resource_instance = resource_scene.instantiate()
-	
 	
 	resource_instance.position = pos
 	resource_instance.initialize(id)
