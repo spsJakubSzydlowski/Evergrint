@@ -8,6 +8,9 @@ var item = ""
 var current_pull_speed = 10.0
 var target_player = null
 
+var dropped = false
+var can_be_picked = true
+
 func _physics_process(delta: float) -> void:
 	magnetic_pull(delta)
 
@@ -43,16 +46,18 @@ func initialize(item_id: String):
 	
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
-		collision.set_deferred("disabled", true)
 		collect_item()
 
 func collect_item():
-	if Inventory.has_free_space(item.id):
-		Inventory.add_item(item.id)
+	if Inventory.has_free_space(item.id) and can_be_picked:
+		if has_meta("amount"):
+			Inventory.add_item(item.id, get_meta("amount"))
+		else:
+			Inventory.add_item(item.id)
+		
+		collision.set_deferred("disabled", true)
 		AudioManager.play_sfx("pickup_item", global_position)
 		queue_free()
-	else:
-		target_player = null
 
 func magnetic_pull(delta):
 	if target_player == null:
@@ -71,5 +76,7 @@ func magnetic_pull(delta):
 	rotation = lerp_angle(rotation, target_angle, 10.0 * delta)
 
 func start_magnetic_pull(player):
+	if not can_be_picked: return
+	
 	await get_tree().create_timer(0.1).timeout
 	target_player = player
