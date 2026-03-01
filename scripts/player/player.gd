@@ -3,6 +3,8 @@ extends CharacterBody2D
 const WEAPON_TYPE_MELEE = 0
 const WEAPON_TYPE_RANGED = 1
 
+const FLOATING_TEXT = preload("res://scenes/floating_text.tscn")
+
 enum MoveState { IDLE, MOVE, DASH }
 enum ActionState { NONE, ATTACK, STUNNED, DEAD }
 
@@ -14,7 +16,6 @@ var object_layer = null
 var ui: CanvasLayer = null
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
-
 @onready var weapon_pivot: Node2D = $WeaponPivot
 @onready var hand: Node2D = $WeaponPivot/Hand
 @onready var hand_sprite: Sprite2D = $WeaponPivot/Hand/Sprite2D
@@ -244,6 +245,7 @@ func _handle_action_input():
 
 func _handle_consumable_logic(consumable_stats, item_id):
 	var boss_to_spawn = consumable_stats.get("boss_to_spawn")
+	var hp_to_heal = consumable_stats.get("hp_to_heal", 0)
 	
 	if boss_to_spawn:
 		if Global.living_boss: return
@@ -256,8 +258,9 @@ func _handle_consumable_logic(consumable_stats, item_id):
 			Inventory.remove_item(item_id, 1)
 			AudioManager.play_sfx("boss_summon")
 	else:
-		if heal(consumable_stats.get("hp_to_heal", 0)):
+		if heal(hp_to_heal):
 			Inventory.remove_item(item_id, 1)
+			
 			AudioManager.play_sfx("food_crunch")
 
 func _handle_mining_logic(weapon_stats, mouse_pos, distance):
@@ -394,6 +397,11 @@ func take_hit(damage, knockback, source_pos):
 	can_be_hit = false
 	invincibility_frames.start()
 	
+	var text_instance = FLOATING_TEXT.instantiate()
+	text_instance.setup(str(damage), Color.RED)
+	get_tree().current_scene.add_child(text_instance)
+	text_instance.global_position = global_position + Vector2(randf_range(-20, 20), 0)
+	
 	var tween = create_tween()
 	sprite.modulate = Color(10, 10, 10, 0.5)
 	
@@ -428,6 +436,11 @@ func heal(hp_to_heal):
 	
 	current_hp += hp_to_heal
 	Signals.player_health_changed.emit(current_hp, max_hp)
+	
+	var text_instance = FLOATING_TEXT.instantiate()
+	text_instance.setup(str(hp_to_heal), Color.CHARTREUSE)
+	get_tree().current_scene.add_child(text_instance)
+	text_instance.global_position = global_position + Vector2(randf_range(-20, 20), 0)
 	
 	success = true
 	return success
@@ -511,8 +524,20 @@ func _on_hit_area_area_entered(area: Area2D) -> void:
 		hit_entities.append(attackable)
 
 func _on_magnet_field_area_entered(area: Area2D) -> void:
-	if area.is_in_group("loot") and Inventory.has_free_space(area.get_meta("item_id")):
+	if not area.is_in_group("loot"): return
+	
+	if Inventory.has_free_space(area.get_meta("item_id")):
+		if not area.can_be_picked: return
+		
 		area.start_magnetic_pull(self)
+
+func _on_magnet_field_area_exited(area: Area2D) -> void:
+	if not area.is_in_group("loot"): return
+	
+	if Inventory.has_free_space(area.get_meta("item_id")):
+		if not area.dropped: return
+		
+		area.can_be_picked = true
 
 func respawn():
 	velocity  = Vector2.ZERO
