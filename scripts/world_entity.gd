@@ -3,6 +3,8 @@ extends CharacterBody2D
 const FACTION_HOSTILE = 0
 const FACTION_PASSIVE = 1
 
+const FLOATING_TEXT = preload("res://scenes/floating_text.tscn")
+
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var health_bar: TextureProgressBar = $HealthBar
 @onready var collision: CollisionShape2D = $hurt_box/CollisionShape2D
@@ -203,7 +205,12 @@ func take_hit(amount: int, knockback_amount: float, source_pos):
 	var tween = create_tween()
 	tween.tween_property(sprite, "modulate", Color.RED, 0.1)
 	tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
-		
+	
+	var text_instance = FLOATING_TEXT.instantiate()
+	text_instance.setup(str(amount))
+	get_tree().current_scene.add_child(text_instance)
+	text_instance.global_position = global_position + Vector2(randf_range(-20, 20), 0)
+
 	current_hp -= amount
 	update_heath_bar()
 	
@@ -265,7 +272,7 @@ func drop_loot():
 			var item_id = entry.get("item")
 			var amount = randi_range(entry.get("amount_min", 1), entry.get("amount_max", 1))
 			for i in range(amount):
-				DataManager.spawn_item(item_id, global_position, true)
+				DataManager.spawn_item(item_id, global_position)
 
 func update_heath_bar():
 	health_bar.visible = true
