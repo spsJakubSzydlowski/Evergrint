@@ -16,6 +16,7 @@ const SLOTS_CONFIG = {
 var slot_nodes = {}
 
 func _ready() -> void:
+	Signals.equip_changed.connect(_on_equip_changed)
 	Signals.play_world.connect(_on_play_world)
 
 func _on_play_world(_world_name):
@@ -30,8 +31,8 @@ func _on_play_world(_world_name):
 		
 	for type in SLOTS_CONFIG.keys():
 		var new_slot = slot_scene.instantiate()
-		container.add_child(new_slot)
 		new_slot.set_meta("equipment_type", type)
+		container.add_child(new_slot)
 		
 		var equipped_data = Equipment.equipped.get(type, {"id": "", "amount": 0})
 		if equipped_data.id != "":
@@ -89,7 +90,7 @@ func _try_equip_item(slot_type, equipment_slot_ui):
 		main_ui.selected_equip_slot_index = -1
 		Tooltip.show_tooltips = true
 		
-		armor_label.text = str(Equipment.get_armor_amount())
+		Signals.equip_changed.emit()
 		AudioManager.play_sfx("inventory_slot_pop")
 		
 		main_ui.refresh_ui()
@@ -113,7 +114,11 @@ func _try_unequip_item(slot_type, equipment_slot_ui):
 		main_ui.selected_equip_slot_index = index
 		Tooltip.show_tooltips = false
 		
-		armor_label.text = str(Equipment.get_armor_amount())
+		equipment_slot_ui.update_to_default_icon(slot_type)
+		Signals.equip_changed.emit()
 		AudioManager.play_sfx("inventory_slot_pop")
 		
 		main_ui.refresh_ui()
+
+func _on_equip_changed():
+	armor_label.text = str(Equipment.get_armor_amount())
