@@ -127,6 +127,23 @@ func _input(event: InputEvent) -> void:
 		compas_label.visible = not compas_label.visible
 	
 	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			if not selected_slot_data: return
+			if not selected_slot_contents: return
+			
+			var item = await DataManager.spawn_item(selected_slot_data.id, Global.get_player_world_position(), true)
+			item.set_meta("amount", selected_slot_data.amount)
+			
+			first_selected_slot_index = -1
+			selected_equip_slot_index = -1
+			selected_slot_contents.queue_free()
+			selected_slot_contents = null
+			selected_slot_data = {"id": "", "amount": 0}
+			Tooltip.show_tooltips = true
+			
+			refresh_ui()
+			emit_equipped_signal()
+			
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			active_slot_index = posmod(active_slot_index -1, hotbar_slots)
 			
@@ -312,8 +329,11 @@ func show_item_at_cursor(slot_ui):
 	selected_slot_contents.z_index = 100
 
 func _on_world_changed():
-	if get_tree():
-		await get_tree().process_frame
+	if not is_inside_tree(): return
+	
+	await get_tree().process_frame
+	
+	if is_inside_tree():
 		emit_equipped_signal()
 
 func _on_player_died():
