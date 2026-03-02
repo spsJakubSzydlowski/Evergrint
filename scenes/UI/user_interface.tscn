@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://bryjxm5yqvpo5"]
+
+[ext_resource type="Script" uid="uid://b6d0iowgh44ec" path="res://scripts/user_interface.gd" id="1_fu525"]
+[ext_resource type="PackedScene" uid="uid://gyk2vckeh01e" path="res://scenes/UI/hud/health_bar.tscn" id="2_fu525"]
+[ext_resource type="PackedScene" uid="uid://dicdr4oyomy42" path="res://scenes/UI/hud/compas.tscn" id="3_q3hqr"]
+[ext_resource type="PackedScene" uid="uid://ckof8acru4xl0" path="res://scenes/UI/equip_canvas.tscn" id="4_tsnii"]
+[ext_resource type="PackedScene" uid="uid://c1cjrtsieu2bp" path="res://scenes/UI/hud/save_icon.tscn" id="5_hyee5"]
+
+[node name="user_interface" type="CanvasLayer" unique_id=1839636389 groups=["ui"]]
+script = ExtResource("1_fu525")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=84909399]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_bottom = 40.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1515849928]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="health_bar" parent="MarginContainer/VBoxContainer" unique_id=12292735 instance=ExtResource("2_fu525")]
+layout_mode = 2
+
+[node name="compas" parent="MarginContainer/VBoxContainer" unique_id=1975728632 instance=ExtResource("3_q3hqr")]
+layout_mode = 2
+
+[node name="inventory_margin" type="MarginContainer" parent="." unique_id=2022433650]
+offset_right = 5.0
+offset_bottom = 5.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+
+[node name="hotbar" type="HBoxContainer" parent="inventory_margin" unique_id=1735720222]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="inventory" type="GridContainer" parent="inventory_margin" unique_id=581490757]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 3
+theme_override_constants/v_separation = 3
+columns = 10
+
+[node name="equip_canvas" parent="." unique_id=868587407 instance=ExtResource("4_tsnii")]
+visible = false
+offset_left = 5.0
+offset_top = 125.0
+offset_right = 40.0
+offset_bottom = 160.0
+
+[node name="save_icon" parent="." unique_id=73069369 instance=ExtResource("5_hyee5")]
+
+[connection signal="mouse_entered" from="MarginContainer/VBoxContainer/health_bar" to="." method="_on_health_bar_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/VBoxContainer/health_bar" to="." method="_on_health_bar_mouse_exited"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/health_bar" to="." method="_on_health_bar_value_changed"]
