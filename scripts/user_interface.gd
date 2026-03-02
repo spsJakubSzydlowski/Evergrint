@@ -41,11 +41,9 @@ func _ready() -> void:
 	Signals.play_world.connect(_on_play_world)
 	Signals.player_health_changed.connect(update_health_bar)
 	Signals.player_died.connect(_on_player_died)
-
+	Signals.world_ready.connect(_on_world_ready)
 	Inventory.inventory_updated.connect(on_inventory_updated)
-	
-	get_tree().tree_changed.connect(_on_world_changed)
-	
+
 	health_label.visible = false
 	
 	set_process(false)
@@ -54,10 +52,12 @@ func _on_play_world(_world_name):
 	set_process(true)
 	
 	if current_container:
-		for i in hotbar_container.get_children():
-			i.queue_free()
-		for i in inventory_container.get_children():
-			i.queue_free()
+		for child in hotbar_container.get_children():
+			hotbar_container.remove_child(child)
+			child.queue_free()
+		for child in inventory_container.get_children():
+			inventory_container.remove_child(child)
+			child.queue_free()
 				
 	for i in range(hotbar_slots):
 		create_slot_in(hotbar_container, i)
@@ -66,12 +66,11 @@ func _on_play_world(_world_name):
 		create_slot_in(inventory_container, i)
 	
 	is_inventory_open = false
-	inventory_container.visible = false
-	hotbar_container.visible = true
+	inventory_container.hide()
+	hotbar_container.show()
 	
 	refresh_ui()
-	await  get_tree().create_timer(0.1).timeout
-	emit_equipped_signal()
+	emit_equipped_signal.call_deferred()
 
 func _process(_delta: float) -> void:
 	var mouse_pos = get_viewport().get_mouse_position()
@@ -87,23 +86,12 @@ func _process(_delta: float) -> void:
 		selected_slot_contents.global_position = mouse_pos
 
 func get_compas_text(relative_pos):
-	var text_n_s = "0"
-	var text_w_e = "0"
+	if relative_pos == Vector2i.ZERO: return "0N 0E"
 	
-	if relative_pos.y < 0:
-		text_n_s = str(abs(relative_pos.y)) + "N"
-	elif relative_pos.y > 0:
-		text_n_s = str(relative_pos.y) + "S"
+	var ns = str(abs(relative_pos.y)) + ("N" if relative_pos.y < 0 else "S")
+	var we = str(abs(relative_pos.x)) + ("W" if relative_pos.x < 0 else "E")
 	
-	if relative_pos.x < 0:
-		text_w_e = str(abs(relative_pos.x)) + "W"
-	elif relative_pos.x > 0:
-		text_w_e = str(relative_pos.x) + "E"
-	
-	if text_n_s == "" and text_w_e == "":
-		return "0N 0E"
-	
-	return text_n_s + " " + text_w_e
+	return "%s %s" % [ns, we]
 
 func on_inventory_updated():
 	refresh_ui()
@@ -131,51 +119,52 @@ func _input(event: InputEvent) -> void:
 			if not selected_slot_data: return
 			if not selected_slot_contents: return
 			
-			var item = await DataManager.spawn_item(selected_slot_data.id, Global.get_player_world_position(), true)
-			item.set_meta("amount", selected_slot_data.amount)
+			_drop_item()
 			
-			first_selected_slot_index = -1
-			selected_equip_slot_index = -1
-			selected_slot_contents.queue_free()
-			selected_slot_contents = null
-			selected_slot_data = {"id": "", "amount": 0}
-			Tooltip.show_tooltips = true
-			
-			refresh_ui()
 			emit_equipped_signal()
-			
+		
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			if selected_slot_data.id: return
+		
 			active_slot_index = posmod(active_slot_index -1, hotbar_slots)
 			
-			first_selected_slot_index = -1
-			selected_equip_slot_index = -1
-			if selected_slot_contents:
-				selected_slot_contents.queue_free()
-				selected_slot_contents = null
+			_clear_dragged_item()
 				
 			refresh_ui()
 			emit_equipped_signal()
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			if selected_slot_data.id: return
+		
 			active_slot_index = posmod(active_slot_index +1, hotbar_slots)
 			
-			first_selected_slot_index = -1
-			selected_equip_slot_index = -1
-			if selected_slot_contents:
-				selected_slot_contents.queue_free()
-				selected_slot_contents = null
+			_clear_dragged_item()
 				
 			refresh_ui()
 			emit_equipped_signal()
 
+func _clear_dragged_item() -> void:
+	first_selected_slot_index = -1
+	selected_equip_slot_index = -1
+	selected_slot_data = {"id": "", "amount": 0}
+	if selected_slot_contents:
+		selected_slot_contents.queue_free()
+		selected_slot_contents = null
+	Tooltip.show_tooltips = true
+
+func _drop_item():
+	var item = await DataManager.spawn_item(selected_slot_data.id, Global.get_player_world_position(), true)
+	item.set_meta("amount", selected_slot_data.amount)
+	
+	_clear_dragged_item()
+	refresh_ui()
+
 func toggle_inventory():
 	if is_inventory_open and selected_slot_data.id:
-		Inventory.slots[dragging_from_index] = selected_slot_data
-		selected_slot_data = {"id": "", "amount": 0}
-		if selected_slot_contents:
-			selected_slot_contents.queue_free()
-			selected_slot_contents = null
+		#Inventory.slots[dragging_from_index] = selected_slot_data
+		
+		Inventory.slots[Inventory.get_free_space] = selected_slot_data
+		_clear_dragged_item()
 	
-	Tooltip.show_tooltips = true
 	is_inventory_open = !is_inventory_open
 	inventory_container.visible = is_inventory_open
 	hotbar_container.visible = !is_inventory_open
@@ -271,7 +260,7 @@ func emit_equipped_signal():
 	if selected_slot_data.id:
 		var active_slot_data = selected_slot_data
 		item_equipped.emit(active_slot_data["id"])
-	elif Inventory.slots != []:
+	else:
 		var active_slot_data = Inventory.slots[active_slot_index]
 		item_equipped.emit(active_slot_data["id"])
 
@@ -301,20 +290,13 @@ func _on_slot_clicked(slot_ui):
 			Inventory.swap_slot(first_selected_slot_index, index)
 			Inventory.slots[index] = selected_slot_data
 			
-			selected_slot_data = {"id": "", "amount": 0}
-			selected_slot_contents.queue_free()
-			selected_slot_contents = null
-			first_selected_slot_index = -1
+			_clear_dragged_item()
 
 		elif selected_equip_slot_index != -1:
 
 			if Inventory.slots[index].id == "":
 				Inventory.slots[index] = selected_slot_data
-				selected_slot_data = {"id": "", "amount": 0}
-				selected_slot_contents.queue_free()
-				selected_slot_contents = null
-				
-				selected_equip_slot_index = -1
+				_clear_dragged_item()
 			else:
 				return
 		
@@ -328,7 +310,7 @@ func show_item_at_cursor(slot_ui):
 	selected_slot_contents.top_level = true
 	selected_slot_contents.z_index = 100
 
-func _on_world_changed():
+func _on_world_ready():
 	if not is_inside_tree(): return
 	
 	await get_tree().process_frame
