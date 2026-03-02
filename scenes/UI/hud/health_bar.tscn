@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://gyk2vckeh01e"]
+
+[ext_resource type="Texture2D" uid="uid://bpric1nyeu7w3" path="res://textures/ui.png" id="1_87gra"]
+[ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="2_a6won"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lgjxu"]
+atlas = ExtResource("1_87gra")
+region = Rect2(0, 16, 0, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3wpr7"]
+atlas = ExtResource("1_87gra")
+region = Rect2(0, 32, 0, 16)
+
+[sub_resource type="FontVariation" id="FontVariation_vr1b1"]
+base_font = ExtResource("2_a6won")
+spacing_glyph = 1
+
+[node name="health_bar" type="TextureProgressBar" unique_id=12292735]
+size_flags_horizontal = 8
+mouse_filter = 0
+value = 100.0
+texture_under = SubResource("AtlasTexture_lgjxu")
+texture_progress = SubResource("AtlasTexture_3wpr7")
+
+[node name="health_label" type="Label" parent="." unique_id=1551823728]
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_vr1b1")
+theme_override_font_sizes/font_size = 10
+text = "100/100"
