@@ -26,7 +26,7 @@ DataManager="*res://scripts/autoloads/DataManager.gd"
 Inventory="*res://scripts/autoloads/Inventory.gd"
 Signals="*res://scripts/autoloads/Signals.gd"
 Global="*res://scripts/autoloads/Global.gd"
-InventoryCanvas="*res://scenes/UI/UserInterface.tscn"
+InventoryCanvas="*res://scenes/UI/user_interface.tscn"
 MiningManager="*res://scripts/autoloads/MiningManager.gd"
 AbilityManager="*res://scripts/autoloads/AbilityManager.gd"
 AudioManager="*uid://c5rfdyo6mroat"
@@ -42,7 +42,6 @@ Enums="*uid://ckdqhn6bbfgf2"
 
 window/size/viewport_width=640
 window/size/viewport_height=360
-window/size/mode=3
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
