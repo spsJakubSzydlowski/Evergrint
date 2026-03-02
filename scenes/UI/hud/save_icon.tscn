@@ -1,0 +1,109 @@
+[gd_scene format=3 uid="uid://c1cjrtsieu2bp"]
+
+[ext_resource type="Script" uid="uid://cadoa0g567mdr" path="res://scripts/save_icon.gd" id="1_qt3vs"]
+[ext_resource type="Texture2D" uid="uid://bbmwill2tlqr7" path="res://textures/ui2.png" id="2_pfkwm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o6e1s"]
+atlas = ExtResource("2_pfkwm")
+region = Rect2(95, 47, 34, 34)
+
+[sub_resource type="Animation" id="Animation_57uoi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(640, 360)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_v3jyi"]
+resource_name = "show"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.16666672, 1.1333333, 1.1666666),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(640, 420), Vector2(640, 360), Vector2(640, 360), Vector2(640, 420)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.43333334, 0.46666667, 0.93333334, 0.96666664),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1), Vector2(1.08, 1.08), Vector2(1.08, 1.08), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_o6e1s"]
+_data = {
+&"RESET": SubResource("Animation_57uoi"),
+&"show": SubResource("Animation_v3jyi")
+}
+
+[node name="save_icon" type="Control" unique_id=73069369]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(-22.5, -22.5)
+script = ExtResource("1_qt3vs")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1413228510]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(20, 20)
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="save_texture" type="TextureRect" parent="MarginContainer" unique_id=849353892]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = SubResource("AtlasTexture_o6e1s")
+
+[node name="anim" type="AnimationPlayer" parent="." unique_id=303810352]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_o6e1s")
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="animation_finished" from="anim" to="." method="_on_animation_player_animation_finished"]
