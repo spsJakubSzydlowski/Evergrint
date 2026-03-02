@@ -69,6 +69,15 @@ func has_free_space(item_id):
 			return true
 	return false
 
+func get_free_space(item_id):
+	for slot in slots:
+		var slot_id = slots.find(slot)
+		var item_amount = slot["amount"]
+		var item_stack_limit = DataManager.get_item(item_id).get("stack_limit")
+		if slot["id"] == "" or (item_amount < item_stack_limit and slot["id"] == item_id):
+			return slot_id
+	return null
+
 func swap_slot(index_a, index_b):
 	var temp = slots[index_a]
 	slots[index_a] = slots[index_b]
