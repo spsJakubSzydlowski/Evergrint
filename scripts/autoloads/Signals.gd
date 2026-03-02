@@ -16,6 +16,9 @@ signal boss_died(entity_id)
 signal play_world(world_name)
 
 @warning_ignore("unused_signal")
+signal world_ready
+
+@warning_ignore("unused_signal")
 signal select_world(world_name)
 
 @warning_ignore("unused_signal")
@@ -25,7 +28,7 @@ signal delete_world(world_name)
 signal switch_to_section(section: String)
 
 @warning_ignore("unused_signal")
-signal equip_changed()
+signal equip_changed
 
 @warning_ignore("unused_signal")
-signal autosaving()
+signal autosaving
