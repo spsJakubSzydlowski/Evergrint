@@ -44,6 +44,7 @@ func prepare_scene_under_loading():
 	var current_scene = get_tree().current_scene
 	get_tree().root.add_child(new_scene_instance)
 	get_tree().current_scene = new_scene_instance
+	Signals.world_ready.emit()
 	current_scene.queue_free()
 
 func start_transition():
