@@ -3,7 +3,7 @@ extends Node
 const CURRENT_SAVE_VERSION = 2
 
 var autosave_timer: Timer
-const AUTOSAVE_TIMER_TIME = 5.0
+const AUTOSAVE_TIMER_TIME = 30.0
 
 var worlds_path: String
 
