@@ -213,21 +213,20 @@ func create_slot_in(container, index):
 	
 	new_slot.slot_index = index
 	
-	new_slot.set_meta("item_data", null)
+	new_slot.set_meta("item_id", null)
 	new_slot.slot_clicked.connect(_on_slot_clicked)
 	new_slot.mouse_entered.connect(_on_slot_mouse_entered.bind(new_slot))
 	new_slot.mouse_exited.connect(_on_slot_mouse_exited)
 
 func update_tooltip_data(slot_data, slot_ui):
 	if slot_data and slot_data.get("id", "") != "":
-		var item = DataManager.get_item(slot_data["id"])
-		slot_ui.set_meta("item_data", item)
+		slot_ui.set_meta("item_id", slot_data["id"])
 	else:
-		slot_ui.set_meta("item_data", null)
+		slot_ui.set_meta("item_id", null)
 
 func _on_slot_mouse_entered(slot):
-	if slot.has_meta("item_data"):
-		var item = slot.get_meta("item_data", null)
+	if slot.has_meta("item_id"):
+		var item = slot.get_meta("item_id", null)
 		if item:
 			Tooltip.display_tooltip(item)
 	
