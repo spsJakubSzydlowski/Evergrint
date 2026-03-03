@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://dicdr4oyomy42"]
 
+[ext_resource type="Script" uid="uid://bpithmnl1buhi" path="res://scripts/compas.gd" id="1_3jdkr"]
 [ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="1_hg1iq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lgjxu"]
@@ -9,6 +10,7 @@ custom_minimum_size = Vector2(128, 32)
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2
+script = ExtResource("1_3jdkr")
 
 [node name="compas_label" type="RichTextLabel" parent="." unique_id=906890136]
 visible = false
@@ -27,3 +29,9 @@ theme_override_font_sizes/normal_font_size = 12
 theme_override_styles/focus = SubResource("StyleBoxEmpty_lgjxu")
 text = "0"
 fit_content = true
+
+[node name="update_timer" type="Timer" parent="." unique_id=650040184]
+wait_time = 0.2
+autostart = true
+
+[connection signal="timeout" from="update_timer" to="." method="_on_update_timer_timeout"]
