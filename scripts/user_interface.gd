@@ -6,21 +6,17 @@ signal item_equipped(item_id)
 @onready var inventory_container: GridContainer = $inventory_margin/inventory
 @onready var equip_canvas: Control = $equip_canvas
 
-@onready var health_bar: TextureProgressBar = $MarginContainer/VBoxContainer/health_bar
-@onready var health_label: Label = $MarginContainer/VBoxContainer/health_bar/health_label
-@onready var compas_label: RichTextLabel = $MarginContainer/VBoxContainer/compas/compas_label
-
-var first_selected_slot_index = -1
-var selected_equip_slot_index = -1
-var dragging_from_index = -1
+var first_selected_slot_index : int = -1
+var selected_equip_slot_index : int = -1
+var dragging_from_index : int = -1
+var active_slot_index : int = 0
 
 var slot_scene = preload("res://scenes/UI/inventory_slot.tscn")
-var active_slot_index = 0
 
-var hotbar_slots = 10
-var inventory_slots = 50
+var hotbar_slots : int = 10
+var inventory_slots : int = 50
 
-var is_inventory_open = false
+var is_inventory_open : bool = false
 
 var current_container
 
@@ -35,20 +31,17 @@ const ITEM_TYPE_NAMES = {
 }
 
 var selected_slot_contents = null
-var selected_slot_data = {"id": "", "amount": 0}
+var selected_slot_data : Dictionary = {"id": "", "amount": 0}
 
 func _ready() -> void:
 	Signals.play_world.connect(_on_play_world)
-	Signals.player_health_changed.connect(update_health_bar)
 	Signals.player_died.connect(_on_player_died)
 	Signals.world_ready.connect(_on_world_ready)
 	Inventory.inventory_updated.connect(on_inventory_updated)
 
-	health_label.visible = false
-	
 	set_process(false)
 
-func _on_play_world(_world_name):
+func _on_play_world(_world_name) -> void:
 	set_process(true)
 	
 	if current_container:
@@ -74,26 +67,11 @@ func _on_play_world(_world_name):
 
 func _process(_delta: float) -> void:
 	var mouse_pos = get_viewport().get_mouse_position()
-	if health_label.visible:
-		health_label.global_position = mouse_pos + Vector2(4, 4)
-	
-	if Global.current_tilemap:
-		var relative_pos = Vector2i(Global.get_player_tilemap_position(Global.current_tilemap)) - Global.center_world_pos
-		
-		compas_label.text = get_compas_text(relative_pos)
-		
+
 	if selected_slot_contents:
 		selected_slot_contents.global_position = mouse_pos
 
-func get_compas_text(relative_pos):
-	if relative_pos == Vector2i.ZERO: return "0N 0E"
-	
-	var ns = str(abs(relative_pos.y)) + ("N" if relative_pos.y < 0 else "S")
-	var we = str(abs(relative_pos.x)) + ("W" if relative_pos.x < 0 else "E")
-	
-	return "%s %s" % [ns, we]
-
-func on_inventory_updated():
+func on_inventory_updated() -> void:
 	refresh_ui()
 	emit_equipped_signal()
 
@@ -103,6 +81,7 @@ func _input(event: InputEvent) -> void:
 		
 	if Input.is_action_just_pressed("open_inventory"):
 		toggle_inventory()
+		put_dragged_item_to_free_slot()
 		
 	if Input.is_action_just_pressed("escape"):
 		put_dragged_item_to_free_slot()
@@ -110,12 +89,9 @@ func _input(event: InputEvent) -> void:
 	for i in range(10):
 		if Input.is_action_just_pressed("hotbar_" + str(i + 1)):
 			active_slot_index = i
+			put_dragged_item_to_free_slot()
 			refresh_ui()
-			emit_equipped_signal()
 			break
-		
-	if Input.is_action_just_pressed("stats"):
-		compas_label.visible = not compas_label.visible
 	
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
@@ -125,24 +101,15 @@ func _input(event: InputEvent) -> void:
 			_drop_item()
 			emit_equipped_signal()
 		
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP or event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			if selected_slot_data.id: return
-		
-			active_slot_index = posmod(active_slot_index -1, hotbar_slots)
+			
+			var direction = -1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1
+			
+			active_slot_index = posmod(active_slot_index + direction, hotbar_slots)
 			
 			_clear_dragged_item()
-				
 			refresh_ui()
-			emit_equipped_signal()
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			if selected_slot_data.id: return
-		
-			active_slot_index = posmod(active_slot_index +1, hotbar_slots)
-			
-			_clear_dragged_item()
-				
-			refresh_ui()
-			emit_equipped_signal()
 
 func _clear_dragged_item() -> void:
 	first_selected_slot_index = -1
@@ -156,17 +123,14 @@ func _clear_dragged_item() -> void:
 	
 	Tooltip.show_tooltips = true
 
-func _drop_item():
+func _drop_item() -> void:
 	var item = await DataManager.spawn_item(selected_slot_data.id, Global.get_player_world_position(), true)
 	item.set_meta("amount", selected_slot_data.amount)
 	
 	_clear_dragged_item()
 	refresh_ui()
 
-func toggle_inventory():
-	if is_inventory_open:
-		put_dragged_item_to_free_slot()
-	
+func toggle_inventory() -> void:
 	is_inventory_open = !is_inventory_open
 	inventory_container.visible = is_inventory_open
 	hotbar_container.visible = !is_inventory_open
@@ -177,7 +141,7 @@ func toggle_inventory():
 	
 	refresh_ui()
 
-func put_dragged_item_to_free_slot():
+func put_dragged_item_to_free_slot() -> void:
 	if not selected_slot_data.id: return
 	
 	var free_inventory_index : int = Inventory.get_free_space(selected_slot_data.id)
@@ -187,7 +151,7 @@ func put_dragged_item_to_free_slot():
 	
 	refresh_ui()
 
-func refresh_ui():
+func refresh_ui() -> void:
 	if is_inventory_open:
 		current_container = inventory_container
 	else:
@@ -207,7 +171,7 @@ func refresh_ui():
 			
 	emit_equipped_signal()
 
-func create_slot_in(container, index):
+func create_slot_in(container, index) -> void:
 	var new_slot = slot_scene.instantiate()
 	container.add_child(new_slot)
 	
@@ -218,22 +182,22 @@ func create_slot_in(container, index):
 	new_slot.mouse_entered.connect(_on_slot_mouse_entered.bind(new_slot))
 	new_slot.mouse_exited.connect(_on_slot_mouse_exited)
 
-func update_tooltip_data(slot_data, slot_ui):
+func update_tooltip_data(slot_data, slot_ui) -> void:
 	if slot_data and slot_data.get("id", "") != "":
 		slot_ui.set_meta("item_id", slot_data["id"])
 	else:
 		slot_ui.set_meta("item_id", null)
 
-func _on_slot_mouse_entered(slot):
+func _on_slot_mouse_entered(slot) -> void:
 	if slot.has_meta("item_id"):
 		var item = slot.get_meta("item_id", null)
 		if item:
 			Tooltip.display_tooltip(item)
 	
-func _on_slot_mouse_exited():
+func _on_slot_mouse_exited() -> void:
 	Tooltip.hide_tooltip()
 
-func update_slot_visuals(slot_ui, slot_data):
+func update_slot_visuals(slot_ui, slot_data) -> void:
 	var icon_rect = slot_ui.find_child("Icon")
 	var amount_label = slot_ui.find_child("AmountLabel")
 	
@@ -267,7 +231,7 @@ func update_slot_visuals(slot_ui, slot_data):
 	icon_rect.texture = atlas_tex
 	amount_label.text = str(int(amount)) if amount > 1 else ""
 	
-func emit_equipped_signal():
+func emit_equipped_signal() -> void:
 	if selected_slot_data.id:
 		var active_slot_data = selected_slot_data
 		item_equipped.emit(active_slot_data["id"])
@@ -275,11 +239,7 @@ func emit_equipped_signal():
 		var active_slot_data = Inventory.slots[active_slot_index]
 		item_equipped.emit(active_slot_data["id"])
 
-func update_health_bar(current_hp, max_hp):
-	health_bar.max_value = max_hp
-	health_bar.value = current_hp
-
-func _on_slot_clicked(slot_ui):
+func _on_slot_clicked(slot_ui) -> void:
 	var index = slot_ui.get_index()
 	var slot_data = Inventory.slots[index]
 
@@ -326,7 +286,7 @@ func _on_slot_clicked(slot_ui):
 		
 	refresh_ui()
 
-func show_item_at_cursor(slot_ui):
+func show_item_at_cursor(slot_ui) -> void:
 	if selected_slot_contents:
 		selected_slot_contents.queue_free()
 	
@@ -335,7 +295,7 @@ func show_item_at_cursor(slot_ui):
 	selected_slot_contents.top_level = true
 	selected_slot_contents.z_index = 100
 
-func _on_world_ready():
+func _on_world_ready() -> void:
 	if not is_inside_tree(): return
 	
 	await get_tree().process_frame
@@ -343,15 +303,6 @@ func _on_world_ready():
 	if is_inside_tree():
 		emit_equipped_signal()
 
-func _on_player_died():
+func _on_player_died() -> void:
 	if is_inventory_open:
 		toggle_inventory()
-
-func _on_health_bar_mouse_entered() -> void:
-	health_label.visible = true
-
-func _on_health_bar_mouse_exited() -> void:
-	health_label.visible = false
-
-func _on_health_bar_value_changed(value: float) -> void:
-	health_label.text = str(int(value)) + "/" + str(int(health_bar.max_value))
