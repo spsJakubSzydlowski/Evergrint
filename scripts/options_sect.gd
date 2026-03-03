@@ -12,6 +12,10 @@ func _ready() -> void:
 	sound_label.text = "Sound: " + str(int(value)) + "%"
 	sound_slider.value = value
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("escape"):
+		SettingsManager.save_settings()
+
 func _on_sound_slider_value_changed(value: float) -> void:
 	sound_label.text = "Sound: " + str(int(value)) + "%"
 	SettingsManager.update_setting("sound_volume", int(value))
@@ -21,4 +25,5 @@ func _on_sound_slider_value_changed(value: float) -> void:
 
 func _on_done_button_pressed() -> void:
 	play_click()
+	SettingsManager.save_settings()
 	Signals.switch_to_section.emit("menu")

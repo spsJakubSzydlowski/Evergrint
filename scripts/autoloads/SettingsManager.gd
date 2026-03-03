@@ -15,6 +15,7 @@ func _ready() -> void:
 	load_settings()
 
 func save_settings():
+	print("Saving settigms")
 	var file = FileAccess.open(settings_path, FileAccess.WRITE)
 	if file:
 		file.store_string(JSON.stringify(current_settings, "\t"))
@@ -57,4 +58,3 @@ func update_setting(key: String, value):
 	if current_settings.has(key):
 		current_settings[key] = value
 		apply_settings()
-		save_settings()
