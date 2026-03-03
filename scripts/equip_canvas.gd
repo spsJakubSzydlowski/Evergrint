@@ -47,9 +47,7 @@ func _on_play_world(_world_name):
 func _on_equipment_slot_mouse_entered(slot_ui):
 	var slot_type = slot_ui.get_meta("equipment_type")
 	var data = Equipment.equipped[slot_type]
-	if data and data.id != "":
-		var item = DataManager.get_item(data.id)
-		Tooltip.display_tooltip(item)
+	Tooltip.display_tooltip(data.id)
 
 func _on_equipment_slot_mouse_exited():
 	Tooltip.hide_tooltip()
