@@ -104,6 +104,9 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("open_inventory"):
 		toggle_inventory()
 		
+	if Input.is_action_just_pressed("escape"):
+		put_dragged_item_to_free_slot()
+		
 	for i in range(10):
 		if Input.is_action_just_pressed("hotbar_" + str(i + 1)):
 			active_slot_index = i
@@ -120,7 +123,6 @@ func _input(event: InputEvent) -> void:
 			if not selected_slot_contents: return
 			
 			_drop_item()
-			
 			emit_equipped_signal()
 		
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
@@ -145,10 +147,13 @@ func _input(event: InputEvent) -> void:
 func _clear_dragged_item() -> void:
 	first_selected_slot_index = -1
 	selected_equip_slot_index = -1
+	dragging_from_index = -1
 	selected_slot_data = {"id": "", "amount": 0}
+	
 	if selected_slot_contents:
 		selected_slot_contents.queue_free()
 		selected_slot_contents = null
+	
 	Tooltip.show_tooltips = true
 
 func _drop_item():
@@ -159,11 +164,8 @@ func _drop_item():
 	refresh_ui()
 
 func toggle_inventory():
-	if is_inventory_open and selected_slot_data.id:
-		#Inventory.slots[dragging_from_index] = selected_slot_data
-		
-		Inventory.slots[Inventory.get_free_space] = selected_slot_data
-		_clear_dragged_item()
+	if is_inventory_open:
+		put_dragged_item_to_free_slot()
 	
 	is_inventory_open = !is_inventory_open
 	inventory_container.visible = is_inventory_open
@@ -172,6 +174,16 @@ func toggle_inventory():
 	
 	first_selected_slot_index = -1
 	selected_equip_slot_index = -1
+	
+	refresh_ui()
+
+func put_dragged_item_to_free_slot():
+	if not selected_slot_data.id: return
+	
+	var free_inventory_index : int = Inventory.get_free_space(selected_slot_data.id)
+	if not free_inventory_index == -1:
+		Inventory.slots[free_inventory_index] = selected_slot_data
+	_clear_dragged_item()
 	
 	refresh_ui()
 
@@ -273,38 +285,52 @@ func _on_slot_clicked(slot_ui):
 	var slot_data = Inventory.slots[index]
 
 	if first_selected_slot_index == -1 and selected_equip_slot_index == -1 and not slot_data.id == "":
-		selected_slot_data = slot_data
-		show_item_at_cursor(slot_ui)
+		selected_slot_data = slot_data.duplicate()
 		Inventory.slots[index] = {"id": "", "amount": 0}
 		
+		show_item_at_cursor(slot_ui)
 		Tooltip.show_tooltips = false
 		first_selected_slot_index = index
 		dragging_from_index = index
-		
 		AudioManager.play_sfx("inventory_slot_pop")
 	
+	#if holding something
 	elif selected_slot_data.id:
-		Tooltip.show_tooltips = true
 		
+		#if holding something from inventory
 		if first_selected_slot_index != -1:
-			Inventory.swap_slot(first_selected_slot_index, index)
-			Inventory.slots[index] = selected_slot_data
+			if Inventory.slots[index].id != "":
+				#Inventory.swap_slot(first_selected_slot_index, index)
+				var temp = Inventory.slots[index].duplicate()
+				Inventory.slots[index] = selected_slot_data
+				selected_slot_data = temp
+				show_item_at_cursor(slot_ui)
+			else:
+				Inventory.slots[index] = selected_slot_data
+				_clear_dragged_item()
 			
-			_clear_dragged_item()
+			Tooltip.show_tooltips = true
 
 		elif selected_equip_slot_index != -1:
 
 			if Inventory.slots[index].id == "":
 				Inventory.slots[index] = selected_slot_data
 				_clear_dragged_item()
+				Tooltip.show_tooltips = true
 			else:
-				return
+				var temp = Inventory.slots[index].duplicate()
+				Inventory.slots[index] = selected_slot_data
+				selected_slot_data = temp
+				show_item_at_cursor(slot_ui)
 		
 		AudioManager.play_sfx("inventory_slot_pop")
 		
 	refresh_ui()
 
 func show_item_at_cursor(slot_ui):
+	if selected_slot_contents:
+		selected_slot_contents.queue_free()
+	
 	selected_slot_contents = slot_ui.find_child("Contents").duplicate()
 	add_child(selected_slot_contents)
 	selected_slot_contents.top_level = true
