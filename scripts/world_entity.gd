@@ -280,12 +280,17 @@ func update_heath_bar():
 	health_bar.value = current_hp
 	var health_ratio = float(current_hp) / float(health_bar.max_value)
 	
-	if health_ratio > 0.5:
-		var factor = (health_ratio - 0.5) * 2.0
+	if health_ratio >= 0.6:
+		var factor = (health_ratio - 0.6) / 0.4
 		health_bar.tint_progress = Color.YELLOW.lerp(Color.GREEN, factor)
+	elif health_ratio >= 0.4:
+		var factor = (health_ratio - 0.4) / 0.2
+		health_bar.tint_progress = Color.ORANGE.lerp(Color.YELLOW, factor)
+	elif health_ratio >= 0.2:
+		var factor = (health_ratio - 0.2) / 0.2
+		health_bar.tint_progress = Color.RED.lerp(Color.ORANGE, factor)
 	else:
-		var factor = health_ratio * 2.0
-		health_bar.tint_progress = Color.RED.lerp(Color.YELLOW, factor)
+		health_bar.tint_progress = Color.RED
 
 func play_anim(anim_name: String, sprite_node):
 	if has_node("AnimatedSprite2D"):

@@ -1,27 +1,19 @@
 [gd_scene format=3 uid="uid://crmd7qlpatepp"]
 
 [ext_resource type="Script" uid="uid://bgls5qeawmvub" path="res://scripts/world_entity.gd" id="1_c2mjn"]
-[ext_resource type="SpriteFrames" uid="uid://cx5mjylsy7pp" path="res://sprite_frames/mole_boss.tres" id="2_ey0o3"]
+[ext_resource type="SpriteFrames" uid="uid://cfg50nro2h10f" path="res://sprite_frames/green_slime.tres" id="2_kil5o"]
+[ext_resource type="Texture2D" uid="uid://bbmwill2tlqr7" path="res://textures/ui2.png" id="3_kil5o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ey0o3"]
 size = Vector2(23, 30)
 
-[sub_resource type="Gradient" id="Gradient_c2mjn"]
-offsets = PackedFloat32Array(0, 0.9782609)
-colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_yxraq"]
+atlas = ExtResource("3_kil5o")
+region = Rect2(144, 48, 25, 6)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_ey0o3"]
-gradient = SubResource("Gradient_c2mjn")
-width = 16
-height = 3
-
-[sub_resource type="Gradient" id="Gradient_kil5o"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_yxraq"]
-gradient = SubResource("Gradient_kil5o")
-width = 16
-height = 3
+[sub_resource type="AtlasTexture" id="AtlasTexture_kil5o"]
+atlas = ExtResource("3_kil5o")
+region = Rect2(145, 55, 23, 4)
 
 [node name="world_entity" type="CharacterBody2D" unique_id=1141203014 groups=["Entity"]]
 y_sort_enabled = true
@@ -38,21 +30,29 @@ collision_mask = 3
 shape = SubResource("RectangleShape2D_ey0o3")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=590273700]
-position = Vector2(0, 1)
-sprite_frames = ExtResource("2_ey0o3")
-animation = &"dig_down"
+sprite_frames = ExtResource("2_kil5o")
+animation = &"spawn"
 offset = Vector2(0, -16)
 flip_h = true
 
 [node name="HealthBar" type="TextureProgressBar" parent="." unique_id=1321011699]
 visible = false
-offset_left = -8.0
-offset_top = -20.0
-offset_right = 8.0
-offset_bottom = -17.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -9.0
+offset_top = -23.0
+offset_right = 16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.7, 0.7)
 value = 100.0
-texture_under = SubResource("GradientTexture2D_ey0o3")
-texture_progress = SubResource("GradientTexture2D_yxraq")
+texture_under = SubResource("AtlasTexture_yxraq")
+texture_progress = SubResource("AtlasTexture_kil5o")
+texture_progress_offset = Vector2(1, 1)
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=219517770]
 position = Vector2(0, 1)
