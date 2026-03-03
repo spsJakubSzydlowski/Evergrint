@@ -23,14 +23,12 @@ func _ready() -> void:
 	hide_tooltip()
 	panel_container.reset_size()
 
-func display_tooltip(item):
-	if not show_tooltips:
+func display_tooltip(item_id):
+	if not show_tooltips or not title_label or not item_id:
 		return
-
-	var item_id = item.get("id")
-	
-	if not title_label:
-		return
+		
+	var item = DataManager.get_item(item_id)
+	if not item: return
 	
 	stats_label.text = ""
 	tip_label.text = ""
