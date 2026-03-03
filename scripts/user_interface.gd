@@ -163,7 +163,7 @@ func refresh_ui() -> void:
 		var slot_data = Inventory.slots[i]
 		
 		if not active_slot_index > hotbar_slots:
-			slot_ui.find_child("SelectionSprite").visible = (i == active_slot_index)
+			slot_ui.selection_sprite.visible = (i == active_slot_index)
 	
 		if slot_data:
 			update_slot_visuals(slot_ui, slot_data)
@@ -198,8 +198,8 @@ func _on_slot_mouse_exited() -> void:
 	Tooltip.hide_tooltip()
 
 func update_slot_visuals(slot_ui, slot_data) -> void:
-	var icon_rect = slot_ui.find_child("Icon")
-	var amount_label = slot_ui.find_child("AmountLabel")
+	var icon_rect = slot_ui.icon
+	var amount_label = slot_ui.amount_label
 	
 	if not icon_rect or not amount_label: 
 		printerr("Error occured while updating slot visuals. args:\n", slot_ui, "\n,", slot_data)
@@ -290,7 +290,7 @@ func show_item_at_cursor(slot_ui) -> void:
 	if selected_slot_contents:
 		selected_slot_contents.queue_free()
 	
-	selected_slot_contents = slot_ui.find_child("Contents").duplicate()
+	selected_slot_contents = slot_ui.contents.duplicate()
 	add_child(selected_slot_contents)
 	selected_slot_contents.top_level = true
 	selected_slot_contents.z_index = 100

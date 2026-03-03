@@ -4,7 +4,10 @@ signal slot_clicked(slot_ui)
 
 var slot_index = -1
 
+@onready var contents: Control = $Contents
 @onready var icon: TextureRect = $Contents/Icon
+@onready var amount_label: Label = $Contents/MarginContainer/AmountLabel
+@onready var selection_sprite: NinePatchRect = $SelectionSprite
 
 func _ready() -> void:
 	if has_meta("equipment_type"):
