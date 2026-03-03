@@ -206,11 +206,6 @@ func take_hit(amount: int, knockback_amount: float, source_pos):
 	tween.tween_property(sprite, "modulate", Color.RED, 0.1)
 	tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
 	
-	var text_instance = FLOATING_TEXT.instantiate()
-	text_instance.setup(str(amount))
-	get_tree().current_scene.add_child(text_instance)
-	text_instance.global_position = global_position + Vector2(randf_range(-20, 20), 0)
-
 	current_hp -= amount
 	update_heath_bar()
 	
@@ -226,6 +221,12 @@ func take_hit(amount: int, knockback_amount: float, source_pos):
 	if not is_boss:
 		var knockback_dir = (global_position - source_pos).normalized()
 		apply_knockback(knockback_amount, knockback_dir)
+		
+	var text_instance = FLOATING_TEXT.instantiate()
+	text_instance.setup(str(amount))
+	add_child(text_instance)
+	text_instance.position = Vector2(randf_range(-15, 15), randf_range(-5, -15))
+
 
 func apply_knockback(knockback_amount, knockback_dir):
 	knockback_velocity = knockback_dir * knockback_amount * 150.0
