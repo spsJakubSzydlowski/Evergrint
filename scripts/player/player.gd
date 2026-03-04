@@ -121,7 +121,7 @@ func _physics_process(delta: float) -> void:
 	
 	var old_velocity = velocity
 	velocity = final_velocity
-
+	
 	move_and_slide()
 	
 	velocity = old_velocity
@@ -135,7 +135,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_handle_interact_input()
 		elif event.button_index == MOUSE_BUTTON_LEFT:
 			_handle_action_input()
-			
+
 	if event.is_action_pressed("heal"):
 		_handle_quick_heal()
 
@@ -168,7 +168,7 @@ func change_action_state(new_state: ActionState):
 		ActionState.NONE:
 			pass
 		ActionState.ATTACK:
-			attack(Inventory.current_equipped_id)
+			_on_player_attack(Inventory.current_equipped_id)
 		ActionState.STUNNED:
 			_on_player_stunned()
 		ActionState.DEAD:
@@ -278,7 +278,7 @@ func _handle_mining_logic(weapon_stats, mouse_pos, distance):
 			weapon_stats.get("tool_power", 0)
 		)
 
-func attack(item_id):
+func _on_player_attack(item_id):
 	if not can_attack:
 		change_move_state(MoveState.IDLE)
 		return
