@@ -254,7 +254,52 @@
 					"tile": {
 						"file": "../textures/Atlas-armor.png",
 						"size": 16,
+						"x": 1,
+						"y": 0
+					}
+				},
+				{
+					"id": "wooden_helmet",
+					"name": "Wooden Helmet",
+					"type": 6,
+					"stack_limit": 1,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
+					"tile": {
+						"file": "../textures/Atlas-armor.png",
+						"size": 16,
 						"x": 0,
+						"y": 0
+					}
+				},
+				{
+					"id": "wooden_leggins",
+					"name": "Wooden Leggins",
+					"type": 6,
+					"stack_limit": 1,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
+					"tile": {
+						"file": "../textures/Atlas-armor.png",
+						"size": 16,
+						"x": 2,
+						"y": 0
+					}
+				},
+				{
+					"id": "wooden_boots",
+					"name": "Wooden Boots",
+					"type": 6,
+					"stack_limit": 1,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
+					"tile": {
+						"file": "../textures/Atlas-armor.png",
+						"size": 16,
+						"x": 3,
 						"y": 0
 					}
 				}
@@ -575,8 +620,26 @@
 							"amount_max": 14
 						},
 						{
+							"item": "wooden_helmet",
+							"weight": 25,
+							"amount_min": 1,
+							"amount_max": 1
+						},
+						{
 							"item": "wooden_chestplate",
-							"weight": 100,
+							"weight": 25,
+							"amount_min": 1,
+							"amount_max": 1
+						},
+						{
+							"item": "wooden_leggins",
+							"weight": 25,
+							"amount_min": 1,
+							"amount_max": 1
+						},
+						{
+							"item": "wooden_boots",
+							"weight": 25,
 							"amount_min": 1,
 							"amount_max": 1
 						}
@@ -1192,6 +1255,21 @@
 					"id": "wooden_chestplate",
 					"armor": 1,
 					"slot_type": "chest"
+				},
+				{
+					"id": "wooden_helmet",
+					"slot_type": "head",
+					"armor": 1
+				},
+				{
+					"id": "wooden_leggins",
+					"slot_type": "legs",
+					"armor": 1
+				},
+				{
+					"id": "wooden_boots",
+					"slot_type": "feet",
+					"armor": 1
 				}
 			],
 			"separators": [],
