@@ -390,6 +390,9 @@ func take_hit(damage, knockback, source_pos):
 	if not can_be_hit: return
 	
 	damage -= armor
+	
+	damage = _randomize_damage(damage)
+	
 	if damage <= 0: damage = 1
 	
 	current_hp -= damage
@@ -417,6 +420,10 @@ func take_hit(damage, knockback, source_pos):
 		return
 	
 	apply_knockback(knockback, source_pos)
+
+func _randomize_damage(damage) -> int:
+	var new_damage = damage + round(randf_range(-damage/5, damage / 5))
+	return new_damage
 
 func _handle_quick_heal():
 	var equipped_consumable_id = Inventory.get_heal()
