@@ -138,7 +138,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			
 	if event.is_action_pressed("heal"):
 		_handle_quick_heal()
-	
+
 	if event.is_action_pressed("attack"):
 		change_action_state(ActionState.ATTACK)
 		

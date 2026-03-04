@@ -93,14 +93,8 @@ func _input(event: InputEvent) -> void:
 			refresh_ui()
 			break
 	
+	
 	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_RIGHT:
-			if not selected_slot_data: return
-			if not selected_slot_contents: return
-			
-			_drop_item()
-			emit_equipped_signal()
-		
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP or event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			if selected_slot_data.id: return
 			
@@ -110,6 +104,15 @@ func _input(event: InputEvent) -> void:
 			
 			_clear_dragged_item()
 			refresh_ui()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			if not selected_slot_data: return
+			if not selected_slot_contents: return
+			
+			_drop_item()
+			emit_equipped_signal()
 
 func _clear_dragged_item() -> void:
 	first_selected_slot_index = -1
