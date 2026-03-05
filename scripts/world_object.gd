@@ -60,7 +60,7 @@ func collect_item():
 		queue_free()
 
 func magnetic_pull(delta):
-	if target_player == null:
+	if target_player == null or not can_be_picked:
 		current_pull_speed = 0
 		rotation = 0
 		return
@@ -80,3 +80,6 @@ func start_magnetic_pull(player):
 	
 	await get_tree().create_timer(0.1).timeout
 	target_player = player
+
+func _on_pickup_timer_timeout() -> void:
+	can_be_picked = Inventory.has_free_space(item.id)

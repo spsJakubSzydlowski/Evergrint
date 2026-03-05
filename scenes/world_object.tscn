@@ -22,4 +22,9 @@ offset = Vector2(0, -8)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=483219392]
 shape = SubResource("CircleShape2D_8uidd")
 
+[node name="pickup_timer" type="Timer" parent="." unique_id=1650008340]
+wait_time = 0.2
+autostart = true
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="pickup_timer" to="." method="_on_pickup_timer_timeout"]
