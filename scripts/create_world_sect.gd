@@ -11,8 +11,9 @@ var all_worlds
 var selected_difficulty = Global.Difficulty.EASY
 var world_seed
 
-func _ready() -> void:
-	all_worlds = SaveManager.get_all_worlds()
+func _on_visibility_changed() -> void:
+	if visible:
+		all_worlds = SaveManager.get_all_worlds()
 
 func play_click():
 	AudioManager.play_sfx("menu_click")

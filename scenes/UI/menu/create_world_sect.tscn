@@ -123,6 +123,7 @@ theme_override_fonts/font = ExtResource("2_s0unq")
 disabled = true
 text = "Create New World"
 
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/name_edit" to="." method="_on_name_edit_text_changed"]
 [connection signal="visibility_changed" from="MarginContainer/VBoxContainer/name_edit" to="." method="_on_name_edit_visibility_changed"]
 [connection signal="visibility_changed" from="MarginContainer/VBoxContainer/seed_edit" to="." method="_on_seed_edit_visibility_changed"]
