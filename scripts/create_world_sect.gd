@@ -6,16 +6,16 @@ extends Control
 @onready var create_button: Button = $HBoxContainer/create_button
 @onready var difficulty_button: Button = $MarginContainer/VBoxContainer/MarginContainer/difficulty_button
 
-var all_worlds
+var all_worlds : Array
 
 var selected_difficulty = Global.Difficulty.EASY
-var world_seed
+var world_seed: int
 
 func _on_visibility_changed() -> void:
 	if visible:
 		all_worlds = SaveManager.get_all_worlds()
 
-func play_click():
+func play_click() -> void:
 	AudioManager.play_sfx("menu_click")
 
 func get_safe_world_name(input_name: String):
@@ -37,7 +37,7 @@ func get_safe_world_name(input_name: String):
 	
 	return safe_name
 
-func get_seed_int(input_seed: String):
+func get_seed_int(input_seed: String) -> int:
 	var rng = RandomNumberGenerator.new()
 	rng.seed = input_seed.hash()
 	
@@ -70,7 +70,7 @@ func _on_return_button_pressed() -> void:
 	play_click()
 	Signals.switch_to_section.emit("menu")
 
-func setup_and_start():
+func setup_and_start() -> void:
 	play_click()
 	
 	var world_name = get_safe_world_name(name_edit.text)
