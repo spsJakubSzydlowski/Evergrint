@@ -61,7 +61,6 @@ wait_time = 30.0
 autostart = true
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=2025114192]
-debug_enabled = true
 
 [node name="navigation_timer" type="Timer" parent="." unique_id=373853778]
 wait_time = 0.2
