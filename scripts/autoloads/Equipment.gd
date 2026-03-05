@@ -16,6 +16,12 @@ var equipped = {
 
 const EQUIPMENT_TYPES = ["head", "chest", "legs", "feet"]
 
+func _ready() -> void:
+	Signals.play_world.connect(_on_play_world.bind())
+	
+func _on_play_world(_world_name):
+	equipped = equipped_default
+
 func get_armor_amount() -> int:
 	var armor_amount = 0
 	for slot in equipped:

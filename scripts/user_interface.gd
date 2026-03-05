@@ -262,7 +262,6 @@ func _on_slot_clicked(slot_ui) -> void:
 		#if holding something from inventory
 		if first_selected_slot_index != -1:
 			if Inventory.slots[index].id != "":
-				#Inventory.swap_slot(first_selected_slot_index, index)
 				var temp = Inventory.slots[index].duplicate()
 				Inventory.slots[index] = selected_slot_data
 				selected_slot_data = temp
