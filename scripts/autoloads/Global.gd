@@ -40,6 +40,9 @@ var world_scenes = {
 var current_world_id : String = "surface"
 var current_tilemap = null
 
+var current_time
+var current_part_of_day = Enums.PartsOfDay.DAY
+
 func _ready():
 	Signals.boss_died.connect(_on_boss_died)
 	
