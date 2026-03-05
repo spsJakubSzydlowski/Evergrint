@@ -422,8 +422,7 @@ func take_hit(damage, knockback, source_pos):
 	apply_knockback(knockback, source_pos)
 
 func _randomize_damage(damage) -> int:
-	var new_damage = damage + round(randf_range(-damage/5, damage / 5))
-	return new_damage
+	return damage + int(round(randf_range(damage * 0.8, damage * 1.2)))
 
 func _handle_quick_heal():
 	var equipped_consumable_id = Inventory.get_heal()

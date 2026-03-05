@@ -206,7 +206,9 @@ func take_hit(amount: int, knockback_amount: float, source_pos):
 	tween.tween_property(sprite, "modulate", Color.RED, 0.1)
 	tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
 	
-	current_hp -= amount
+	var damage = _randomize_damage(amount)
+	
+	current_hp -= damage
 	update_heath_bar()
 	
 	if current_hp < (max_hp * 0.5) and is_boss:
@@ -227,6 +229,8 @@ func take_hit(amount: int, knockback_amount: float, source_pos):
 	add_child(text_instance)
 	text_instance.position = Vector2(randf_range(-15, 15), randf_range(-5, -15))
 
+func _randomize_damage(damage) -> int:
+	return damage + int(round(randf_range(damage * 0.8, damage * 1.2)))
 
 func apply_knockback(knockback_amount, knockback_dir):
 	knockback_velocity = knockback_dir * knockback_amount * 150.0
