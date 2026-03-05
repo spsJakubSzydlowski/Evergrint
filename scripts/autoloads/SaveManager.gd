@@ -105,7 +105,7 @@ func load_world(world_name: String) -> bool:
 	success = true
 	return success
 
-func delete_world(world_name: String):
+func delete_world(world_name: String) -> void:
 	var normal_path = worlds_path + "/" + world_name + ".json"
 	var bak_path = worlds_path + "/" + world_name + ".json.bak"
 	
@@ -152,7 +152,7 @@ func _read_json_file(path: String):
 	file.close()
 	return JSON.parse_string(content)
 
-func get_all_worlds():
+func get_all_worlds() -> Array:
 	var worlds_folder = DirAccess.open(worlds_path)
 	var worlds = []
 	
@@ -194,7 +194,7 @@ func get_all_worlds():
 	
 	return worlds
 
-func save_to_disk(world_name: String):
+func save_to_disk(world_name: String) -> void:
 	if world_name == "" or world_name == null:
 		return
 	
@@ -241,7 +241,6 @@ func save_to_disk(world_name: String):
 			dir.rename(world_name + ".json", world_name + ".json.bak")
 		
 		dir.rename(world_name + ".json.tmp", world_name + ".json")
-		
 
 func migrate_save_data(data, old_version):
 	print("Migrating save from v", old_version, " to v", CURRENT_SAVE_VERSION)
@@ -261,7 +260,7 @@ func _notification(what: int) -> void:
 			save_to_disk(Global.world_name)
 		get_tree().quit()
 
-func _on_autosave_timeout():
+func _on_autosave_timeout() -> void:
 	if Global.world_name != "":
 		Signals.autosaving.emit()
 		save_to_disk(Global.world_name)
