@@ -1,16 +1,16 @@
 extends CanvasModulate
 
-
 @onready var anim: AnimationPlayer = $AnimationPlayer
-@export var day_duration = 30.0
 
-func _ready() -> void:
-	anim.speed_scale = 1.0 / day_duration
+func _process(_delta: float) -> void:
 	anim.play("day_night")
+	anim.seek(TimeManager.time_percent, true)
+	
+	anim.speed_scale = 0
 
 func change_part_of_day(part: String):
 	match part:
-		"dawn": Global.current_part_of_day = Enums.PartsOfDay.DAWN
-		"day": Global.current_part_of_day = Enums.PartsOfDay.DAY
-		"dusk": Global.current_part_of_day = Enums.PartsOfDay.DUSK
-		"night": Global.current_part_of_day = Enums.PartsOfDay.NIGHT
+		"dawn": TimeManager.current_part_of_day = Enums.PartsOfDay.DAWN
+		"day": TimeManager.current_part_of_day = Enums.PartsOfDay.DAY
+		"dusk": TimeManager.current_part_of_day = Enums.PartsOfDay.DUSK
+		"night": TimeManager.current_part_of_day = Enums.PartsOfDay.NIGHT
