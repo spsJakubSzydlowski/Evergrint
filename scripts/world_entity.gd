@@ -9,12 +9,13 @@ const FLOATING_TEXT = preload("res://scenes/floating_text.tscn")
 @onready var health_bar: TextureProgressBar = $HealthBar
 @onready var collision: CollisionShape2D = $hurt_box/CollisionShape2D
 @onready var visible_timer: Timer = $visible_timer
+@onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
 
-var entity = ""
-var entity_name = ""
+var entity : Dictionary = {}
+var entity_name : String = ""
 var player = null
-var loot_items = {}
-var entity_stats = {}
+var loot_items : Array = []
+var entity_stats : Dictionary = {}
 
 #region Combat Variables
 var is_dead := false
@@ -62,85 +63,7 @@ var attack_cooldown = 1.0
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 
-func _physics_process(_delta: float) -> void:
-	process_active_behaviour()
-
-func process_active_behaviour():
-	if faction != FACTION_HOSTILE or is_dead or not player:
-		return
-		
-	var distance_to_player = global_position.distance_to(player.global_position)
-	
-	if not is_stunned:
-		handle_movement(distance_to_player)
-	else:
-		velocity = knockback_velocity
-		move_and_slide()
-	
-	handle_attacks(distance_to_player)
-	
-	move_and_slide()
-
-func process_idle_behaviour(delta: float):
-	idle_timer -= delta
-	if idle_timer <= 0:
-		idle_timer = randf_range(2.0, 4.0)
-		if randf() > 0.5:
-			idle_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
-		else:
-			idle_direction = Vector2.ZERO
-			
-	var idle_speed = entity.get("move_speed", 0.0) * 0.3
-	velocity = idle_direction * idle_speed
-	
-	if idle_direction.x != 0:
-		sprite.flip_h = idle_direction.x < 0
-
-func handle_movement(distance_to_player):
-	if player.current_action_state == player.ActionState.DEAD:
-		velocity = Vector2.ZERO
-		return
-		
-	if distance_to_player < attack_range:
-		velocity = Vector2.ZERO
-		deal_damage(player)
-	elif distance_to_player <= aggro_range:
-		var direction = (player.global_position - global_position).normalized()
-		velocity = direction * entity.get("move_speed", 100)
-		sprite.flip_h = direction.x < 0
-	else:
-		process_idle_behaviour(get_physics_process_delta_time())
-
-func handle_attacks(distance_to_player):
-	if player.current_action_state == player.ActionState.DEAD:
-		if is_boss:
-			Global.living_boss = false
-			queue_free()
-		return
-
-	if distance_to_player <= aggro_range and not is_acting:
-		execute_attack_logic()
-
-func execute_attack_logic():
-	if behavior.is_empty():
-		return
-	
-	var current_step = behavior[behavior_index]
-	
-	match current_step["action"]:
-		"shoot":
-			var projectile_id = current_step.get("projectile_name", "arrow")
-			var projectile_count = current_step.get("projectile_count", 1)
-			AbilityManager.projectile_burst(projectile_id, self, projectile_count)
-		"wait":
-			var time = current_step.get("time", 1.0)
-			AbilityManager.wait(self, time)
-		"teleport":
-			AbilityManager.spawn_at_player(self, player)
-			
-	behavior_index = (behavior_index + 1) % behavior.size()
-
-func initialize(entity_id: String):
+func initialize(entity_id: String) -> void:
 	entity = DataManager.get_entity(entity_id)
 	
 	if entity == null:
@@ -150,6 +73,7 @@ func initialize(entity_id: String):
 	name = entity.id
 	entity_name = entity.id
 	collision.shape.size = Vector2(entity.get("hitbox_x"), entity.get("hitbox_y"))
+	collision.position.y -= collision.shape.size.y / 2
 
 	var sprite_frames = SpriteFramesRegistry.get_frames(entity_id)
 	if sprite_frames:
@@ -191,11 +115,98 @@ func initialize(entity_id: String):
 		
 	play_anim("spawn", sprite)
 
+func _physics_process(_delta: float) -> void:
+	process_active_behaviour()
+
+func process_active_behaviour() -> void:
+	if faction != FACTION_HOSTILE or is_dead or not player:
+		return
+		
+	var distance_to_player = global_position.distance_to(player.global_position)
+	
+	if not is_stunned:
+		handle_movement(distance_to_player)
+	else:
+		velocity = knockback_velocity
+		move_and_slide()
+	
+	handle_attacks(distance_to_player)
+	
+	move_and_slide()
+
+func process_idle_behaviour(delta: float) -> void:
+	idle_timer -= delta
+	if idle_timer <= 0:
+		idle_timer = randf_range(2.0, 4.0)
+		if randf() > 0.5:
+			idle_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
+		else:
+			idle_direction = Vector2.ZERO
+			
+	var idle_speed = entity.get("move_speed", 0.0) * 0.3
+	velocity = idle_direction * idle_speed
+	
+	if idle_direction.x != 0:
+		sprite.flip_h = idle_direction.x < 0
+
+func handle_movement(distance_to_player) -> void:
+	if player.current_action_state == player.ActionState.DEAD:
+		velocity = Vector2.ZERO
+		return
+		
+	if distance_to_player < attack_range:
+		velocity = Vector2.ZERO
+		deal_damage(player)
+	elif distance_to_player <= aggro_range:
+		var direction = _get_target_position()
+		velocity = direction * entity.get("move_speed", 100)
+		if direction.length() > 0.1:
+			sprite.flip_h = direction.x < 0
+	else:
+		process_idle_behaviour(get_physics_process_delta_time())
+
+func _get_target_position() -> Vector2:
+	nav_agent.target_position = player.global_position
+	
+	if nav_agent.is_navigation_finished(): return Vector2.ZERO
+	
+	var next_path_pos = nav_agent.get_next_path_position()
+	return global_position.direction_to(next_path_pos)
+
+func handle_attacks(distance_to_player) -> void:
+	if player.current_action_state == player.ActionState.DEAD:
+		if is_boss:
+			Global.living_boss = false
+			queue_free()
+		return
+
+	if distance_to_player <= aggro_range and not is_acting:
+		execute_attack_logic()
+
+func execute_attack_logic() -> void:
+	if behavior.is_empty():
+		return
+	
+	var current_step = behavior[behavior_index]
+	
+	match current_step["action"]:
+		"shoot":
+			var projectile_id = current_step.get("projectile_name", "arrow")
+			var projectile_count = current_step.get("projectile_count", 1)
+			AbilityManager.projectile_burst(projectile_id, self, projectile_count)
+		"wait":
+			var time = current_step.get("time", 1.0)
+			AbilityManager.wait(self, time)
+		"teleport":
+			AbilityManager.spawn_at_player(self, player)
+			
+	behavior_index = (behavior_index + 1) % behavior.size()
+
 func _on_world_entity_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		deal_damage(body)
 
-func take_hit(amount: int, knockback_amount: float, source_pos):
+func take_hit(amount: int, knockback_amount: float, source_pos) -> void:
 	if is_dead: return
 	
 	if got_hit == false:
@@ -232,7 +243,7 @@ func take_hit(amount: int, knockback_amount: float, source_pos):
 func _randomize_damage(damage) -> int:
 	return damage + int(round(randf_range(damage * 0.8, damage * 1.2)))
 
-func apply_knockback(knockback_amount, knockback_dir):
+func apply_knockback(knockback_amount, knockback_dir) -> void:
 	knockback_velocity = knockback_dir * knockback_amount * 150.0
 
 	var tween = create_tween()
@@ -242,7 +253,7 @@ func apply_knockback(knockback_amount, knockback_dir):
 	await get_tree().create_timer(stun_time).timeout
 	is_stunned = false
 
-func die():
+func die() -> void:
 	is_dead = true
 		
 	if is_boss:
@@ -253,7 +264,7 @@ func die():
 	drop_loot()
 	queue_free()
 
-func deal_damage(body):
+func deal_damage(body) -> void:
 	if body.has_method("take_hit") and body.can_be_hit:
 		var direction_to_player = global_position.direction_to(player.global_position)
 		var dash_vector = direction_to_player * 10.0
@@ -264,7 +275,7 @@ func deal_damage(body):
 		
 		body.take_hit(attack_damage, knockback, global_position)
 
-func drop_loot():
+func drop_loot() -> void:
 	
 	if loot_items == null:
 		return
@@ -279,7 +290,7 @@ func drop_loot():
 			for i in range(amount):
 				DataManager.spawn_item(item_id, global_position)
 
-func update_heath_bar():
+func update_heath_bar() -> void:
 	health_bar.visible = true
 	health_bar.value = current_hp
 	var health_ratio = float(current_hp) / float(health_bar.max_value)
@@ -296,7 +307,7 @@ func update_heath_bar():
 	else:
 		health_bar.tint_progress = Color.RED
 
-func play_anim(anim_name: String, sprite_node):
+func play_anim(anim_name: String, sprite_node) -> void:
 	if has_node("AnimatedSprite2D"):
 		if sprite_node.sprite_frames.has_animation(anim_name) and sprite_node.animation != anim_name:
 			sprite_node.play(anim_name)
