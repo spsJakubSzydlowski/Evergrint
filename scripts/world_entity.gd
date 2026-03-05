@@ -10,6 +10,7 @@ const FLOATING_TEXT = preload("res://scenes/floating_text.tscn")
 @onready var collision: CollisionShape2D = $hurt_box/CollisionShape2D
 @onready var visible_timer: Timer = $visible_timer
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
+@onready var navigation_timer: Timer = $navigation_timer
 
 var entity : Dictionary = {}
 var entity_name : String = ""
@@ -62,6 +63,7 @@ var attack_cooldown = 1.0
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
+	navigation_timer.wait_time = 0.2 + randf_range(-0.05, 0.05)
 
 func initialize(entity_id: String) -> void:
 	entity = DataManager.get_entity(entity_id)
