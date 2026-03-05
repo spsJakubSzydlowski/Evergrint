@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b6d0iowgh44ec" path="res://scripts/user_interface.gd" id="1_fu525"]
 [ext_resource type="PackedScene" uid="uid://gyk2vckeh01e" path="res://scenes/UI/hud/health_bar.tscn" id="2_fu525"]
-[ext_resource type="PackedScene" uid="uid://dicdr4oyomy42" path="res://scenes/UI/hud/compas.tscn" id="3_q3hqr"]
+[ext_resource type="PackedScene" uid="uid://dicdr4oyomy42" path="res://scenes/UI/hud/inforamtions.tscn" id="3_q3hqr"]
 [ext_resource type="PackedScene" uid="uid://ckof8acru4xl0" path="res://scenes/UI/equip_canvas.tscn" id="4_tsnii"]
 [ext_resource type="PackedScene" uid="uid://c1cjrtsieu2bp" path="res://scenes/UI/hud/save_icon.tscn" id="5_hyee5"]
 
@@ -26,7 +26,7 @@ theme_override_constants/separation = 2
 [node name="health_bar" parent="MarginContainer/VBoxContainer" unique_id=12292735 instance=ExtResource("2_fu525")]
 layout_mode = 2
 
-[node name="compas" parent="MarginContainer/VBoxContainer" unique_id=1975728632 instance=ExtResource("3_q3hqr")]
+[node name="informations" parent="MarginContainer/VBoxContainer" unique_id=1975728632 instance=ExtResource("3_q3hqr")]
 layout_mode = 2
 
 [node name="inventory_margin" type="MarginContainer" parent="." unique_id=2022433650]
