@@ -166,8 +166,6 @@ func handle_movement(distance_to_player) -> void:
 		process_idle_behaviour(get_physics_process_delta_time())
 
 func _get_target_position() -> Vector2:
-	nav_agent.target_position = player.global_position
-	
 	if nav_agent.is_navigation_finished(): return Vector2.ZERO
 	
 	var next_path_pos = nav_agent.get_next_path_position()
@@ -321,3 +319,7 @@ func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 
 func _on_visible_timer_timeout() -> void:
 	queue_free()
+
+func _on_navigation_timer_timeout() -> void:
+	if player:
+		nav_agent.target_position = player.global_position

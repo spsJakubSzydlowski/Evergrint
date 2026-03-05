@@ -63,7 +63,12 @@ autostart = true
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=2025114192]
 debug_enabled = true
 
+[node name="navigation_timer" type="Timer" parent="." unique_id=373853778]
+wait_time = 0.2
+autostart = true
+
 [connection signal="body_entered" from="hurt_box" to="." method="_on_world_entity_body_entered"]
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
 [connection signal="timeout" from="visible_timer" to="." method="_on_visible_timer_timeout"]
+[connection signal="timeout" from="navigation_timer" to="." method="_on_navigation_timer_timeout"]
