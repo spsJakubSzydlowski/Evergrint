@@ -4,9 +4,9 @@ var player = null
 @onready var tile_map: TileMapLayer = $TileMapLayer
 @onready var object_layer: TileMapLayer = $ObjectLayer
 
-@export var max_entities = 20
+@export var max_entities : int = 20
 
-func _ready():
+func _ready() -> void:
 	if not DataManager.is_loaded:
 		await DataManager.database_ready
 	
@@ -38,7 +38,7 @@ func _physics_process(_delta: float) -> void:
 	if player:
 		Global.update_chunks(object_layer)
 
-func spawn_entity(first_slime = false):
+func spawn_entity(first_slime = false) -> void:
 	var current_enemy_count = get_tree().get_nodes_in_group("entity").size()
 	var spawn_pos = Vector2.ZERO
 	var attempts = 0
@@ -69,7 +69,7 @@ func spawn_entity(first_slime = false):
 		if found_valid_spot:
 			await DataManager.spawn_entity("green_slime", spawn_pos)
 
-func spawn_player_at_center():
+func spawn_player_at_center()-> void:
 	Global.update_chunks(object_layer)
 	await get_tree().process_frame
 	
