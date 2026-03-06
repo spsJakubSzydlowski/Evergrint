@@ -150,8 +150,9 @@ func put_dragged_item_to_free_slot() -> void:
 	var free_inventory_index : int = Inventory.get_free_space(selected_slot_data.id)
 	if not free_inventory_index == -1:
 		Inventory.slots[free_inventory_index] = selected_slot_data
-	_clear_dragged_item()
 	
+	Inventory.inventory_updated.emit()
+	_clear_dragged_item()
 	refresh_ui()
 
 func refresh_ui() -> void:
@@ -285,7 +286,8 @@ func _on_slot_clicked(slot_ui) -> void:
 				show_item_at_cursor(slot_ui)
 		
 		AudioManager.play_sfx("inventory_slot_pop")
-		
+	
+	Inventory.inventory_updated.emit()
 	refresh_ui()
 
 func show_item_at_cursor(slot_ui) -> void:
