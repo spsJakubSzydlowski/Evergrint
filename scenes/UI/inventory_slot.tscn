@@ -72,6 +72,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = -1
 
 [node name="AmountLabel" type="Label" parent="Contents/MarginContainer" unique_id=2113513284]
@@ -82,6 +83,18 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_fonts/font = SubResource("FontVariation_mi4c3")
 theme_override_font_sizes/font_size = 7
+vertical_alignment = 2
+
+[node name="key_label" type="Label" parent="Contents/MarginContainer" unique_id=466121995]
+z_index = 2
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_mi4c3")
+theme_override_font_sizes/font_size = 7
+text = "0"
+horizontal_alignment = 2
 vertical_alignment = 2
 
 [connection signal="mouse_entered" from="." to="." method="_on_slot_mouse_entered"]
