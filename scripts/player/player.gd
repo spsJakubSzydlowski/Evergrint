@@ -180,8 +180,10 @@ func move():
 	var direction := Input.get_vector("a", "d", "w", "s").normalized()
 	
 	if direction:
+		sprite.play("walk")
 		velocity = velocity.move_toward(direction * move_speed, acceleration * delta)
 	else:
+		sprite.play("idle")
 		velocity = velocity.move_toward(Vector2.ZERO, acceleration * delta)
 
 	if direction.x < 0 and can_turn:
