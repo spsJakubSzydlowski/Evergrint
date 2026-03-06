@@ -11,6 +11,9 @@ var target_player = null
 var dropped = false
 var can_be_picked = true
 
+func _ready() -> void:
+	Inventory.inventory_updated.connect(_on_inventory_updated)
+
 func _physics_process(delta: float) -> void:
 	magnetic_pull(delta)
 
@@ -44,20 +47,32 @@ func initialize(item_id: String):
 			
 			sprite.region_rect = Rect2(pos_x, pos_y, region_w, region_h)
 	
+	if dropped:
+		can_be_picked = false
+		await get_tree().create_timer(2.0).timeout
+		can_be_picked = true
+	
+	_on_inventory_updated()
+	
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		collect_item()
 
 func collect_item():
-	if Inventory.has_free_space(item.id) and can_be_picked:
-		if has_meta("amount"):
-			Inventory.add_item(item.id, get_meta("amount"))
-		else:
-			Inventory.add_item(item.id)
+	if not can_be_picked:
+		return
 		
-		collision.set_deferred("disabled", true)
-		AudioManager.play_sfx("pickup_item", global_position)
-		queue_free()
+	if not Inventory.has_free_space(item.id):
+		return
+	
+	if has_meta("amount"):
+		Inventory.add_item(item.id, get_meta("amount"))
+	else:
+		Inventory.add_item(item.id)
+	
+	collision.set_deferred("disabled", true)
+	AudioManager.play_sfx("pickup_item", global_position)
+	queue_free()
 
 func magnetic_pull(delta):
 	if target_player == null or not can_be_picked:
@@ -81,5 +96,5 @@ func start_magnetic_pull(player):
 	await get_tree().create_timer(0.1).timeout
 	target_player = player
 
-func _on_pickup_timer_timeout() -> void:
+func _on_inventory_updated() -> void:
 	can_be_picked = Inventory.has_free_space(item.id)
