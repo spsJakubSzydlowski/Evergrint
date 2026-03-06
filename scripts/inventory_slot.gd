@@ -8,6 +8,7 @@ var slot_index = -1
 @onready var icon: TextureRect = $Contents/Icon
 @onready var amount_label: Label = $Contents/MarginContainer/AmountLabel
 @onready var selection_sprite: NinePatchRect = $SelectionSprite
+@onready var key_label: Label = $Contents/MarginContainer/key_label
 
 func _ready() -> void:
 	if has_meta("equipment_type"):
@@ -18,6 +19,13 @@ func _ready() -> void:
 			icon.texture = load(path)
 		else:
 			printerr("Atlas resource doesn't exist: " + path)
+	
+	if get_parent().name == "hotbar":
+		var key = get_index() + 1
+		if key == 10: key = 0
+		key_label.text = str(key)
+	else:
+		key_label.text = ""
 
 func _gui_input(event: InputEvent) -> void:
 	if Global.is_player_dead or Global.world_name == "":
