@@ -118,7 +118,7 @@ shape = SubResource("RectangleShape2D_dqkch")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1935572899]
 y_sort_enabled = true
 sprite_frames = ExtResource("2_g2els")
-animation = &"spawn"
+animation = &"idle"
 offset = Vector2(0, -12)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=953755070]
