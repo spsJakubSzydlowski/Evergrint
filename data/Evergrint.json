@@ -50,264 +50,278 @@
 					"id": "red_apple",
 					"tile": {
 						"file": "../textures/Atlas-items-16x16.png",
-						"size": 16.0,
-						"x": 0.0,
-						"y": 0.0
+						"size": 16,
+						"x": 0,
+						"y": 0
 					},
-					"tile_size": 16.0,
-					"type": 2.0,
-					"stack_limit": 30.0,
-					"tile_width": 1.0,
-					"tile_height": 1.0
+					"tile_size": 16,
+					"type": 2,
+					"stack_limit": 30,
+					"tile_width": 1,
+					"tile_height": 1
 				},
 				{
 					"id": "green_apple",
 					"name": "Green Apple",
-					"tile_size": 16.0,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-items-16x16.png",
-						"size": 16.0,
-						"x": 0.0,
-						"y": 1.0
+						"size": 16,
+						"x": 0,
+						"y": 1
 					},
-					"type": 2.0,
-					"stack_limit": 30.0,
-					"tile_width": 1.0,
-					"tile_height": 1.0
+					"type": 2,
+					"stack_limit": 30,
+					"tile_width": 1,
+					"tile_height": 1
 				},
 				{
 					"id": "wooden_sword",
 					"name": "Wooden Sword",
-					"type": 0.0,
-					"tile_size": 16.0,
+					"type": 0,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-melee_weapons.png",
-						"size": 16.0,
-						"x": 0.0,
-						"y": 0.0
+						"size": 16,
+						"x": 0,
+						"y": 0
 					},
-					"stack_limit": 1.0,
-					"tile_width": 1.0,
-					"tile_height": 1.0
+					"stack_limit": 1,
+					"tile_width": 1,
+					"tile_height": 1
 				},
 				{
 					"id": "iron_sword",
 					"name": "Iron Sword",
-					"type": 0.0,
-					"stack_limit": 1.0,
-					"tile_size": 16.0,
+					"type": 0,
+					"stack_limit": 1,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-melee_weapons.png",
-						"size": 16.0,
-						"x": 1.0,
-						"y": 0.0
+						"size": 16,
+						"x": 1,
+						"y": 0
 					},
-					"tile_width": 1.0,
-					"tile_height": 1.0
+					"tile_width": 1,
+					"tile_height": 1
 				},
 				{
 					"id": "green_gel",
 					"name": "Gel",
-					"type": 3.0,
-					"stack_limit": 9999.0,
-					"tile_size": 16.0,
+					"type": 3,
+					"stack_limit": 9999,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-items-16x16.png",
-						"size": 16.0,
-						"x": 1.0,
-						"y": 0.0
+						"size": 16,
+						"x": 1,
+						"y": 0
 					},
-					"tile_width": 1.0,
-					"tile_height": 1.0
+					"tile_width": 1,
+					"tile_height": 1
 				},
 				{
 					"id": "wooden_axe",
 					"name": "Wooden Axe",
-					"type": 1.0,
-					"stack_limit": 1.0,
-					"tile_size": 16.0,
+					"type": 1,
+					"stack_limit": 1,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-tools-16x16.png",
-						"size": 16.0,
-						"x": 0.0,
-						"y": 0.0
+						"size": 16,
+						"x": 0,
+						"y": 0
 					},
-					"tile_width": 1.0,
-					"tile_height": 1.0
+					"tile_width": 1,
+					"tile_height": 1
 				},
 				{
 					"id": "wooden_hammer",
 					"name": "Wooden Hammer",
-					"type": 0.0,
-					"stack_limit": 1.0,
-					"tile_width": 2.0,
-					"tile_height": 2.0,
-					"tile_size": 16.0,
+					"type": 0,
+					"stack_limit": 1,
+					"tile_width": 2,
+					"tile_height": 2,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-melee_weapons.png",
-						"size": 16.0,
-						"x": 2.0,
-						"y": 0.0,
-						"width": 2.0,
-						"height": 2.0
+						"size": 16,
+						"x": 2,
+						"y": 0,
+						"width": 2,
+						"height": 2
 					}
 				},
 				{
 					"id": "wooden_bow",
 					"name": "Wooden Bow",
-					"type": 0.0,
-					"stack_limit": 1.0,
-					"tile_width": 1.0,
-					"tile_height": 1.0,
-					"tile_size": 16.0,
+					"type": 0,
+					"stack_limit": 1,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-bows.png",
-						"size": 16.0,
-						"x": 0.0,
-						"y": 0.0
+						"size": 16,
+						"x": 0,
+						"y": 0
 					}
 				},
 				{
 					"id": "arrow",
 					"name": "Arrow",
-					"type": 5.0,
-					"stack_limit": 9999.0,
-					"tile_width": 1.0,
-					"tile_height": 1.0,
-					"tile_size": 16.0,
+					"type": 5,
+					"stack_limit": 9999,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-projectiles.png",
-						"size": 16.0,
-						"x": 0.0,
-						"y": 0.0
+						"size": 16,
+						"x": 0,
+						"y": 0
 					}
 				},
 				{
 					"id": "slime_arrow",
 					"name": "Slime Arrow",
-					"type": 5.0,
-					"stack_limit": 9999.0,
-					"tile_width": 1.0,
-					"tile_height": 1.0,
-					"tile_size": 16.0,
+					"type": 5,
+					"stack_limit": 9999,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-projectiles.png",
-						"size": 16.0,
-						"x": 0.0,
-						"y": 1.0
+						"size": 16,
+						"x": 0,
+						"y": 1
 					}
 				},
 				{
 					"id": "wooden_pickaxe",
 					"name": "Wooden Pickaxe",
-					"type": 1.0,
-					"stack_limit": 1.0,
-					"tile_width": 1.0,
-					"tile_height": 1.0,
-					"tile_size": 16.0,
+					"type": 1,
+					"stack_limit": 1,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-tools-16x16.png",
-						"size": 16.0,
-						"x": 1.0,
-						"y": 0.0
+						"size": 16,
+						"x": 1,
+						"y": 0
 					}
 				},
 				{
 					"id": "stone",
 					"name": "Stone",
-					"type": 3.0,
-					"stack_limit": 9999.0,
-					"tile_width": 1.0,
-					"tile_height": 1.0,
-					"tile_size": 16.0,
+					"type": 3,
+					"stack_limit": 9999,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-items-16x16.png",
-						"size": 16.0,
-						"x": 1.0,
-						"y": 1.0
+						"size": 16,
+						"x": 1,
+						"y": 1
 					}
 				},
 				{
 					"id": "head_of_the_burrower",
 					"name": "Head Of The Burrower",
-					"type": 2.0,
-					"stack_limit": 30.0,
-					"tile_width": 1.0,
-					"tile_height": 1.0,
-					"tile_size": 16.0,
+					"type": 2,
+					"stack_limit": 30,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-items-16x16.png",
-						"size": 16.0,
-						"x": 2.0,
-						"y": 0.0
+						"size": 16,
+						"x": 2,
+						"y": 0
 					},
 					"tooltip": "You feel something watching you underground"
 				},
 				{
 					"id": "wooden_chestplate",
 					"name": "Wooden Chestplate",
-					"type": 6.0,
-					"stack_limit": 1.0,
-					"tile_width": 1.0,
-					"tile_height": 1.0,
-					"tile_size": 16.0,
+					"type": 6,
+					"stack_limit": 1,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-armor.png",
-						"size": 16.0,
-						"x": 1.0,
-						"y": 0.0
+						"size": 16,
+						"x": 1,
+						"y": 0
 					}
 				},
 				{
 					"id": "wooden_helmet",
 					"name": "Wooden Helmet",
-					"type": 6.0,
-					"stack_limit": 1.0,
-					"tile_width": 1.0,
-					"tile_height": 1.0,
-					"tile_size": 16.0,
+					"type": 6,
+					"stack_limit": 1,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-armor.png",
-						"size": 16.0,
-						"x": 0.0,
-						"y": 0.0
+						"size": 16,
+						"x": 0,
+						"y": 0
 					}
 				},
 				{
 					"id": "wooden_leggins",
 					"name": "Wooden Leggins",
-					"type": 6.0,
-					"stack_limit": 1.0,
-					"tile_width": 1.0,
-					"tile_height": 1.0,
-					"tile_size": 16.0,
+					"type": 6,
+					"stack_limit": 1,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-armor.png",
-						"size": 16.0,
-						"x": 2.0,
-						"y": 0.0
+						"size": 16,
+						"x": 2,
+						"y": 0
 					}
 				},
 				{
 					"id": "wooden_boots",
 					"name": "Wooden Boots",
-					"type": 6.0,
-					"stack_limit": 1.0,
-					"tile_width": 1.0,
-					"tile_height": 1.0,
-					"tile_size": 16.0,
+					"type": 6,
+					"stack_limit": 1,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
 					"tile": {
 						"file": "../textures/Atlas-armor.png",
-						"size": 16.0,
-						"x": 3.0,
-						"y": 0.0
+						"size": 16,
+						"x": 3,
+						"y": 0
 					}
+				},
+				{
+					"id": "dripping_top_hat",
+					"name": "Dripping Top Hat",
+					"type": 6,
+					"stack_limit": 1,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
+					"tile": {
+						"file": "../textures/Atlas-armor.png",
+						"size": 16,
+						"x": 0,
+						"y": 1
+					},
+					"tooltip": "Never seems to dry"
 				}
 			],
 			"separators": [],
-			"props": {
-
-			}
+			"props": {}
 		},
 		{
 			"name": "ActionStats",
@@ -370,90 +384,88 @@
 			],
 			"lines": [
 				{
-					"damage": 5.0,
+					"damage": 5,
 					"attack_speed": 0.8,
 					"knockback": 0.7,
-					"hitbox_x": 22.0,
-					"hitbox_y": 14.0,
-					"tool_type": 1.0,
-					"tool_power": 1.0,
+					"hitbox_x": 22,
+					"hitbox_y": 14,
+					"tool_type": 1,
+					"tool_power": 1,
 					"id": "wooden_sword",
-					"weapon_type": 0.0,
-					"offset_x": 0.0,
-					"tool_range": 0.0
+					"weapon_type": 0,
+					"offset_x": 0,
+					"tool_range": 0
 				},
 				{
-					"damage": 12.0,
+					"damage": 12,
 					"attack_speed": 0.7,
 					"knockback": 0.7,
-					"hitbox_x": 22.0,
-					"hitbox_y": 14.0,
-					"tool_type": 1.0,
-					"tool_power": 1.0,
+					"hitbox_x": 22,
+					"hitbox_y": 14,
+					"tool_type": 1,
+					"tool_power": 1,
 					"id": "iron_sword",
-					"weapon_type": 0.0,
-					"offset_x": 0.0,
-					"tool_range": 0.0
+					"weapon_type": 0,
+					"offset_x": 0,
+					"tool_range": 0
 				},
 				{
-					"damage": 3.0,
+					"damage": 3,
 					"attack_speed": 0.5,
 					"knockback": 0.2,
-					"hitbox_x": 22.0,
-					"hitbox_y": 14.0,
-					"tool_type": 2.0,
-					"tool_power": 1.0,
+					"hitbox_x": 22,
+					"hitbox_y": 14,
+					"tool_type": 2,
+					"tool_power": 1,
 					"id": "wooden_axe",
-					"weapon_type": 0.0,
-					"offset_x": 0.0,
-					"tool_range": 0.0
+					"weapon_type": 0,
+					"offset_x": 0,
+					"tool_range": 0
 				},
 				{
-					"damage": 12.0,
+					"damage": 12,
 					"attack_speed": 0.45,
 					"knockback": 1.5,
-					"hitbox_x": 16.0,
-					"hitbox_y": 24.0,
-					"tool_type": 1.0,
-					"tool_power": 1.0,
+					"hitbox_x": 16,
+					"hitbox_y": 24,
+					"tool_type": 1,
+					"tool_power": 1,
 					"anim_name": "attack_swing_heavy",
 					"id": "wooden_hammer",
-					"weapon_type": 0.0,
-					"offset_x": 20.0,
-					"tool_range": 0.0
+					"weapon_type": 0,
+					"offset_x": 20,
+					"tool_range": 0
 				},
 				{
-					"damage": 8.0,
+					"damage": 8,
 					"attack_speed": 0.6,
-					"knockback": 1.0,
-					"hitbox_x": 0.0,
-					"hitbox_y": 0.0,
-					"tool_type": 1.0,
-					"tool_power": 0.0,
+					"knockback": 1,
+					"hitbox_x": 0,
+					"hitbox_y": 0,
+					"tool_type": 1,
+					"tool_power": 0,
 					"id": "wooden_bow",
-					"ammo": 0.0,
-					"weapon_type": 1.0,
-					"offset_x": 0.0,
-					"tool_range": 0.0
+					"ammo": 0,
+					"weapon_type": 1,
+					"offset_x": 0,
+					"tool_range": 0
 				},
 				{
 					"id": "wooden_pickaxe",
-					"damage": 4.0,
+					"damage": 4,
 					"attack_speed": 0.6,
 					"knockback": 0.3,
-					"hitbox_x": 22.0,
-					"hitbox_y": 14.0,
-					"offset_x": 0.0,
-					"weapon_type": 0.0,
-					"tool_type": 4.0,
-					"tool_power": 1.0,
-					"tool_range": 60.0
+					"hitbox_x": 22,
+					"hitbox_y": 14,
+					"offset_x": 0,
+					"weapon_type": 0,
+					"tool_type": 4,
+					"tool_power": 1,
+					"tool_range": 60
 				}
 			],
 			"separators": [],
-			"props": {
-
-			}
+			"props": {}
 		},
 		{
 			"name": "Entities",
@@ -497,57 +509,71 @@
 				{
 					"id": "player",
 					"name": "Player",
-					"max_hp": 100.0,
-					"move_speed": 80.0,
+					"max_hp": 100,
+					"move_speed": 80,
 					"tile": {
 						"file": "../textures/player-texture.png",
-						"size": 8.0,
-						"x": 0.0,
-						"y": 0.0,
-						"width": 2.0,
-						"height": 3.0
+						"size": 8,
+						"x": 0,
+						"y": 0,
+						"width": 2,
+						"height": 3
 					},
-					"hitbox_x": 0.0,
-					"hitbox_y": 0.0,
-					"armor": 0.0
+					"hitbox_x": 0,
+					"hitbox_y": 0,
+					"armor": 0
 				},
 				{
 					"id": "green_slime",
 					"name": "Green Slime",
-					"max_hp": 50.0,
+					"max_hp": 50,
 					"tile": {
 						"file": "../textures/Atlas-enemies.png",
-						"size": 16.0,
-						"x": 0.0,
-						"y": 0.0
+						"size": 16,
+						"x": 0,
+						"y": 0
 					},
-					"move_speed": 25.0,
-					"hitbox_x": 14.0,
-					"hitbox_y": 9.0,
-					"armor": 0.0
+					"move_speed": 25,
+					"hitbox_x": 14,
+					"hitbox_y": 9,
+					"armor": 0
 				},
 				{
 					"id": "mole_boss",
 					"name": "Mole",
-					"max_hp": 250.0,
-					"move_speed": 0.0,
+					"max_hp": 250,
+					"move_speed": 0,
 					"tile": {
 						"file": "../textures/bosses/Atlas-Mole-Spawn.png",
-						"size": 16.0,
-						"x": 12.0,
-						"y": 0.0,
-						"width": 3.0,
-						"height": 2.0
+						"size": 16,
+						"x": 12,
+						"y": 0,
+						"width": 3,
+						"height": 2
 					},
-					"hitbox_x": 24.0,
-					"hitbox_y": 24.0,
-					"armor": 0.0
+					"hitbox_x": 24,
+					"hitbox_y": 24,
+					"armor": 0
+				},
+				{
+					"id": "water_goblin",
+					"name": "Water Goblin",
+					"max_hp": 75,
+					"move_speed": 30,
+					"armor": 0,
+					"hitbox_x": 15,
+					"hitbox_y": 30,
+					"tile": {
+						"file": "../textures/Atlas-enemies.png",
+						"size": 16,
+						"x": 1,
+						"y": 0,
+						"height": 2
+					}
 				}
 			],
 			"separators": [],
-			"props": {
-
-			}
+			"props": {}
 		},
 		{
 			"name": "LootTables",
@@ -568,45 +594,45 @@
 					"items": [
 						{
 							"item": "green_apple",
-							"weight": 80.0,
-							"amount_min": 2.0,
-							"amount_max": 4.0
+							"weight": 80,
+							"amount_min": 2,
+							"amount_max": 4
 						},
 						{
 							"item": "green_gel",
-							"weight": 90.0,
-							"amount_min": 1.0,
-							"amount_max": 4.0
+							"weight": 90,
+							"amount_min": 1,
+							"amount_max": 4
 						},
 						{
 							"item": "iron_sword",
-							"weight": 10.0,
-							"amount_min": 1.0,
-							"amount_max": 1.0
+							"weight": 10,
+							"amount_min": 1,
+							"amount_max": 1
 						},
 						{
 							"item": "slime_arrow",
-							"weight": 50.0,
-							"amount_min": 8.0,
-							"amount_max": 12.0
+							"weight": 50,
+							"amount_min": 8,
+							"amount_max": 12
 						},
 						{
 							"item": "head_of_the_burrower",
-							"weight": 50.0,
-							"amount_min": 1.0,
-							"amount_max": 1.0
+							"weight": 50,
+							"amount_min": 1,
+							"amount_max": 1
 						},
 						{
 							"item": "wooden_hammer",
-							"weight": 10.0,
-							"amount_min": 1.0,
-							"amount_max": 1.0
+							"weight": 10,
+							"amount_min": 1,
+							"amount_max": 1
 						},
 						{
 							"item": "wooden_bow",
-							"weight": 10.0,
-							"amount_min": 1.0,
-							"amount_max": 1.0
+							"weight": 10,
+							"amount_min": 1,
+							"amount_max": 1
 						}
 					]
 				},
@@ -615,39 +641,39 @@
 					"items": [
 						{
 							"item": "red_apple",
-							"weight": 100.0,
-							"amount_min": 1.0,
-							"amount_max": 2.0
+							"weight": 100,
+							"amount_min": 1,
+							"amount_max": 2
 						},
 						{
 							"item": "arrow",
-							"weight": 50.0,
-							"amount_min": 10.0,
-							"amount_max": 14.0
+							"weight": 50,
+							"amount_min": 10,
+							"amount_max": 14
 						},
 						{
 							"item": "wooden_helmet",
-							"weight": 25.0,
-							"amount_min": 1.0,
-							"amount_max": 1.0
+							"weight": 25,
+							"amount_min": 1,
+							"amount_max": 1
 						},
 						{
 							"item": "wooden_chestplate",
-							"weight": 25.0,
-							"amount_min": 1.0,
-							"amount_max": 1.0
+							"weight": 25,
+							"amount_min": 1,
+							"amount_max": 1
 						},
 						{
 							"item": "wooden_leggins",
-							"weight": 25.0,
-							"amount_min": 1.0,
-							"amount_max": 1.0
+							"weight": 25,
+							"amount_min": 1,
+							"amount_max": 1
 						},
 						{
 							"item": "wooden_boots",
-							"weight": 25.0,
-							"amount_min": 1.0,
-							"amount_max": 1.0
+							"weight": 25,
+							"amount_min": 1,
+							"amount_max": 1
 						}
 					]
 				},
@@ -656,9 +682,9 @@
 					"items": [
 						{
 							"item": "stone",
-							"weight": 100.0,
-							"amount_min": 1.0,
-							"amount_max": 1.0
+							"weight": 100,
+							"amount_min": 1,
+							"amount_max": 1
 						}
 					]
 				},
@@ -667,23 +693,32 @@
 					"items": [
 						{
 							"item": "arrow",
-							"weight": 100.0,
-							"amount_min": 20.0,
-							"amount_max": 50.0
+							"weight": 100,
+							"amount_min": 20,
+							"amount_max": 50
 						},
 						{
 							"item": "stone",
-							"weight": 100.0,
-							"amount_min": 10.0,
-							"amount_max": 20.0
+							"weight": 100,
+							"amount_min": 10,
+							"amount_max": 20
+						}
+					]
+				},
+				{
+					"id": "water_goblin",
+					"items": [
+						{
+							"item": "dripping_top_hat",
+							"weight": 100,
+							"amount_min": 1,
+							"amount_max": 1
 						}
 					]
 				}
 			],
 			"separators": [],
-			"props": {
-
-			}
+			"props": {}
 		},
 		{
 			"name": "LootTables@items",
@@ -769,38 +804,36 @@
 				{
 					"id": "oak_tree",
 					"name": "Oak Tree",
-					"hit_points": 5.0,
-					"tool_type": 2.0,
+					"hit_points": 5,
+					"tool_type": 2,
 					"loot_ref": "oak_tree",
 					"tile": {
 						"file": "../textures/Atlas-resources.png",
-						"size": 16.0,
-						"x": 0.0,
-						"y": 0.0,
-						"width": 2.0,
-						"height": 4.0
+						"size": 16,
+						"x": 0,
+						"y": 0,
+						"width": 2,
+						"height": 4
 					},
-					"tile_width": 2.0,
-					"tile_height": 4.0,
-					"tile_size": 16.0,
-					"hitbox_x": 16.0,
-					"hitbox_y": 50.0
+					"tile_width": 2,
+					"tile_height": 4,
+					"tile_size": 16,
+					"hitbox_x": 16,
+					"hitbox_y": 50
 				},
 				{
 					"id": "stone_block",
 					"name": "Stone Block",
-					"hit_points": 2.0,
-					"tool_type": 4.0,
-					"tile_width": 1.0,
-					"tile_height": 1.0,
-					"tile_size": 16.0,
+					"hit_points": 2,
+					"tool_type": 4,
+					"tile_width": 1,
+					"tile_height": 1,
+					"tile_size": 16,
 					"loot_ref": "stone_block"
 				}
 			],
 			"separators": [],
-			"props": {
-
-			}
+			"props": {}
 		},
 		{
 			"name": "EnemyStats",
@@ -860,11 +893,11 @@
 			],
 			"lines": [
 				{
-					"aggro_range": 250.0,
-					"attack_damage": 15.0,
+					"aggro_range": 250,
+					"attack_damage": 15,
 					"loot_ref": "green_slime",
-					"faction": 0.0,
-					"ai_type": 0.0,
+					"faction": 0,
+					"ai_type": 0,
 					"id": "green_slime",
 					"is_boss": false,
 					"knockback": 0.8,
@@ -872,7 +905,7 @@
 						{
 							"action": "shoot",
 							"projectile_name": "slime_arrow",
-							"projectile_count": 6.0
+							"projectile_count": 6
 						},
 						{
 							"action": "wait",
@@ -883,10 +916,10 @@
 				},
 				{
 					"id": "mole_boss",
-					"aggro_range": 1000.0,
-					"attack_damage": 30.0,
-					"faction": 0.0,
-					"ai_type": 0.0,
+					"aggro_range": 1000,
+					"attack_damage": 30,
+					"faction": 0,
+					"ai_type": 0,
 					"loot_ref": "mole_boss",
 					"is_boss": true,
 					"knockback": 0.8,
@@ -897,7 +930,7 @@
 						{
 							"action": "shoot",
 							"projectile_name": "boulder",
-							"projectile_count": 8.0
+							"projectile_count": 8
 						},
 						{
 							"action": "wait",
@@ -905,12 +938,21 @@
 						}
 					],
 					"spawn_world_id": "underground"
+				},
+				{
+					"id": "water_goblin",
+					"aggro_range": 150,
+					"attack_damage": 20,
+					"knockback": 0.8,
+					"faction": 0,
+					"ai_type": 0,
+					"is_boss": false,
+					"loot_ref": "water_goblin",
+					"spawn_world_id": "surface"
 				}
 			],
 			"separators": [],
-			"props": {
-
-			}
+			"props": {}
 		},
 		{
 			"name": "ProjectileStats",
@@ -954,43 +996,41 @@
 			],
 			"lines": [
 				{
-					"damage": 4.0,
-					"pierce": 1.0,
-					"move_speed": 350.0,
-					"projectile_type": 1.0,
+					"damage": 4,
+					"pierce": 1,
+					"move_speed": 350,
+					"projectile_type": 1,
 					"id": "arrow",
-					"hitbox_x": 16.0,
-					"hitbox_y": 6.0,
-					"knockback": 0.0,
-					"distance": 300.0
+					"hitbox_x": 16,
+					"hitbox_y": 6,
+					"knockback": 0,
+					"distance": 300
 				},
 				{
 					"id": "slime_arrow",
-					"damage": 6.0,
+					"damage": 6,
 					"knockback": 0.8,
-					"pierce": 1.0,
-					"move_speed": 300.0,
-					"distance": 300.0,
-					"projectile_type": 1.0,
-					"hitbox_x": 16.0,
-					"hitbox_y": 6.0
+					"pierce": 1,
+					"move_speed": 300,
+					"distance": 300,
+					"projectile_type": 1,
+					"hitbox_x": 16,
+					"hitbox_y": 6
 				},
 				{
 					"id": "boulder",
-					"damage": 20.0,
-					"pierce": 1.0,
-					"move_speed": 150.0,
-					"projectile_type": 0.0,
-					"hitbox_x": 20.0,
-					"hitbox_y": 20.0,
+					"damage": 20,
+					"pierce": 1,
+					"move_speed": 150,
+					"projectile_type": 0,
+					"hitbox_x": 20,
+					"hitbox_y": 20,
 					"knockback": 0.8,
-					"distance": 200.0
+					"distance": 200
 				}
 			],
 			"separators": [],
-			"props": {
-
-			}
+			"props": {}
 		},
 		{
 			"name": "EnemyStats@behavior_easy",
@@ -1082,19 +1122,17 @@
 				},
 				{
 					"id": "red_apple",
-					"hp_to_heal": 50.0,
+					"hp_to_heal": 50,
 					"summon_item": false
 				},
 				{
 					"id": "green_apple",
-					"hp_to_heal": 25.0,
+					"hp_to_heal": 25,
 					"summon_item": false
 				}
 			],
 			"separators": [],
-			"props": {
-
-			}
+			"props": {}
 		},
 		{
 			"name": "Audio",
@@ -1133,17 +1171,17 @@
 				{
 					"id": "boss_summon",
 					"file": "../audio/sfx/boss_summon.wav",
-					"volume": -8.0
+					"volume": -8
 				},
 				{
 					"id": "bow_release",
 					"file": "../audio/sfx/bow-release.wav",
-					"volume": -12.0
+					"volume": -12
 				},
 				{
 					"id": "menu_click",
 					"file": "../audio/sfx/menu-click.wav",
-					"volume": -30.0,
+					"volume": -30,
 					"pitch_min": 0.8,
 					"pitch_max": 0.8
 				},
@@ -1154,102 +1192,100 @@
 				{
 					"id": "block_hit",
 					"file": "../audio/sfx/stone-pick.wav",
-					"volume": -15.0
+					"volume": -15
 				},
 				{
 					"id": "sword_swing",
 					"file": "../audio/sfx/sword-swing.wav",
-					"volume": -12.0
+					"volume": -12
 				},
 				{
 					"id": "oak_tree_hit",
 					"file": "../audio/sfx/tree_hit.wav",
-					"volume": -10.0
+					"volume": -10
 				},
 				{
 					"id": "pickup_item",
 					"file": "../audio/sfx/pickup_item.wav",
-					"volume": -10.0
+					"volume": -10
 				},
 				{
 					"id": "player_hit",
 					"file": "../audio/sfx/player_hit.wav",
-					"volume": -15.0
+					"volume": -15
 				},
 				{
 					"id": "food_crunch",
 					"file": "../audio/sfx/crunch.wav",
-					"volume": -20.0,
+					"volume": -20,
 					"pitch_min": 0.95,
 					"pitch_max": 1.05
 				},
 				{
 					"id": "boulder",
 					"file": "../audio/sfx/boulder_projectile_shoot.mp3",
-					"volume": -30.0
+					"volume": -30
 				},
 				{
 					"id": "player_run",
 					"file": "../audio/sfx/player_run.wav",
-					"volume": -25.0,
+					"volume": -25,
 					"pitch_min": 0.5,
 					"pitch_max": 0.6
 				},
 				{
 					"id": "boss_die",
 					"file": "../audio/sfx/boss_die.wav",
-					"volume": -10.0
+					"volume": -10
 				},
 				{
 					"id": "green_slime_hurt",
 					"file": "../audio/sfx/slime_hurt.wav",
-					"volume": -5.0
+					"volume": -5
 				},
 				{
 					"id": "projectile_break",
 					"file": "../audio/sfx/projectile_break.wav",
-					"volume": -20.0,
+					"volume": -20,
 					"pitch_min": 0.6,
 					"pitch_max": 0.7
 				},
 				{
 					"id": "slime_arrow",
 					"file": "../audio/sfx/arrow_projectile_shoot.wav",
-					"volume": -40.0
+					"volume": -40
 				},
 				{
 					"id": "inventory_slot_pop",
 					"file": "../audio/sfx/inventory_slot_pop.wav",
-					"volume": -20.0,
+					"volume": -20,
 					"pitch_min": 1.4,
 					"pitch_max": 1.4
 				},
 				{
 					"id": "button_hover",
 					"file": "../audio/sfx/button_hover.wav",
-					"pitch_min": 1.0,
+					"pitch_min": 1,
 					"pitch_max": 1.05,
-					"volume": -25.0
+					"volume": -25
 				},
 				{
 					"id": "player_dash",
 					"file": "../audio/sfx/player_dash.wav",
-					"volume": -15.0,
+					"volume": -15,
 					"pitch_min": 1.1,
 					"pitch_max": 1.2
 				},
 				{
 					"id": "slider_ratch",
 					"file": "../audio/sfx/slider_ratch.wav",
-					"volume": -40.0,
+					"volume": -40,
 					"pitch_min": 1.1,
 					"pitch_max": 1.2
 				}
 			],
 			"separators": [],
-			"props": {
-
-			}
+			"props": {}
 		},
 		{
 			"name": "ArmorStats",
@@ -1271,29 +1307,32 @@
 			"lines": [
 				{
 					"id": "wooden_chestplate",
-					"armor": 1.0,
+					"armor": 1,
 					"slot_type": "chest"
 				},
 				{
 					"id": "wooden_helmet",
 					"slot_type": "head",
-					"armor": 1.0
+					"armor": 1
 				},
 				{
 					"id": "wooden_leggins",
 					"slot_type": "legs",
-					"armor": 1.0
+					"armor": 1
 				},
 				{
 					"id": "wooden_boots",
 					"slot_type": "feet",
-					"armor": 1.0
+					"armor": 1
+				},
+				{
+					"id": "dripping_top_hat",
+					"slot_type": "head",
+					"armor": 2
 				}
 			],
 			"separators": [],
-			"props": {
-
-			}
+			"props": {}
 		}
 	],
 	"customTypes": [],
