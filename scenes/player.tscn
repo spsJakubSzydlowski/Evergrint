@@ -123,6 +123,7 @@ offset = Vector2(0, -12)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=953755070]
 position = Vector2(0, -12)
+zoom = Vector2(0.1, 0.1)
 
 [node name="MagnetField" type="Area2D" parent="." unique_id=2104475133]
 position = Vector2(0, -12)
