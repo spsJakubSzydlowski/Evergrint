@@ -3,6 +3,8 @@ extends TileMapLayer
 const T_GRASS = 0
 const T_WATER = 1
 const T_NOWALK = 5
+const T_SAND = 6
+const T_SNOW = 7
 
 var moisture_noise = FastNoiseLite.new()
 var temperature_noise = FastNoiseLite.new()
@@ -50,25 +52,42 @@ func generate() -> void:
 	occupied_cells.clear()
 	moisture_noise.seed = Global.world_seed
 	moisture_noise.frequency = 0.01
-	moisture_noise.noise_type = FastNoiseLite.TYPE_PERLIN
+	moisture_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
 	
 	temperature_noise.seed = Global.world_seed + 76576
 	temperature_noise.frequency = 0.005
+	temperature_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
 
 	spawn_starting_sinkhole()
 	notify_runtime_tile_data_update()
 
 func get_biome_terrain(x: int, y: int) -> int:
 	var mois = moisture_noise.get_noise_2d(x, y)
-	#var temp = temperature_noise.get_noise_2d(x, y)
+	var temp = temperature_noise.get_noise_2d(x, y)
+	
+	var world_center = Global.center_world_pos
+	var dist_to_center = Vector2(x, y).distance_to(world_center)
+	
+	var blend_factor = clamp(dist_to_center / 50.0, 0.0, 1.0)
+	
+	mois = lerp(0.0, mois, blend_factor)
+	temp = lerp(0.0, temp, blend_factor)
 	
 	if mois < -0.3:
 		return T_WATER
-	
-	return T_GRASS
+		
+	if temp > 0.3:
+		return T_SAND
+	elif temp < -0.3:
+		return T_SNOW
+	else:
+		return T_GRASS
 
 func generate_chunk(coords):
 	var water_tiles: Array[Vector2i] = []
+	
+	var rng = RandomNumberGenerator.new()
+	rng.seed = Global.world_seed + coords.x * 17 + coords.y * 89
 	
 	var start_x = coords.x * Global.CHUNK_SIZE
 	var start_y = coords.y * Global.CHUNK_SIZE
@@ -90,11 +109,21 @@ func generate_chunk(coords):
 				var base_terrain = terrain
 				
 				if base_terrain == T_WATER:
-					base_terrain = T_NOWALK
+					var temp = temperature_noise.get_noise_2d(x, y)
+					if temp > 0.3:
+						base_terrain = T_SAND
+					elif temp < -0.3:
+						base_terrain = T_SNOW
+					else:
+						base_terrain = T_GRASS
 				
 				if base_terrain == T_GRASS:
-					self.set_cell(current_pos, 0, Vector2i(randi_range(4, 7), 1))
-			
+					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(4, 7), 1))
+				elif base_terrain == T_SAND:
+					self.set_cell(current_pos, 0, Vector2i(0, 9))
+				elif base_terrain == T_SNOW:
+					self.set_cell(current_pos, 0, Vector2i(1, rng.randi_range(9, 13)))
+					
 				if base_terrain == T_NOWALK:
 					self.set_cell(current_pos, 0, Vector2i(8, 1))
 				
@@ -127,8 +156,8 @@ func spawn_trees_in_chunk(coords):
 		if occupied_cells.has(global_tile_pos): continue
 		if dist_from_sinkhole < sinkhole_radius: continue
 
-		var water_tile_data = water_layer.get_cell_tile_data(global_tile_pos)
-		if water_tile_data and water_tile_data.get_custom_data("water"): continue
+		var is_water_here = get_biome_terrain(global_tile_pos.x, global_tile_pos.y) == T_WATER
+		if is_water_here: continue
 		
 		var world_pos = MiningManager.current_tilemap.map_to_local(global_tile_pos)
 
