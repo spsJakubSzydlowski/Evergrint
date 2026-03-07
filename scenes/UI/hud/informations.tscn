@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://dicdr4oyomy42"]
+
+[ext_resource type="Script" uid="uid://bpithmnl1buhi" path="res://scripts/informations.gd" id="1_3jdkr"]
+[ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="1_hg1iq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lgjxu"]
+
+[node name="informations" type="Control" unique_id=1975728632]
+visible = false
+custom_minimum_size = Vector2(128, 32)
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_3jdkr")
+
+[node name="update_timer" type="Timer" parent="." unique_id=650040184]
+wait_time = 0.2
+autostart = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=589630821]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="compas_label" type="RichTextLabel" parent="HBoxContainer" unique_id=906890136]
+clip_contents = false
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/normal_font = ExtResource("1_hg1iq")
+theme_override_font_sizes/normal_font_size = 12
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lgjxu")
+text = "516565"
+fit_content = true
+
+[node name="time_label" type="RichTextLabel" parent="HBoxContainer" unique_id=900713996]
+clip_contents = false
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/normal_font = ExtResource("1_hg1iq")
+theme_override_font_sizes/normal_font_size = 12
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lgjxu")
+text = "0"
+fit_content = true
+
+[connection signal="timeout" from="update_timer" to="." method="_on_update_timer_timeout"]
