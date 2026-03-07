@@ -20,6 +20,6 @@ func _on_health_bar_mouse_exited() -> void:
 func update_health_bar(current_hp, max_hp) -> void:
 	max_value = max_hp
 	value = current_hp
-
+	
 func _on_health_bar_value_changed(hp_value: float) -> void:
 	health_label.text = str(int(hp_value)) + "/" + str(int(max_value))
