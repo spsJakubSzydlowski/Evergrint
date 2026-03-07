@@ -252,15 +252,12 @@ func _on_slot_clicked(slot_ui) -> void:
 		Inventory.slots[index] = {"id": "", "amount": 0}
 		
 		show_item_at_cursor(slot_ui)
-		Tooltip.show_tooltips = false
 		first_selected_slot_index = index
 		dragging_from_index = index
 		AudioManager.play_sfx("inventory_slot_pop")
 	
-	#if holding something
 	elif selected_slot_data.id:
 		
-		#if holding something from inventory
 		if first_selected_slot_index != -1:
 			if Inventory.slots[index].id != "":
 				var temp = Inventory.slots[index].duplicate()
@@ -270,15 +267,12 @@ func _on_slot_clicked(slot_ui) -> void:
 			else:
 				Inventory.slots[index] = selected_slot_data
 				_clear_dragged_item()
-			
-			Tooltip.show_tooltips = true
 
 		elif selected_equip_slot_index != -1:
 
 			if Inventory.slots[index].id == "":
 				Inventory.slots[index] = selected_slot_data
 				_clear_dragged_item()
-				Tooltip.show_tooltips = true
 			else:
 				var temp = Inventory.slots[index].duplicate()
 				Inventory.slots[index] = selected_slot_data
@@ -286,6 +280,11 @@ func _on_slot_clicked(slot_ui) -> void:
 				show_item_at_cursor(slot_ui)
 		
 		AudioManager.play_sfx("inventory_slot_pop")
+	
+	if selected_slot_data.id:
+		Tooltip.show_tooltips = false
+	else:
+		Tooltip.show_tooltips = true
 	
 	Inventory.inventory_updated.emit()
 	refresh_ui()
