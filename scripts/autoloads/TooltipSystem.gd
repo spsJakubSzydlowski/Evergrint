@@ -34,7 +34,9 @@ func display_tooltip(item_id):
 	tip_label.text = ""
 	
 	title_label.text = item.get("name", "NULL")
-	tip_label.text = item.get("tooltip", "")
+	tip_label.text = "\"" + item.get("tooltip", "") + "\""
+	
+	if item.get("tooltip", "") == "": tip_label.text = ""
 	
 	var item_type_id = int(item.get("type", 0))
 	var type_str = ITEM_TYPE_NAMES.get(item_type_id, "NULL")
