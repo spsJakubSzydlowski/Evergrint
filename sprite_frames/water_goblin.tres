@@ -1,0 +1,52 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://d3wti7kylxryl"]
+
+[ext_resource type="Texture2D" uid="uid://b4ax75b3rejph" path="res://textures/Atlas-enemies.png" id="1_6kstm"]
+[ext_resource type="Texture2D" uid="uid://cgqfxlecl7gbf" path="res://textures/anims/water_goblin_anims-Sheet.png" id="2_6h863"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6kstm"]
+atlas = ExtResource("1_6kstm")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ft5c1"]
+atlas = ExtResource("2_6h863")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_alukx"]
+atlas = ExtResource("2_6h863")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_752dj"]
+atlas = ExtResource("2_6h863")
+region = Rect2(32, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_63xbs"]
+atlas = ExtResource("2_6h863")
+region = Rect2(48, 0, 16, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6kstm")
+}],
+"loop": true,
+"name": &"spawn",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ft5c1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_alukx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_752dj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_63xbs")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
