@@ -67,7 +67,11 @@ func spawn_entity(first_slime = false) -> void:
 				found_valid_spot = true
 		
 		if found_valid_spot:
-			await DataManager.spawn_entity("green_slime", spawn_pos)
+			var rand_enemy = randi_range(0, 1)
+			if rand_enemy == 0:
+				await DataManager.spawn_entity("green_slime", spawn_pos)
+			else:
+				await DataManager.spawn_entity("water_goblin", spawn_pos)
 
 func spawn_player_at_center()-> void:
 	Global.update_chunks(object_layer)
