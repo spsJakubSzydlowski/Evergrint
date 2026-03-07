@@ -1,7 +1,7 @@
 extends Node2D
 
 var player = null
-@onready var tile_map: TileMapLayer = $TileMapLayer
+@onready var tile_map: TileMapLayer = $ground_layer
 @onready var object_layer: TileMapLayer = $ObjectLayer
 
 @export var max_entities : int = 20
