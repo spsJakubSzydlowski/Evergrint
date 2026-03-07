@@ -81,11 +81,15 @@ adjustment_enabled = true
 y_sort_enabled = true
 script = ExtResource("1_1bvp3")
 
-[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=2042884358 node_paths=PackedStringArray("object_layer") groups=["tilemap"]]
+[node name="water_layer" type="TileMapLayer" parent="." unique_id=1904419550]
+tile_set = ExtResource("2_jyhfs")
+
+[node name="ground_layer" type="TileMapLayer" parent="." unique_id=2042884358 node_paths=PackedStringArray("object_layer", "water_layer") groups=["tilemap"]]
 position = Vector2(-2, -1)
 tile_set = ExtResource("2_jyhfs")
 script = ExtResource("3_jyhfs")
 object_layer = NodePath("../ObjectLayer")
+water_layer = NodePath("../water_layer")
 
 [node name="ObjectLayer" type="TileMapLayer" parent="." unique_id=1870995295 groups=["objectmap"]]
 y_sort_enabled = true
