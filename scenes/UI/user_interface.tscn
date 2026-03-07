@@ -55,7 +55,3 @@ offset_right = 40.0
 offset_bottom = 160.0
 
 [node name="save_icon" parent="." unique_id=73069369 instance=ExtResource("5_hyee5")]
-
-[connection signal="mouse_entered" from="MarginContainer/VBoxContainer/health_bar" to="." method="_on_health_bar_mouse_entered"]
-[connection signal="mouse_exited" from="MarginContainer/VBoxContainer/health_bar" to="." method="_on_health_bar_mouse_exited"]
-[connection signal="value_changed" from="MarginContainer/VBoxContainer/health_bar" to="." method="_on_health_bar_value_changed"]
