@@ -83,7 +83,14 @@ func initialize(entity_id: String) -> void:
 		sprite.play("spawn")
 	else:
 		print("sprite_frame was not found for entity: " + entity_name)
-
+	
+	var current_frame = sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
+	var texture_height = current_frame.get_height()
+	
+	sprite.offset.y = -texture_height * 0.5
+	
+	health_bar.position.y = -texture_height - 5
+	
 	entity_stats = DataManager.get_full_entity_data(entity_id)
 	is_boss = entity_stats.get("is_boss", false)
 	max_hp = entity_stats.get("max_hp", 1)
@@ -142,8 +149,10 @@ func process_idle_behaviour(delta: float) -> void:
 		idle_timer = randf_range(2.0, 4.0)
 		if randf() > 0.5:
 			idle_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
+			play_anim("walk", sprite)
 		else:
 			idle_direction = Vector2.ZERO
+			play_anim("spawn", sprite)
 			
 	var idle_speed = entity.get("move_speed", 0.0) * 0.3
 	velocity = idle_direction * idle_speed
@@ -159,9 +168,12 @@ func handle_movement(distance_to_player) -> void:
 	if distance_to_player < attack_range:
 		velocity = Vector2.ZERO
 		deal_damage(player)
+		play_anim("spawn", sprite)
 	elif distance_to_player <= aggro_range:
 		var direction = _get_target_position()
 		velocity = direction * entity.get("move_speed", 100)
+		
+		play_anim("walk", sprite)
 		if direction.length() > 0.1:
 			sprite.flip_h = direction.x < 0
 	else:
@@ -241,7 +253,7 @@ func take_hit(amount: int, knockback_amount: float, source_pos) -> void:
 	text_instance.position = Vector2(randf_range(-15, 15), randf_range(-5, -15))
 
 func _randomize_damage(damage) -> int:
-	return damage + int(round(randf_range(damage * 0.8, damage * 1.2)))
+	return int(round(randf_range(damage * 0.8, damage * 1.2)))
 
 func apply_knockback(knockback_amount, knockback_dir) -> void:
 	knockback_velocity = knockback_dir * knockback_amount * 150.0
