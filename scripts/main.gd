@@ -6,6 +6,8 @@ var player = null
 
 @export var max_entities : int = 20
 
+var astar: AStarGrid2D
+
 func _ready() -> void:
 	if not DataManager.is_loaded:
 		await DataManager.database_ready
@@ -14,6 +16,12 @@ func _ready() -> void:
 	Global.current_tilemap = tile_map
 	MiningManager.current_tilemap = object_layer
 	Inventory.update_inventory()
+	
+	astar = AStarGrid2D.new()
+	astar.region = Rect2i(-1000, -1000, 2000, 2000)
+	astar.cell_size = Vector2(16, 16)
+	astar.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_AT_LEAST_ONE_WALKABLE
+	astar.update()
 	
 	tile_map.generate()
 	
@@ -63,7 +71,7 @@ func spawn_entity(first_slime = false) -> void:
 
 			var map_pos = tile_map.local_to_map(spawn_pos)
 			var tile_data = tile_map.get_cell_tile_data(map_pos)
-			if tile_data and not tile_data.get_custom_data("water"):
+			if tile_data and not tile_data.terrain_set == 5:
 				found_valid_spot = true
 		
 		if found_valid_spot:
