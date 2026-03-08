@@ -1,124 +1,202 @@
 extends TileMapLayer
 
-var river_noise = FastNoiseLite.new()
-var cave_noise = FastNoiseLite.new()
+const T_STONE = 2
+const T_LAVA = 3
+const T_NOWALK = 5
+const T_SAND = 6
+const T_SNOW = 7
+
+var moisture_noise = FastNoiseLite.new()
+var temperature_noise = FastNoiseLite.new()
 var world_width = Global.world_width
 var world_height = Global.world_height
-var ladder_radius = 8.0
+var tree_count = 800
+
+var sinkhole_radius = 8.0
 
 var occupied_cells = {}
+var loaded_chunks_entities : Dictionary = {}
+
 
 @export var object_layer: TileMapLayer
+@export var water_layer: TileMapLayer
 
 func _ready() -> void:
 	Global.request_chunk_generation.connect(_on_chunk_requested_gen)
 	Global.request_chunk_removal.connect(_on_chunk_requested_rem)
 
+func _on_chunk_requested_gen(coords: Vector2i):
+	generate_chunk(coords)
+	#spawn_trees_in_chunk(coords)
+	
+func _on_chunk_requested_rem(coords: Vector2i):
+	var start_x = coords.x * Global.CHUNK_SIZE
+	var start_y = coords.y * Global.CHUNK_SIZE
+	
+	for x in range(start_x, start_x + Global.CHUNK_SIZE):
+		for y in range(start_y, start_y + Global.CHUNK_SIZE):
+			self.set_cell(Vector2i(x, y), -1)
+			water_layer.set_cell(Vector2i(x, y), -1)
+	
+	if loaded_chunks_entities.has(coords):
+		var resources_to_delete = loaded_chunks_entities[coords]
+	
+		for data in resources_to_delete:
+			if is_instance_valid(data.node):
+				data.node.queue_free()
+			occupied_cells.erase(data.cell_pos)
+				
+		loaded_chunks_entities.erase(coords)
+
 func generate() -> void:
 	occupied_cells.clear()
-	cave_noise.seed = Global.world_seed + 50
-	cave_noise.frequency = 0.05
+	moisture_noise.seed = Global.world_seed
+	moisture_noise.frequency = 0.01
+	moisture_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
 	
-	river_noise.seed = Global.world_seed
-	river_noise.frequency = 0.02
-	river_noise.noise_type = FastNoiseLite.TYPE_PERLIN
+	temperature_noise.seed = Global.world_seed + 76576
+	temperature_noise.frequency = 0.005
+	temperature_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
 
-	spawn_starting_ladder()
-
+	spawn_starting_sinkhole()
 	notify_runtime_tile_data_update()
 
-func spawn_starting_ladder():
-	var sinkhole_pos = Global.center_world_pos
+func get_biome_terrain(x: int, y: int) -> int:
+	var mois = moisture_noise.get_noise_2d(x, y)
+	var temp = temperature_noise.get_noise_2d(x, y)
+	
+	var world_center = Global.center_world_pos
+	var dist_to_center = Vector2(x, y).distance_to(world_center)
+	
+	var blend_factor = clamp(dist_to_center / 50.0, 0.0, 1.0)
+	
+	mois = lerp(0.0, mois, blend_factor)
+	temp = lerp(0.0, temp, blend_factor)
+	
+	if mois < -0.3:
+		return T_LAVA
+		
+	if temp > 0.3:
+		return T_SAND
+	elif temp < -0.3:
+		return T_SNOW
+	else:
+		return T_STONE
+
+func generate_chunk(coords):
+	var water_tiles: Array[Vector2i] = []
+	
+	var rng = RandomNumberGenerator.new()
+	rng.seed = Global.world_seed + coords.x * 17 + coords.y * 89
+	
+	var start_x = coords.x * Global.CHUNK_SIZE
+	var start_y = coords.y * Global.CHUNK_SIZE
+	var end_x = start_x + Global.CHUNK_SIZE
+	var end_y = start_y + Global.CHUNK_SIZE
+	
+	if start_x >= world_width or start_y >= world_height:
+		return
+		
+	if start_x + Global.CHUNK_SIZE <= 0 or start_y + Global.CHUNK_SIZE <= 0:
+		return
+	
+	for x in range(start_x - 1, end_x + 1):
+		for y in range(start_y - 1, end_y + 1):
+			var current_pos = Vector2i(x, y)
+			var terrain = get_biome_terrain(x, y)
+
+			if x >= start_x and x < end_x and y >= start_y and y < end_y:
+				var base_terrain = terrain
+				
+				if base_terrain == T_LAVA:
+					base_terrain = T_NOWALK
+					#var temp = temperature_noise.get_noise_2d(x, y)
+					#if temp > 0.3:
+						#base_terrain = T_SAND
+					#elif temp < -0.3:
+						#base_terrain = T_SNOW
+					#else:
+						#base_terrain = T_STONE
+				
+				if base_terrain == T_STONE:
+					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(0, 1), 3))
+				elif base_terrain == T_SAND:
+					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(0, 3), 1))
+				elif base_terrain == T_SNOW:
+					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(0, 3), 2))
+					
+				if base_terrain == T_NOWALK:
+					self.set_cell(current_pos, 0, Vector2i(4, 0))
+				
+			if terrain == T_LAVA:
+				water_tiles.append(current_pos)
+
+	if water_tiles.size() > 0:
+		water_layer.set_cells_terrain_connect(water_tiles, 0, T_LAVA, true)
+
+#func spawn_trees_in_chunk(coords):
+	#var rng = RandomNumberGenerator.new()
+	#rng.seed = Global.world_seed + coords.x * 37 + coords.y * 131
+	#
+	#if not loaded_chunks_entities.has(coords):
+		#loaded_chunks_entities[coords] = []
+	#
+	#var sinkhole_map_pos = Global.center_world_pos
+	#
+	#var tree_density = rng.randi() % 3
+	#
+	#for i in range(tree_density):
+		#var local_pos = Vector2i(rng.randi() % Global.CHUNK_SIZE, rng.randi() % Global.CHUNK_SIZE)
+		#var global_tile_pos = Vector2i((coords * Global.CHUNK_SIZE) + local_pos)
+		#
+		#var current_biome = get_biome_terrain(global_tile_pos.x, global_tile_pos.y)
+		#
+		#var dist_from_sinkhole = Vector2(global_tile_pos).distance_to(Vector2(sinkhole_map_pos))
+		#
+		#var changes = SaveManager.world_changes.get(Global.current_world_id, {})
+#
+		#if global_tile_pos.x >= Global.world_width or global_tile_pos.y >= Global.world_height: continue
+		#if occupied_cells.has(global_tile_pos): continue
+		#if dist_from_sinkhole < sinkhole_radius: continue
+#
+		#var is_water_here = get_biome_terrain(global_tile_pos.x, global_tile_pos.y) == T_WATER
+		#if is_water_here: continue
+		#
+		#var world_pos = MiningManager.current_tilemap.map_to_local(global_tile_pos)
+#
+		#if changes.has(global_tile_pos):
+			#var change_type = changes[global_tile_pos]
+#
+			#if change_type == "removed":
+				#continue
+			#elif change_type == "placed":
+				#pass
+		#
+		#var resource_to_spawn = "oak_tree"
+		#if current_biome == T_SAND:
+			#resource_to_spawn = "palm_tree"
+			#
+		#var resource = DataManager.spawn_resource(resource_to_spawn, world_pos)
+		#
+		#if resource:
+			#occupied_cells[global_tile_pos] = true
+			#
+			#loaded_chunks_entities[coords].append({
+				#"node": resource,
+				#"cell_pos": global_tile_pos
+			#})
+#
+			#var rand_size = rng.randf_range(0.95, 1.2)
+			#resource.scale = Vector2(rand_size, rand_size)
+			#if rng.randi_range(1, 2) == 1:
+				#resource.scale.x *= -1 
+
+func spawn_starting_sinkhole():
+	@warning_ignore("integer_division")
+	var center_map_pos = Global.center_world_pos
+	
+	var sinkhole_pos = center_map_pos
 
 	object_layer.set_cell(sinkhole_pos, 2, Vector2i(0, 0))
 	
 	occupied_cells[sinkhole_pos] = true
-
-func _on_chunk_requested_gen(coords: Vector2i):
-	generate_surface(coords)
-	generate_chunk(coords)
-
-func _on_chunk_requested_rem(coords: Vector2i):
-	var start_x = coords.x * Global.CHUNK_SIZE
-	var start_y = coords.y * Global.CHUNK_SIZE
-	var center_map_pos = Global.center_world_pos
-
-	for x in range(start_x, start_x + Global.CHUNK_SIZE):
-		for y in range(start_y, start_y + Global.CHUNK_SIZE):
-			var current_pos = Vector2i(x, y)
-			
-			if current_pos == center_map_pos:
-				continue
-				
-			self.set_cell(current_pos, -1)
-			object_layer.set_cell(current_pos, -1)
-	
-func generate_surface(coords):
-	var stone_tiles : Array[Vector2i] = []
-	var lava_tiles : Array[Vector2i] = []
-	
-	var start_x = coords.x * Global.CHUNK_SIZE
-	var start_y = coords.y * Global.CHUNK_SIZE
-	var end_x = start_x + Global.CHUNK_SIZE
-	var end_y = start_y + Global.CHUNK_SIZE
-	
-	for x in range(start_x, end_x):
-		for y in range(start_y, end_y):
-
-			var val = river_noise.get_noise_2d(x, y)
-			if val < -0.2:
-				lava_tiles.append(Vector2i(x ,y))
-			else:
-				stone_tiles.append(Vector2i(x ,y))
-		
-	if stone_tiles.size() > 0:
-		self.set_cells_terrain_connect(stone_tiles, 0, 1, false)
-		
-	if lava_tiles.size() > 0:
-		self.set_cells_terrain_connect(lava_tiles, 0, 3, false)
-
-func generate_chunk(coords):
-	var stone_tiles : Array[Vector2i] = []
-	
-	var ladder_map_pos = Global.center_world_pos
-	
-	var changes = SaveManager.world_changes.get(Global.current_world_id, {})
-	
-	var start_x = coords.x * Global.CHUNK_SIZE
-	var start_y = coords.y * Global.CHUNK_SIZE
-	var end_x = start_x + Global.CHUNK_SIZE
-	var end_y = start_y + Global.CHUNK_SIZE
-	
-	for x in range(start_x, end_x):
-		for y in range(start_y, end_y):
-			var current_pos = Vector2i(x, y)
-			
-			var dist_from_ladder = Vector2(current_pos).distance_to(Vector2(ladder_map_pos))
-
-			var tile_data = get_cell_tile_data(current_pos)
-			if tile_data and tile_data.get_custom_data("water"):
-				continue
-
-			if dist_from_ladder < ladder_radius:
-				continue
-			
-			if current_pos == ladder_map_pos:
-				spawn_starting_ladder()
-			
-			if changes.has(current_pos):
-				var change_type = changes[current_pos]
-
-				if change_type == "removed":
-					continue
-				elif change_type == "placed":
-					pass
-			
-			if x % 5 == 0:
-				await get_tree().process_frame
-
-			var val = cave_noise.get_noise_2d(x, y)
-			if val > -0.1:
-				stone_tiles.append(Vector2i(x, y))
-
-	if stone_tiles.size() > 0:
-		object_layer.set_cells_terrain_connect(stone_tiles, 0, 4, false)
