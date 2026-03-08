@@ -10,6 +10,7 @@ region = Rect2(0, 0, 16, 16)
 [sub_resource type="CircleShape2D" id="CircleShape2D_8uidd"]
 
 [node name="world_object" type="Area2D" unique_id=1507649602 groups=["loot"]]
+z_index = 2
 collision_layer = 16
 collision_mask = 10
 script = ExtResource("1_6odbs")
