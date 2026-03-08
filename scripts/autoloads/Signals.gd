@@ -32,3 +32,6 @@ signal equip_changed
 
 @warning_ignore("unused_signal")
 signal autosaving
+
+@warning_ignore("unused_signal")
+signal debug_toggled
