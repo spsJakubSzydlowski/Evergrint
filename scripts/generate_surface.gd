@@ -2,7 +2,6 @@ extends TileMapLayer
 
 const T_GRASS = 0
 const T_WATER = 1
-const T_NOWALK = 5
 const T_SAND = 6
 const T_SNOW = 7
 
@@ -118,17 +117,17 @@ func generate_chunk(coords):
 						base_terrain = T_GRASS
 				
 				if base_terrain == T_GRASS:
-					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(4, 7), 1))
+					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(0, 3), 0))
 				elif base_terrain == T_SAND:
-					self.set_cell(current_pos, 0, Vector2i(0, 9))
+					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(0, 3), 1))
 				elif base_terrain == T_SNOW:
-					self.set_cell(current_pos, 0, Vector2i(1, rng.randi_range(9, 13)))
+					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(0, 3), 2))
 					
-				if base_terrain == T_NOWALK:
-					self.set_cell(current_pos, 0, Vector2i(8, 1))
-				
 			if terrain == T_WATER:
 				water_tiles.append(current_pos)
+				
+				var astar = get_parent().astar
+				astar.set_point_solid(current_pos, true)
 
 	if water_tiles.size() > 0:
 		water_layer.set_cells_terrain_connect(water_tiles, 0, T_WATER, true)
@@ -147,6 +146,8 @@ func spawn_trees_in_chunk(coords):
 	for i in range(tree_density):
 		var local_pos = Vector2i(rng.randi() % Global.CHUNK_SIZE, rng.randi() % Global.CHUNK_SIZE)
 		var global_tile_pos = Vector2i((coords * Global.CHUNK_SIZE) + local_pos)
+		
+		var current_biome = get_biome_terrain(global_tile_pos.x, global_tile_pos.y)
 		
 		var dist_from_sinkhole = Vector2(global_tile_pos).distance_to(Vector2(sinkhole_map_pos))
 		
@@ -169,20 +170,24 @@ func spawn_trees_in_chunk(coords):
 			elif change_type == "placed":
 				pass
 		
-		var tree = DataManager.spawn_resource("oak_tree", world_pos)
+		var resource_to_spawn = "oak_tree"
+		if current_biome == T_SAND:
+			resource_to_spawn = "palm_tree"
+			
+		var resource = DataManager.spawn_resource(resource_to_spawn, world_pos)
 		
-		if tree:
+		if resource:
 			occupied_cells[global_tile_pos] = true
 			
 			loaded_chunks_entities[coords].append({
-				"node": tree,
+				"node": resource,
 				"cell_pos": global_tile_pos
 			})
 
 			var rand_size = rng.randf_range(0.95, 1.2)
-			tree.scale = Vector2(rand_size, rand_size)
+			resource.scale = Vector2(rand_size, rand_size)
 			if rng.randi_range(1, 2) == 1:
-				tree.scale.x *= -1 
+				resource.scale.x *= -1 
 
 func spawn_starting_sinkhole():
 	@warning_ignore("integer_division")
