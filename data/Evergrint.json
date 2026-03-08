@@ -510,7 +510,7 @@
 					"id": "player",
 					"name": "Player",
 					"max_hp": 100,
-					"move_speed": 800,
+					"move_speed": 80,
 					"tile": {
 						"file": "../textures/player-texture.png",
 						"size": 8,
@@ -561,7 +561,7 @@
 					"max_hp": 75,
 					"move_speed": 30,
 					"armor": 0,
-					"hitbox_x": 15,
+					"hitbox_x": 14,
 					"hitbox_y": 30,
 					"tile": {
 						"file": "../textures/Atlas-enemies.png",
@@ -830,6 +830,26 @@
 					"tile_height": 1,
 					"tile_size": 16,
 					"loot_ref": "stone_block"
+				},
+				{
+					"id": "palm_tree",
+					"name": "Palm Tree",
+					"hit_points": 5,
+					"tool_type": 2,
+					"tile_width": 3,
+					"tile_height": 4,
+					"tile_size": 1,
+					"loot_ref": "oak_tree",
+					"tile": {
+						"file": "../textures/Atlas-resources.png",
+						"size": 16,
+						"x": 2,
+						"y": 0,
+						"width": 3,
+						"height": 4
+					},
+					"hitbox_x": 16,
+					"hitbox_y": 50
 				}
 			],
 			"separators": [],
@@ -1200,7 +1220,7 @@
 					"volume": -12
 				},
 				{
-					"id": "oak_tree_hit",
+					"id": "tree_hit",
 					"file": "../audio/sfx/tree_hit.wav",
 					"volume": -10
 				},
@@ -1282,6 +1302,11 @@
 					"volume": -40,
 					"pitch_min": 1.1,
 					"pitch_max": 1.2
+				},
+				{
+					"id": "water_goblin_hurt",
+					"file": "../audio/sfx/water_goblin_hit.wav",
+					"volume": -20
 				}
 			],
 			"separators": [],
