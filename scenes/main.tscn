@@ -73,8 +73,7 @@ tonemap_white = 9.17
 tonemap_agx_white = 2.0
 tonemap_agx_contrast = 2.0
 glow_enabled = true
-glow_intensity = 0.4
-glow_strength = 0.5
+glow_strength = 1.2
 glow_hdr_threshold = 0.1
 adjustment_enabled = true
 
@@ -83,10 +82,11 @@ y_sort_enabled = true
 script = ExtResource("1_1bvp3")
 
 [node name="water_layer" type="TileMapLayer" parent="." unique_id=1904419550]
+z_index = 1
 tile_set = ExtResource("2_jyhfs")
+navigation_enabled = false
 
 [node name="ground_layer" type="TileMapLayer" parent="." unique_id=2042884358 node_paths=PackedStringArray("object_layer", "water_layer") groups=["tilemap"]]
-position = Vector2(-2, -1)
 tile_set = ExtResource("2_jyhfs")
 script = ExtResource("3_jyhfs")
 object_layer = NodePath("../ObjectLayer")
@@ -94,13 +94,8 @@ water_layer = NodePath("../water_layer")
 
 [node name="ObjectLayer" type="TileMapLayer" parent="." unique_id=1870995295 groups=["objectmap"]]
 y_sort_enabled = true
-position = Vector2(-2, -1)
 tile_set = ExtResource("2_jyhfs")
-
-[node name="ObjectLayer" type="TileMapLayer" parent="ObjectLayer" unique_id=1277742061 groups=["objectmap"]]
-y_sort_enabled = true
-position = Vector2(-2, -1)
-tile_set = ExtResource("2_jyhfs")
+navigation_enabled = false
 
 [node name="EntitySpawnTimer" type="Timer" parent="." unique_id=2073219033]
 wait_time = 5.0
