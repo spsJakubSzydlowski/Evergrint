@@ -11,12 +11,18 @@
 y_sort_enabled = true
 script = ExtResource("1_cpwbu")
 
-[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=22413134 node_paths=PackedStringArray("object_layer") groups=["tilemap"]]
+[node name="water_layer" type="TileMapLayer" parent="." unique_id=1850123842]
+z_index = 1
+tile_set = ExtResource("4_5558j")
+
+[node name="ground_layer" type="TileMapLayer" parent="." unique_id=22413134 node_paths=PackedStringArray("object_layer", "water_layer") groups=["tilemap"]]
 tile_set = ExtResource("4_5558j")
 script = ExtResource("2_flqp3")
 object_layer = NodePath("../ObjectLayer")
+water_layer = NodePath("../water_layer")
 
 [node name="ObjectLayer" type="TileMapLayer" parent="." unique_id=475805565 groups=["objectmap"]]
+z_index = 2
 y_sort_enabled = true
 tile_set = ExtResource("4_5558j")
 navigation_enabled = false
