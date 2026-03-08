@@ -55,8 +55,11 @@ func initialize(resource_id: String):
 			var region_h = resource.tile_height * ts_base.y
 
 			sprite.region_rect = Rect2(pos_x, pos_y, region_w, region_h)
+			
+			sprite.offset.y = -region_h / 2
 	
 	collision.shape.size = Vector2(resource.get("hitbox_x", 16), resource.get("hitbox_y", 16))
+	
 	max_hp = resource.get("hit_points", 1)
 	current_hp = max_hp
 	
@@ -73,7 +76,11 @@ func harvest(tool_type, amount: int):
 		tw.tween_property(sprite, "modulate", Color.RED, 0.1)
 		tw.tween_property(sprite, "modulate", Color.WHITE, 0.1)
 		
-		AudioManager.play_entity_sfx(id, "hit", global_position)
+		var sound_id = id
+		if id.contains("tree"):
+			sound_id = "tree"
+			
+		AudioManager.play_entity_sfx(sound_id, "hit", global_position)
 	
 	if current_hp <= 0:
 		die()
