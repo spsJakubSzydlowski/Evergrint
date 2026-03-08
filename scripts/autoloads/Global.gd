@@ -20,6 +20,7 @@ var current_difficulty = Difficulty.EASY
 var difficulty_multiplier: float = 1.0
 
 var living_boss: bool = false
+var show_debug_tools: bool = false
 
 var world_width: int = 1000
 var world_height: int = 1000
@@ -31,7 +32,7 @@ var first_time_generation: bool = true
 var loaded_chunks = {}
 var chunk_queue: Array[Vector2i] = []
 const CHUNK_SIZE = 8
-const RENDER_DISTANCE = 20
+const RENDER_DISTANCE = 5
 
 var world_scenes = {
 	"surface": "res://scenes/main.tscn",
@@ -41,6 +42,7 @@ var current_world_id : String = "surface"
 var current_tilemap = null
 
 func _ready():
+	Signals.debug_toggled.connect(_on_debug_toggled)
 	Signals.boss_died.connect(_on_boss_died)
 	
 	randomize()
@@ -105,12 +107,27 @@ func update_chunks(tile_map):
 	for coords in chunks_to_unload:
 		request_chunk_removal.emit(coords)
 		loaded_chunks.erase(coords)
+		
+	chunk_queue.sort_custom(func(a, b):
+		var dist_a = Vector2(a).distance_squared_to(Vector2(player_chunk_pos))
+		var dist_b = Vector2(b).distance_squared_to(Vector2(player_chunk_pos))
+		
+		return dist_a < dist_b
+	)
 
 func _process(_delta):
 	if chunk_queue.size() > 0:
 		var next_chunk = chunk_queue.pop_front()
-		loaded_chunks[next_chunk] = true
-		request_chunk_generation.emit(next_chunk)
+		
+		if current_tilemap == null: return
+		
+		var current_player_chunk = get_player_chunk_pos(current_tilemap)
+		var dist_x = abs(next_chunk.x - current_player_chunk.x)
+		var dist_y = abs(next_chunk.y - current_player_chunk.y)
+		
+		if dist_x <= RENDER_DISTANCE and dist_y <= RENDER_DISTANCE:
+			loaded_chunks[next_chunk] = true
+			request_chunk_generation.emit(next_chunk)
 
 func get_player_chunk_pos(tile_map):
 	var player_global_pos = get_player_world_position()
@@ -125,3 +142,6 @@ func get_player_chunk_pos(tile_map):
 func _on_boss_died(boss_id):
 	if boss_id == "mole_boss":
 		mole_boss_kills += 1
+
+func _on_debug_toggled():
+	show_debug_tools = not show_debug_tools
