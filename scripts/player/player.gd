@@ -135,7 +135,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			_handle_interact_input()
 		elif event.button_index == MOUSE_BUTTON_LEFT:
 			_handle_action_input()
-
+	
+	if event.is_action_pressed("debug"):
+		Signals.debug_toggled.emit()
+	
 	if event.is_action_pressed("heal"):
 		_handle_quick_heal()
 
@@ -443,6 +446,9 @@ func heal(hp_to_heal):
 	if current_hp >= max_hp: return success
 	
 	current_hp += hp_to_heal
+	if current_hp > max_hp:
+		current_hp = max_hp
+
 	Signals.player_health_changed.emit(current_hp, max_hp)
 	
 	var text_instance = FLOATING_TEXT.instantiate()
