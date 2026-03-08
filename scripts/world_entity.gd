@@ -9,8 +9,7 @@ const FLOATING_TEXT = preload("res://scenes/floating_text.tscn")
 @onready var health_bar: TextureProgressBar = $HealthBar
 @onready var collision: CollisionShape2D = $hurt_box/CollisionShape2D
 @onready var visible_timer: Timer = $visible_timer
-@onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
-@onready var navigation_timer: Timer = $navigation_timer
+@onready var debug_line: Line2D = $debug_line
 
 var entity : Dictionary = {}
 var entity_name : String = ""
@@ -29,7 +28,7 @@ var current_hp: int
 
 var attack_damage : int
 var knockback: float
-var attack_range = 12.0
+var attack_range: int = 20
 var start_aggro_range: float
 var aggro_range: float
 var aggro_range_mult = 1.5
@@ -62,8 +61,8 @@ var attack_cooldown = 1.0
 #endregion
 
 func _ready() -> void:
+	Signals.debug_toggled.connect(toggle_debug)
 	player = get_tree().get_first_node_in_group("Player")
-	navigation_timer.wait_time = 0.2 + randf_range(-0.05, 0.05)
 
 func initialize(entity_id: String) -> void:
 	entity = DataManager.get_entity(entity_id)
@@ -76,7 +75,7 @@ func initialize(entity_id: String) -> void:
 	entity_name = entity.id
 	collision.shape.size = Vector2(entity.get("hitbox_x"), entity.get("hitbox_y"))
 	collision.position.y -= collision.shape.size.y / 2
-
+	
 	var sprite_frames = SpriteFramesRegistry.get_frames(entity_id)
 	if sprite_frames:
 		sprite.sprite_frames = sprite_frames
@@ -165,25 +164,41 @@ func handle_movement(distance_to_player) -> void:
 		velocity = Vector2.ZERO
 		return
 		
-	if distance_to_player < attack_range:
-		velocity = Vector2.ZERO
-		deal_damage(player)
-		play_anim("spawn", sprite)
-	elif distance_to_player <= aggro_range:
-		var direction = _get_target_position()
-		velocity = direction * entity.get("move_speed", 100)
+	if distance_to_player <= aggro_range:
+		var start_cell = Global.current_tilemap.local_to_map(global_position)
+		var target_cell = Global.current_tilemap.local_to_map(player.global_position)
 		
-		play_anim("walk", sprite)
-		if direction.length() > 0.1:
-			sprite.flip_h = direction.x < 0
+		var path = get_parent().astar.get_point_path(start_cell, target_cell)
+		
+		if Global.show_debug_tools:
+			debug_line.visible = true
+			
+		debug_line.points = path
+		
+		if path.size() > 1:
+			var next_point = path[1]
+			
+			if path.size() <= 2:
+				next_point = player.global_position
+			
+			var direction = (next_point - global_position).normalized()
+			
+			var target_velocity = direction * entity.get("move_speed", 100)
+			velocity = velocity.lerp(target_velocity, 0.15)
+		
+			play_anim("walk", sprite)
+			if direction.length() > 0.1:
+				sprite.flip_h = direction.x < 0
+		else:
+			velocity = Vector2.ZERO
+			play_anim("spawn", sprite)
+			debug_line.visible = false
+			
+		if distance_to_player <= attack_range:
+			deal_damage(player)
 	else:
+		debug_line.visible = false
 		process_idle_behaviour(get_physics_process_delta_time())
-
-func _get_target_position() -> Vector2:
-	if nav_agent.is_navigation_finished(): return Vector2.ZERO
-	
-	var next_path_pos = nav_agent.get_next_path_position()
-	return global_position.direction_to(next_path_pos)
 
 func handle_attacks(distance_to_player) -> void:
 	if player.current_action_state == player.ActionState.DEAD:
@@ -334,6 +349,5 @@ func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 func _on_visible_timer_timeout() -> void:
 	queue_free()
 
-func _on_navigation_timer_timeout() -> void:
-	if player:
-		nav_agent.target_position = player.global_position
+func toggle_debug():
+	debug_line.visible = not debug_line.visible
