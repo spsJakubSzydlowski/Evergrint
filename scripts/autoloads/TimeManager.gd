@@ -3,6 +3,10 @@ extends Node
 var day_duration = 1200.0
 var time_percent = 0.0
 
+const START_TIME_PERCENT = 0.0
+const START_HOURS: int = 6
+const START_MINUTES: int = 0
+
 var hours: int = 0
 var minutes: int = 0
 
@@ -14,7 +18,7 @@ func _process(delta: float) -> void:
 	if time_percent >= 1.0:
 		time_percent = fmod(time_percent, 1.0)
 	
-	var raw_hour = (time_percent * 24) + 6.0
+	var raw_hour = (time_percent * 24) + START_HOURS
 	var game_hour = fmod(raw_hour, 24.0)
 	
 	hours = int(game_hour)

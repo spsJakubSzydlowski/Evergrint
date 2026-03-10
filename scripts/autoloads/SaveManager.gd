@@ -39,6 +39,9 @@ func create_world(world_name: String, world_seed: int) -> bool:
 	Global.first_time_generation = true
 	Global.world_name = world_name
 	Global.world_seed = world_seed
+	TimeManager.hours = TimeManager.START_HOURS
+	TimeManager.minutes = TimeManager.START_MINUTES
+	TimeManager.time_percent = TimeManager.START_TIME_PERCENT
 	world_changes = {"surface": {}, "underground": {}}
 	
 	save_to_disk(world_name)
@@ -77,6 +80,7 @@ func load_world(world_name: String) -> bool:
 	var loaded_difficulty = data.get("difficulty", 0)
 	var inventory = data.get("player_inventory", [])
 	var equipped = data.get("equipped", {}).duplicate(true)
+	var current_time = data.get("current_time", {})
 
 	Global.world_name = loaded_name
 	Global.world_seed = loaded_seed
@@ -87,6 +91,9 @@ func load_world(world_name: String) -> bool:
 	Equipment.equipped = equipped
 	Global.first_time_generation = false
 	Global.world_name = world_name
+	TimeManager.hours = current_time.get("hours", TimeManager.START_HOURS)
+	TimeManager.minutes = current_time.get("minutes", TimeManager.START_MINUTES)
+	TimeManager.time_percent = current_time.get("time_percent", TimeManager.START_TIME_PERCENT)
 	
 	world_changes = {"surface": {}, "underground": {}}
 	var changes = data["changes"]
@@ -102,6 +109,7 @@ func load_world(world_name: String) -> bool:
 		save_to_disk(world_name)
 	
 	print("World: ", world_name, " (v", save_version, ") loaded successfully.")
+	print("Current time: ", int(current_time.get("hours", TimeManager.START_HOURS)), ":", int(current_time.get("minutes", TimeManager.START_MINUTES)))
 	success = true
 	return success
 
@@ -213,6 +221,7 @@ func save_to_disk(world_name: String) -> void:
 			"equipped": Equipment.equipped,
 			"seed": Global.world_seed,
 			"difficulty": Global.current_difficulty,
+			"current_time": {"hours": TimeManager.hours, "minutes": TimeManager.minutes, "time_percent": TimeManager.time_percent},
 			"changes": {
 					"surface": {},
 					"underground": {}
@@ -248,8 +257,10 @@ func migrate_save_data(data, old_version):
 	if old_version < 2:
 		if not data.has("equipped"):
 			data["equipped"] = Equipment.equipped_default
-			print("Migrated to v2")
-			old_version = 2
+		if not data.has("current_time"):
+			data["current_time"] = {"hours": TimeManager.START_HOURS, "minutes": TimeManager.START_MINUTES, "time_percent": TimeManager.START_TIME_PERCENT}
+		old_version = 2
+		print("Migrated to v2")
 		
 	data["version"] = CURRENT_SAVE_VERSION
 	return data
