@@ -7,7 +7,9 @@ const FRAMES = {
 	"green_slime": preload("res://sprite_frames/green_slime.tres"),
 	"mole_boss": preload("res://sprite_frames/mole_boss.tres"),
 	"player": preload("res://sprite_frames/player.tres"),
-	"water_goblin": preload("res://sprite_frames/water_goblin.tres")
+	"water_goblin": preload("res://sprite_frames/water_goblin.tres"),
+	"desert_slime": preload("res://sprite_frames/desert_slime.tres"),
+	"ice_slime": preload("res://sprite_frames/ice_slime.tres")
 }
 
 func get_frames(id):
