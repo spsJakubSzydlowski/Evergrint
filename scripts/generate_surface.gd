@@ -82,6 +82,16 @@ func get_biome_terrain(x: int, y: int) -> int:
 	else:
 		return T_GRASS
 
+func get_biome_enum(x: int, y: int) -> int:
+	var terrain = get_biome_terrain(x, y)
+	
+	match terrain:
+		0: return Enums.Biomes.FOREST
+		6: return Enums.Biomes.DESERT
+		7: return Enums.Biomes.ICE
+	
+	return Enums.Biomes.ICE
+
 func generate_chunk(coords):
 	var water_tiles: Array[Vector2i] = []
 	

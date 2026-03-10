@@ -78,6 +78,9 @@ func get_loot_table_items(id):
 func get_entity(id) -> Dictionary:
 	return db_data.get("Entities", {}).get(id)
 
+func get_all_entities():
+	return db_data.get("Entities", {})#.get("id")
+
 func get_full_entity_data(id):
 	var base_data = get_entity(id)
 	if not base_data:
