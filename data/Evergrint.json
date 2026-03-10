@@ -570,6 +570,36 @@
 						"y": 0,
 						"height": 2
 					}
+				},
+				{
+					"id": "ice_slime",
+					"name": "Ice Slime",
+					"max_hp": 75,
+					"move_speed": 25,
+					"armor": 0,
+					"hitbox_x": 14,
+					"hitbox_y": 9,
+					"tile": {
+						"file": "../textures/Atlas-enemies.png",
+						"size": 16,
+						"x": 0,
+						"y": 1
+					}
+				},
+				{
+					"id": "desert_slime",
+					"name": "Desert Slime",
+					"max_hp": 60,
+					"move_speed": 25,
+					"armor": 0,
+					"hitbox_x": 14,
+					"hitbox_y": 9,
+					"tile": {
+						"file": "../textures/Atlas-enemies.png",
+						"size": 16,
+						"x": 0,
+						"y": 2
+					}
 				}
 			],
 			"separators": [],
@@ -895,6 +925,11 @@
 					"display": null
 				},
 				{
+					"typeStr": "5:FOREST,DESERT,ICE",
+					"name": "spawn_biome",
+					"opt": true
+				},
+				{
 					"typeStr": "6:LootTables",
 					"name": "loot_ref",
 					"display": null
@@ -932,7 +967,8 @@
 							"time": 1.8
 						}
 					],
-					"spawn_world_id": "surface"
+					"spawn_world_id": "surface",
+					"spawn_biome": 0
 				},
 				{
 					"id": "mole_boss",
@@ -968,7 +1004,32 @@
 					"ai_type": 0,
 					"is_boss": false,
 					"loot_ref": "water_goblin",
-					"spawn_world_id": "surface"
+					"spawn_world_id": "surface",
+					"spawn_biome": 0
+				},
+				{
+					"id": "ice_slime",
+					"aggro_range": 250,
+					"attack_damage": 20,
+					"knockback": 0.8,
+					"faction": 0,
+					"ai_type": 0,
+					"is_boss": false,
+					"loot_ref": "green_slime",
+					"spawn_world_id": "surface",
+					"spawn_biome": 2
+				},
+				{
+					"id": "desert_slime",
+					"aggro_range": 250,
+					"attack_damage": 18,
+					"knockback": 0.8,
+					"faction": 0,
+					"ai_type": 0,
+					"is_boss": false,
+					"loot_ref": "green_slime",
+					"spawn_world_id": "surface",
+					"spawn_biome": 1
 				}
 			],
 			"separators": [],
