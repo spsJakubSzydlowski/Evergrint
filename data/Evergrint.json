@@ -623,12 +623,6 @@
 					"id": "green_slime",
 					"items": [
 						{
-							"item": "green_apple",
-							"weight": 80,
-							"amount_min": 2,
-							"amount_max": 4
-						},
-						{
 							"item": "green_gel",
 							"weight": 90,
 							"amount_min": 1,
@@ -682,28 +676,10 @@
 							"amount_max": 14
 						},
 						{
-							"item": "wooden_helmet",
-							"weight": 25,
+							"item": "green_apple",
+							"weight": 100,
 							"amount_min": 1,
-							"amount_max": 1
-						},
-						{
-							"item": "wooden_chestplate",
-							"weight": 25,
-							"amount_min": 1,
-							"amount_max": 1
-						},
-						{
-							"item": "wooden_leggins",
-							"weight": 25,
-							"amount_min": 1,
-							"amount_max": 1
-						},
-						{
-							"item": "wooden_boots",
-							"weight": 25,
-							"amount_min": 1,
-							"amount_max": 1
+							"amount_max": 2
 						}
 					]
 				},
@@ -741,6 +717,64 @@
 						{
 							"item": "dripping_top_hat",
 							"weight": 100,
+							"amount_min": 1,
+							"amount_max": 1
+						}
+					]
+				},
+				{
+					"id": "ice_slime",
+					"items": [
+						{
+							"item": "arrow",
+							"weight": 50,
+							"amount_min": 3,
+							"amount_max": 4
+						},
+						{
+							"item": "green_gel",
+							"weight": 100,
+							"amount_min": 1,
+							"amount_max": 2
+						},
+						{
+							"item": "wooden_chestplate",
+							"weight": 25,
+							"amount_min": 1,
+							"amount_max": 1
+						},
+						{
+							"item": "wooden_boots",
+							"weight": 25,
+							"amount_min": 1,
+							"amount_max": 1
+						}
+					]
+				},
+				{
+					"id": "desert_slime",
+					"items": [
+						{
+							"item": "green_gel",
+							"weight": 100,
+							"amount_min": 1,
+							"amount_max": 2
+						},
+						{
+							"item": "arrow",
+							"weight": 50,
+							"amount_min": 3,
+							"amount_max": 4
+						},
+						{
+							"item": "wooden_helmet",
+							"weight": 25,
+							"amount_min": 1,
+							"amount_max": 1
+						},
+						{
+							"item": "wooden_leggins",
+							"weight": 25,
 							"amount_min": 1,
 							"amount_max": 1
 						}
@@ -1320,7 +1354,7 @@
 					"volume": -10
 				},
 				{
-					"id": "green_slime_hurt",
+					"id": "slime_hurt",
 					"file": "../audio/sfx/slime_hurt.wav",
 					"volume": -5
 				},
