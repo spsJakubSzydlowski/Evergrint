@@ -60,7 +60,7 @@ func destroy_block(tile_pos: Vector2, block_info: Dictionary):
 			var amount = randi_range(entry.get("amount_min"), entry.get("amount_max"))
 			
 			for i in range(amount):
-				DataManager.spawn_item(item_id, current_tilemap.map_to_local(tile_pos), true)
+				DataManager.spawn_item(item_id, current_tilemap.map_to_local(tile_pos), false)
 
 func spawn_hit_effect(tile_pos: Vector2i):
 	var effect = load("res://scenes/effects/explosion.tscn").instantiate()
