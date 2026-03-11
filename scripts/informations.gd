@@ -3,6 +3,9 @@ extends Control
 @onready var compas_label: RichTextLabel = $HBoxContainer/compas_label
 @onready var time_label: RichTextLabel = $HBoxContainer/time_label
 
+func _ready() -> void:
+	visible = false
+
 func get_compas_text(relative_pos):
 	if relative_pos == Vector2i.ZERO: return "0N 0E"
 	
