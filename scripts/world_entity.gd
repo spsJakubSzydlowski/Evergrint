@@ -252,7 +252,10 @@ func take_hit(amount: int, knockback_amount: float, source_pos) -> void:
 	if current_hp < (max_hp * 0.5) and is_boss:
 		sprite.modulate = Color(2, 0.5, 0.5)
 	
-	AudioManager.play_entity_sfx(entity.id, "hurt", global_position)
+	var audio_id = entity_name
+	if audio_id.contains("slime"):
+		audio_id = "slime"
+	AudioManager.play_entity_sfx(audio_id, "hurt", global_position)
 
 	if current_hp <= 0:
 		die()
