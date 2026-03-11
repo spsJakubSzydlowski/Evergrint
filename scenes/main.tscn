@@ -35,7 +35,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5, 0.58, 0.92, 1),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Color(0.8960107, 0.9293727, 0.92904943, 1), Color(0.85831773, 0.825982, 0.6728174, 1), Color(0.09019608, 0.1254902, 0.20784314, 1), Color(0.09019608, 0.1254902, 0.20784314, 1), Color(0.96021277, 0.9124525, 0.8639279, 1)]
+"values": [Color(0.8960107, 0.9293727, 0.92904943, 1), Color(0.9897762, 0.98731786, 0.97444814, 1), Color(0.09019608, 0.1254902, 0.20784314, 1), Color(0.09019608, 0.1254902, 0.20784314, 1), Color(0.96021277, 0.9124525, 0.8639279, 1)]
 }
 tracks/1/type = "method"
 tracks/1/imported = false
@@ -98,7 +98,7 @@ tile_set = ExtResource("2_jyhfs")
 navigation_enabled = false
 
 [node name="EntitySpawnTimer" type="Timer" parent="." unique_id=2073219033]
-wait_time = 10.0
+wait_time = 2.0
 autostart = true
 
 [node name="DeathScreen" parent="." unique_id=605049590 instance=ExtResource("5_tefeu")]
