@@ -56,6 +56,9 @@ func set_difficulty_mult(mode: String):
 func transition_to(target_layer: String):
 	SceneChanger.change_scene_save_game(world_scenes[target_layer])
 	current_world_id = target_layer
+	
+	current_tilemap = null
+	chunk_queue.clear()
 	loaded_chunks.clear()
 
 func get_player_world_position():
@@ -116,18 +119,16 @@ func update_chunks(tile_map):
 	)
 
 func _process(_delta):
+	if current_tilemap == null or not is_instance_valid(current_tilemap): return
+	
 	if chunk_queue.size() > 0:
 		var next_chunk = chunk_queue.pop_front()
 		
-		if current_tilemap == null: return
+		if loaded_chunks.has(next_chunk):
+			return
 		
-		var current_player_chunk = get_player_chunk_pos(current_tilemap)
-		var dist_x = abs(next_chunk.x - current_player_chunk.x)
-		var dist_y = abs(next_chunk.y - current_player_chunk.y)
-		
-		if dist_x <= RENDER_DISTANCE and dist_y <= RENDER_DISTANCE:
-			loaded_chunks[next_chunk] = true
-			request_chunk_generation.emit(next_chunk)
+		loaded_chunks[next_chunk] = true
+		request_chunk_generation.emit(next_chunk)
 
 func get_player_chunk_pos(tile_map):
 	var player_global_pos = get_player_world_position()
