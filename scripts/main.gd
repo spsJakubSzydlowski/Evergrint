@@ -14,11 +14,10 @@ func _ready() -> void:
 	if not DataManager.is_loaded:
 		await DataManager.database_ready
 	
-	entity_spawn_timer.wait_time = 10.0
-	
 	Global.current_world_id = "surface"
 	Global.current_tilemap = tile_map
 	MiningManager.current_tilemap = object_layer
+	Global.update_chunks(tile_map)
 	Inventory.update_inventory()
 	
 	astar = AStarGrid2D.new()
@@ -60,7 +59,7 @@ func spawn_entity(first_enemy = false) -> void:
 	var new_wait_time = 2.0 + (current_enemy_count * 0.5)
 	
 	entity_spawn_timer.wait_time = clamp(new_wait_time, 2.0, 12.0)
-	
+
 	if current_enemy_count >= max_entities or not player:
 		return
 	
