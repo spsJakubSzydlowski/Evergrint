@@ -2,7 +2,8 @@ extends Node
 
 signal inventory_updated
 
-var current_equipped_id: String = ""
+var current_equipped_id
+var dragged_item = {"id": "", "amount": 0}
 
 var slots_amount: int = 50
 var slots = []
@@ -45,6 +46,13 @@ func remove_item(item_id: String, amount: int = 1):
 	if not data: return
 	
 	var found = false
+	
+	if dragged_item.id == item_id:
+		dragged_item.amount -= amount
+		
+		if dragged_item.amount <= 0:
+			dragged_item.id = ""
+			dragged_item.amount = 0
 	
 	for slot in slots:
 		if slot.id == item_id:
