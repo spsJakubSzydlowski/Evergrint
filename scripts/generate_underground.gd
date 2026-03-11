@@ -5,12 +5,15 @@ const T_LAVA = 3
 const T_NOWALK = 5
 const T_SAND = 6
 const T_SNOW = 7
+const T_BLOCK = 4
 
 var moisture_noise = FastNoiseLite.new()
 var temperature_noise = FastNoiseLite.new()
 var world_width = Global.world_width
 var world_height = Global.world_height
 var tree_count = 800
+
+var sinkhole_map_pos
 
 var sinkhole_radius = 8.0
 
@@ -85,6 +88,7 @@ func get_biome_terrain(x: int, y: int) -> int:
 
 func generate_chunk(coords):
 	var water_tiles: Array[Vector2i] = []
+	var block_tiles: Array[Vector2i] = []
 	
 	var rng = RandomNumberGenerator.new()
 	rng.seed = Global.world_seed + coords.x * 17 + coords.y * 89
@@ -93,6 +97,8 @@ func generate_chunk(coords):
 	var start_y = coords.y * Global.CHUNK_SIZE
 	var end_x = start_x + Global.CHUNK_SIZE
 	var end_y = start_y + Global.CHUNK_SIZE
+	
+	var changes = SaveManager.world_changes.get(Global.current_world_id, {})
 	
 	if start_x >= world_width or start_y >= world_height:
 		return
@@ -104,19 +110,21 @@ func generate_chunk(coords):
 		for y in range(start_y - 1, end_y + 1):
 			var current_pos = Vector2i(x, y)
 			var terrain = get_biome_terrain(x, y)
+			
+			var dist_from_sinkhole = Vector2(current_pos).distance_to(Vector2(sinkhole_map_pos))
+	
 
 			if x >= start_x and x < end_x and y >= start_y and y < end_y:
 				var base_terrain = terrain
 				
 				if base_terrain == T_LAVA:
-					base_terrain = T_NOWALK
-					#var temp = temperature_noise.get_noise_2d(x, y)
-					#if temp > 0.3:
-						#base_terrain = T_SAND
-					#elif temp < -0.3:
-						#base_terrain = T_SNOW
-					#else:
-						#base_terrain = T_STONE
+					var temp = temperature_noise.get_noise_2d(x, y)
+					if temp > 0.3:
+						base_terrain = T_SAND
+					elif temp < -0.3:
+						base_terrain = T_SNOW
+					else:
+						base_terrain = T_STONE
 				
 				if base_terrain == T_STONE:
 					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(0, 1), 3))
@@ -124,79 +132,34 @@ func generate_chunk(coords):
 					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(0, 3), 1))
 				elif base_terrain == T_SNOW:
 					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(0, 3), 2))
-					
-				if base_terrain == T_NOWALK:
-					self.set_cell(current_pos, 0, Vector2i(4, 0))
-				
+			
+			var astar = get_parent().astar
 			if terrain == T_LAVA:
 				water_tiles.append(current_pos)
+				astar.set_point_solid(current_pos, true)
+			else:
+				if dist_from_sinkhole < sinkhole_radius: continue
+				if changes.has(current_pos):
+					var change_type = changes[current_pos]
+
+					if change_type == "removed":
+						continue
+				
+				block_tiles.append(current_pos)
+				astar.set_point_solid(current_pos, true)
 
 	if water_tiles.size() > 0:
 		water_layer.set_cells_terrain_connect(water_tiles, 0, T_LAVA, true)
-
-#func spawn_trees_in_chunk(coords):
-	#var rng = RandomNumberGenerator.new()
-	#rng.seed = Global.world_seed + coords.x * 37 + coords.y * 131
-	#
-	#if not loaded_chunks_entities.has(coords):
-		#loaded_chunks_entities[coords] = []
-	#
-	#var sinkhole_map_pos = Global.center_world_pos
-	#
-	#var tree_density = rng.randi() % 3
-	#
-	#for i in range(tree_density):
-		#var local_pos = Vector2i(rng.randi() % Global.CHUNK_SIZE, rng.randi() % Global.CHUNK_SIZE)
-		#var global_tile_pos = Vector2i((coords * Global.CHUNK_SIZE) + local_pos)
-		#
-		#var current_biome = get_biome_terrain(global_tile_pos.x, global_tile_pos.y)
-		#
-		#var dist_from_sinkhole = Vector2(global_tile_pos).distance_to(Vector2(sinkhole_map_pos))
-		#
-		#var changes = SaveManager.world_changes.get(Global.current_world_id, {})
-#
-		#if global_tile_pos.x >= Global.world_width or global_tile_pos.y >= Global.world_height: continue
-		#if occupied_cells.has(global_tile_pos): continue
-		#if dist_from_sinkhole < sinkhole_radius: continue
-#
-		#var is_water_here = get_biome_terrain(global_tile_pos.x, global_tile_pos.y) == T_WATER
-		#if is_water_here: continue
-		#
-		#var world_pos = MiningManager.current_tilemap.map_to_local(global_tile_pos)
-#
-		#if changes.has(global_tile_pos):
-			#var change_type = changes[global_tile_pos]
-#
-			#if change_type == "removed":
-				#continue
-			#elif change_type == "placed":
-				#pass
-		#
-		#var resource_to_spawn = "oak_tree"
-		#if current_biome == T_SAND:
-			#resource_to_spawn = "palm_tree"
-			#
-		#var resource = DataManager.spawn_resource(resource_to_spawn, world_pos)
-		#
-		#if resource:
-			#occupied_cells[global_tile_pos] = true
-			#
-			#loaded_chunks_entities[coords].append({
-				#"node": resource,
-				#"cell_pos": global_tile_pos
-			#})
-#
-			#var rand_size = rng.randf_range(0.95, 1.2)
-			#resource.scale = Vector2(rand_size, rand_size)
-			#if rng.randi_range(1, 2) == 1:
-				#resource.scale.x *= -1 
+	
+	if block_tiles.size() > 0:
+		object_layer.set_cells_terrain_connect(block_tiles, 0, T_BLOCK, true)
 
 func spawn_starting_sinkhole():
 	@warning_ignore("integer_division")
 	var center_map_pos = Global.center_world_pos
 	
-	var sinkhole_pos = center_map_pos
+	sinkhole_map_pos = center_map_pos
 
-	object_layer.set_cell(sinkhole_pos, 2, Vector2i(0, 0))
+	object_layer.set_cell(sinkhole_map_pos, 2, Vector2i(0, 0))
 	
-	occupied_cells[sinkhole_pos] = true
+	occupied_cells[sinkhole_map_pos] = true
