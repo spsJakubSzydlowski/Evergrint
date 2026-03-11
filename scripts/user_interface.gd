@@ -93,7 +93,6 @@ func _input(event: InputEvent) -> void:
 			refresh_ui()
 			break
 	
-	
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP or event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			if selected_slot_data.id: return
@@ -156,6 +155,8 @@ func put_dragged_item_to_free_slot() -> void:
 	refresh_ui()
 
 func refresh_ui() -> void:
+	Inventory.dragged_item = selected_slot_data
+	
 	if is_inventory_open:
 		current_container = inventory_container
 	else:
@@ -172,7 +173,7 @@ func refresh_ui() -> void:
 		if slot_data:
 			update_slot_visuals(slot_ui, slot_data)
 			update_tooltip_data(slot_data, slot_ui)
-			
+	
 	emit_equipped_signal()
 
 func create_slot_in(container, index) -> void:
