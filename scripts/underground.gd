@@ -4,6 +4,8 @@ extends Node2D
 @onready var object_layer: TileMapLayer = $ObjectLayer
 var player = null
 
+var astar: AStarGrid2D
+
 func _ready() -> void:
 	Global.loaded_chunks.clear()
 	
@@ -12,6 +14,12 @@ func _ready() -> void:
 	MiningManager.current_tilemap = object_layer
 
 	ground_layer.generate()
+	
+	astar = AStarGrid2D.new()
+	astar.region = Rect2i(-1000, -1000, 2000, 2000)
+	astar.cell_size = Vector2(16, 16)
+	astar.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_AT_LEAST_ONE_WALKABLE
+	astar.update()
 
 	spawn_player_at_center()
 	
