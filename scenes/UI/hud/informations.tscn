@@ -6,7 +6,6 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lgjxu"]
 
 [node name="informations" type="Control" unique_id=1975728632]
-visible = false
 custom_minimum_size = Vector2(128, 32)
 layout_mode = 3
 anchors_preset = 0
@@ -21,10 +20,11 @@ autostart = true
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+theme_override_constants/separation = 12
 
 [node name="compas_label" type="RichTextLabel" parent="HBoxContainer" unique_id=906890136]
 clip_contents = false
-custom_minimum_size = Vector2(50, 0)
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/outline_size = 2
@@ -33,6 +33,7 @@ theme_override_font_sizes/normal_font_size = 12
 theme_override_styles/focus = SubResource("StyleBoxEmpty_lgjxu")
 text = "516565"
 fit_content = true
+autowrap_mode = 0
 
 [node name="time_label" type="RichTextLabel" parent="HBoxContainer" unique_id=900713996]
 clip_contents = false
