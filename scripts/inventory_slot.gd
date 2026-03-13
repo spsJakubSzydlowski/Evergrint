@@ -8,7 +8,8 @@ var slot_index = -1
 @onready var icon: TextureRect = $Contents/Icon
 @onready var amount_label: Label = $Contents/MarginContainer/AmountLabel
 @onready var selection_sprite: NinePatchRect = $SelectionSprite
-@onready var key_label: Label = $Contents/MarginContainer/key_label
+@onready var key_label: Label = $MarginContainer/key_label
+
 
 func _ready() -> void:
 	if has_meta("equipment_type"):
