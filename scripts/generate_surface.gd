@@ -183,6 +183,8 @@ func spawn_trees_in_chunk(coords):
 		var resource_to_spawn = "oak_tree"
 		if current_biome == T_SAND:
 			resource_to_spawn = "palm_tree"
+		elif current_biome == T_SNOW:
+			resource_to_spawn = "pine_tree"
 			
 		var resource = DataManager.spawn_resource(resource_to_spawn, world_pos)
 		
