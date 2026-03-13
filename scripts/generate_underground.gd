@@ -9,6 +9,7 @@ const T_BLOCK = 4
 
 var moisture_noise = FastNoiseLite.new()
 var temperature_noise = FastNoiseLite.new()
+var cave_noise = FastNoiseLite.new()
 var world_width = Global.world_width
 var world_height = Global.world_height
 var tree_count = 800
@@ -60,6 +61,10 @@ func generate() -> void:
 	temperature_noise.seed = Global.world_seed + 76576
 	temperature_noise.frequency = 0.005
 	temperature_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+	
+	cave_noise.seed = Global.world_seed + 50
+	cave_noise.frequency = 0.05
+	temperature_noise.noise_type = FastNoiseLite.TYPE_PERLIN
 
 	spawn_starting_sinkhole()
 	notify_runtime_tile_data_update()
@@ -127,7 +132,7 @@ func generate_chunk(coords):
 						base_terrain = T_STONE
 				
 				if base_terrain == T_STONE:
-					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(0, 1), 3))
+					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(0, 3), 3))
 				elif base_terrain == T_SAND:
 					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(0, 3), 1))
 				elif base_terrain == T_SNOW:
@@ -144,8 +149,11 @@ func generate_chunk(coords):
 
 					if change_type == "removed":
 						continue
-				
-				block_tiles.append(current_pos)
+						
+				var val = cave_noise.get_noise_2d(x, y)
+				if val > -0.1:
+					block_tiles.append(current_pos)
+
 				astar.set_point_solid(current_pos, true)
 
 	if water_tiles.size() > 0:
