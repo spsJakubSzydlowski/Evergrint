@@ -902,12 +902,32 @@
 					"tool_type": 2,
 					"tile_width": 3,
 					"tile_height": 4,
-					"tile_size": 1,
+					"tile_size": 16,
 					"loot_ref": "oak_tree",
 					"tile": {
 						"file": "../textures/Atlas-resources.png",
 						"size": 16,
 						"x": 2,
+						"y": 0,
+						"width": 3,
+						"height": 4
+					},
+					"hitbox_x": 16,
+					"hitbox_y": 50
+				},
+				{
+					"id": "pine_tree",
+					"name": "Pine Tree",
+					"hit_points": 5,
+					"tool_type": 2,
+					"tile_width": 3,
+					"tile_height": 4,
+					"tile_size": 16,
+					"loot_ref": "oak_tree",
+					"tile": {
+						"file": "../textures/Atlas-resources.png",
+						"size": 16,
+						"x": 5,
 						"y": 0,
 						"width": 3,
 						"height": 4
