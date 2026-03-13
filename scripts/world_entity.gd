@@ -97,7 +97,7 @@ func initialize(entity_id: String) -> void:
 	health_bar.max_value = max_hp
 	
 	if is_boss:
-		health_bar.position.y *= 2
+		health_bar.position.y = -texture_height - 10
 	
 	faction = entity_stats.get("faction")
 	start_aggro_range = entity_stats.get("aggro_range", 100.0)
