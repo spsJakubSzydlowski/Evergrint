@@ -73,7 +73,7 @@ tonemap_white = 9.17
 tonemap_agx_white = 2.0
 tonemap_agx_contrast = 2.0
 glow_enabled = true
-glow_strength = 1.2
+glow_strength = 0.8
 glow_hdr_threshold = 0.1
 adjustment_enabled = true
 
