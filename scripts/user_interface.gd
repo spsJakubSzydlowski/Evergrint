@@ -235,7 +235,7 @@ func update_slot_visuals(slot_ui, slot_data) -> void:
 	
 	icon_rect.texture = atlas_tex
 	amount_label.text = str(int(amount)) if amount > 1 else ""
-	
+
 func emit_equipped_signal() -> void:
 	if selected_slot_data.id:
 		var active_slot_data = selected_slot_data
