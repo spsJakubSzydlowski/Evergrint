@@ -15,7 +15,6 @@ func _ready() -> void:
 	load_settings()
 
 func save_settings():
-	print("Saving settigms")
 	var file = FileAccess.open(settings_path, FileAccess.WRITE)
 	if file:
 		file.store_string(JSON.stringify(current_settings, "\t"))
