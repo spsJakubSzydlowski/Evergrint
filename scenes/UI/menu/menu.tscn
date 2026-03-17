@@ -30,7 +30,6 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.5882353)
 
 [node name="menu_sect" parent="." unique_id=1163080949 instance=ExtResource("3_lbp3g")]
-visible = false
 
 [node name="create_world_sect" parent="." unique_id=1242943887 instance=ExtResource("4_e7jq3")]
 
@@ -40,3 +39,4 @@ visible = false
 visible = false
 
 [node name="delete_world_sect" parent="." unique_id=830936469 instance=ExtResource("7_lakgf")]
+visible = false
