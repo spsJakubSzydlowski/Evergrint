@@ -130,11 +130,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if current_action_state == ActionState.DEAD:
 		return
 	
-	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_RIGHT:
-			_handle_interact_input()
-		elif event.button_index == MOUSE_BUTTON_LEFT:
-			_handle_action_input()
+	if event.is_action_pressed("attack"):
+		_handle_action_input()
+	if event.is_action_pressed("interact"):
+		_handle_interact_input()
 	
 	if event.is_action_pressed("debug"):
 		Signals.debug_toggled.emit()
@@ -180,7 +179,7 @@ func change_action_state(new_state: ActionState):
 func move():
 	var delta = get_process_delta_time()
 	
-	var direction := Input.get_vector("a", "d", "w", "s").normalized()
+	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
 	
 	if direction:
 		sprite.play("walk")
@@ -464,7 +463,7 @@ func _on_player_dash():
 	can_dash = false
 	dash_cooldown_timer.start(dash_cooldown)
 	
-	var direction := Input.get_vector("a", "d", "w", "s").normalized()
+	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
 	if direction == Vector2.ZERO:
 		if direction_right:
 			direction = Vector2.RIGHT
