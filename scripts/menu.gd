@@ -27,7 +27,7 @@ func _ready() -> void:
 			child.mouse_entered.connect(_on_any_button_mouse_entered.bind(child.name))
 	
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("escape"):
+	if event.is_action_pressed("pause"):
 		Signals.switch_to_section.emit("menu")
 
 func _on_switch_to_section(target_section: String):
