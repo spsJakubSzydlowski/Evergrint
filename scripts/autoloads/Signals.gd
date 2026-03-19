@@ -35,3 +35,6 @@ signal autosaving
 
 @warning_ignore("unused_signal")
 signal debug_toggled
+
+@warning_ignore("unused_signal")
+signal change_controls
