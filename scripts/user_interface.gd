@@ -79,11 +79,11 @@ func _input(event: InputEvent) -> void:
 	if Global.is_player_dead or Global.world_name == "":
 		return
 		
-	if Input.is_action_just_pressed("open_inventory"):
+	if Input.is_action_just_pressed("toggle_inv"):
 		toggle_inventory()
 		put_dragged_item_to_free_slot()
 		
-	if Input.is_action_just_pressed("escape"):
+	if Input.is_action_just_pressed("pause"):
 		put_dragged_item_to_free_slot()
 		
 	for i in range(10):
