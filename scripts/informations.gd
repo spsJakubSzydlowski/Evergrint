@@ -15,7 +15,7 @@ func get_compas_text(relative_pos):
 	return "%s %s" % [ns, we]
 
 func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("stats"):
+	if Input.is_action_just_pressed("toggle_info"):
 		visible = not visible
 
 func _process(_delta: float) -> void:
