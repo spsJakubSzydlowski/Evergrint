@@ -3,7 +3,7 @@ extends Control
 @onready var control_grid: GridContainer = $control_grid
 var row_scene = preload("res://scenes/UI/change_control_row.tscn")
 
-@onready var options: Control = $"../options"
+@onready var audio: Control = $"../audio"
 @onready var controls: Control = $"."
 
 func play_click():
@@ -36,19 +36,11 @@ func _on_done_button_pressed() -> void:
 	Signals.switch_to_section.emit("menu")
 
 func _on_button_mouse_entered(button):
-	if get_node(button).disabled == false:
-		get_node(button).set("theme_override_constants/outline_size", 0)
+	if get_node(button).button_pressed: return
+
+	get_node(button).set("theme_override_constants/outline_size", 0)
 
 func _on_button_mouse_exited(button):
-	if get_node(button).disabled == false:
-		get_node(button).set("theme_override_constants/outline_size", 4)
-
-
-func _on_audio_button_pressed() -> void:
-	controls.visible = false
-	options.visible = true
-
-
-func _on_controls_button_pressed() -> void:
-	controls.visible = true
-	options.visible = false
+	if get_node(button).button_pressed: return
+	
+	get_node(button).set("theme_override_constants/outline_size", 4)
