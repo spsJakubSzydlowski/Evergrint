@@ -1,11 +1,13 @@
 [gd_scene format=4 uid="uid://cxxi7ytbtx2m4"]
 
 [ext_resource type="FontFile" uid="uid://gdelwc207xyq" path="res://fonts/Jacquard_font.tres" id="1_n6e25"]
-[ext_resource type="Script" uid="uid://daf2xgjpv1vf2" path="res://scripts/options_sect.gd" id="1_ujlrg"]
+[ext_resource type="Script" uid="uid://dfbcg2wted5h3" path="res://scripts/options_sect.gd" id="1_ujlrg"]
+[ext_resource type="Script" uid="uid://daf2xgjpv1vf2" path="res://scripts/audio_sect.gd" id="2_c1pwo"]
 [ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="2_ujlrg"]
 [ext_resource type="Script" uid="uid://cpb36ciul68tu" path="res://scripts/controls_sect.gd" id="4_1f7tm"]
 [ext_resource type="StyleBox" uid="uid://bmm6te7auhgk5" path="res://misc/button_pressed_style.tres" id="5_f5mbv"]
 [ext_resource type="StyleBox" uid="uid://pufkbrmg787q" path="res://misc/button_hovered_style.tres" id="6_c1pwo"]
+[ext_resource type="ButtonGroup" uid="uid://5qfru85lowcf" path="res://misc/controls_button_group.tres" id="8_l27k7"]
 
 [sub_resource type="Gradient" id="Gradient_78n2u"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
@@ -708,8 +710,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ujlrg")
 
-[node name="options" type="Control" parent="." unique_id=1885435690]
+[node name="audio" type="Control" parent="." unique_id=1885435690]
 visible = false
 custom_minimum_size = Vector2(300, 300)
 layout_mode = 1
@@ -724,9 +727,9 @@ offset_right = 150.0
 offset_bottom = 150.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_ujlrg")
+script = ExtResource("2_c1pwo")
 
-[node name="options_label" type="Label" parent="options" unique_id=189433397]
+[node name="options_label" type="Label" parent="audio" unique_id=189433397]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -739,10 +742,10 @@ size_flags_horizontal = 4
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("1_n6e25")
 theme_override_font_sizes/font_size = 25
-text = "Options"
+text = "Audio"
 horizontal_alignment = 1
 
-[node name="done_button" type="Button" parent="options" unique_id=1777498154 groups=["menu_buttons"]]
+[node name="done_button" type="Button" parent="audio" unique_id=1777498154 groups=["menu_buttons"]]
 custom_minimum_size = Vector2(200, 25)
 layout_mode = 1
 anchors_preset = 7
@@ -760,7 +763,7 @@ size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("2_ujlrg")
 text = "Done"
 
-[node name="MarginContainer" type="MarginContainer" parent="options" unique_id=1906008244]
+[node name="MarginContainer" type="MarginContainer" parent="audio" unique_id=1906008244]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -772,19 +775,19 @@ grow_horizontal = 2
 size_flags_horizontal = 4
 theme_override_constants/margin_top = 30
 
-[node name="VBoxContainer" type="VBoxContainer" parent="options/MarginContainer" unique_id=209020768]
+[node name="VBoxContainer" type="VBoxContainer" parent="audio/MarginContainer" unique_id=209020768]
 layout_mode = 2
 
-[node name="sound_container" type="HBoxContainer" parent="options/MarginContainer/VBoxContainer" unique_id=803445112]
+[node name="sound_container" type="HBoxContainer" parent="audio/MarginContainer/VBoxContainer" unique_id=803445112]
 layout_mode = 2
 
-[node name="sound_label" type="Label" parent="options/MarginContainer/VBoxContainer/sound_container" unique_id=1747709259]
+[node name="sound_label" type="Label" parent="audio/MarginContainer/VBoxContainer/sound_container" unique_id=1747709259]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_ujlrg")
 text = "Sound: 100%"
 
-[node name="sound_slider" type="HSlider" parent="options/MarginContainer/VBoxContainer/sound_container" unique_id=1401948976]
+[node name="sound_slider" type="HSlider" parent="audio/MarginContainer/VBoxContainer/sound_container" unique_id=1401948976]
 custom_minimum_size = Vector2(150, 25)
 layout_mode = 2
 theme_override_icons/grabber = SubResource("GradientTexture2D_svcqa")
@@ -868,7 +871,7 @@ theme_override_constants/margin_left = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1086228061]
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = 4
 
 [node name="audio_button" type="Button" parent="MarginContainer/VBoxContainer" unique_id=2018070394 groups=["menu_buttons"]]
 custom_minimum_size = Vector2(128, 0)
@@ -876,14 +879,21 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme = SubResource("Theme_1fi2l")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("1_n6e25")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxEmpty_egfqj")
 theme_override_styles/pressed = ExtResource("5_f5mbv")
 theme_override_styles/hover = ExtResource("6_c1pwo")
+theme_override_styles/hover_pressed = ExtResource("5_f5mbv")
+theme_override_styles/focus = ExtResource("6_c1pwo")
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("8_l27k7")
 text = "Audio"
 metadata/_edit_use_anchors_ = true
 
@@ -891,26 +901,34 @@ metadata/_edit_use_anchors_ = true
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-theme = SubResource("Theme_1fi2l")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("1_n6e25")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxEmpty_egfqj")
 theme_override_styles/pressed = ExtResource("5_f5mbv")
 theme_override_styles/hover = ExtResource("6_c1pwo")
+theme_override_styles/hover_pressed = ExtResource("5_f5mbv")
+theme_override_styles/focus = ExtResource("6_c1pwo")
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("8_l27k7")
 text = "Controls"
 metadata/_edit_use_anchors_ = true
 
-[connection signal="pressed" from="options/done_button" to="options" method="_on_done_button_pressed"]
-[connection signal="value_changed" from="options/MarginContainer/VBoxContainer/sound_container/sound_slider" to="." method="_on_sound_slider_value_changed"]
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="visibility_changed" from="audio" to="audio" method="_on_visibility_changed"]
+[connection signal="pressed" from="audio/done_button" to="audio" method="_on_done_button_pressed"]
+[connection signal="value_changed" from="audio/MarginContainer/VBoxContainer/sound_container/sound_slider" to="audio" method="_on_sound_slider_value_changed"]
 [connection signal="visibility_changed" from="controls" to="controls" method="_on_visibility_changed"]
 [connection signal="pressed" from="controls/done_button" to="controls" method="_on_done_button_pressed"]
 [connection signal="mouse_entered" from="MarginContainer/VBoxContainer/audio_button" to="controls" method="_on_button_mouse_entered" binds= [NodePath("../MarginContainer/VBoxContainer/audio_button")]]
 [connection signal="mouse_exited" from="MarginContainer/VBoxContainer/audio_button" to="controls" method="_on_button_mouse_exited" binds= [NodePath("../MarginContainer/VBoxContainer/audio_button")]]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/audio_button" to="controls" method="_on_audio_button_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/audio_button" to="." method="_on_button_toggled" binds= [NodePath("MarginContainer/VBoxContainer/audio_button")]]
 [connection signal="mouse_entered" from="MarginContainer/VBoxContainer/controls_button" to="controls" method="_on_button_mouse_entered" binds= [NodePath("../MarginContainer/VBoxContainer/controls_button")]]
 [connection signal="mouse_exited" from="MarginContainer/VBoxContainer/controls_button" to="controls" method="_on_button_mouse_exited" binds= [NodePath("../MarginContainer/VBoxContainer/controls_button")]]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/controls_button" to="controls" method="_on_controls_button_pressed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/controls_button" to="." method="_on_button_toggled" binds= [NodePath("MarginContainer/VBoxContainer/controls_button")]]
