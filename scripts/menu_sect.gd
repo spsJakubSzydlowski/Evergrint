@@ -21,12 +21,12 @@ func play_click():
 func _on_load_game_button_pressed() -> void:
 	play_click()
 	Signals.switch_to_section.emit("worlds")
-	menu.current_action = menu.Actions.LOAD
+	Enums.current_menu_action = Enums.MenuActions.LOAD
 
 func _on_new_game_button_pressed() -> void:
 	play_click()
 	Signals.switch_to_section.emit("create")
-	menu.current_action = menu.Actions.CREATE
+	Enums.current_menu_action = Enums.MenuActions.CREATE
 
 func _on_options_button_pressed() -> void:
 	play_click()
