@@ -5,6 +5,9 @@ extends Control
 @onready var audio_button: Button = $MarginContainer/VBoxContainer/audio_button
 @onready var controls_button: Button = $MarginContainer/VBoxContainer/controls_button
 
+func play_click():
+	AudioManager.play_sfx("menu_click")
+
 func _on_visibility_changed() -> void:
 	if not visible: return
 	
@@ -16,6 +19,7 @@ func _on_visibility_changed() -> void:
 
 func _on_button_toggled(toggled_on: bool, button: NodePath) -> void:
 	if not toggled_on:
+		play_click()
 		get_node(button).set("theme_override_constants/outline_size", 4)
 		
 	if get_node(button) == audio_button:
