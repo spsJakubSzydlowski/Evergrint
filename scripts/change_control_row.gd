@@ -19,26 +19,38 @@ func _ready() -> void:
 		button_text.text = OS.get_keycode_string(button_index)
 		
 	if button_text.text == "":
-		button_text.text = "<unbound>"
+		button_text.text = "<Unbound>"
+
+func play_click():
+	AudioManager.play_sfx("menu_click")
 
 func _on_pressed() -> void:
+	play_click()
 	var input_name = await wait_for_input()
 	button_text.text = input_name
 	
 	if button_text.text == "":
-		button_text.text = "<unbound>"
+		button_text.text = "<Unbound>"
 	
 	Controls.controls[setting_id] = OS.find_keycode_from_string(input_name)
-	
-	print(Controls.controls)
 
 func wait_for_input():
+	get_viewport().gui_release_focus()
+	
 	anim.play("pulse")
+	disabled = true
+	
+	await get_tree().process_frame
+	
 	while true:
 		var event = await get_tree().root.window_input
 		if event is InputEventKey or event is InputEventMouseButton:
-			if event.is_pressed():
+			if event.is_pressed() and not event.is_echo():
+				disabled = false
 				anim.play("RESET")
+				
+				get_viewport().set_input_as_handled()
+				
 				if event is InputEventKey:
 					return str(OS.get_keycode_string(event.keycode))
 				if event is InputEventMouseButton:
