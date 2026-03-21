@@ -1,29 +1,26 @@
 extends Control
 
-@onready var done_button: Button = $done_button
-@onready var sound_label: Label = $MarginContainer/VBoxContainer/sound_container/sound_label
-@onready var sound_slider: HSlider = $MarginContainer/VBoxContainer/sound_container/sound_slider
+@onready var audio: Control = $audio
+@onready var controls: Control = $controls
+@onready var audio_button: Button = $MarginContainer/VBoxContainer/audio_button
+@onready var controls_button: Button = $MarginContainer/VBoxContainer/controls_button
 
-func play_click():
-	AudioManager.play_sfx("menu_click")
-
-func _ready() -> void:
-	var value = SettingsManager.current_settings.get("sound_volume")
-	sound_label.text = "Sound: " + str(int(value)) + "%"
-	sound_slider.value = value
-
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause"):
-		SettingsManager.save_settings()
-
-func _on_sound_slider_value_changed(value: float) -> void:
-	sound_label.text = "Sound: " + str(int(value)) + "%"
-	SettingsManager.update_setting("sound_volume", int(value))
+func _on_visibility_changed() -> void:
+	if not visible: return
 	
-	if sound_slider.has_focus() and int(value) % 6 == 0:
-		AudioManager.play_sfx("slider_ratch")
+	audio_button.set_pressed(true)
+	audio_button.set("theme_override_constants/outline_size", 0)
+	
+	audio.visible = true
+	controls.visible = false
 
-func _on_done_button_pressed() -> void:
-	play_click()
-	SettingsManager.save_settings()
-	Signals.switch_to_section.emit("menu")
+func _on_button_toggled(toggled_on: bool, button: NodePath) -> void:
+	if not toggled_on:
+		get_node(button).set("theme_override_constants/outline_size", 4)
+		
+	if get_node(button) == audio_button:
+		controls.visible = false
+		audio.visible = true
+	else:
+		controls.visible = true
+		audio.visible = false
