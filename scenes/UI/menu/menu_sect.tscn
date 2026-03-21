@@ -722,6 +722,7 @@ theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxEmpty_ny0ke")
 theme_override_styles/pressed = ExtResource("3_7vt7k")
 theme_override_styles/hover = ExtResource("2_2f55w")
+theme_override_styles/focus = ExtResource("2_2f55w")
 text = "New Game"
 metadata/_edit_use_anchors_ = true
 
@@ -740,6 +741,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_iysyy")
 theme_override_styles/pressed = ExtResource("3_7vt7k")
 theme_override_styles/hover = SubResource("StyleBoxTexture_svcqa")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_svcqa")
+theme_override_styles/focus = ExtResource("2_2f55w")
 text = "Load Game"
 metadata/_edit_use_anchors_ = true
 
@@ -758,6 +760,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_iysyy")
 theme_override_styles/pressed = ExtResource("3_7vt7k")
 theme_override_styles/hover = SubResource("StyleBoxTexture_svcqa")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_svcqa")
+theme_override_styles/focus = ExtResource("2_2f55w")
 text = "Options"
 metadata/_edit_use_anchors_ = true
 
@@ -776,6 +779,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_iysyy")
 theme_override_styles/pressed = ExtResource("3_7vt7k")
 theme_override_styles/hover = SubResource("StyleBoxTexture_svcqa")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_svcqa")
+theme_override_styles/focus = ExtResource("2_2f55w")
 text = "Quit"
 metadata/_edit_use_anchors_ = true
 
