@@ -38,3 +38,6 @@ signal debug_toggled
 
 @warning_ignore("unused_signal")
 signal change_controls
+
+@warning_ignore("unused_signal")
+signal reset_keybinds
