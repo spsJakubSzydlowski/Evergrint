@@ -6,6 +6,9 @@ var row_scene = preload("res://scenes/UI/change_control_row.tscn")
 @onready var audio: Control = $"../audio"
 @onready var controls: Control = $"."
 
+func _ready() -> void:
+	Signals.reset_keybinds.connect(_on_reset_keybinds)
+
 func play_click():
 	AudioManager.play_sfx("menu_click")
 
@@ -44,3 +47,10 @@ func _on_button_mouse_exited(button):
 	if get_node(button).button_pressed: return
 	
 	get_node(button).set("theme_override_constants/outline_size", 4)
+
+func _on_reset_button_pressed() -> void:
+	Enums.current_menu_action = Enums.MenuActions.RESET_BINDS
+	Signals.switch_to_section.emit("are_you_sure")
+
+func _on_reset_keybinds():
+	Controls.controls = Controls.default_controls.duplicate()
