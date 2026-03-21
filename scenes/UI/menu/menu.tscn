@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dy7n17gef32m8" path="res://scenes/UI/menu/create_world_sect.tscn" id="4_e7jq3"]
 [ext_resource type="PackedScene" uid="uid://dd408p4uwi3r2" path="res://scenes/UI/menu/load_world_sect.tscn" id="5_433gc"]
 [ext_resource type="PackedScene" uid="uid://cxxi7ytbtx2m4" path="res://scenes/UI/menu/options_sect.tscn" id="6_hdcf1"]
-[ext_resource type="PackedScene" uid="uid://ey0uja0yfe63" path="res://scenes/UI/menu/delete_world_sect.tscn" id="7_lakgf"]
+[ext_resource type="PackedScene" uid="uid://ey0uja0yfe63" path="res://scenes/UI/menu/are_you_sure_sect.tscn" id="7_lakgf"]
 
 [node name="menu" type="CanvasLayer" unique_id=81474863]
 process_mode = 3
@@ -38,5 +38,5 @@ color = Color(0, 0, 0, 0.5882353)
 [node name="options_sect" parent="." unique_id=1406288854 instance=ExtResource("6_hdcf1")]
 visible = false
 
-[node name="delete_world_sect" parent="." unique_id=830936469 instance=ExtResource("7_lakgf")]
+[node name="are_you_sure" parent="." unique_id=830936469 instance=ExtResource("7_lakgf")]
 visible = false
