@@ -828,24 +828,6 @@ theme_override_font_sizes/font_size = 25
 text = "Controls"
 horizontal_alignment = 1
 
-[node name="done_button" type="Button" parent="controls" unique_id=28396158 groups=["menu_buttons"]]
-custom_minimum_size = Vector2(200, 25)
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = -25.0
-offset_right = 100.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_horizontal = 8
-size_flags_vertical = 4
-theme_override_fonts/font = ExtResource("2_ujlrg")
-text = "Done"
-
 [node name="control_grid" type="GridContainer" parent="controls" unique_id=1767237436]
 layout_mode = 1
 anchors_preset = 5
@@ -857,6 +839,35 @@ offset_right = 20.0
 offset_bottom = 77.0
 grow_horizontal = 2
 columns = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="controls" unique_id=1190639465]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -122.0
+offset_top = -25.0
+offset_right = 122.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="done_button" type="Button" parent="controls/HBoxContainer" unique_id=28396158 groups=["menu_buttons"]]
+custom_minimum_size = Vector2(120, 25)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("2_ujlrg")
+text = "Done"
+
+[node name="reset_button" type="Button" parent="controls/HBoxContainer" unique_id=1558188959 groups=["menu_buttons"]]
+custom_minimum_size = Vector2(120, 25)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("2_ujlrg")
+text = "Reset to Default"
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=862375199]
 layout_mode = 1
@@ -925,7 +936,8 @@ metadata/_edit_use_anchors_ = true
 [connection signal="pressed" from="audio/done_button" to="audio" method="_on_done_button_pressed"]
 [connection signal="value_changed" from="audio/MarginContainer/VBoxContainer/sound_container/sound_slider" to="audio" method="_on_sound_slider_value_changed"]
 [connection signal="visibility_changed" from="controls" to="controls" method="_on_visibility_changed"]
-[connection signal="pressed" from="controls/done_button" to="controls" method="_on_done_button_pressed"]
+[connection signal="pressed" from="controls/HBoxContainer/done_button" to="controls" method="_on_done_button_pressed"]
+[connection signal="pressed" from="controls/HBoxContainer/reset_button" to="controls" method="_on_reset_button_pressed"]
 [connection signal="mouse_entered" from="MarginContainer/VBoxContainer/audio_button" to="controls" method="_on_button_mouse_entered" binds= [NodePath("../MarginContainer/VBoxContainer/audio_button")]]
 [connection signal="mouse_exited" from="MarginContainer/VBoxContainer/audio_button" to="controls" method="_on_button_mouse_exited" binds= [NodePath("../MarginContainer/VBoxContainer/audio_button")]]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/audio_button" to="." method="_on_button_toggled" binds= [NodePath("MarginContainer/VBoxContainer/audio_button")]]
