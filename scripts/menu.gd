@@ -5,11 +5,9 @@ extends CanvasLayer
 	"create": $create_world_sect,
 	"worlds": $load_world_sect,
 	"options": $options_sect,
-	"delete_world": $delete_world_sect
+	"are_you_sure": $are_you_sure
 }
 
-enum Actions {NONE, CREATE, LOAD}
-var current_action = Actions.NONE
 var selected_difficulty = Global.Difficulty.EASY
 
 var all_worlds
@@ -32,15 +30,18 @@ func _input(event: InputEvent) -> void:
 
 func _on_switch_to_section(target_section: String):
 	for section_name in sections:
+		if not target_section in sections: 
+			printerr("Target section doesnt exist")
+			return
 		sections[section_name].visible = (section_name == target_section)
-
+		
 func start_game(world_name: String):
-	if current_action == Actions.CREATE:
+	if Enums.current_menu_action == Enums.MenuActions.CREATE:
 		if not SaveManager.create_world(world_name, Global.world_seed):
 			print("This world already exist!")
 			return
 	
-	elif current_action == Actions.LOAD:
+	elif Enums.current_menu_action == Enums.MenuActions.LOAD:
 		if not SaveManager.load_world(world_name):
 			print("This world doesnt exist!")
 			return
