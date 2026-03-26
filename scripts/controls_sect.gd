@@ -2,9 +2,10 @@ extends Control
 
 @onready var control_grid: GridContainer = $control_grid
 var row_scene = preload("res://scenes/UI/change_control_row.tscn")
+var are_you_sure_scene = preload("res://scenes/UI/menu/are_you_sure_sect.tscn")
 
 @onready var audio: Control = $"../audio"
-@onready var controls: Control = $"."
+
 
 func _ready() -> void:
 	Signals.reset_keybinds.connect(_on_reset_keybinds)
@@ -13,6 +14,9 @@ func play_click():
 	AudioManager.play_sfx("menu_click")
 
 func _on_visibility_changed() -> void:
+	if not control_grid:
+		return
+		
 	for child in control_grid.get_children():
 		child.queue_free()
 	
@@ -36,7 +40,8 @@ func _on_visibility_changed() -> void:
 func _on_done_button_pressed() -> void:
 	play_click()
 	SettingsManager.save_settings()
-	Signals.switch_to_section.emit("menu")
+	if Global.world_name: get_parent().queue_free()
+	else: Signals.switch_to_section.emit("menu")
 
 func _on_button_mouse_entered(button):
 	if get_node(button).button_pressed: return
@@ -50,7 +55,12 @@ func _on_button_mouse_exited(button):
 
 func _on_reset_button_pressed() -> void:
 	Enums.current_menu_action = Enums.MenuActions.RESET_BINDS
-	Signals.switch_to_section.emit("are_you_sure")
+	if Global.world_name:
+		var are_you_sure = are_you_sure_scene.instantiate()
+		get_parent().get_parent().add_child(are_you_sure)
+		get_parent().queue_free()
+	else: Signals.switch_to_section.emit("are_you_sure")
+	
 
 func _on_reset_keybinds():
 	Controls.controls = Controls.default_controls.duplicate()
