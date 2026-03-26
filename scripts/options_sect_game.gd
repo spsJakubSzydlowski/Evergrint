@@ -8,7 +8,7 @@ func play_click():
 	AudioManager.play_sfx("menu_click")
 
 func _ready() -> void:
-	var value = SettingsManager.current_settings.get("sound_volume")
+	var value = SettingsManager.current_audio_settings.get("sound_volume")
 	sound_label.text = "Sound: " + str(int(value)) + "%"
 	sound_slider.value = value
 
@@ -26,4 +26,5 @@ func _on_sound_slider_value_changed(value: float) -> void:
 
 func _on_done_button_pressed() -> void:
 	play_click()
-	visible = false
+	if Global.world_name: queue_free()
+	else: visible = false
