@@ -878,14 +878,14 @@ offset_top = -20.0
 offset_right = 40.0
 offset_bottom = 20.0
 grow_vertical = 2
-theme_override_constants/margin_left = 10
+theme_override_constants/margin_left = 38
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1086228061]
 layout_mode = 2
 theme_override_constants/separation = 4
 
 [node name="audio_button" type="Button" parent="MarginContainer/VBoxContainer" unique_id=2018070394 groups=["menu_buttons"]]
-custom_minimum_size = Vector2(128, 0)
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme = SubResource("Theme_1fi2l")
@@ -909,7 +909,7 @@ text = "Audio"
 metadata/_edit_use_anchors_ = true
 
 [node name="controls_button" type="Button" parent="MarginContainer/VBoxContainer" unique_id=27180144 groups=["menu_buttons"]]
-custom_minimum_size = Vector2(128, 0)
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
