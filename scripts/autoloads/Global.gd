@@ -32,7 +32,7 @@ var first_time_generation: bool = true
 var loaded_chunks = {}
 var chunk_queue: Array[Vector2i] = []
 const CHUNK_SIZE = 8
-const RENDER_DISTANCE = 5
+const RENDER_DISTANCE = 3
 
 var world_scenes = {
 	"surface": "res://scenes/main.tscn",
