@@ -8,8 +8,16 @@ extends Control
 func play_click():
 	AudioManager.play_sfx("menu_click")
 
+func _ready() -> void:
+	initialize()
+
 func _on_visibility_changed() -> void:
+	initialize()
+	
+func initialize():
 	if not visible: return
+	
+	await get_tree().process_frame
 	
 	audio_button.set_pressed(true)
 	audio_button.set("theme_override_constants/outline_size", 0)
