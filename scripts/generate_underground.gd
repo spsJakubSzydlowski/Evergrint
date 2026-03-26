@@ -31,8 +31,7 @@ func _ready() -> void:
 
 func _on_chunk_requested_gen(coords: Vector2i):
 	generate_chunk(coords)
-	#spawn_trees_in_chunk(coords)
-	
+
 func _on_chunk_requested_rem(coords: Vector2i):
 	var start_x = coords.x * Global.CHUNK_SIZE
 	var start_y = coords.y * Global.CHUNK_SIZE
@@ -41,6 +40,7 @@ func _on_chunk_requested_rem(coords: Vector2i):
 		for y in range(start_y, start_y + Global.CHUNK_SIZE):
 			self.set_cell(Vector2i(x, y), -1)
 			water_layer.set_cell(Vector2i(x, y), -1)
+			object_layer.set_cell(Vector2i(x, y), -1)
 	
 	if loaded_chunks_entities.has(coords):
 		var resources_to_delete = loaded_chunks_entities[coords]
@@ -64,7 +64,7 @@ func generate() -> void:
 	
 	cave_noise.seed = Global.world_seed + 50
 	cave_noise.frequency = 0.05
-	temperature_noise.noise_type = FastNoiseLite.TYPE_PERLIN
+	cave_noise.noise_type = FastNoiseLite.TYPE_PERLIN
 
 	spawn_starting_sinkhole()
 	notify_runtime_tile_data_update()
@@ -111,14 +111,15 @@ func generate_chunk(coords):
 	if start_x + Global.CHUNK_SIZE <= 0 or start_y + Global.CHUNK_SIZE <= 0:
 		return
 	
+	var astar = get_parent().astar
+	var sinkhole_vec2 = Vector2(sinkhole_map_pos)
 	for x in range(start_x - 1, end_x + 1):
 		for y in range(start_y - 1, end_y + 1):
 			var current_pos = Vector2i(x, y)
 			var terrain = get_biome_terrain(x, y)
 			
-			var dist_from_sinkhole = Vector2(current_pos).distance_to(Vector2(sinkhole_map_pos))
+			var dist_from_sinkhole = Vector2(current_pos).distance_to(sinkhole_vec2)
 	
-
 			if x >= start_x and x < end_x and y >= start_y and y < end_y:
 				var base_terrain = terrain
 				
@@ -138,7 +139,6 @@ func generate_chunk(coords):
 				elif base_terrain == T_SNOW:
 					self.set_cell(current_pos, 0, Vector2i(rng.randi_range(0, 3), 2))
 			
-			var astar = get_parent().astar
 			if terrain == T_LAVA:
 				water_tiles.append(current_pos)
 				astar.set_point_solid(current_pos, true)
@@ -155,12 +155,23 @@ func generate_chunk(coords):
 					block_tiles.append(current_pos)
 
 				astar.set_point_solid(current_pos, true)
+				
+		await get_tree().process_frame
 
 	if water_tiles.size() > 0:
-		water_layer.set_cells_terrain_connect(water_tiles, 0, T_LAVA, true)
+		await apply_terrain_in_batches(water_layer, water_tiles, T_LAVA)
 	
 	if block_tiles.size() > 0:
-		object_layer.set_cells_terrain_connect(block_tiles, 0, T_BLOCK, true)
+		await apply_terrain_in_batches(object_layer, block_tiles, T_BLOCK)
+
+func apply_terrain_in_batches(layer, tiles, terrain_id, batch_size = 64) -> void:
+	if tiles.is_empty():
+		return
+	
+	for i in range(0, tiles.size(), batch_size):
+		var batch = tiles.slice(i, i + batch_size)
+		layer.set_cells_terrain_connect(batch, 0, terrain_id, true)
+		await get_tree().process_frame
 
 func spawn_starting_sinkhole():
 	@warning_ignore("integer_division")
