@@ -24,6 +24,7 @@ func _on_toggled(toggled_on: bool) -> void:
 func _on_delete_button_pressed() -> void:
 	AudioManager.play_sfx("menu_click")
 	Signals.select_world.emit(world_name)
+	Enums.current_menu_action = Enums.MenuActions.ARE_YOU_SURE
 	Signals.switch_to_section.emit("are_you_sure")
 
 func _on_world_deleted(_world_name):
