@@ -4,6 +4,7 @@
 [ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="2_ywp2t"]
 [ext_resource type="StyleBox" uid="uid://pufkbrmg787q" path="res://misc/button_hovered_style.tres" id="3_ywp2t"]
 [ext_resource type="PackedScene" uid="uid://bfrlk5sfyf3tq" path="res://scenes/UI/options_sect_game.tscn" id="4_2xhoh"]
+[ext_resource type="PackedScene" uid="uid://cxxi7ytbtx2m4" path="res://scenes/UI/menu/options_sect.tscn" id="5_twefv"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2xhoh"]
 content_margin_left = 5.0
@@ -72,6 +73,9 @@ theme_override_styles/hover = ExtResource("3_ywp2t")
 text = "Quit"
 
 [node name="options_sect" parent="." unique_id=1406288854 instance=ExtResource("4_2xhoh")]
+visible = false
+
+[node name="options_sect2" parent="." unique_id=58093087 instance=ExtResource("5_twefv")]
 visible = false
 
 [connection signal="mouse_entered" from="MarginContainer/buttons/resume_button" to="." method="_on_button_mouse_entered" binds= [NodePath("MarginContainer/buttons/resume_button")]]
