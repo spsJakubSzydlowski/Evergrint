@@ -1,17 +1,21 @@
 extends CanvasLayer
 
-@onready var options_sect: Control = $options_sect
+@onready var options_sect: Control = $options_sect2
 var menu = "res://scenes/UI/menu/menu.tscn"
+var options = preload("res://scenes/UI/menu/options_sect.tscn")
+
+var opt = null
 
 func _ready() -> void:
 	visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
-		if not options_sect.visible:
+		if not opt:
 			toggle_menu()
 		else:
-			options_sect.visible = not options_sect.visible
+			opt.queue_free()
+			opt = null
 
 func play_click():
 	AudioManager.play_sfx("menu_click")
@@ -43,4 +47,5 @@ func _on_savequit_button_pressed() -> void:
 
 func _on_options_button_pressed() -> void:
 	play_click()
-	options_sect.visible = not options_sect.visible
+	opt = options.instantiate()
+	add_child(opt)
