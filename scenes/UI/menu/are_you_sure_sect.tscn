@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ey0uja0yfe63"]
 
-[ext_resource type="Script" uid="uid://beil6j5i5t6sq" path="res://scripts/delete_world_sect.gd" id="1_k7p0s"]
+[ext_resource type="Script" uid="uid://beil6j5i5t6sq" path="res://scripts/are_you_sure.gd" id="1_k7p0s"]
 [ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="2_hjipy"]
 [ext_resource type="StyleBox" uid="uid://bmm6te7auhgk5" path="res://misc/button_pressed_style.tres" id="3_xyy82"]
 [ext_resource type="StyleBox" uid="uid://pufkbrmg787q" path="res://misc/button_hovered_style.tres" id="4_4cwe6"]
