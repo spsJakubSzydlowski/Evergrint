@@ -12,7 +12,6 @@ var temperature_noise = FastNoiseLite.new()
 var cave_noise = FastNoiseLite.new()
 var world_width = Global.world_width
 var world_height = Global.world_height
-var tree_count = 800
 
 var sinkhole_map_pos
 
@@ -69,9 +68,9 @@ func generate() -> void:
 	spawn_starting_sinkhole()
 	notify_runtime_tile_data_update()
 
-func get_biome_terrain(x: int, y: int) -> int:
+func get_biome_data(x: int, y: int) -> Dictionary:
 	var mois = moisture_noise.get_noise_2d(x, y)
-	var temp = temperature_noise.get_noise_2d(x, y)
+	var raw_temp = temperature_noise.get_noise_2d(x, y)
 	
 	var world_center = Global.center_world_pos
 	var dist_to_center = Vector2(x, y).distance_to(world_center)
@@ -79,17 +78,21 @@ func get_biome_terrain(x: int, y: int) -> int:
 	var blend_factor = clamp(dist_to_center / 50.0, 0.0, 1.0)
 	
 	mois = lerp(0.0, mois, blend_factor)
-	temp = lerp(0.0, temp, blend_factor)
+	var blended_temp = lerp(0.0, raw_temp, blend_factor)
+	
+	var terrain_id = T_STONE
 	
 	if mois < -0.3:
-		return T_LAVA
-		
-	if temp > 0.3:
-		return T_SAND
-	elif temp < -0.3:
-		return T_SNOW
-	else:
-		return T_STONE
+		terrain_id = T_LAVA
+	if blended_temp > 0.3:
+		terrain_id = T_SAND
+	elif blended_temp < -0.3:
+		terrain_id = T_SNOW
+	
+	return {
+		"terrain": terrain_id,
+		"raw_temp": raw_temp
+	}
 
 func generate_chunk(coords):
 	var water_tiles: Array[Vector2i] = []
@@ -112,19 +115,26 @@ func generate_chunk(coords):
 		return
 	
 	var astar = get_parent().astar
-	var sinkhole_vec2 = Vector2(sinkhole_map_pos)
+
+	var sinkhole_radius_sq = sinkhole_radius * sinkhole_radius
+	var time_start = Time.get_ticks_msec()
+	
 	for x in range(start_x - 1, end_x + 1):
 		for y in range(start_y - 1, end_y + 1):
 			var current_pos = Vector2i(x, y)
-			var terrain = get_biome_terrain(x, y)
 			
-			var dist_from_sinkhole = Vector2(current_pos).distance_to(sinkhole_vec2)
+			var biome_data = get_biome_data(x, y)
+			var terrain = biome_data.terrain
+			
+			var dx = x - sinkhole_map_pos.x
+			var dy = y - sinkhole_map_pos.y
+			var distance_sq = dx * dx + dy * dy
 	
 			if x >= start_x and x < end_x and y >= start_y and y < end_y:
 				var base_terrain = terrain
 				
 				if base_terrain == T_LAVA:
-					var temp = temperature_noise.get_noise_2d(x, y)
+					var temp = biome_data.raw_temp
 					if temp > 0.3:
 						base_terrain = T_SAND
 					elif temp < -0.3:
@@ -143,7 +153,7 @@ func generate_chunk(coords):
 				water_tiles.append(current_pos)
 				astar.set_point_solid(current_pos, true)
 			else:
-				if dist_from_sinkhole < sinkhole_radius: continue
+				if distance_sq < sinkhole_radius_sq: continue
 				if changes.has(current_pos):
 					var change_type = changes[current_pos]
 
@@ -156,7 +166,9 @@ func generate_chunk(coords):
 
 				astar.set_point_solid(current_pos, true)
 				
-		await get_tree().process_frame
+		if Time.get_ticks_msec() - time_start > 8:
+			await get_tree().process_frame
+			time_start = Time.get_ticks_msec()
 
 	if water_tiles.size() > 0:
 		await apply_terrain_in_batches(water_layer, water_tiles, T_LAVA)
@@ -164,7 +176,7 @@ func generate_chunk(coords):
 	if block_tiles.size() > 0:
 		await apply_terrain_in_batches(object_layer, block_tiles, T_BLOCK)
 
-func apply_terrain_in_batches(layer, tiles, terrain_id, batch_size = 64) -> void:
+func apply_terrain_in_batches(layer, tiles, terrain_id, batch_size = 16) -> void:
 	if tiles.is_empty():
 		return
 	
