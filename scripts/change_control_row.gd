@@ -26,21 +26,27 @@ func play_click():
 
 func _on_pressed() -> void:
 	play_click()
-	var input_name = await wait_for_input()
-	button_text.text = input_name
+	var event = await wait_for_input_event()
 	
 	if button_text.text == "":
 		button_text.text = "<Unbound>"
 	
-	Controls.controls[setting_id] = OS.find_keycode_from_string(input_name)
+	if event is InputEventMouseButton:
+		button_text.text = get_mouse_button_text(event.button_index)
+		Controls.controls[setting_id] = event.button_index
+		
+	elif event is InputEventKey:
+		var code = event.keycode if event.keycode != 0 else event.physical_keycode
+		button_text.text = OS.get_keycode_string(code)
+		Controls.controls[setting_id] = code
 
-func wait_for_input():
+func wait_for_input_event():
 	get_viewport().gui_release_focus()
 	
 	anim.play("pulse")
 	disabled = true
 	
-	await get_tree().process_frame
+	await get_tree().create_timer(0.1).timeout
 	
 	while true:
 		var event = await get_tree().root.window_input
@@ -51,11 +57,8 @@ func wait_for_input():
 				
 				get_viewport().set_input_as_handled()
 				
-				if event is InputEventKey:
-					return str(OS.get_keycode_string(event.keycode))
-				if event is InputEventMouseButton:
-					return get_mouse_button_text(event.button_index)
-					
+				return event
+
 func get_mouse_button_text(index: int) -> String:
 	match index:
 		MOUSE_BUTTON_LEFT: return "Left Mouse Button"
