@@ -3,6 +3,7 @@
 [ext_resource type="FontFile" uid="uid://gdelwc207xyq" path="res://fonts/Jacquard_font.tres" id="1_n6e25"]
 [ext_resource type="Script" uid="uid://dfbcg2wted5h3" path="res://scripts/options_sect.gd" id="1_ujlrg"]
 [ext_resource type="Script" uid="uid://daf2xgjpv1vf2" path="res://scripts/audio_sect.gd" id="2_c1pwo"]
+[ext_resource type="Texture2D" uid="uid://bkf3nrxi80typ" path="res://textures/bgs/settings-screenshot.png" id="2_f2avq"]
 [ext_resource type="FontFile" uid="uid://bbmspah8tojot" path="res://fonts/Alkhemikal_font.tres" id="2_ujlrg"]
 [ext_resource type="Script" uid="uid://cpb36ciul68tu" path="res://scripts/controls_sect.gd" id="4_1f7tm"]
 [ext_resource type="StyleBox" uid="uid://bmm6te7auhgk5" path="res://misc/button_pressed_style.tres" id="5_f5mbv"]
@@ -711,6 +712,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ujlrg")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1108370757]
+modulate = Color(0.9297146, 0.9297147, 0.9297146, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_f2avq")
+expand_mode = 2
 
 [node name="audio" type="Control" parent="." unique_id=1885435690]
 visible = false
