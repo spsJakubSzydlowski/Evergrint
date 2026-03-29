@@ -25,8 +25,8 @@ var loaded_chunks_entities : Dictionary = {}
 @export var water_layer: TileMapLayer
 
 func _ready() -> void:
-	Global.request_chunk_generation.connect(_on_chunk_requested_gen)
-	Global.request_chunk_removal.connect(_on_chunk_requested_rem)
+	Global.request_chunk_generation.connect(_on_chunk_requested_gen, CONNECT_DEFERRED)
+	Global.request_chunk_removal.connect(_on_chunk_requested_rem, CONNECT_DEFERRED)
 
 func _on_chunk_requested_gen(coords: Vector2i):
 	generate_chunk(coords)
@@ -38,8 +38,12 @@ func _on_chunk_requested_rem(coords: Vector2i):
 	for x in range(start_x, start_x + Global.CHUNK_SIZE):
 		for y in range(start_y, start_y + Global.CHUNK_SIZE):
 			self.set_cell(Vector2i(x, y), -1)
-			water_layer.set_cell(Vector2i(x, y), -1)
-			object_layer.set_cell(Vector2i(x, y), -1)
+			
+			if water_layer.get_cell_source_id(Vector2i(x, y)) != -1:
+				water_layer.set_cell(Vector2i(x, y), -1)
+			
+			if object_layer.get_cell_source_id(Vector2i(x, y)) != -1:
+				object_layer.set_cell(Vector2i(x, y), -1)
 	
 	if loaded_chunks_entities.has(coords):
 		var resources_to_delete = loaded_chunks_entities[coords]
@@ -68,31 +72,27 @@ func generate() -> void:
 	spawn_starting_sinkhole()
 	notify_runtime_tile_data_update()
 
-func get_biome_data(x: int, y: int) -> Dictionary:
+func get_biome_terrain(x: int, y: int) -> int:
 	var mois = moisture_noise.get_noise_2d(x, y)
 	var raw_temp = temperature_noise.get_noise_2d(x, y)
 	
 	var world_center = Global.center_world_pos
-	var dist_to_center = Vector2(x, y).distance_to(world_center)
+	var pos = Vector2(x, y)
+	var dist_to_center = pos.distance_squared_to(world_center)
 	
 	var blend_factor = clamp(dist_to_center / 50.0, 0.0, 1.0)
 	
 	mois = lerp(0.0, mois, blend_factor)
 	var blended_temp = lerp(0.0, raw_temp, blend_factor)
 	
-	var terrain_id = T_STONE
-	
 	if mois < -0.3:
-		terrain_id = T_LAVA
+		return T_LAVA
 	if blended_temp > 0.3:
-		terrain_id = T_SAND
+		return T_SAND
 	elif blended_temp < -0.3:
-		terrain_id = T_SNOW
-	
-	return {
-		"terrain": terrain_id,
-		"raw_temp": raw_temp
-	}
+		return T_SNOW
+		
+	return T_STONE
 
 func generate_chunk(coords):
 	var water_tiles: Array[Vector2i] = []
@@ -123,8 +123,7 @@ func generate_chunk(coords):
 		for y in range(start_y - 1, end_y + 1):
 			var current_pos = Vector2i(x, y)
 			
-			var biome_data = get_biome_data(x, y)
-			var terrain = biome_data.terrain
+			var terrain = get_biome_terrain(x ,y)
 			
 			var dx = x - sinkhole_map_pos.x
 			var dy = y - sinkhole_map_pos.y
@@ -134,7 +133,7 @@ func generate_chunk(coords):
 				var base_terrain = terrain
 				
 				if base_terrain == T_LAVA:
-					var temp = biome_data.raw_temp
+					var temp = temperature_noise.get_noise_2d(x, y)
 					if temp > 0.3:
 						base_terrain = T_SAND
 					elif temp < -0.3:
@@ -162,28 +161,29 @@ func generate_chunk(coords):
 						
 				var val = cave_noise.get_noise_2d(x, y)
 				if val > -0.1:
+					pass
+					astar.set_point_solid(current_pos, true)
 					block_tiles.append(current_pos)
 
-				astar.set_point_solid(current_pos, true)
-				
-		if Time.get_ticks_msec() - time_start > 8:
-			await get_tree().process_frame
-			time_start = Time.get_ticks_msec()
-
+			if Time.get_ticks_msec() - time_start > 8:
+				await get_tree().process_frame
+				time_start = Time.get_ticks_msec()
+	
+	var batch_size = 100
+	
 	if water_tiles.size() > 0:
-		await apply_terrain_in_batches(water_layer, water_tiles, T_LAVA)
+		water_layer.set_cells_terrain_connect(water_tiles, 0, T_LAVA, true)
+		
+		for i in range(0, water_tiles.size(), batch_size):
+			var batch = water_tiles.slice(i, i + batch_size)
+			water_layer.set_cells_terrain_connect(batch, 0, T_LAVA, true)
+			await get_tree().process_frame
 	
 	if block_tiles.size() > 0:
-		await apply_terrain_in_batches(object_layer, block_tiles, T_BLOCK)
-
-func apply_terrain_in_batches(layer, tiles, terrain_id, batch_size = 16) -> void:
-	if tiles.is_empty():
-		return
-	
-	for i in range(0, tiles.size(), batch_size):
-		var batch = tiles.slice(i, i + batch_size)
-		layer.set_cells_terrain_connect(batch, 0, terrain_id, true)
-		await get_tree().process_frame
+		for i in range(0, block_tiles.size(), batch_size):
+			var batch = block_tiles.slice(i, i + batch_size)
+			object_layer.set_cells_terrain_connect(batch, 0, T_BLOCK, true)
+			await get_tree().process_frame
 
 func spawn_starting_sinkhole():
 	@warning_ignore("integer_division")
