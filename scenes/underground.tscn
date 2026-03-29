@@ -14,17 +14,24 @@ script = ExtResource("1_cpwbu")
 [node name="water_layer" type="TileMapLayer" parent="." unique_id=1850123842]
 z_index = 1
 tile_set = ExtResource("4_5558j")
+occlusion_enabled = false
+rendering_quadrant_size = 64
+physics_quadrant_size = 64
 
 [node name="ground_layer" type="TileMapLayer" parent="." unique_id=22413134 node_paths=PackedStringArray("object_layer", "water_layer") groups=["tilemap"]]
 tile_set = ExtResource("4_5558j")
+occlusion_enabled = false
+collision_enabled = false
 script = ExtResource("2_flqp3")
 object_layer = NodePath("../ObjectLayer")
 water_layer = NodePath("../water_layer")
 
 [node name="ObjectLayer" type="TileMapLayer" parent="." unique_id=475805565 groups=["objectmap"]]
 z_index = 2
-y_sort_enabled = true
 tile_set = ExtResource("4_5558j")
+occlusion_enabled = false
+rendering_quadrant_size = 64
+physics_quadrant_size = 64
 navigation_enabled = false
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=149757864]
