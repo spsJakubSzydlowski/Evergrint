@@ -84,6 +84,7 @@ script = ExtResource("1_1bvp3")
 [node name="water_layer" type="TileMapLayer" parent="." unique_id=1904419550]
 z_index = 1
 tile_set = ExtResource("2_jyhfs")
+physics_quadrant_size = 64
 navigation_enabled = false
 
 [node name="ground_layer" type="TileMapLayer" parent="." unique_id=2042884358 node_paths=PackedStringArray("object_layer", "water_layer") groups=["tilemap"]]
@@ -95,6 +96,7 @@ water_layer = NodePath("../water_layer")
 [node name="ObjectLayer" type="TileMapLayer" parent="." unique_id=1870995295 groups=["objectmap"]]
 y_sort_enabled = true
 tile_set = ExtResource("2_jyhfs")
+physics_quadrant_size = 32
 navigation_enabled = false
 
 [node name="EntitySpawnTimer" type="Timer" parent="." unique_id=2073219033]
