@@ -36,6 +36,7 @@ func _on_visibility_changed() -> void:
 			control_grid.add_child(row)
 		
 	Signals.change_controls.emit()
+	SettingsManager.save_settings()
 	
 func _on_done_button_pressed() -> void:
 	play_click()
@@ -61,6 +62,6 @@ func _on_reset_button_pressed() -> void:
 		get_parent().queue_free()
 	else: Signals.switch_to_section.emit("are_you_sure")
 	
-
 func _on_reset_keybinds():
 	Controls.controls = Controls.default_controls.duplicate()
+	SettingsManager.save_settings()
