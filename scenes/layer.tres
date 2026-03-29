@@ -22,8 +22,20 @@ polygon = PackedVector2Array(8, 8, 8, -8, -8, -8, -8, 8)
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_0v38v"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 2.5180225, -8, 2.6978817)
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_0fmy3"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_iiefk"]
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8, 8, -8)
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_t4ofa"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_oo8ib"]
 polygon = PackedVector2Array(-8, 8, -8, -8, 8, -8, 8, 8)
@@ -596,7 +608,9 @@ texture = ExtResource("1_335pj")
 3:9/0/terrains_peering_bit/top_side = 4
 3:9/0/custom_data_2 = "stone_block"
 2:3/0 = 0
+2:3/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_0fmy3")
 3:3/0 = 0
+3:3/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_t4ofa")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o6xl0"]
 texture = ExtResource("2_wvwsc")
