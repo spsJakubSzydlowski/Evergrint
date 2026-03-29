@@ -13,7 +13,6 @@ var default_controls = {
 	"interact": MOUSE_BUTTON_RIGHT,
 	"dash": KEY_SPACE,
 	"heal": KEY_H,
-	"pause": KEY_ESCAPE,
 	"toggle_inv": KEY_E,
 	"toggle_info": KEY_C,
 }
@@ -27,7 +26,6 @@ var controls = {
 	"interact": MOUSE_BUTTON_RIGHT,
 	"dash": KEY_SPACE,
 	"heal": KEY_H,
-	"pause": KEY_ESCAPE,
 	"toggle_inv": KEY_E,
 	"toggle_info": KEY_C,
 }
@@ -41,7 +39,6 @@ var control_names = [
 	"Interact",
 	"Dash",
 	"Heal",
-	"Pause",
 	"Toggle inventory",
 	"Toggle information",
 ]
