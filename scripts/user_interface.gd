@@ -156,6 +156,8 @@ func put_dragged_item_to_free_slot() -> void:
 
 func refresh_ui() -> void:
 	Inventory.dragged_item = selected_slot_data
+	if Inventory.dragged_item.amount == 0:
+		_clear_dragged_item()
 	
 	if is_inventory_open:
 		current_container = inventory_container
