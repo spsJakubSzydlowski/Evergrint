@@ -10,7 +10,7 @@ func _ready() -> void:
 	visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause"):
+	if event.is_action_pressed("pause") and not Enums.current_menu_action == Enums.MenuActions.BIND:
 		if not opt:
 			toggle_menu()
 		else:
