@@ -7,9 +7,6 @@ extends Control
 var world_container = preload("res://scenes/UI/world_container.tscn")
 
 var selected_world_name = ""
-enum Actions {NONE, CREATE, LOAD}
-var current_action = Actions.NONE
-
 var all_worlds
 
 func play_click():
