@@ -15,7 +15,7 @@ func _ready() -> void:
 	sound_slider.value = value
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause"):
+	if event.is_action_pressed("pause") and not Enums.current_menu_action == Enums.MenuActions.BIND:
 		SettingsManager.save_settings()
 
 func _on_sound_slider_value_changed(value: float) -> void:
