@@ -16,7 +16,7 @@ z_index = 1
 tile_set = ExtResource("4_5558j")
 occlusion_enabled = false
 rendering_quadrant_size = 64
-physics_quadrant_size = 64
+physics_quadrant_size = 128
 
 [node name="ground_layer" type="TileMapLayer" parent="." unique_id=22413134 node_paths=PackedStringArray("object_layer", "water_layer") groups=["tilemap"]]
 tile_set = ExtResource("4_5558j")
@@ -30,8 +30,8 @@ water_layer = NodePath("../water_layer")
 z_index = 2
 tile_set = ExtResource("4_5558j")
 occlusion_enabled = false
-rendering_quadrant_size = 64
-physics_quadrant_size = 64
+rendering_quadrant_size = 256
+physics_quadrant_size = 128
 navigation_enabled = false
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=149757864]
