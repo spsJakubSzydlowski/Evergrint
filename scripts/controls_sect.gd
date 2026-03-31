@@ -37,10 +37,13 @@ func _on_visibility_changed() -> void:
 		
 	Signals.change_controls.emit()
 	SettingsManager.save_settings()
+	SettingsManager.apply_settings()
 	
 func _on_done_button_pressed() -> void:
 	play_click()
+	Signals.change_controls.emit()
 	SettingsManager.save_settings()
+	SettingsManager.apply_settings()
 	if Global.world_name: get_parent().queue_free()
 	else: Signals.switch_to_section.emit("menu")
 
@@ -64,4 +67,12 @@ func _on_reset_button_pressed() -> void:
 	
 func _on_reset_keybinds():
 	Controls.controls = Controls.default_controls.duplicate()
+	Signals.change_controls.emit()
 	SettingsManager.save_settings()
+	SettingsManager.apply_settings()
+
+func _on_tree_exiting() -> void:
+	Signals.change_controls.emit()
+	SettingsManager.save_settings()
+	SettingsManager.apply_settings()
+	
