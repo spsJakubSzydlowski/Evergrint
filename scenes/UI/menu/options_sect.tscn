@@ -947,6 +947,7 @@ metadata/_edit_use_anchors_ = true
 [connection signal="visibility_changed" from="audio" to="audio" method="_on_visibility_changed"]
 [connection signal="pressed" from="audio/done_button" to="audio" method="_on_done_button_pressed"]
 [connection signal="value_changed" from="audio/MarginContainer/VBoxContainer/sound_container/sound_slider" to="audio" method="_on_sound_slider_value_changed"]
+[connection signal="tree_exiting" from="controls" to="controls" method="_on_tree_exiting"]
 [connection signal="visibility_changed" from="controls" to="controls" method="_on_visibility_changed"]
 [connection signal="pressed" from="controls/HBoxContainer/done_button" to="controls" method="_on_done_button_pressed"]
 [connection signal="pressed" from="controls/HBoxContainer/reset_button" to="controls" method="_on_reset_button_pressed"]
