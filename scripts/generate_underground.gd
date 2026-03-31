@@ -78,7 +78,7 @@ func get_biome_terrain(x: int, y: int) -> int:
 	
 	var world_center = Global.center_world_pos
 	var pos = Vector2(x, y)
-	var dist_to_center = pos.distance_squared_to(world_center)
+	var dist_to_center = pos.distance_to(world_center)
 	
 	var blend_factor = clamp(dist_to_center / 50.0, 0.0, 1.0)
 	
