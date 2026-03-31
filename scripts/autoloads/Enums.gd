@@ -4,5 +4,5 @@ enum PartsOfDay {DAWN, DAY, DUSK, NIGHT}
 
 enum Biomes {FOREST, DESERT, ICE}
 
-enum MenuActions {NONE, CREATE, LOAD, ARE_YOU_SURE, RESET_BINDS}
+enum MenuActions {NONE, CREATE, LOAD, ARE_YOU_SURE, RESET_BINDS, BIND}
 var current_menu_action = MenuActions.NONE
