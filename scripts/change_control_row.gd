@@ -26,7 +26,16 @@ func play_click():
 
 func _on_pressed() -> void:
 	play_click()
+	
+	release_focus()
+	
+	mouse_filter = MouseFilter.MOUSE_FILTER_IGNORE
+	
+	Enums.current_menu_action = Enums.MenuActions.BIND
 	var event = await wait_for_input_event()
+	Enums.current_menu_action = Enums.MenuActions.NONE
+	
+	mouse_filter = MouseFilter.MOUSE_FILTER_STOP
 	
 	if button_text.text == "":
 		button_text.text = "<Unbound>"
@@ -44,7 +53,6 @@ func wait_for_input_event():
 	get_viewport().gui_release_focus()
 	
 	anim.play("pulse")
-	disabled = true
 	
 	await get_tree().create_timer(0.1).timeout
 	
@@ -52,10 +60,10 @@ func wait_for_input_event():
 		var event = await get_tree().root.window_input
 		if event is InputEventKey or event is InputEventMouseButton:
 			if event.is_pressed() and not event.is_echo():
-				disabled = false
-				anim.play("RESET")
 				
 				get_viewport().set_input_as_handled()
+				
+				anim.play("RESET")
 				
 				return event
 
